@@ -4,7 +4,7 @@ namespace Trace {
 
 	public class WSSuccess {
 
-		// Indicates whether the operation was succesful or not.
+		// Indicates whether the operation was successful or not.
 		public bool success { get; set; }
 
 		// Authentication token.
@@ -12,5 +12,8 @@ namespace Trace {
 
 		// Error message in case the operation is not successful.
 		public string error { get; set; }
+
+		// Generic message result -- used in fetching the list of challenges. 
+		public WSPayload payload { get; set; }
 	}
 }

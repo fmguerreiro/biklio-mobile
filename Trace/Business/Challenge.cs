@@ -2,8 +2,9 @@
 
 namespace Trace {
 	public class Challenge {
-		public string Name { get; set; }
-		public string Description { get; set; }
+		public string Reward { get; set; }
+		public string CheckpointName { get; set; }
+		public string Condition { get; set; }
 		public Checkpoint ThisCheckpoint { get; set; }
 	}
 
@@ -11,6 +12,9 @@ namespace Trace {
 		public List<Challenge> Challenges { get; set; }
 		public string Summary {
 			get {
+				if(Challenges.Count == 0) {
+					return "Failed to find any challenges.";
+				}
 				if(Challenges.Count != 1)
 					return " There are " + Challenges.Count + " challenges near you.";
 				else

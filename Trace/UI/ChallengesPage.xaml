@@ -23,8 +23,8 @@
 		<ListView.ItemTemplate>
 			<DataTemplate>
 				<TextCell
-					Text="{Binding Name}"
-					Detail="{Binding Description}">
+					Text="{Binding Reward} at {Binding CheckpointName}"
+					Detail="{Binding Condition}">
 				</TextCell>
 			</DataTemplate>
 		</ListView.ItemTemplate>

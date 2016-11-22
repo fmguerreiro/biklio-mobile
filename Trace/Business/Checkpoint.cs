@@ -6,8 +6,7 @@ namespace Trace {
 	public class Checkpoint {
 		public string Name { get; set; }
 		public string Address { get; set; }
-		public DateTime OpeningHours { get; set; }
-		public DateTime ClosingHours { get; set; }
+		public string AvailableHours { get; set; }
 		public string PhoneNumber { get; set; }
 		public string WebsiteAddress { get; set; }
 		public string FacebookAddress { get; set; }
@@ -18,8 +17,5 @@ namespace Trace {
 		public List<Challenge> Challenges { get; set; }
 
 		public Position Location { get; set; }
-
-		public Checkpoint() {
-		}
 	}
 }

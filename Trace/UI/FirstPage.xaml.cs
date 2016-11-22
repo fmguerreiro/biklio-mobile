@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 
 using Xamarin.Forms;
 
@@ -10,7 +9,6 @@ namespace Trace {
 		}
 
 		async void OnRegister(object sender, EventArgs e) {
-			//await Navigation.PushAsync(new MainPage());
 			await Navigation.PushAsync(new RegistrationPage());
 		}
 

@@ -1,0 +1,69 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage
+	xmlns="http://xamarin.com/schemas/2014/forms"
+	xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+	x:Class="Trace.CheckpointDetailsPage"
+	Title="Details">
+	<ContentPage.Padding>
+		<OnPlatform
+			x:TypeArguments="Thickness"
+			iOS="20, 40, 20, 20"
+			Android="20, 20, 20, 20"
+			WinPhone="20, 20, 20, 20" />
+	</ContentPage.Padding>
+	<ContentPage.Content>
+		<StackLayout>
+			<Label
+				Text="{Binding Name}"
+				XAlign="Center" />
+			<Grid>
+				<Label
+					Text="Open hours:"
+					XAlign="Start"
+					FontSize="Small"
+					Grid.Row="0"
+					Grid.Column="0" />
+				<Label
+					Text="{Binding AvailableHours}"
+					FontSize="Small"
+					Grid.Row="0"
+					Grid.Column="1">
+				</Label>
+				<Label
+					Text="Address:"
+					XAlign="Start"
+					FontSize="Small"
+					Grid.Row="1"
+					Grid.Column="0" />
+				<Label
+					Text="{Binding Address}"
+					FontSize="Small"
+					TextColor="Blue"
+					Grid.Row="1"
+					Grid.Column="1">
+					<Label.GestureRecognizers>
+						<TapGestureRecognizer
+							Tapped="OnAddressTapped" />
+					</Label.GestureRecognizers>
+				</Label>
+				<Label
+					Text="Website:"
+					XAlign="Start"
+					FontSize="Small"
+					Grid.Row="2"
+					Grid.Column="0" />
+				<Label
+					Text="{Binding WebsiteAddress}"
+					FontSize="Small"
+					TextColor="Blue"
+					Grid.Row="2"
+					Grid.Column="1">
+					<Label.GestureRecognizers>
+						<TapGestureRecognizer
+							Tapped="OnWebsiteAddressTapped" />
+					</Label.GestureRecognizers>
+				</Label>
+			</Grid>
+		</StackLayout>
+	</ContentPage.Content>
+</ContentPage>

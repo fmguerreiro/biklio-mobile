@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Trace {
+﻿namespace Trace {
 
 	public static class WebServerConstants {
 
@@ -13,5 +11,9 @@ namespace Trace {
 		public static readonly string UPLOAD_TRACK_ENDPOINT = ENDPOINT + "/tracker/put/track/";
 
 		public static readonly string REGISTER_ENDPOINT = ENDPOINT + "/tracker/register";
+
+		public static readonly string FETCH_CHALLENGES_ENDPOINT = ENDPOINT + "/shops/challenges?";
+
+		public static readonly int VERSION = 1;
 	}
 }
