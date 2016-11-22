@@ -30,8 +30,6 @@ namespace Trace {
 			}
 			else
 				await DisplayAlert("Result", result.error, "Ok");
-
-
 		}
 	}
 }
