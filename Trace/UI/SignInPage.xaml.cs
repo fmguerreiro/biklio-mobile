@@ -29,7 +29,7 @@ namespace Trace {
 				await Navigation.PushAsync(new HomePage());
 			}
 			else
-				await DisplayAlert("Result", result.error, "Ok");
+				await DisplayAlert("Error", result.error, "Ok");
 		}
 	}
 }
