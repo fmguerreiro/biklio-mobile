@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage
+	xmlns="http://xamarin.com/schemas/2014/forms"
+	xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+	x:Class="Trace.SignInPage"
+	xmlns:local="clr-namespace:Trace;assembly=Trace"
+	Title="Sign In">
+	<ContentPage.Padding>
+		<OnPlatform
+			x:TypeArguments="Thickness"
+			iOS="20, 40, 20, 20"
+			Android="20, 20, 20, 20"
+			WinPhone="20, 20, 20, 20" />
+	</ContentPage.Padding>
+	<ContentPage.Content>
+		<StackLayout
+			VerticalOptions="FillAndExpand"
+			HorizontalOptions="FillAndExpand"
+			Orientation="Vertical"
+			Spacing="15">
+			<Entry
+				x:Name="usernameText"
+				Placeholder="Username">
+				<Entry.Behaviors>
+					<local:UsernameValidator
+						x:Name="usernameValidator" />
+					<local:MaxLengthValidator
+						MaxLength="20" />
+				</Entry.Behaviors>
+			</Entry>
+			<Entry
+				x:Name="passwordText"
+				Placeholder="Password"
+				IsPassword="true">
+				<Entry.Behaviors>
+					<local:PasswordValidator
+						x:Name="passwordValidator" />
+					<local:MaxLengthValidator
+						MaxLength="20" />
+				</Entry.Behaviors>
+			</Entry>
+			<Button
+				x:Name="loginButton"
+				Text="Sign In"
+				Clicked="OnLogin" />
+		</StackLayout>
+	</ContentPage.Content>
+</ContentPage>

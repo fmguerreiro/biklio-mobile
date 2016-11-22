@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage
+	xmlns="http://xamarin.com/schemas/2014/forms"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:maps="clr-namespace:Trace;assembly=Trace"
+	x:Class="Trace.MapPage"
+	x:Name="TRACEMapPage"
+	Title="Map"
+	Icon="maps-icon.png">
+	<StackLayout
+		VerticalOptions="FillAndExpand"
+		HorizontalOptions="FillAndExpand"
+		Orientation="Vertical"
+		Spacing="15">
+		<maps:StoreTrajectoryMap
+			x:Name="CustomMap"
+			WidthRequest="320"
+			HeightRequest="200"
+			IsShowingUser="true"
+			MapType="Street" />
+		<Button
+			x:Name="startTrackingButton"
+			Text="Track"
+			Clicked="OnStartTracking" />
+	</StackLayout>
+</ContentPage>
