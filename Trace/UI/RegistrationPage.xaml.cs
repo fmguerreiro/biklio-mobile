@@ -28,7 +28,7 @@ namespace Trace {
 				User.Password = password;
 				User.Email = email;
 				await DisplayAlert("Result", "Registration successful.", "Ok");
-				await Navigation.PushAsync(new HomePage());
+				await Navigation.PushAsync(new SignInPage());
 			}
 			else
 				await DisplayAlert("Result", result.error, "Ok");

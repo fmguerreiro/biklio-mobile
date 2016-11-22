@@ -114,7 +114,7 @@
     <Compile Include="Security\InputValidation\ConfirmPasswordValidator.cs" />
     <Compile Include="Security\InputValidation\UsernameValidator.cs" />
     <Compile Include="ServiceAccess\WebServerConstants.cs" />
-    <Compile Include="Security\CredentialsHandling\CredentialsHandlerInterface.cs" />
+    <Compile Include="Security\CredentialsHandling\StoreCredentialsInterface.cs" />
     <Compile Include="Security\CredentialsHandling\AccountInterface.cs" />
     <Compile Include="ServiceAccess\WebServiceObjects\WSSuccess.cs" />
     <Compile Include="ServiceAccess\WebServiceObjects\WSUser.cs" />

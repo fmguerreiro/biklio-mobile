@@ -18,8 +18,6 @@ namespace Trace {
 			DependencyService.Get<MotionActivityInterface>().InitMotionActivity();
 		}
 
-
-
 		void OnStartTracking(object send, EventArgs eventArgs) {
 			// On Stop Button pressed
 			if(Locator.IsTrackingInProgress) {

@@ -39,6 +39,20 @@
 						MaxLength="20" />
 				</Entry.Behaviors>
 			</Entry>
+			<Grid>
+				<Label
+					Text="Remember me"
+					XAlign="Start"
+					YAlign="Center"
+					FontSize="Small"
+					Grid.Row="0"
+					Grid.Column="0" />
+				<Switch
+					HorizontalOptions="End"
+					Toggled="OnRememberMe"
+					Grid.Row="0"
+					Grid.Column="1" />
+			</Grid>
 			<Button
 				x:Name="loginButton"
 				Text="Sign In"

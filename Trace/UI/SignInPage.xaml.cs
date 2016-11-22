@@ -6,8 +6,13 @@ using Xamarin.Forms;
 namespace Trace {
 	public partial class SignInPage : ContentPage {
 
+		private bool isRememberMe;
+
 		public SignInPage() {
 			InitializeComponent();
+			isRememberMe = false;
+			usernameText.Text = DependencyService.Get<StoreCredentialsInterface>().Username;
+			passwordText.Text = DependencyService.Get<StoreCredentialsInterface>().Password;
 		}
 
 		async void OnLogin(object sender, EventArgs e) {
@@ -23,13 +28,26 @@ namespace Trace {
 			WSSuccess result = await Task.Run(() => client.loginWithCredentials(username, password));
 
 			if(result.error == null) {
-				User.AuthToken = result.token;
+				User.AuthToken = null;
 				User.Username = username;
 				User.Password = password;
+				if(isRememberMe) storeCredentials(); else removeCredentials();
 				await Navigation.PushAsync(new HomePage());
 			}
 			else
 				await DisplayAlert("Error", result.error, "Ok");
+		}
+
+		void OnRememberMe(object sender, EventArgs e) {
+			isRememberMe = !isRememberMe;
+		}
+
+		void storeCredentials() {
+			DependencyService.Get<StoreCredentialsInterface>().SaveCredentials(User.Username, User.Password);
+		}
+
+		void removeCredentials() {
+			DependencyService.Get<StoreCredentialsInterface>().DeleteCredentials();
 		}
 	}
 }

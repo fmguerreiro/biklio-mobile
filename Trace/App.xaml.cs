@@ -2,6 +2,9 @@
 
 namespace Trace {
 	public partial class App : Application {
+
+		public static string AppName { get { return "Trace"; } }
+
 		public App() {
 			InitializeComponent();
 
