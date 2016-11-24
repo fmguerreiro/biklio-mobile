@@ -7,7 +7,7 @@ namespace Trace {
 		private const string MENU = "Menu";
 		private const string MY_REWARDS = "My Rewards";
 		private const string DASHBOARD = "Dashboard";
-		private const string MY_ROUTES = "My routes";
+		private const string MY_ROUTES = "My Routes";
 		private const string SETTINGS = "Settings";
 		private const string LOGOUT = "Logout";
 

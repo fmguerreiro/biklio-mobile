@@ -6,6 +6,7 @@ using Trace.Droid;
 using Xamarin.Forms;
 using Xamarin.Forms.Maps;
 using Xamarin.Forms.Maps.Android;
+using Xamarin.Forms.Platform.Android;
 
 [assembly: ExportRenderer(typeof(StoreTrajectoryMap), typeof(DrawTrajectoryMapRenderer))]
 namespace Trace.Droid {
@@ -13,7 +14,7 @@ namespace Trace.Droid {
 		GoogleMap map;
 		List<Position> routeCoordinates;
 
-		protected override void OnElementChanged(Xamarin.Forms.Platform.Android.ElementChangedEventArgs<View> e) {
+		protected override void OnElementChanged(ElementChangedEventArgs<Map> e) {
 			base.OnElementChanged(e);
 
 			if(e.OldElement != null) {

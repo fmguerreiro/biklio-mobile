@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Plugin.Geolocator;
 using Xamarin.Forms;
@@ -12,31 +11,6 @@ namespace Trace {
 			InitializeComponent();
 
 			Task.Run(() => getChallenges());
-
-			/*
-			var monkeys = new List<Challenge> {
-				new Challenge {Name="Xander", Description="Writer"},
-				new Challenge {Name="Rupert", Description="Engineer"},
-				new Challenge {Name="Tammy", Description="Designer"},
-				new Challenge {Name="Blue", Description="Speaker"},
-				new Challenge {Name="Xander", Description="Writer"},
-				new Challenge {Name="Rupert", Description="Engineer"},
-				new Challenge {Name="Tammy", Description="Designer"},
-				new Challenge {Name="Blue", Description="Speaker"},
-				new Challenge {Name="Xander", Description="Writer"},
-				new Challenge {Name="Rupert", Description="Engineer"},
-				new Challenge {Name="Tammy", Description="Designer"},
-				new Challenge {Name="Blue", Description="Speaker"},
-				new Challenge {Name="Xander", Description="Writer"},
-				new Challenge {Name="Rupert", Description="Engineer"},
-				new Challenge {Name="Tammy", Description="Designer"},
-				new Challenge {Name="Blue", Description="Speaker"},
-				new Challenge {Name="Xander", Description="Writer"},
-				new Challenge {Name="Rupert", Description="Engineer"},
-				new Challenge {Name="Tammy", Description="Designer"},
-				new Challenge {Name="Blue", Description="Speaker"}
-			};
-			BindingContext = new ChallengeVM { Challenges = monkeys }; */
 		}
 
 

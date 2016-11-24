@@ -1,4 +1,6 @@
-﻿namespace Trace {
+﻿using SQLite;
+
+namespace Trace {
 
 	/// <summary>
 	/// The User class stores the user's information.
@@ -10,8 +12,6 @@
 
 		private static User instance;
 
-		private User() { }
-
 		public static User Instance {
 			get {
 				if(instance == null) { instance = new User(); }
@@ -19,6 +19,7 @@
 			}
 		}
 
+		[PrimaryKey]
 		public static string Username { get; set; }
 		public static string Password { get; set; }
 		public static string Email { get; set; }
