@@ -48,7 +48,7 @@ namespace Trace.iOS {
 			if(polylineRenderer == null) {
 				polylineRenderer = new MKPolylineRenderer(overlay as MKPolyline);
 				polylineRenderer.FillColor = UIColor.Blue;
-				polylineRenderer.StrokeColor = UIColor.Red;
+				polylineRenderer.StrokeColor = UIColor.Blue;
 				polylineRenderer.LineWidth = 3;
 				polylineRenderer.Alpha = 0.4f;
 			}

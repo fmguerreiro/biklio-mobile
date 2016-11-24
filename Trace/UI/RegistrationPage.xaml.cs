@@ -20,7 +20,7 @@ namespace Trace {
 			}
 
 			var client = new WebServerClient();
-			WSSuccess result = await Task.Run(() => client.register(username: username, password: password, email: email));
+			WSResult result = await Task.Run(() => client.register(username: username, password: password, email: email));
 
 			if(result.error == null) {
 				User.AuthToken = result.token;

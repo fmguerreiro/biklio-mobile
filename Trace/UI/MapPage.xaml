@@ -2,22 +2,96 @@
 <ContentPage
 	xmlns="http://xamarin.com/schemas/2014/forms"
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-	xmlns:maps="clr-namespace:Trace;assembly=Trace"
+	xmlns:locals="clr-namespace:Trace;assembly=Trace"
 	x:Class="Trace.MapPage"
 	x:Name="TRACEMapPage"
 	Title="Map"
 	Icon="maps-icon.png">
+	<ContentPage.Resources>
+		<ResourceDictionary>
+			<Style
+				x:Key="lightTheme"
+				TargetType="Label">
+				<Setter
+					Property="BackgroundColor"
+					Value="Blue" />
+				<Setter
+					Property="TextColor"
+					Value="Black" />
+				<Setter
+					Property="FontSize"
+					Value="Small" />
+			</Style>
+		</ResourceDictionary>
+	</ContentPage.Resources>
 	<StackLayout
-		VerticalOptions="FillAndExpand"
+		x:Name="MyStack"
 		HorizontalOptions="FillAndExpand"
-		Orientation="Vertical"
-		Spacing="15">
-		<maps:StoreTrajectoryMap
+		Orientation="Vertical">
+		<locals:StoreTrajectoryMap
 			x:Name="CustomMap"
 			WidthRequest="320"
 			HeightRequest="200"
 			IsShowingUser="true"
 			MapType="Street" />
+		<Label
+			x:Name="ActivityLabel"
+			Text="{Binding ActivityType, StringFormat='Activity: {0}'}"
+			HorizontalTextAlignment="Center"
+			IsVisible="false"
+			VerticalTextAlignment="Center">
+		</Label>
+		<Label.BindingContext>
+			<locals:CurrentActivity />
+		</Label.BindingContext>
+		<Grid
+			x:Name="ResultsGrid"
+			IsVisible="false">
+			<Label
+				x:Name="MainActivityLabel"
+				Text="{Binding ActivityType, StringFormat='Main Activity: {0}'}"
+				Grid.Row="0"
+				Grid.Column="1"
+				Grid.ColumnSpan="3"
+				Style="{StaticResource lightTheme}"
+				XAlign="Center" />
+			<Label
+				x:Name="TotalDistanceLabel"
+				Text="{Binding Distance, StringFormat='Distance: {0} m'}"
+				Grid.Row="1"
+				Grid.Column="0"
+				Grid.ColumnSpan="2"
+				Style="{StaticResource lightTheme}"
+				XAlign="Center" />
+			<Label
+				x:Name="DurationLabel"
+				Text="{Binding Duration, StringFormat='Duration: {0}'}"
+				Grid.Row="1"
+				Grid.Column="3"
+				Grid.ColumnSpan="2"
+				Style="{StaticResource lightTheme}"
+				XAlign="Center" />
+			<Label
+				x:Name="CaloriesLabel"
+				Text="{Binding Calories, StringFormat='Calories: {0} kcals'}"
+				Grid.Row="2"
+				Grid.Column="0"
+				Grid.ColumnSpan="2"
+				Style="{StaticResource lightTheme}"
+				XAlign="Center" />
+			<Label
+				x:Name="DrivenLabel"
+				Text="{Binding Duration, StringFormat='Drove: {0}'}"
+				Grid.Row="2"
+				Grid.Column="3"
+				Grid.ColumnSpan="2"
+				Style="{StaticResource lightTheme}"
+				XAlign="Center" />
+			<Label
+				Grid.Row="0"
+				Grid.Column="4"
+				Text=" " />
+		</Grid>
 		<Button
 			x:Name="startTrackingButton"
 			Text="Track"

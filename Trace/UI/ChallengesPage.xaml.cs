@@ -52,7 +52,14 @@ namespace Trace {
 
 			// Fetch challenges from Webserver
 			var client = new WebServerClient();
-			WSSuccess result = await Task.Run(() => client.fetchChallenges(position, User.SearchRadiusInKM, WebServerConstants.VERSION));
+			WSResult result = await Task.Run(() => client.fetchChallenges(position, User.SearchRadiusInKM, WebServerConstants.VERSION));
+
+			if(!result.success) {
+				Device.BeginInvokeOnMainThread(async () => {
+					await DisplayAlert("Error fetching challenges from server", result.error, "Ok");
+				});
+				return;
+			}
 
 			// Load shop information into dictionary for fast lookup.
 			var checkpoints = new Dictionary<long, Checkpoint>();
@@ -69,10 +76,14 @@ namespace Trace {
 			// Load challenge information into list for display.
 			var challenges = new List<Challenge>();
 			foreach(WSChallenge challenge in result.payload.challenges) {
+				Checkpoint checkpoint = null;
+				if(checkpoints.ContainsKey(challenge.shopId))
+					checkpoint = checkpoints[challenge.shopId];
+				else { checkpoint = new Checkpoint { Name = "Non-existing shop" }; }
 				challenges.Add(new Challenge {
 					Reward = challenge.reward,
-					ThisCheckpoint = checkpoints[challenge.shopId],
-					CheckpointName = checkpoints[challenge.shopId].Name,
+					ThisCheckpoint = checkpoint,
+					CheckpointName = checkpoint.Name,
 					Condition = challenge.conditions.distance
 				});
 			}

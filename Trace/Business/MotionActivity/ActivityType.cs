@@ -1,5 +1,4 @@
-﻿using System;
-namespace Trace {
+﻿namespace Trace {
 	public enum ActivityType {
 		Walking,
 		Running,

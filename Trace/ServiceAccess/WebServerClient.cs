@@ -18,7 +18,7 @@ namespace Trace {
 		/// <param name="username">Username.</param>
 		/// <param name="password">Password.</param>
 		/// <param name="email">Email.</param>
-		public WSSuccess register(string username, string password, string email) {
+		public WSResult register(string username, string password, string email) {
 			var user = new WSUser {
 				name = "Filipe Guerreiro",
 				username = username,
@@ -32,7 +32,7 @@ namespace Trace {
 			string request = JsonConvert.SerializeObject(user, Formatting.None);
 			Task<JObject> result = PostAsyncJSON(WebServerConstants.REGISTER_ENDPOINT, request);
 			//Debug.WriteLine(result.Result.ToString());
-			return result.Result.ToObject<WSSuccess>();
+			return result.Result.ToObject<WSResult>();
 		}
 
 		/// <summary>
@@ -43,14 +43,14 @@ namespace Trace {
 		/// <returns><c>string</c>, an authentication token, or an error if the authentication failed.</returns>
 		/// <param name="username">Username.</param>
 		/// <param name="password">Password.</param>
-		public WSSuccess loginWithCredentials(string username, string password) {
+		public WSResult loginWithCredentials(string username, string password) {
 			var request = new FormUrlEncodedContent(new[] {
 				new KeyValuePair<string, string>("username", username),
 				new KeyValuePair<string, string>("password", password)
 			});
 
 			var output = PostAsyncFormURL(WebServerConstants.LOGIN_ENDPOINT, request);
-			return output.Result.ToObject<WSSuccess>();
+			return output.Result.ToObject<WSResult>();
 		}
 
 		/// <summary>
@@ -60,13 +60,13 @@ namespace Trace {
 		/// </summary>
 		/// <returns><c>string</c>, an authentication token, or an error if the authentication failed.</returns>
 		/// <param name="authToken">Authentication token.</param>
-		public WSSuccess loginWithToken(string authToken) {
+		public WSResult loginWithToken(string authToken) {
 			var request = new FormUrlEncodedContent(new[] {
 				new KeyValuePair<string, string>("token", authToken)
 			});
 
 			var output = PostAsyncFormURL(WebServerConstants.LOGIN_ENDPOINT, request);
-			return output.Result.ToObject<WSSuccess>();
+			return output.Result.ToObject<WSResult>();
 		}
 
 		/// <summary>
@@ -76,17 +76,17 @@ namespace Trace {
 		/// <param name="position">Position.</param>
 		/// <param name="radiusInKM">Radius in KM.</param>
 		/// <param name="version">Version.</param>
-		public WSSuccess fetchChallenges(Position position, int radiusInKM, int version) {
+		public WSResult fetchChallenges(Position position, int radiusInKM, int version) {
 			var query = new FormUrlEncodedContent(new[] {
 				new KeyValuePair<string, string>("latitude", position.Latitude.ToString()),
 				new KeyValuePair<string, string>("longitude", position.Longitude.ToString()),
 				new KeyValuePair<string, string>("radius", radiusInKM.ToString()),
 				new KeyValuePair<string, string>("version", version.ToString())
 			});
-			//Debug.WriteLine(query.ReadAsStringAsync().Result);
+			Debug.WriteLine(query.ReadAsStringAsync().Result);
 			var output = GetAsyncFormURL(WebServerConstants.FETCH_CHALLENGES_ENDPOINT, query);
 			Debug.WriteLine(output.Result.ToString());
-			return output.Result.ToObject<WSSuccess>();
+			return output.Result.ToObject<WSResult>();
 		}
 	}
 }

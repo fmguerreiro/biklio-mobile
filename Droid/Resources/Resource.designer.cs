@@ -26,9 +26,9 @@ namespace Trace.Droid
 		
 		public static void UpdateIdValues()
 		{
-			global::Xamarin.Forms.Platform.Android.Resource.Attribute.actionBarSize = global::Trace.Droid.Resource.Attribute.actionBarSize;
 			global::PCLCrypto.Resource.String.ApplicationName = global::Trace.Droid.Resource.String.ApplicationName;
 			global::PCLCrypto.Resource.String.Hello = global::Trace.Droid.Resource.String.Hello;
+			global::Xamarin.Forms.Platform.Android.Resource.Attribute.actionBarSize = global::Trace.Droid.Resource.Attribute.actionBarSize;
 		}
 		
 		public partial class Animation

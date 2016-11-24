@@ -115,7 +115,7 @@ namespace Trace.iOS {
 			}
 
 			// Finally transform into ActivityEvent and increment duration
-			List<ActivityEvent> activityEvents = new List<ActivityEvent>();
+			var activityEvents = new List<ActivityEvent>();
 
 			for(int i = 0; i < filteredActivities.Count - 1; i++) {
 				CMMotionActivity activity = filteredActivities[i];

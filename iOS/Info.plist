@@ -52,5 +52,7 @@
 	</array>
 	<key>NSMotionUsageDescription</key>
 	<string>We need your motion activity to determine if you are eligible for rewards</string>
+	<key>XSLaunchImageAssets</key>
+	<string>Assets.xcassets/LaunchImage.launchimage</string>
 </dict>
 </plist>

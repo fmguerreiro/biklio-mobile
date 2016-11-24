@@ -6,7 +6,7 @@
 	/// </summary>
 	public class User {
 
-		private const int DEFAULT_RADIUS = 1;
+		private const int DEFAULT_RADIUS = 10000;
 
 		private static User instance;
 

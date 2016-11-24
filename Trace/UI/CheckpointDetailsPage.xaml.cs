@@ -7,7 +7,6 @@ namespace Trace {
 
 		public CheckpointDetailsPage(Checkpoint checkpoint) {
 			InitializeComponent();
-
 			BindingContext = checkpoint;
 		}
 

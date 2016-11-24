@@ -1,8 +1,6 @@
-﻿using System;
+﻿namespace Trace {
 
-namespace Trace {
-
-	public class WSSuccess {
+	public class WSResult {
 
 		// Indicates whether the operation was successful or not.
 		public bool success { get; set; }

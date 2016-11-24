@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using Xamarin.Forms;
 using Xamarin.Forms.Maps;
 
 namespace Trace {

@@ -25,7 +25,7 @@ namespace Trace {
 			}
 
 			var client = new WebServerClient();
-			WSSuccess result = await Task.Run(() => client.loginWithCredentials(username, password));
+			WSResult result = await Task.Run(() => client.loginWithCredentials(username, password));
 
 			if(result.error == null) {
 				User.AuthToken = null;

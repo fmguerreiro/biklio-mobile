@@ -6,6 +6,7 @@ namespace Trace {
 		public string CheckpointName { get; set; }
 		public string Condition { get; set; }
 		public Checkpoint ThisCheckpoint { get; set; }
+		public string Description { get { return Reward + " at " + CheckpointName; } }
 	}
 
 	class ChallengeVM {

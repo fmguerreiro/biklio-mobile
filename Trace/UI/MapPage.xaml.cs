@@ -10,34 +10,62 @@ namespace Trace {
 	public partial class MapPage : ContentPage {
 
 		private Geolocator Locator;
+		private CurrentActivity currentActivity;
+
+		private DateTime StartTrackingTime;
+		private DateTime StopTrackingTime;
 
 		public MapPage() {
 			InitializeComponent();
 			Locator = new Geolocator(CustomMap);
 			Locator.Start();
+			currentActivity = new CurrentActivity();
 			DependencyService.Get<MotionActivityInterface>().InitMotionActivity();
 		}
 
 		void OnStartTracking(object send, EventArgs eventArgs) {
+
 			// On Stop Button pressed
 			if(Locator.IsTrackingInProgress) {
+				// Calculate stats and the results to the user.
 				//DependencyService.Get<MotionActivityInterface>().StopMotionUpdates();
 				((Button) send).Text = "Track";
-				// todo calculate stats and show new page to user!
-				//StopTrackingTime = DateTime.Now;
+				StopTrackingTime = DateTime.Now;
 				//DependencyService.Get<MotionActivityInterface>().QueryHistoricalData(StartTrackingTime, StopTrackingTime);
-				Navigation.PushAsync(new ShowTrackedResultsPage(CustomMap));
+				ActivityLabel.IsVisible = false;
+
+				// Refresh the map to display the trajectory.
+				MyStack.Children.RemoveAt(0);
+				MyStack.Children.Insert(0, CustomMap);
+
+				// Make the results grid visible to the user.
+				ResultsGrid.IsVisible = true;
+				TotalDistanceLabel.BindingContext = new TotalDistance { Distance = 0 };
+
+				TimeSpan elapsedTime = StopTrackingTime.Subtract(StartTrackingTime);
+				DurationLabel.BindingContext = new TotalDuration {
+					Hours = elapsedTime.Hours,
+					Minutes = elapsedTime.Minutes,
+					Seconds = elapsedTime.Seconds
+				};
+				CaloriesLabel.BindingContext = new TotalCalories { Calories = 0 };
+				DrivenLabel.BindingContext = new TotalDuration { Hours = 0, Minutes = 0, Seconds = 0 };
+				MainActivityLabel.BindingContext = currentActivity;
 			}
 			// On Track Button pressed
 			else {
 				((Button) send).Text = "Stop";
 				CustomMap.RouteCoordinates.Clear();
-				//StartTrackingTime = DateTime.Now;
-				//DependencyService.Get<MotionActivityInterface>().StartMotionUpdates();
+				StartTrackingTime = DateTime.Now;
+
+				// Show Activity text after Map and before Stop button and remove Results grid.
+				ActivityLabel.IsVisible = true;
+				ResultsGrid.IsVisible = false;
+				DependencyService.Get<MotionActivityInterface>().StartMotionUpdates((activity) => {
+					currentActivity.ActivityType = activity;
+				});
 			}
 			Locator.IsTrackingInProgress = !Locator.IsTrackingInProgress;
 		}
-
-
 	}
 }

@@ -21,6 +21,14 @@ namespace Trace.iOS {
 
 			LoadApplication(new App());
 
+			// Apply light-blue theme to Navigation bar.
+			UINavigationBar.Appearance.BarTintColor = UIColor.FromRGB(43, 132, 211); //bar background
+			UINavigationBar.Appearance.TintColor = UIColor.White; //Tint color of button items
+			UINavigationBar.Appearance.SetTitleTextAttributes(new UITextAttributes() {
+				Font = UIFont.FromName("HelveticaNeue-Light", (nfloat) 20f),
+				TextColor = UIColor.White
+			});
+
 			return base.FinishedLaunching(app, options);
 		}
 	}

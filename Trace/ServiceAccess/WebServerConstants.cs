@@ -14,6 +14,6 @@
 
 		public static readonly string FETCH_CHALLENGES_ENDPOINT = ENDPOINT + "/shops/challenges?";
 
-		public static readonly int VERSION = 1;
+		public static readonly int VERSION = 0;
 	}
 }
