@@ -1,7 +1,12 @@
 ﻿using System.Collections.Generic;
+using SQLite;
 
 namespace Trace {
+
 	public class Challenge {
+
+		[PrimaryKey]
+		public long ID { get; set; }
 		public string Reward { get; set; }
 		public string CheckpointName { get; set; }
 		public string Condition { get; set; }

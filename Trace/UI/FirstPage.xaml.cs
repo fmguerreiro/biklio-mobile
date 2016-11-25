@@ -1,5 +1,5 @@
 ﻿using System;
-
+using System.Collections.Generic;
 using Xamarin.Forms;
 
 namespace Trace {
@@ -17,6 +17,10 @@ namespace Trace {
 		}
 
 		async void OnSkip(object sender, EventArgs e) {
+			User.Instance.Username = "test";
+			User.Instance.Email = "test@provider.com";
+			//User.Instance.Trajectories = new List<Trajectory>();
+			new SQLiteDB();
 			await Navigation.PushAsync(new HomePage());
 		}
 	}

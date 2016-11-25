@@ -169,6 +169,7 @@
     <Compile Include="App\Map\DrawTrajectoryMapRenderer.cs" />
     <Compile Include="App\Security\StoreCredentials.cs" />
     <Compile Include="App\Data\SQLite_Droid.cs" />
+    <Compile Include="App\MotionActivity\MotionActivity.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />
@@ -191,6 +192,7 @@
     <Folder Include="App\Map\" />
     <Folder Include="App\Security\" />
     <Folder Include="App\Data\" />
+    <Folder Include="App\MotionActivity\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <Import Project="..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" />

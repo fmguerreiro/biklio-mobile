@@ -16,54 +16,27 @@
 			<Label
 				Text="{Binding Name}"
 				XAlign="Center" />
-			<Grid>
-				<Label
-					Text="Open hours:"
-					XAlign="Start"
-					FontSize="Small"
-					Grid.Row="0"
-					Grid.Column="0" />
-				<Label
-					Text="{Binding AvailableHours}"
-					FontSize="Small"
-					Grid.Row="0"
-					Grid.Column="1">
-				</Label>
-				<Label
-					Text="Address:"
-					XAlign="Start"
-					FontSize="Small"
-					Grid.Row="1"
-					Grid.Column="0" />
-				<Label
-					Text="{Binding Address}"
-					FontSize="Small"
-					TextColor="Blue"
-					Grid.Row="1"
-					Grid.Column="1">
-					<Label.GestureRecognizers>
-						<TapGestureRecognizer
-							Tapped="OnAddressTapped" />
-					</Label.GestureRecognizers>
-				</Label>
-				<Label
-					Text="Website:"
-					XAlign="Start"
-					FontSize="Small"
-					Grid.Row="2"
-					Grid.Column="0" />
-				<Label
-					Text="{Binding WebsiteAddress}"
-					FontSize="Small"
-					TextColor="Blue"
-					Grid.Row="2"
-					Grid.Column="1">
-					<Label.GestureRecognizers>
-						<TapGestureRecognizer
-							Tapped="OnWebsiteAddressTapped" />
-					</Label.GestureRecognizers>
-				</Label>
-			</Grid>
+			<Label
+				Text="{Binding AvailableHours, StringFormat='Open between {0}'}"
+				FontSize="Small" />
+			<Label
+				Text="{Binding Address, StringFormat='Address: {0}'}"
+				FontSize="Small" />
+			<Label
+				Text="{Binding PhoneNumber, StringFormat='Phone number: {0}'}"
+				FontSize="Small" />
+			<Label
+				Text="{Binding WebsiteAddress, StringFormat='Website: {0}'}"
+				FontSize="Small" />
+			<Label
+				Text="{Binding FacebookAddress, StringFormat='Facebook: {0}'}"
+				FontSize="Small" />
+			<Label
+				Text="{Binding TwitterAddress, StringFormat='Twitter: {0}'}"
+				FontSize="Small" />
+			<Label
+				Text="{Binding Description, StringFormat='Description: {0}'}"
+				FontSize="Small" />
 		</StackLayout>
 	</ContentPage.Content>
 </ContentPage>

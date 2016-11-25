@@ -14,19 +14,33 @@ namespace Trace {
 		}
 
 
+		/// <summary>
+		/// Show the detailed page of the challenge's checkpoint on click.
+		/// </summary>
+		/// <param name="sender">Sender.</param>
+		/// <param name="e">The challenge in the listview that was clicked.</param>
 		void OnSelection(object sender, SelectedItemChangedEventArgs e) {
-
-			DisplayAlert("Item Selected", ((Challenge) e.SelectedItem).Reward, "Ok");
 			//((ListView)sender).SelectedItem = null; //uncomment line if you want to disable the visual selection state.
+			Checkpoint checkpoint = ((Challenge) e.SelectedItem).ThisCheckpoint;
+			if(checkpoint != null) {
+				Navigation.PushAsync(new CheckpointDetailsPage(checkpoint));
+			}
+			else {
+				DisplayAlert("Error", "That challenge does not have an associated checkpoint. Probably a DB consistency issue, please report", "Ok");
+			}
 		}
 
+
+		/// <summary>
+		/// Fetches the list of challenges from the webserver and displays it in the page when finished.
+		/// </summary>
 		private async void getChallenges() {
 			// Get current position to fetch closest challenges
 			var position = await CrossGeolocator.Current.GetPositionAsync(timeoutMilliseconds: 10000);
 
 			// Fetch challenges from Webserver
 			var client = new WebServerClient();
-			WSResult result = await Task.Run(() => client.fetchChallenges(position, User.SearchRadiusInKM, WebServerConstants.VERSION));
+			WSResult result = await Task.Run(() => client.fetchChallenges(position, User.Instance.SearchRadiusInKM, WebServerConstants.VERSION));
 
 			if(!result.success) {
 				Device.BeginInvokeOnMainThread(async () => {
@@ -42,8 +56,12 @@ namespace Trace {
 					Name = checkpoint.name,
 					Address = checkpoint.contacts.address,
 					AvailableHours = checkpoint.details.openTime + " - " + checkpoint.details.closeTime,
-					WebsiteAddress = checkpoint.contacts.address
-					// todo rest of information ...
+					PhoneNumber = checkpoint.contacts.phone,
+					WebsiteAddress = checkpoint.contacts.address,
+					FacebookAddress = checkpoint.contacts.facebook,
+					TwitterAddress = checkpoint.contacts.twitter,
+					//BikeFacilities = checkpoint.facilities.ToString(), // todo facilities is a jArray
+					Description = checkpoint.details.description
 				});
 			}
 

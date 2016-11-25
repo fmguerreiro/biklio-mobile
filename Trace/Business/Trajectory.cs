@@ -1,7 +1,12 @@
-﻿using System;
+﻿using SQLite;
+
 namespace Trace {
+
 	public class Trajectory {
-		public Trajectory() {
-		}
+
+		[PrimaryKey, AutoIncrement]
+		public int ID { get; set; }
+
+		// todo rest of fields
 	}
 }

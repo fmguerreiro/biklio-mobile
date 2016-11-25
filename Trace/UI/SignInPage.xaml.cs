@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using SQLite;
 using Xamarin.Forms;
 
 namespace Trace {
@@ -28,10 +29,15 @@ namespace Trace {
 			WSResult result = await Task.Run(() => client.loginWithCredentials(username, password));
 
 			if(result.error == null) {
-				User.AuthToken = null;
-				User.Username = username;
-				User.Password = password;
-				if(isRememberMe) storeCredentials(); else removeCredentials();
+
+				if(isRememberMe)
+					storeCredentials(username, password);
+				else
+					removeCredentials();
+
+				var database = new SQLiteDB();
+				database.InstantiateUser(username);
+
 				await Navigation.PushAsync(new HomePage());
 			}
 			else
@@ -42,8 +48,8 @@ namespace Trace {
 			isRememberMe = !isRememberMe;
 		}
 
-		void storeCredentials() {
-			DependencyService.Get<StoreCredentialsInterface>().SaveCredentials(User.Username, User.Password);
+		void storeCredentials(string username, string password) {
+			DependencyService.Get<StoreCredentialsInterface>().SaveCredentials(username, password);
 		}
 
 		void removeCredentials() {

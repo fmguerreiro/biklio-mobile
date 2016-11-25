@@ -35,9 +35,17 @@ namespace Trace.Droid {
 			var polylineOptions = new PolylineOptions();
 			polylineOptions.InvokeColor(0x66FF0000);
 
+			var builder = new LatLngBounds.Builder();
 			foreach(var position in routeCoordinates) {
-				polylineOptions.Add(new LatLng(position.Latitude, position.Longitude));
+				var point = new LatLng(position.Latitude, position.Longitude);
+				builder.Include(point);
+				polylineOptions.Add(point);
 			}
+
+			LatLngBounds bounds = builder.Build();
+			int padding = 20; // offset from edges of the map in pixels
+			CameraUpdate cu = CameraUpdateFactory.NewLatLngBounds(bounds, padding);
+			map.AnimateCamera(cu);
 
 			map.AddPolyline(polylineOptions);
 		}

@@ -50,7 +50,7 @@ namespace Trace {
 				};
 				CaloriesLabel.BindingContext = new TotalCalories { Calories = 0 };
 				DrivenLabel.BindingContext = new TotalDuration { Hours = 0, Minutes = 0, Seconds = 0 };
-				MainActivityLabel.BindingContext = currentActivity;
+				//MainActivityLabel.BindingContext = currentActivity;
 			}
 			// On Track Button pressed
 			else {
@@ -61,6 +61,7 @@ namespace Trace {
 				// Show Activity text after Map and before Stop button and remove Results grid.
 				ActivityLabel.IsVisible = true;
 				ResultsGrid.IsVisible = false;
+				ActivityLabel.BindingContext = currentActivity;
 				DependencyService.Get<MotionActivityInterface>().StartMotionUpdates((activity) => {
 					currentActivity.ActivityType = activity;
 				});

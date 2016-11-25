@@ -12,14 +12,14 @@ namespace Trace {
 		private const string LOGOUT = "Logout";
 
 		public HomePage() {
-			this.Title = "Home";
+			Title = "Home";
 
 			// Remove 'Back' button to stop users from logging out accidently.
 			NavigationPage.SetHasBackButton(this, false);
 
 			// Add tabs to the page.
-			this.Children.Add(new ChallengesPage());
-			this.Children.Add(new MapPage());
+			Children.Add(new ChallengesPage());
+			Children.Add(new MapPage());
 
 			// Add a Menu button to the page header to navigate the app.
 			ToolbarItems.Add(new ToolbarItem(MENU, "", async () => {
@@ -35,20 +35,20 @@ namespace Trace {
 			}));
 		}
 
-		async void OnMyRewardsClicked() {
-			await Navigation.PushAsync(new RewardsPage());
+		void OnMyRewardsClicked() {
+			Navigation.PushAsync(new RewardsPage());
 		}
 
-		async void OnDashboardClicked() {
-			await Navigation.PushAsync(new DashboardPage());
+		void OnDashboardClicked() {
+			Navigation.PushAsync(new DashboardPage());
 		}
 
-		async void OnMyRoutesClicked() {
-			await Navigation.PushAsync(new MyRoutesPage());
+		void OnMyRoutesClicked() {
+			Navigation.PushAsync(new MyRoutesPage());
 		}
 
-		async void OnSettingsClicked() {
-			await Navigation.PushAsync(new SettingsPage());
+		void OnSettingsClicked() {
+			Navigation.PushAsync(new SettingsPage());
 		}
 
 		async void OnLogoutClicked() {

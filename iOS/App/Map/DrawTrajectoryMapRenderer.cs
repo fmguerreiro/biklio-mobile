@@ -40,6 +40,7 @@ namespace Trace.iOS {
 				}
 
 				var routeOverlay = MKPolyline.FromCoordinates(coords);
+				// todo fit map - nativeMap.MapRectThatFits(routeOverlay.BoundingMapRect);
 				nativeMap.AddOverlay(routeOverlay);
 			}
 		}
@@ -47,10 +48,10 @@ namespace Trace.iOS {
 		MKOverlayRenderer GetOverlayRenderer(MKMapView mapView, IMKOverlay overlay) {
 			if(polylineRenderer == null) {
 				polylineRenderer = new MKPolylineRenderer(overlay as MKPolyline);
-				polylineRenderer.FillColor = UIColor.Blue;
+				polylineRenderer.FillColor = UIColor.Red;
 				polylineRenderer.StrokeColor = UIColor.Blue;
 				polylineRenderer.LineWidth = 3;
-				polylineRenderer.Alpha = 0.4f;
+				polylineRenderer.Alpha = 0.6f;
 			}
 			return polylineRenderer;
 		}
