@@ -2,7 +2,9 @@
 
 	public class WSPayload {
 
-		public int version { get; set; }
+		// The current version of the data stored in the WS.
+		// Used for informing how out of sync the device info and WS info is.
+		public long version { get; set; }
 
 		public WSShop[] shops { get; set; }
 

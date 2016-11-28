@@ -2,10 +2,7 @@
 
 namespace Trace {
 
-	public class Trajectory {
-
-		[PrimaryKey, AutoIncrement]
-		public int ID { get; set; }
+	public class Trajectory : UserItemBase {
 
 		// todo rest of fields
 	}

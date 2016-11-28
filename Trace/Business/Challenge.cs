@@ -3,15 +3,18 @@ using SQLite;
 
 namespace Trace {
 
-	public class Challenge {
+	public class Challenge : UserItemBase {
 
-		[PrimaryKey]
-		public long ID { get; set; }
 		public string Reward { get; set; }
 		public string CheckpointName { get; set; }
 		public string Condition { get; set; }
+		[Ignore]
 		public Checkpoint ThisCheckpoint { get; set; }
 		public string Description { get { return Reward + " at " + CheckpointName; } }
+
+		public string toString() {
+			return Id + ": " + Reward + " if " + Condition;
+		}
 	}
 
 	class ChallengeVM {

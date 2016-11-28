@@ -4,7 +4,7 @@ using Xamarin.Auth;
 [assembly: Xamarin.Forms.Dependency(typeof(Trace.iOS.StoreCredentials))]
 namespace Trace.iOS {
 
-	public class StoreCredentials : StoreCredentialsInterface {
+	public class StoreCredentials : DeviceKeychainInterface {
 
 		public string Username {
 			get {

@@ -5,15 +5,18 @@ using SQLite;
 using Xamarin.Forms;
 
 namespace Trace {
+	/// <summary>
+	/// Page used for checking user credentials and entering the application.
+	/// </summary>
 	public partial class SignInPage : ContentPage {
 
 		private bool isRememberMe;
 
 		public SignInPage() {
 			InitializeComponent();
-			isRememberMe = false;
-			usernameText.Text = DependencyService.Get<StoreCredentialsInterface>().Username;
-			passwordText.Text = DependencyService.Get<StoreCredentialsInterface>().Password;
+			isRememberMe = true;
+			usernameText.Text = DependencyService.Get<DeviceKeychainInterface>().Username;
+			passwordText.Text = DependencyService.Get<DeviceKeychainInterface>().Password;
 		}
 
 		async void OnLogin(object sender, EventArgs e) {
@@ -28,15 +31,17 @@ namespace Trace {
 			var client = new WebServerClient();
 			WSResult result = await Task.Run(() => client.loginWithCredentials(username, password));
 
-			if(result.error == null) {
+			if(result.success) {
 
+				// Remember me => Store credentials in keychain.
 				if(isRememberMe)
-					storeCredentials(username, password);
+					DependencyService.Get<DeviceKeychainInterface>().SaveCredentials(username, password);
 				else
-					removeCredentials();
+					DependencyService.Get<DeviceKeychainInterface>().DeleteCredentials();
 
-				var database = new SQLiteDB();
-				database.InstantiateUser(username);
+				// Fetch user information from the database.
+				SQLiteDB.Instance.InstantiateUser(username);
+				await DisplayAlert("DEBUG: User", User.Instance.toString(), "Ok");
 
 				await Navigation.PushAsync(new HomePage());
 			}
@@ -46,14 +51,6 @@ namespace Trace {
 
 		void OnRememberMe(object sender, EventArgs e) {
 			isRememberMe = !isRememberMe;
-		}
-
-		void storeCredentials(string username, string password) {
-			DependencyService.Get<StoreCredentialsInterface>().SaveCredentials(username, password);
-		}
-
-		void removeCredentials() {
-			DependencyService.Get<StoreCredentialsInterface>().DeleteCredentials();
 		}
 	}
 }

@@ -6,7 +6,7 @@ namespace Trace {
 	/// Interface for securely storing data in an account store that's backed by Keychain services in iOS,
 	/// and the KeyStore class in Android.
 	/// </summary>
-	public interface StoreCredentialsInterface {
+	public interface DeviceKeychainInterface {
 
 		string Username { get; }
 

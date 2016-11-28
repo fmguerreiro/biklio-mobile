@@ -1,7 +1,9 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using Plugin.Geolocator;
 using Xamarin.Forms;
+using System.Linq;
 
 namespace Trace {
 
@@ -9,7 +11,9 @@ namespace Trace {
 
 		public ChallengesPage() {
 			InitializeComponent();
-
+			// Show the challenges saved on the device.
+			Task.Run(() => BindingContext = new ChallengeVM { Challenges = User.Instance.Challenges });
+			// In the meantime, fetch updates from the server and show when finished.
 			Task.Run(() => getChallenges());
 		}
 
@@ -40,7 +44,7 @@ namespace Trace {
 
 			// Fetch challenges from Webserver
 			var client = new WebServerClient();
-			WSResult result = await Task.Run(() => client.fetchChallenges(position, User.Instance.SearchRadiusInKM, WebServerConstants.VERSION));
+			WSResult result = await Task.Run(() => client.fetchChallenges(position, User.Instance.SearchRadiusInKM, User.Instance.WsSyncVersion));
 
 			if(!result.success) {
 				Device.BeginInvokeOnMainThread(async () => {
@@ -48,6 +52,9 @@ namespace Trace {
 				});
 				return;
 			}
+
+			// Updates the device's DB version to sync with the WS DB.
+			// todo User.Instance.WsSyncVersion = result.payload.version;
 
 			// Load shop information into dictionary for fast lookup.
 			var checkpoints = new Dictionary<long, Checkpoint>();
@@ -68,11 +75,15 @@ namespace Trace {
 			// Load challenge information into list for display.
 			var challenges = new List<Challenge>();
 			foreach(WSChallenge challenge in result.payload.challenges) {
+				// First look for this challenge's checkpoint.
 				Checkpoint checkpoint = null;
 				if(checkpoints.ContainsKey(challenge.shopId))
 					checkpoint = checkpoints[challenge.shopId];
 				else { checkpoint = new Checkpoint { Name = "Non-existing shop" }; }
+				// Then create the object and add it to the list for display.
 				challenges.Add(new Challenge {
+					Id = challenge.id,
+					UserId = User.Instance.Id,
 					Reward = challenge.reward,
 					ThisCheckpoint = checkpoint,
 					CheckpointName = checkpoint.Name,
@@ -80,9 +91,12 @@ namespace Trace {
 				});
 			}
 
+			SQLiteDB.Instance.SaveItems<Challenge>(challenges);
+			User.Instance.Challenges = SQLiteDB.Instance.GetItems<Challenge>().ToList();
+
 			// Finally, display results.
 			Device.BeginInvokeOnMainThread(() => {
-				BindingContext = new ChallengeVM { Challenges = challenges };
+				BindingContext = new ChallengeVM { Challenges = User.Instance.Challenges };
 			});
 		}
 	}

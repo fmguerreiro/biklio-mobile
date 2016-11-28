@@ -2,12 +2,19 @@
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using ModernHttpClient;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Plugin.Connectivity;
 
 namespace Trace {
 	public class BaseHTTPClient : HttpClient {
+
+		/// <summary>
+		/// Calls the HttpClient with a handler that calls the stack optimized for each platform.
+		/// </summary>
+		protected BaseHTTPClient() :
+			base(new NativeMessageHandler()) { }
 
 		public async Task<JObject> GetAsyncJSON(string uri) {
 			string content = "";

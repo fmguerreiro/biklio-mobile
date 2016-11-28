@@ -2,8 +2,8 @@
 <ContentPage
 	xmlns="http://xamarin.com/schemas/2014/forms"
 	xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-	x:Class="Trace.SignInPage"
 	xmlns:local="clr-namespace:Trace;assembly=Trace"
+	x:Class="Trace.SignInPage"
 	Title="Sign In">
 	<ContentPage.Padding>
 		<OnPlatform
@@ -48,6 +48,7 @@
 					Grid.Row="0"
 					Grid.Column="0" />
 				<Switch
+					IsToggled="true"
 					HorizontalOptions="End"
 					Toggled="OnRememberMe"
 					Grid.Row="0"

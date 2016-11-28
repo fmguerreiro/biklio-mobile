@@ -23,8 +23,7 @@ namespace Trace {
 			WSResult result = await Task.Run(() => client.register(username, password, email));
 
 			if(result.error == null) {
-				var database = new SQLiteDB();
-				database.CreateNewUser(username, email, result.token);
+				SQLiteDB.Instance.CreateNewUser(username, email, result.token);
 
 				await DisplayAlert("Result", "Registration successful.", "Ok");
 				await Navigation.PushAsync(new SignInPage());

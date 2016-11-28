@@ -3,10 +3,8 @@ using Plugin.Geolocator.Abstractions;
 using SQLite;
 
 namespace Trace {
-	public class Checkpoint {
+	public class Checkpoint : UserItemBase {
 
-		[PrimaryKey]
-		public long ID { get; set; }
 		public string Name { get; set; }
 		public string Address { get; set; }
 		public string AvailableHours { get; set; }
@@ -17,6 +15,7 @@ namespace Trace {
 		public string BikeFacilities { get; set; }
 		public string Description { get; set; }
 
+		[Ignore]
 		public List<Challenge> Challenges { get; set; }
 
 		public Position Location { get; set; }

@@ -11,6 +11,11 @@ namespace Trace {
 	public class WebServerClient : BaseHTTPClient {
 
 		/// <summary>
+		/// Defers the constructor back to BaseHTTPClient to call HttpClient with handler optimized for each platform.
+		/// </summary>
+		public WebServerClient() : base() { }
+
+		/// <summary>
 		/// Registers a new Trace User. 
 		/// Request and response is in JSON format.
 		/// </summary>
@@ -71,12 +76,13 @@ namespace Trace {
 
 		/// <summary>
 		/// Fetches the challenges from the Webserver in a defined radius from the given position.
+		/// Sends the device's DB version so the WS knows to send only the data that changed.
 		/// </summary>
 		/// <returns>The challenges.</returns>
 		/// <param name="position">Position.</param>
 		/// <param name="radiusInKM">Radius in KM.</param>
 		/// <param name="version">Version.</param>
-		public WSResult fetchChallenges(Position position, int radiusInKM, int version) {
+		public WSResult fetchChallenges(Position position, int radiusInKM, long version) {
 			var query = new FormUrlEncodedContent(new[] {
 				new KeyValuePair<string, string>("latitude", position.Latitude.ToString()),
 				new KeyValuePair<string, string>("longitude", position.Longitude.ToString()),
