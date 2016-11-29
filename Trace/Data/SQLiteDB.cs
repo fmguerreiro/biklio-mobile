@@ -31,7 +31,7 @@ namespace Trace {
 			database.CreateTable<User>();
 			//database.CreateTable<Trajectory>();
 			database.CreateTable<Challenge>();
-			// todo database.CreateTable<Checkpoint>();
+			database.CreateTable<Checkpoint>();
 		}
 
 
@@ -57,11 +57,11 @@ namespace Trace {
 				User.Instance.Email = user.Email;
 				User.Instance.AuthToken = user.AuthToken;
 				User.Instance.SearchRadiusInKM = user.SearchRadiusInKM;
-				User.Instance.WsSyncVersion = user.WsSyncVersion;
+				User.Instance.WSSnapshotVersion = user.WSSnapshotVersion;
 				//Debug.WriteLine(GetItems<Challenge>());
 				User.Instance.Challenges = GetItems<Challenge>().ToList();
 				//User.Instance.Trajectories = GetItems<Trajectory>().ToList();
-				//User.Instance.Checkpoints = GetItems<Checkpoint>().ToList();
+				User.Instance.Checkpoints = GetItems<Checkpoint>().ToDictionary(key => key.Id, val => val);
 			}
 			else {
 				CreateNewUser(username);
@@ -142,17 +142,31 @@ namespace Trace {
 
 
 		/// <summary>
-		/// Deletes a specific item with id specified
+		/// Deletes a specific item with id specified.
 		/// </summary>
 		/// <typeparam name="T">Type of item to delete</typeparam>
 		/// <param name="id">id of object to delete</param>
-		public int DeleteItem<T>(int id) where T : DatabaseEntityBase, new() {
+		public int DeleteItem<T>(long id) where T : DatabaseEntityBase, new() {
 			return database.Delete<T>(new T() { Id = id });
 
 		}
 
+		/// <summary>
+		/// Deletes all items with the ids specified.
+		/// </summary>
+		/// <typeparam name="T">Type of item to delete</typeparam>
+		/// <param name="id">ids of objects to delete</param>
+		public int DeleteItems<T>(long[] ids) where T : DatabaseEntityBase, new() {
+			//Debug.WriteLine(string.Format("delete from \"{0}\" where Id in ({1})", typeof(T).Name, string.Join(", ", ids)));
+			return database.Execute(string.Format("delete from \"{0}\" where Id in ({1})", typeof(T).Name, string.Join(", ", ids)));
+		}
+
+		/// <summary>
+		/// Deletes all tables in the DB.
+		/// </summary>
 		public void DeleteAll() {
 			database.BeginTransaction();
+			database.DropTable<User>();
 			database.DropTable<Challenge>();
 			database.DropTable<Checkpoint>();
 			database.DropTable<Trajectory>();

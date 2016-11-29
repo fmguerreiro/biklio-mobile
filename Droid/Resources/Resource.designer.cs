@@ -29,6 +29,7 @@ namespace Trace.Droid
 			global::PCLCrypto.Resource.String.ApplicationName = global::Trace.Droid.Resource.String.ApplicationName;
 			global::PCLCrypto.Resource.String.Hello = global::Trace.Droid.Resource.String.Hello;
 			global::Xamarin.Forms.Platform.Android.Resource.Attribute.actionBarSize = global::Trace.Droid.Resource.Attribute.actionBarSize;
+			global::ModernHttpClient.Resource.String.library_name = global::Trace.Droid.Resource.String.library_name;
 		}
 		
 		public partial class Animation
@@ -3236,11 +3237,11 @@ namespace Trace.Droid
 		public partial class String
 		{
 			
-			// aapt resource value: 0x7f070046
-			public const int ApplicationName = 2131165254;
+			// aapt resource value: 0x7f070047
+			public const int ApplicationName = 2131165255;
 			
-			// aapt resource value: 0x7f070045
-			public const int Hello = 2131165253;
+			// aapt resource value: 0x7f070046
+			public const int Hello = 2131165254;
 			
 			// aapt resource value: 0x7f070031
 			public const int abc_action_bar_home_description = 2131165233;
@@ -3400,6 +3401,9 @@ namespace Trace.Droid
 			
 			// aapt resource value: 0x7f07001b
 			public const int common_signin_button_text_long = 2131165211;
+			
+			// aapt resource value: 0x7f070045
+			public const int library_name = 2131165253;
 			
 			// aapt resource value: 0x7f07001f
 			public const int mr_button_content_description = 2131165215;

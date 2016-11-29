@@ -24,9 +24,9 @@ namespace Trace {
 		public string AuthToken { get; set; }
 		public int SearchRadiusInKM { get; set; } = DEFAULT_RADIUS;
 
-		// The webserver stores several checkpoints of the challenge and store data.
-		// This value is used to tell the webserver whats the most recent checkpoint version the device has.
-		public long WsSyncVersion { get; set; }
+		// The webserver stores several snapshots of the challenge and checkpoint data.
+		// This value is used to tell the webserver the most recent version of the data in the device.
+		public long WSSnapshotVersion { get; set; }
 
 		//public List<Trajectory> trajectories;
 		//[OneToMany(CascadeOperations = CascadeOperation.All)]
@@ -41,7 +41,8 @@ namespace Trace {
 		[Ignore]
 		public List<Challenge> Challenges { get; set; }
 
-		//public List<Checkpoint> checkpoints;
+		[Ignore]
+		public Dictionary<long, Checkpoint> Checkpoints { get; set; }
 		//public List<Checkpoint> Checkpoints {
 		//	get {
 		//		if(checkpoints == null) { checkpoints = new List<Checkpoint>(); }
@@ -58,7 +59,7 @@ namespace Trace {
 			res += "SearchRadius: " + SearchRadiusInKM + "\n";
 			res += "Challenges: " + "\n";
 			foreach(Challenge challenge in Challenges) res += challenge.toString() + "\n";
-			res += "syncVersion: " + WsSyncVersion;
+			res += "snapshotVersion: " + WSSnapshotVersion;
 			return res;
 		}
 	}

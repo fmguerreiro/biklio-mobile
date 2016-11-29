@@ -8,6 +8,7 @@ namespace Trace {
 		public string Reward { get; set; }
 		public string CheckpointName { get; set; }
 		public string Condition { get; set; }
+
 		[Ignore]
 		public Checkpoint ThisCheckpoint { get; set; }
 		public string Description { get { return Reward + " at " + CheckpointName; } }
@@ -22,7 +23,7 @@ namespace Trace {
 		public string Summary {
 			get {
 				if(Challenges.Count == 0) {
-					return "Failed to find any challenges.";
+					return "No challenges found.";
 				}
 				if(Challenges.Count != 1)
 					return " There are " + Challenges.Count + " challenges near you.";

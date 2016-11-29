@@ -22,15 +22,12 @@
 				Aspect="AspectFit">
 			</Image>
 			<Button
-				x:Name="registerButton"
 				Text="Register New Account"
 				Clicked="OnRegister" />
 			<Button
-				x:Name="loginButton"
 				Text="Sign In"
 				Clicked="OnLogin" />
 			<Button
-				x:Name="skipButton"
 				Text="Skip"
 				Clicked="OnSkip" />
 		</StackLayout>

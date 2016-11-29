@@ -36,25 +36,23 @@ namespace Trace {
 
 
 		/// <summary>
-		/// Fetches the list of challenges from the webserver and displays it in the page when finished.
+		/// Fetches the list of challenges and checkpoints 
+		/// from the webserver, stores them and displays it in the page when finished.
 		/// </summary>
-		private async void getChallenges() {
+		private async Task getChallenges() {
 			// Get current position to fetch closest challenges
 			var position = await CrossGeolocator.Current.GetPositionAsync(timeoutMilliseconds: 10000);
 
 			// Fetch challenges from Webserver
 			var client = new WebServerClient();
-			WSResult result = await Task.Run(() => client.fetchChallenges(position, User.Instance.SearchRadiusInKM, User.Instance.WsSyncVersion));
+			WSResult result = await Task.Run(() => client.fetchChallenges(position, User.Instance.SearchRadiusInKM, User.Instance.WSSnapshotVersion));
 
 			if(!result.success) {
-				Device.BeginInvokeOnMainThread(async () => {
-					await DisplayAlert("Error fetching challenges from server", result.error, "Ok");
+				Device.BeginInvokeOnMainThread(() => {
+					DisplayAlert("Error fetching challenges from server", result.error, "Ok");
 				});
 				return;
 			}
-
-			// Updates the device's DB version to sync with the WS DB.
-			// todo User.Instance.WsSyncVersion = result.payload.version;
 
 			// Load shop information into dictionary for fast lookup.
 			var checkpoints = new Dictionary<long, Checkpoint>();
@@ -67,10 +65,13 @@ namespace Trace {
 					WebsiteAddress = checkpoint.contacts.address,
 					FacebookAddress = checkpoint.contacts.facebook,
 					TwitterAddress = checkpoint.contacts.twitter,
+					Longitude = checkpoint.longitude,
+					Latitude = checkpoint.latitude,
 					//BikeFacilities = checkpoint.facilities.ToString(), // todo facilities is a jArray
 					Description = checkpoint.details.description
 				});
 			}
+			User.Instance.Checkpoints = checkpoints;
 
 			// Load challenge information into list for display.
 			var challenges = new List<Challenge>();
@@ -91,8 +92,31 @@ namespace Trace {
 				});
 			}
 
+			// Update or create the received challenges and checkpoints.
+			IEnumerable<Checkpoint> checkpointList = checkpoints.Values;
+			SQLiteDB.Instance.SaveItems<Checkpoint>(checkpointList);
 			SQLiteDB.Instance.SaveItems<Challenge>(challenges);
+
+			// Delete invalidated challenges (i.e., ids in 'canceledChallenges' payload field).
+			long[] canceledChallengeIds = result.payload.canceledChallenges;
+			if(canceledChallengeIds.Length > 0) {
+				SQLiteDB.Instance.DeleteItems<Challenge>(canceledChallengeIds);
+			}
+
+			// Delete invalidated checkpoints (i.e., ids in 'canceled' payload field).
+			long[] canceledCheckpointsIds = result.payload.canceled;
+			if(canceledCheckpointsIds.Length > 0) {
+				SQLiteDB.Instance.DeleteItems<Checkpoint>(canceledCheckpointsIds);
+			}
+
+			// Update the in-memory challenge list for display.
+			// We leave invalidated checkpoints in memory to save on the extra processing.
 			User.Instance.Challenges = SQLiteDB.Instance.GetItems<Challenge>().ToList();
+
+			// Now that all changes are safely stored, update the device's snapshot version 
+			// to indicate it is in sync with the WwbServer version.
+			User.Instance.WSSnapshotVersion = result.payload.version;
+			SQLiteDB.Instance.SaveItem<User>(User.Instance);
 
 			// Finally, display results.
 			Device.BeginInvokeOnMainThread(() => {

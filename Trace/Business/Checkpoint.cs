@@ -18,6 +18,8 @@ namespace Trace {
 		[Ignore]
 		public List<Challenge> Challenges { get; set; }
 
-		public Position Location { get; set; }
+		// 'double' instead of 'Position' because SQLite only supports basic types. 
+		public double Longitude { get; set; }
+		public double Latitude { get; set; }
 	}
 }

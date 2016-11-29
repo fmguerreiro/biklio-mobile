@@ -93,7 +93,6 @@
 				Text=" " />
 		</Grid>
 		<Button
-			x:Name="startTrackingButton"
 			Text="Track"
 			Clicked="OnStartTracking" />
 	</StackLayout>

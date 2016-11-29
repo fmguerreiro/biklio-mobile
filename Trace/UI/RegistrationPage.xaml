@@ -25,8 +25,7 @@
 				x:Name="usernameText"
 				Placeholder="Username">
 				<Entry.Behaviors>
-					<local:UsernameValidator
-						x:Name="usernameValidator" />
+					<local:UsernameValidator />
 					<local:MaxLengthValidator
 						MaxLength="20" />
 				</Entry.Behaviors>
@@ -35,8 +34,7 @@
 				x:Name="emailText"
 				Placeholder="E-mail">
 				<Entry.Behaviors>
-					<local:EmailValidator
-						x:Name="emailValidator" />
+					<local:EmailValidator />
 					<local:MaxLengthValidator
 						MaxLength="254" />
 				</Entry.Behaviors>
@@ -49,8 +47,7 @@
 				Placeholder="Password"
 				IsPassword="true">
 				<Entry.Behaviors>
-					<local:PasswordValidator
-						x:Name="passwordValidator" />
+					<local:PasswordValidator />
 					<local:MaxLengthValidator
 						MaxLength="20" />
 				</Entry.Behaviors>
@@ -61,12 +58,10 @@
 				IsPassword="true">
 				<Entry.Behaviors>
 					<local:ConfirmPasswordValidator
-						x:Name="confirmPasswordValidator"
 						CompareToEntry="{Binding Source={x:Reference passwordText}}" />
 				</Entry.Behaviors>
 			</Entry>
 			<Button
-				x:Name="registerButton"
 				Text="Register"
 				Clicked="OnRegister" />
 		</StackLayout>

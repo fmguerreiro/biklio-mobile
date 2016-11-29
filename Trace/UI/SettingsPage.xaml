@@ -13,8 +13,7 @@
 					x:Name="maxChallengesText"
 					Placeholder="Max number of challenges">
 					<Entry.Behaviors>
-						<local:NumberValidator
-							x:Name="numberValidator" />
+						<local:NumberValidator />
 						<local:MaxLengthValidator
 							MaxLength="3" />
 					</Entry.Behaviors>

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Xamarin.Forms;
 
 namespace Trace {
@@ -10,12 +11,14 @@ namespace Trace {
 			BindingContext = checkpoint;
 		}
 
-		async void OnAddressTapped(object sender, EventArgs e) {
+		async Task OnAddressTapped(object sender, EventArgs e) {
 			// todo show location on map
+			await DisplayAlert("Debug", "Feature not yet implemented.", "Ok");
 		}
 
-		async void OnWebsiteAddressTapped(object sender, EventArgs e) {
+		async Task OnWebsiteAddressTapped(object sender, EventArgs e) {
 			// todo 
+			await DisplayAlert("Debug", "Feature not yet implemented.", "Ok");
 		}
 	}
 }

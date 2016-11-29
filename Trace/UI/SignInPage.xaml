@@ -22,8 +22,7 @@
 				x:Name="usernameText"
 				Placeholder="Username">
 				<Entry.Behaviors>
-					<local:UsernameValidator
-						x:Name="usernameValidator" />
+					<local:UsernameValidator />
 					<local:MaxLengthValidator
 						MaxLength="20" />
 				</Entry.Behaviors>
@@ -33,8 +32,7 @@
 				Placeholder="Password"
 				IsPassword="true">
 				<Entry.Behaviors>
-					<local:PasswordValidator
-						x:Name="passwordValidator" />
+					<local:PasswordValidator />
 					<local:MaxLengthValidator
 						MaxLength="20" />
 				</Entry.Behaviors>
@@ -55,7 +53,6 @@
 					Grid.Column="1" />
 			</Grid>
 			<Button
-				x:Name="loginButton"
 				Text="Sign In"
 				Clicked="OnLogin" />
 		</StackLayout>
