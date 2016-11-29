@@ -6,17 +6,24 @@
 	Title="Challenges"
 	Icon="trophy.png">
 	<ListView
-		x:Name="listView"
+		x:Name="ChallengeListView"
 		ItemsSource="{Binding Challenges}"
 		Header="{Binding Summary}"
-		ItemSelected="OnSelection">
+		ItemSelected="OnSelection"
+		IsPullToRefreshEnabled="true"
+		Refreshing="OnRefresh">
 		<ListView.HeaderTemplate>
 			<DataTemplate>
-				<StackLayout>
+				<StackLayout
+					Spacing="0">
 					<Label
 						FontAttributes="Bold"
 						XAlign="Center"
 						Text="{Binding .}" />
+					<Label
+						Text="Pull up to update."
+						XAlign="Center"
+						FontSize="Small" />
 				</StackLayout>
 			</DataTemplate>
 		</ListView.HeaderTemplate>
