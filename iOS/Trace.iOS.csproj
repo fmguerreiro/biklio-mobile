@@ -187,10 +187,11 @@
     <Folder Include="Resources\" />
     <Folder Include="App\" />
     <Folder Include="UI\" />
-    <Folder Include="App\Map\" />
     <Folder Include="App\Security\" />
-    <Folder Include="App\MotionActivity\" />
     <Folder Include="App\Data\" />
+    <Folder Include="App\Business\" />
+    <Folder Include="App\Business\Map\" />
+    <Folder Include="App\Business\MotionActivity\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
@@ -203,11 +204,11 @@
   <ItemGroup>
     <Compile Include="Main.cs" />
     <Compile Include="AppDelegate.cs" />
-    <Compile Include="App\Map\DrawTrajectoryMapRenderer.cs" />
     <Compile Include="App\Security\StoreCredentials.cs" />
-    <Compile Include="App\MotionActivity\MotionActivity.cs" />
-    <Compile Include="App\MotionActivity\NSDateConverter.cs" />
-    <Compile Include="App\Data\SQLite_iOS.cs" />
+    <Compile Include="App\Data\SQLite.cs" />
+    <Compile Include="App\Business\Map\DrawTrajectoryMapRenderer.cs" />
+    <Compile Include="App\Business\MotionActivity\MotionActivityManager.cs" />
+    <Compile Include="App\Business\MotionActivity\NSDateConverter.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\logo.png" />

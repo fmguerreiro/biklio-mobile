@@ -44,7 +44,7 @@ namespace Trace {
 		}
 
 		void OnMyRoutesClicked() {
-			Navigation.PushAsync(new MyRoutesPage());
+			Navigation.PushAsync(new MyTrajectoriesPage());
 		}
 
 		void OnSettingsClicked() {

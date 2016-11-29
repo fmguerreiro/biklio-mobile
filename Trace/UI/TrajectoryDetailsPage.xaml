@@ -2,8 +2,13 @@
 <ContentPage
 	xmlns="http://xamarin.com/schemas/2014/forms"
 	xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-	x:Class="Trace.MyRoutesPage"
-	Title="My Routes">
+	xmlns:locals="clr-namespace:Trace;assembly=Trace"
+	x:Class="Trace.TrajectoryDetailsPage"
+	Title="Route Details">
+	<StackLayout
+		x:Name="Stack"
+		Orientation="Vertical">
+	</StackLayout>
 	<ContentPage.Content>
 	</ContentPage.Content>
 </ContentPage>

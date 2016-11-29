@@ -28,7 +28,7 @@ namespace Trace {
 		// This value is used to tell the webserver the most recent version of the data in the device.
 		public long WSSnapshotVersion { get; set; }
 
-		//public List<Trajectory> trajectories;
+		public List<Trajectory> Trajectories;
 		//[OneToMany(CascadeOperations = CascadeOperation.All)]
 		//public List<Trajectory> Trajectories {
 		//	get {

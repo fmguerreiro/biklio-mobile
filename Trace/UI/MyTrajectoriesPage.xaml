@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage
+	xmlns="http://xamarin.com/schemas/2014/forms"
+	xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+	x:Class="Trace.MyTrajectoriesPage"
+	Title="My Routes">
+	<ListView
+		x:Name="MyTrajectoriesListView"
+		ItemsSource="{Binding Trajectories}"
+		Header="{Binding Summary}"
+		ItemSelected="OnSelection">
+		<ListView.HeaderTemplate>
+			<DataTemplate>
+				<StackLayout
+					Spacing="0">
+					<Label
+						FontAttributes="Bold"
+						XAlign="Center"
+						Text="{Binding .}" />
+				</StackLayout>
+			</DataTemplate>
+		</ListView.HeaderTemplate>
+		<ListView.ItemTemplate>
+			<DataTemplate>
+				<TextCell
+					Text="{Binding StartTime}"
+					Detail="{Binding TotalDistanceMeters, StringFormat='{0} m'}">
+				</TextCell>
+			</DataTemplate>
+		</ListView.ItemTemplate>
+	</ListView>
+	<ContentPage.Content>
+	</ContentPage.Content>
+</ContentPage>

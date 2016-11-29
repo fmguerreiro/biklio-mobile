@@ -47,7 +47,7 @@
     <EmbeddedResource Include="UI\DashboardPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\MyRoutesPage.xaml">
+    <EmbeddedResource Include="UI\MyTrajectoriesPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\SettingsPage.xaml">
@@ -56,7 +56,7 @@
     <EmbeddedResource Include="UI\RegistrationPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\ShowTrackedResultsPage.xaml">
+    <EmbeddedResource Include="UI\TrajectoryDetailsPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\CheckpointDetailsPage.xaml">
@@ -76,7 +76,7 @@
       <DependentUpon>MapPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Business\MotionActivity\ActivityType.cs" />
-    <Compile Include="Business\MotionActivity\MotionActivityInterface.cs" />
+    <Compile Include="Business\MotionActivity\IMotionActivityManager.cs" />
     <Compile Include="Business\MotionActivity\ActivityEvent.cs" />
     <Compile Include="UI\SignInPage.xaml.cs">
       <DependentUpon>SignInPage.xaml</DependentUpon>
@@ -96,8 +96,8 @@
     <Compile Include="UI\DashboardPage.xaml.cs">
       <DependentUpon>DashboardPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UI\MyRoutesPage.xaml.cs">
-      <DependentUpon>MyRoutesPage.xaml</DependentUpon>
+    <Compile Include="UI\MyTrajectoriesPage.xaml.cs">
+      <DependentUpon>MyTrajectoriesPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="UI\SettingsPage.xaml.cs">
       <DependentUpon>SettingsPage.xaml</DependentUpon>
@@ -107,7 +107,7 @@
     </Compile>
     <Compile Include="Business\Map\StoreTrajectoryMap.cs" />
     <Compile Include="UI\ShowTrackedResultsPage.xaml.cs">
-      <DependentUpon>ShowTrackedResultsPage.xaml</DependentUpon>
+      <DependentUpon>TrajectoryDetailsPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Business\Map\Geolocator.cs" />
     <Compile Include="Security\InputValidation\EmailValidator.cs" />
@@ -121,7 +121,7 @@
     <Compile Include="Security\CredentialsHandling\AccountInterface.cs" />
     <Compile Include="ServiceAccess\WebServiceObjects\WSResult.cs" />
     <Compile Include="ServiceAccess\WebServiceObjects\WSUser.cs" />
-    <Compile Include="ServiceAccess\BaseHTTPClient.cs" />
+    <Compile Include="ServiceAccess\HTTPClientBase.cs" />
     <Compile Include="ServiceAccess\WebServiceObjects\WSChallenge.cs" />
     <Compile Include="ServiceAccess\WebServiceObjects\WSCondition.cs" />
     <Compile Include="ServiceAccess\WebServiceObjects\WSShop.cs" />
@@ -136,7 +136,7 @@
     <Compile Include="Business\Map\TotalDistance.cs" />
     <Compile Include="Business\Map\TotalCalories.cs" />
     <Compile Include="Business\Map\TotalDuration.cs" />
-    <Compile Include="Data\SQLiteInterface.cs" />
+    <Compile Include="Data\ISQLite.cs" />
     <Compile Include="Data\DatabaseEntityBase.cs" />
     <Compile Include="Data\UserItemBase.cs" />
     <Compile Include="Weavers\AsyncErrorHandler.cs" />

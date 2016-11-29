@@ -3,19 +3,19 @@ using System.IO;
 using Trace.iOS;
 using Xamarin.Forms;
 
-[assembly: Dependency(typeof(SQLite_iOS))]
+[assembly: Dependency(typeof(Trace.iOS.SQLite))]
 namespace Trace.iOS {
 
-	public class SQLite_iOS : SQLiteInterface {
+	public class SQLite : ISQLite {
 
-		public SQLite.SQLiteConnection GetConnection() {
+		public global::SQLite.SQLiteConnection GetConnection() {
 			var sqliteFilename = "TraceSQLite.db3";
 			string documentsPath = Environment.GetFolderPath(Environment.SpecialFolder.Personal); // Documents folder
 			string libraryPath = Path.Combine(documentsPath, "..", "Library"); // Library folder
 			var path = Path.Combine(libraryPath, sqliteFilename);
 
 			// Create the connection
-			var conn = new SQLite.SQLiteConnection(path);
+			var conn = new global::SQLite.SQLiteConnection(path);
 
 			// Return the database connection
 			return conn;

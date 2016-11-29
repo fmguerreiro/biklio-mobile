@@ -3,19 +3,18 @@ using CoreMotion;
 using Foundation;
 using System.Threading.Tasks;
 using System.Collections.Generic;
+using System.Linq;
 
-[assembly: Xamarin.Forms.Dependency(typeof(Trace.iOS.MotionActivity))]
+[assembly: Xamarin.Forms.Dependency(typeof(Trace.iOS.MotionActivityManager))]
 namespace Trace.iOS {
-	public class MotionActivity : MotionActivityInterface {
-		private CMMotionActivityManager motionActivityMgr;
+
+	public class MotionActivityManager : IMotionActivityManager {
+
+		CMMotionActivityManager motionActivityMgr;
 
 		public override void InitMotionActivity() {
 			motionActivityMgr = new CMMotionActivityManager();
 			ActivityEvents = new List<ActivityEvent>();
-			WalkingDuration = 0;
-			RunningDuration = 0;
-			CyclingDuration = 0;
-			AutomativeDuration = 0;
 		}
 
 		private void reset() {
@@ -36,11 +35,24 @@ namespace Trace.iOS {
 			motionActivityMgr.StopActivityUpdates();
 		}
 
+		public override ActivityType GetMostCommonActivity() {
+			long[] activityDurations = { WalkingDuration, RunningDuration, CyclingDuration, AutomativeDuration };
+			long max = activityDurations.Max();
+
+			if(max == CyclingDuration)
+				return ActivityType.Cycling;
+			if(max == RunningDuration)
+				return ActivityType.Running;
+			if(max == WalkingDuration)
+				return ActivityType.Walking;
+			return AutomativeDuration > 0 ? ActivityType.Automative : ActivityType.Unknown;
+		}
+
 		public override async Task QueryHistoricalData(DateTime start, DateTime end) {
 			await queryHistoricalDataAsync(NSDateConverter.ToNSDate(start), NSDateConverter.ToNSDate(end));
 		}
 
-		private async Task queryHistoricalDataAsync(NSDate startDate, NSDate endDate) {
+		async Task queryHistoricalDataAsync(NSDate startDate, NSDate endDate) {
 			var activities = await motionActivityMgr.QueryActivityAsync(startDate, endDate, NSOperationQueue.MainQueue);
 			ActivityEvents = aggregateActivitiesAsync(activities);
 		}
@@ -52,7 +64,7 @@ namespace Trace.iOS {
 		/// <returns>The list of distinct activity periods.</returns>
 		/// <param name="activities">Activities.</param>
 		List<ActivityEvent> aggregateActivitiesAsync(CMMotionActivity[] activities) {
-			List<CMMotionActivity> filteredActivities = new List<CMMotionActivity>();
+			var filteredActivities = new List<CMMotionActivity>();
 
 			// Skip all contiguous unclassified and stationary activities so that only one remains.
 			for(int i = 0; i < activities.Length; ++i) {

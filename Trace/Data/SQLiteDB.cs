@@ -25,11 +25,10 @@ namespace Trace {
 		/// if the database doesn't exist, it will create the database and all the tables.
 		/// </summary>
 		private SQLiteDB() {
-			database = DependencyService.Get<SQLiteInterface>().GetConnection();
-			//database.DropTable<User>();
-			//database.DropTable<Challenge>();
+			database = DependencyService.Get<ISQLite>().GetConnection();
+
 			database.CreateTable<User>();
-			//database.CreateTable<Trajectory>();
+			database.CreateTable<Trajectory>();
 			database.CreateTable<Challenge>();
 			database.CreateTable<Checkpoint>();
 		}
@@ -60,7 +59,7 @@ namespace Trace {
 				User.Instance.WSSnapshotVersion = user.WSSnapshotVersion;
 				//Debug.WriteLine(GetItems<Challenge>());
 				User.Instance.Challenges = GetItems<Challenge>().ToList();
-				//User.Instance.Trajectories = GetItems<Trajectory>().ToList();
+				User.Instance.Trajectories = GetItems<Trajectory>().ToList();
 				User.Instance.Checkpoints = GetItems<Checkpoint>().ToDictionary(key => key.Id, val => val);
 			}
 			else {
@@ -106,7 +105,7 @@ namespace Trace {
 			where i.UserId == User.Instance.Id
 			select i;
 			//Debug.WriteLine("DEBUG - GetItems: " + string.Join(",", result.AsEnumerable()));
-			return (System.Collections.Generic.IEnumerable<T>) result;
+			return result;
 		}
 
 

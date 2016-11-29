@@ -26,7 +26,7 @@ namespace Trace {
 					return "No challenges found.";
 				}
 				if(Challenges.Count != 1)
-					return " There are " + Challenges.Count + " challenges near you.";
+					return "There are " + Challenges.Count + " challenges near you.";
 				else
 					return "There is 1 challenge near you.";
 			}

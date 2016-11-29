@@ -3,9 +3,9 @@ using System.Threading.Tasks;
 using System.Collections.Generic;
 
 // TODO NOT YET IMPLEMENTED!!!
-[assembly: Xamarin.Forms.Dependency(typeof(Trace.Droid.MotionActivity))]
+[assembly: Xamarin.Forms.Dependency(typeof(Trace.Droid.MotionActivityManager))]
 namespace Trace.Droid {
-	public class MotionActivity : MotionActivityInterface {
+	public class MotionActivityManager : IMotionActivityManager {
 		//private CMMotionActivityManager motionActivityMgr;
 
 		public override void InitMotionActivity() {

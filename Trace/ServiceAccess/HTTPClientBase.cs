@@ -8,12 +8,12 @@ using Newtonsoft.Json.Linq;
 using Plugin.Connectivity;
 
 namespace Trace {
-	public class BaseHTTPClient : HttpClient {
+	public class HTTPClientBase : HttpClient {
 
 		/// <summary>
 		/// Calls the HttpClient with a handler that calls the stack optimized for each platform.
 		/// </summary>
-		protected BaseHTTPClient() :
+		protected HTTPClientBase() :
 			base(new NativeMessageHandler()) { }
 
 		public async Task<JObject> GetAsyncJSON(string uri) {

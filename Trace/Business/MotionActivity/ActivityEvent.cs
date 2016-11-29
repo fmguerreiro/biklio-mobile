@@ -4,7 +4,6 @@ namespace Trace {
 	public class ActivityEvent {
 
 		private DateTime startDate;
-
 		private DateTime endDate;
 
 		private ActivityType activityType;

@@ -1,5 +1,5 @@
 ﻿using System;
-
+using System.Threading.Tasks;
 using Xamarin.Forms;
 using Xamarin.Forms.Maps;
 
@@ -17,53 +17,51 @@ namespace Trace {
 		public MapPage() {
 			InitializeComponent();
 			Locator = new Geolocator(CustomMap);
+			//Task.Run(() => Locator.Start());
 			Locator.Start();
 			currentActivity = new CurrentActivity();
-			DependencyService.Get<MotionActivityInterface>().InitMotionActivity();
+			DependencyService.Get<IMotionActivityManager>().InitMotionActivity();
 		}
 
+		// TODO offload some of the work to another thread, the slowdown is noticeable!
 		void OnStartTracking(object send, EventArgs eventArgs) {
 
 			// On Stop Button pressed
 			if(Locator.IsTrackingInProgress) {
-				// Calculate stats and the results to the user.
-				//DependencyService.Get<MotionActivityInterface>().StopMotionUpdates();
-				((Button) send).Text = "Track";
+				// Calculate stats and show the results to the user.
 				StopTrackingTime = DateTime.Now;
-				//DependencyService.Get<MotionActivityInterface>().QueryHistoricalData(StartTrackingTime, StopTrackingTime);
-				ActivityLabel.IsVisible = false;
+				DependencyService.Get<IMotionActivityManager>().StopMotionUpdates();
 
-				// Refresh the map to display the trajectory.
-				MyStack.Children.RemoveAt(0);
-				MyStack.Children.Insert(0, CustomMap);
+				// Put all CPU-bound operations outside of UI thread.
+				var calculateMotionTask = new Task(() =>
+					DependencyService.Get<IMotionActivityManager>().QueryHistoricalData(StartTrackingTime, StopTrackingTime));
+				var calculateDistanceTask = new Task<double>(calculateRouteDistance);
 
-				// Make the results grid visible to the user.
-				ResultsGrid.IsVisible = true;
+				calculateMotionTask.Start();
+				calculateDistanceTask.Start();
 
-				// Calculate route distance.
-				double distanceInMeters = 0;
-				var coordinates = CustomMap.RouteCoordinates.GetEnumerator();
-				coordinates.MoveNext();
-				var pos1 = coordinates.Current;
-				while(coordinates.MoveNext()) {
-					var pos2 = coordinates.Current;
-					distanceInMeters += distanceBetweenPoints(pos1, pos2);
-					pos1 = pos2;
-				}
+				TotalDuration duration = calculateRouteTime();
+				DurationLabel.BindingContext = duration;
 
-				TotalDistanceLabel.BindingContext = new TotalDistance { Distance = (long) distanceInMeters };
-
-				TimeSpan elapsedTime = StopTrackingTime.Subtract(StartTrackingTime);
-				DurationLabel.BindingContext = new TotalDuration {
-					Hours = elapsedTime.Hours,
-					Minutes = elapsedTime.Minutes,
-					Seconds = elapsedTime.Seconds
-				};
+				// TODO Calculate calories ...
 				CaloriesLabel.BindingContext = new TotalCalories { Calories = 0 };
 
+				// TODO Calculate how much time was spent driving.
+				// Probably also show time for each activity!
 				DrivenLabel.BindingContext = new TotalDuration { Hours = 0, Minutes = 0, Seconds = 0 };
-				//MainActivityLabel.BindingContext = currentActivity;
-				DisplayAlert("Activity log", activityLogResult, "Ok");
+
+				double distanceInMeters = calculateDistanceTask.Result;
+				TotalDistanceLabel.BindingContext = new TotalDistance { Distance = (long) distanceInMeters };
+
+				calculateMotionTask.Wait();
+				Trajectory trajectory = createTrajectory(distanceInMeters);
+				User.Instance.Trajectories.Add(trajectory);
+				SQLiteDB.Instance.SaveItem<Trajectory>(trajectory);
+
+				Locator.AvgSpeed = 0;
+				Locator.MaxSpeed = 0;
+
+				displayGrid((Button) send);
 			}
 
 			// On Track Button pressed
@@ -76,12 +74,58 @@ namespace Trace {
 				ActivityLabel.IsVisible = true;
 				ResultsGrid.IsVisible = false;
 				ActivityLabel.BindingContext = currentActivity;
-				DependencyService.Get<MotionActivityInterface>().StartMotionUpdates((activity) => {
+				DependencyService.Get<IMotionActivityManager>().StartMotionUpdates((activity) => {
 					currentActivity.ActivityType = activity;
 					activityLogResult += DateTime.Now + ": " + activity + "\n";
 				});
 			}
 			Locator.IsTrackingInProgress = !Locator.IsTrackingInProgress;
+		}
+
+		void displayGrid(Button trackButton) {
+			trackButton.Text = "Track";
+			ActivityLabel.IsVisible = false;
+			// Refresh the map to display the trajectory.
+			MyStack.Children.RemoveAt(0);
+			MyStack.Children.Insert(0, CustomMap);
+
+			// Make the results grid visible to the user.
+			ResultsGrid.IsVisible = true;
+		}
+
+		double calculateRouteDistance() {
+			double distanceInMeters = 0;
+			var coordinates = CustomMap.RouteCoordinates.GetEnumerator();
+			coordinates.MoveNext();
+			var pos1 = coordinates.Current;
+			while(coordinates.MoveNext()) {
+				var pos2 = coordinates.Current;
+				distanceInMeters += distanceBetweenPoints(pos1, pos2);
+				pos1 = pos2;
+			}
+			return distanceInMeters;
+		}
+
+		TotalDuration calculateRouteTime() {
+			TimeSpan elapsedTime = StopTrackingTime.Subtract(StartTrackingTime);
+			return new TotalDuration {
+				Hours = elapsedTime.Hours,
+				Minutes = elapsedTime.Minutes,
+				Seconds = elapsedTime.Seconds
+			};
+		}
+
+		Trajectory createTrajectory(double distanceInMeters) {
+			return new Trajectory {
+				UserId = User.Instance.Id,
+				StartTime = (long) (StartTrackingTime - new DateTime(1970, 1, 1)).TotalSeconds,
+				EndTime = (long) (StopTrackingTime - new DateTime(1970, 1, 1)).TotalSeconds,
+				AvgSpeed = (float) (Locator.AvgSpeed / CustomMap.RouteCoordinates.Count),
+				MaxSpeed = (float) Locator.MaxSpeed,
+				TotalDistanceMeters = (long) distanceInMeters,
+				MostCommonActivity = DependencyService.Get<IMotionActivityManager>().GetMostCommonActivity().ToString(),
+				Points = CustomMap.RouteCoordinates
+			};
 		}
 
 		/// <summary>

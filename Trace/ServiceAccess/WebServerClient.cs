@@ -8,7 +8,7 @@ using Plugin.Geolocator.Abstractions;
 
 namespace Trace {
 
-	public class WebServerClient : BaseHTTPClient {
+	public class WebServerClient : HTTPClientBase {
 
 		/// <summary>
 		/// Defers the constructor back to BaseHTTPClient to call HttpClient with handler optimized for each platform.

@@ -2,7 +2,7 @@
 
 namespace Trace {
 
-	public interface SQLiteInterface {
+	public interface ISQLite {
 
 		SQLiteConnection GetConnection();
 	}

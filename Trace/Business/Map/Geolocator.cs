@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Plugin.Geolocator;
 using Xamarin.Forms.Maps;
 
@@ -12,6 +13,9 @@ namespace Trace {
 		private DateTime StartTrackingTime;
 		private DateTime StopTrackingTime;
 		private StoreTrajectoryMap Map;
+
+		public double MaxSpeed;
+		public double AvgSpeed;
 
 		public Geolocator(StoreTrajectoryMap map) {
 			Map = map;
@@ -40,6 +44,8 @@ namespace Trace {
 			locator.PositionChanged += (sender, e) => {
 				if(IsTrackingInProgress) {
 					UpdateMap(e.Position);
+					if(e.Position.Speed > MaxSpeed) MaxSpeed = e.Position.Speed;
+					AvgSpeed += e.Position.Speed;
 					Map.RouteCoordinates.Add(new Position(e.Position.Latitude, e.Position.Longitude));
 				}
 			};
