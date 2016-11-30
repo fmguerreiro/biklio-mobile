@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using Plugin.Geolocator.Abstractions;
 using SQLite;
 
 namespace Trace {
@@ -21,5 +20,10 @@ namespace Trace {
 		// 'double' instead of 'Position' because SQLite only supports basic types. 
 		public double Longitude { get; set; }
 		public double Latitude { get; set; }
+
+		public override string ToString() {
+			return string.Format("[Checkpoint Id->{0} UserId->{1} Name->{2} Longitude->{3} Latitude->{4}]",
+					 			 Id, UserId, Name, Longitude, Latitude);
+		}
 	}
 }

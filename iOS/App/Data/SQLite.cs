@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 using Trace.iOS;
 using Xamarin.Forms;
@@ -13,7 +14,7 @@ namespace Trace.iOS {
 			string documentsPath = Environment.GetFolderPath(Environment.SpecialFolder.Personal); // Documents folder
 			string libraryPath = Path.Combine(documentsPath, "..", "Library"); // Library folder
 			var path = Path.Combine(libraryPath, sqliteFilename);
-
+			Debug.WriteLine("SQLiteDB located at: " + path);
 			// Create the connection
 			var conn = new global::SQLite.SQLiteConnection(path);
 

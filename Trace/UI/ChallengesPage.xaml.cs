@@ -22,9 +22,9 @@ namespace Trace {
 		/// </summary>
 		/// <param name="sender">The listview.</param>
 		/// <param name="e">E.</param>
-		void OnRefresh(object sender, EventArgs e) {
+		async void OnRefresh(object sender, EventArgs e) {
 			var list = (ListView) sender;
-			Task.Run(() => getChallenges());
+			await Task.Run(() => getChallenges());
 			list.IsRefreshing = false;
 		}
 
@@ -52,6 +52,9 @@ namespace Trace {
 			var checkpoints = new Dictionary<long, Checkpoint>();
 			foreach(WSShop checkpoint in result.payload.shops) {
 				checkpoints.Add(checkpoint.id, new Checkpoint {
+					//Id = checkpoint.id,
+					UserId = User.Instance.Id,
+					// TODO owner id
 					Name = checkpoint.name,
 					Address = checkpoint.contacts.address,
 					AvailableHours = checkpoint.details.openTime + " - " + checkpoint.details.closeTime,
@@ -77,7 +80,7 @@ namespace Trace {
 				else { checkpoint = new Checkpoint { Name = "Non-existing shop" }; }
 				// Then create the object and add it to the list for display.
 				challenges.Add(new Challenge {
-					Id = challenge.id,
+					//Id = challenge.id,
 					UserId = User.Instance.Id,
 					Reward = challenge.reward,
 					ThisCheckpoint = checkpoint,

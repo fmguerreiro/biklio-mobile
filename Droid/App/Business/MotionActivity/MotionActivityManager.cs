@@ -35,6 +35,10 @@ namespace Trace.Droid {
 			//motionActivityMgr.StopActivityUpdates();
 		}
 
+		public override ActivityType GetMostCommonActivity() {
+			return ActivityType.Unknown;
+		}
+
 		public override async Task QueryHistoricalData(DateTime start, DateTime end) {
 			//await queryHistoricalDataAsync(NSDateConverter.ToNSDate(start), NSDateConverter.ToNSDate(end));
 		}
@@ -183,6 +187,7 @@ namespace Trace.Droid {
 					break;
 			}
 		}
+
 		#endregion
 	}
 }

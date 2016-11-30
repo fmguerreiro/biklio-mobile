@@ -10,9 +10,9 @@ namespace Trace {
 		}
 
 		async void OnDeleteCache(object sender, EventArgs args) {
-			var action = await DisplayActionSheet("Warning:\n This will delete all trajectories and challenges. They will NOT be saved.", "Delete", "Nevermind");
+			var action = await DisplayActionSheet("Warning:\n This will delete all trajectories and challenges. They will NOT be saved.", "Back", "Delete");
 			switch(action) {
-				case ("Delete"): SQLiteDB.Instance.DeleteAll(); break;
+				case ("Delete"): SQLiteDB.Instance.DropAllTables(); break;
 				default: return;
 			}
 		}

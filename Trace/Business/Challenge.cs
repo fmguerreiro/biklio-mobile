@@ -13,8 +13,9 @@ namespace Trace {
 		public Checkpoint ThisCheckpoint { get; set; }
 		public string Description { get { return Reward + " at " + CheckpointName; } }
 
-		public string toString() {
-			return Id + ": " + Reward + " if " + Condition;
+		public override string ToString() {
+			return string.Format("[Challenge Id->{0} UserId->{1} Reward->{2} Checkpoint->{3} Condition->{4}]",
+								 Id, UserId, Reward, CheckpointName, Condition);
 		}
 	}
 

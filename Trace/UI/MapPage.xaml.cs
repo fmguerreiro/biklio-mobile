@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 using Xamarin.Forms;
 using Xamarin.Forms.Maps;
 
@@ -23,8 +24,8 @@ namespace Trace {
 			DependencyService.Get<IMotionActivityManager>().InitMotionActivity();
 		}
 
-		// TODO offload some of the work to another thread, the slowdown is noticeable!
-		void OnStartTracking(object send, EventArgs eventArgs) {
+		// TODO offload cpu-intensive work off the UI thread, the slowdown is noticeable!
+		async void OnStartTracking(object send, EventArgs eventArgs) {
 
 			// On Stop Button pressed
 			if(Locator.IsTrackingInProgress) {
@@ -39,7 +40,17 @@ namespace Trace {
 
 				calculateMotionTask.Start();
 				calculateDistanceTask.Start();
+				await Task.WhenAll(calculateMotionTask, calculateDistanceTask);
 
+				double distanceInMeters = calculateDistanceTask.Result;
+				Trajectory trajectory = await Task.Run(() => createTrajectory(distanceInMeters));
+				User.Instance.Trajectories.Add(trajectory);
+				SQLiteDB.Instance.SaveItem<Trajectory>(trajectory);
+
+				Locator.AvgSpeed = 0;
+				Locator.MaxSpeed = 0;
+
+				TotalDistanceLabel.BindingContext = new TotalDistance { Distance = (long) distanceInMeters };
 				TotalDuration duration = calculateRouteTime();
 				DurationLabel.BindingContext = duration;
 
@@ -49,18 +60,6 @@ namespace Trace {
 				// TODO Calculate how much time was spent driving.
 				// Probably also show time for each activity!
 				DrivenLabel.BindingContext = new TotalDuration { Hours = 0, Minutes = 0, Seconds = 0 };
-
-				double distanceInMeters = calculateDistanceTask.Result;
-				TotalDistanceLabel.BindingContext = new TotalDistance { Distance = (long) distanceInMeters };
-
-				calculateMotionTask.Wait();
-				Trajectory trajectory = createTrajectory(distanceInMeters);
-				User.Instance.Trajectories.Add(trajectory);
-				SQLiteDB.Instance.SaveItem<Trajectory>(trajectory);
-
-				Locator.AvgSpeed = 0;
-				Locator.MaxSpeed = 0;
-
 				displayGrid((Button) send);
 			}
 
@@ -124,7 +123,8 @@ namespace Trace {
 				MaxSpeed = (float) Locator.MaxSpeed,
 				TotalDistanceMeters = (long) distanceInMeters,
 				MostCommonActivity = DependencyService.Get<IMotionActivityManager>().GetMostCommonActivity().ToString(),
-				Points = CustomMap.RouteCoordinates
+				Points = CustomMap.RouteCoordinates,
+				PointsJSON = JsonConvert.SerializeObject(CustomMap.RouteCoordinates)
 			};
 		}
 

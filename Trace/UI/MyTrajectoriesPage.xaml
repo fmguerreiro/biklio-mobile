@@ -23,7 +23,7 @@
 		<ListView.ItemTemplate>
 			<DataTemplate>
 				<TextCell
-					Text="{Binding StartTime}"
+					Text="{Binding Id}"
 					Detail="{Binding TotalDistanceMeters, StringFormat='{0} m'}">
 				</TextCell>
 			</DataTemplate>
