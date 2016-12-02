@@ -11,11 +11,17 @@ namespace Trace {
 
 		[Ignore]
 		public Checkpoint ThisCheckpoint { get; set; }
+		public long CheckpointId { get; set; }
+
+		// These properties are used at runtime to display information when listed in the ChallengesPage.
+		[Ignore]
 		public string Description { get { return Reward + " at " + CheckpointName; } }
+		[Ignore]
+		public string Image { get { return ThisCheckpoint.LogoURL ?? "default_shop.png"; } }
 
 		public override string ToString() {
-			return string.Format("[Challenge Id->{0} UserId->{1} Reward->{2} Checkpoint->{3} Condition->{4}]",
-								 Id, UserId, Reward, CheckpointName, Condition);
+			return string.Format("[Challenge Id->{0} UserId->{1} CheckpointId->{2} Reward->{3} Checkpoint->{4} Condition->{5}]",
+								 Id, UserId, CheckpointId, Reward, CheckpointName, Condition);
 		}
 	}
 

@@ -55,6 +55,17 @@
 			<Button
 				Text="Sign In"
 				Clicked="OnLogin" />
+			<StackLayout
+				HeightRequest="1"
+				BackgroundColor="Black"
+				HorizontalOptions="FillAndExpand">
+			</StackLayout>
+			<Button
+				Text="Google Login"
+				Clicked="OnGoogleLogin" />
+			<Button
+				Text="Facebook Login"
+				Clicked="OnFacebookLogin" />
 		</StackLayout>
 	</ContentPage.Content>
 </ContentPage>

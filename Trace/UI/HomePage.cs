@@ -54,6 +54,7 @@ namespace Trace {
 		async void OnLogoutClicked() {
 			bool isLogout = await DisplayAlert("Logout", "Are you sure?", "Yes", "No");
 			if(isLogout) {
+				User.Instance = new User();
 				await Navigation.PopToRootAsync();
 			}
 		}

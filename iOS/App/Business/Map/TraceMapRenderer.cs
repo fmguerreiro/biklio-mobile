@@ -7,13 +7,13 @@ using Xamarin.Forms;
 using Xamarin.Forms.Maps.iOS;
 using Xamarin.Forms.Platform.iOS;
 
-[assembly: ExportRenderer(typeof(StoreTrajectoryMap), typeof(DrawTrajectoryMapRenderer))]
+[assembly: ExportRenderer(typeof(TraceMap), typeof(TraceMapRenderer))]
 namespace Trace.iOS {
 
 	/// <summary>
-	/// Custom renderer that draws a polyline on the map to show the user's trajectory.
+	/// Custom renderer that shows the challenges and draws a polyline on the map to show the user's trajectory.
 	/// </summary>
-	public class DrawTrajectoryMapRenderer : MapRenderer {
+	public class TraceMapRenderer : MapRenderer {
 
 		MKPolylineRenderer polylineRenderer;
 
@@ -26,7 +26,7 @@ namespace Trace.iOS {
 			}
 
 			if(e.NewElement != null) {
-				var formsMap = (StoreTrajectoryMap) e.NewElement;
+				var formsMap = (TraceMap) e.NewElement;
 				var nativeMap = Control as MKMapView;
 
 				nativeMap.OverlayRenderer = GetOverlayRenderer;

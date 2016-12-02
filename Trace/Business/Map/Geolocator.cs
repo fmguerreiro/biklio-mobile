@@ -12,12 +12,12 @@ namespace Trace {
 		public bool IsTrackingInProgress { get; set; }
 		private DateTime StartTrackingTime;
 		private DateTime StopTrackingTime;
-		private StoreTrajectoryMap Map;
+		private TraceMap Map;
 
 		public double MaxSpeed;
 		public double AvgSpeed;
 
-		public Geolocator(StoreTrajectoryMap map) {
+		public Geolocator(TraceMap map) {
 			Map = map;
 			IsTrackingInProgress = false;
 		}

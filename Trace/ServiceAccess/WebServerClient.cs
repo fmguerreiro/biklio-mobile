@@ -90,7 +90,7 @@ namespace Trace {
 				new KeyValuePair<string, string>("version", version.ToString())
 			});
 			Debug.WriteLine(query.ReadAsStringAsync().Result);
-			var output = GetAsyncFormURL(WebServerConstants.FETCH_CHALLENGES_ENDPOINT, query);
+			Task<JObject> output = GetAsyncFormURL(WebServerConstants.FETCH_CHALLENGES_ENDPOINT, query);
 			Debug.WriteLine(output.Result.ToString());
 			return output.Result.ToObject<WSResult>();
 		}

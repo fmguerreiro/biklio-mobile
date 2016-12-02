@@ -55,7 +55,7 @@ namespace Trace {
 		}
 
 		public override string ToString() {
-			string challengeString = string.Join(",", Challenges) ?? "";
+			string challengeString = string.Join("\n", Challenges) ?? "";
 			return string.Format("[User Id->{0} Username->{1} Email->{2} AuthToken->{3} Radius->{4} SnapshotVersion->{5} Challenges->{6}]",
 								 Id, Username, Email, AuthToken, SearchRadiusInKM, WSSnapshotVersion, challengeString);
 		}

@@ -8,9 +8,14 @@ using Xamarin.Forms.Maps;
 using Xamarin.Forms.Maps.Android;
 using Xamarin.Forms.Platform.Android;
 
-[assembly: ExportRenderer(typeof(StoreTrajectoryMap), typeof(DrawTrajectoryMapRenderer))]
+[assembly: ExportRenderer(typeof(TraceMap), typeof(TraceMapRenderer))]
 namespace Trace.Droid {
-	public class DrawTrajectoryMapRenderer : MapRenderer, IOnMapReadyCallback {
+
+	/// <summary>
+	/// Custom renderer that shows the challenges and draws a polyline on the map to show the user's trajectory.
+	/// </summary>
+	public class TraceMapRenderer : MapRenderer, IOnMapReadyCallback {
+
 		GoogleMap map;
 		List<Position> routeCoordinates;
 
@@ -22,7 +27,7 @@ namespace Trace.Droid {
 			}
 
 			if(e.NewElement != null) {
-				var formsMap = (StoreTrajectoryMap) e.NewElement;
+				var formsMap = (TraceMap) e.NewElement;
 				routeCoordinates = formsMap.RouteCoordinates;
 
 				((MapView) Control).GetMapAsync(this);

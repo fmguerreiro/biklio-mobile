@@ -7,6 +7,7 @@ namespace Trace {
 		public string Name { get; set; }
 		public string Address { get; set; }
 		public string AvailableHours { get; set; }
+		public string LogoURL { get; set; }
 		public string PhoneNumber { get; set; }
 		public string WebsiteAddress { get; set; }
 		public string FacebookAddress { get; set; }

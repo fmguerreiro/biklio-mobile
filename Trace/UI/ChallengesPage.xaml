@@ -2,37 +2,37 @@
 <ContentPage
 	xmlns="http://xamarin.com/schemas/2014/forms"
 	xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+	xmlns:locals="clr-namespace:Trace;assembly=Trace"
 	x:Class="Trace.ChallengesPage"
 	Title="Challenges"
 	Icon="trophy.png">
 	<ListView
 		x:Name="ChallengeListView"
 		ItemsSource="{Binding Challenges}"
-		Header="{Binding Summary}"
 		ItemSelected="OnSelection"
 		IsPullToRefreshEnabled="true"
 		Refreshing="OnRefresh">
-		<ListView.HeaderTemplate>
-			<DataTemplate>
-				<StackLayout
-					Spacing="0">
-					<Label
-						FontAttributes="Bold"
-						XAlign="Center"
-						Text="{Binding .}" />
-					<Label
-						Text="Pull up to update."
-						XAlign="Center"
-						FontSize="Small" />
-				</StackLayout>
-			</DataTemplate>
-		</ListView.HeaderTemplate>
+		<ListView.Header>
+			<StackLayout
+				Spacing="0">
+				<Label
+					Text="{Binding Summary}"
+					FontAttributes="Bold"
+					XAlign="Center" />
+				<Label
+					x:Name="PullUpHintLabel"
+					Text="Pull up to update."
+					XAlign="Center"
+					FontSize="Small" />
+			</StackLayout>
+		</ListView.Header>
 		<ListView.ItemTemplate>
 			<DataTemplate>
-				<TextCell
+				<ImageCell
 					Text="{Binding Description}"
-					Detail="{Binding Condition, StringFormat='Bike for {0} km'}">
-				</TextCell>
+					Detail="{Binding Condition, StringFormat='Bike for {0} km'}"
+					ImageSource="{Binding Image}">
+				</ImageCell>
 			</DataTemplate>
 		</ListView.ItemTemplate>
 	</ListView>

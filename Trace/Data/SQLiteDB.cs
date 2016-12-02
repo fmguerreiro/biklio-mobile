@@ -43,10 +43,11 @@ namespace Trace {
 			var user = GetUser(username);
 			if(user != null) {
 				User.Instance = user;
-				Debug.WriteLine("Signing in with user: " + user);
-				User.Instance.Challenges = GetItems<Challenge>().ToList();
-				User.Instance.Trajectories = GetItems<Trajectory>().ToList();
 				User.Instance.Checkpoints = GetItems<Checkpoint>().ToDictionary(key => key.Id, val => val);
+				User.Instance.Challenges = GetItems<Challenge>().ToList();
+				foreach(Challenge c in User.Instance.Challenges)
+					c.ThisCheckpoint = User.Instance.Checkpoints[c.CheckpointId];
+				User.Instance.Trajectories = GetItems<Trajectory>().ToList();
 			}
 			else {
 				User.Instance = new User { Username = username };
@@ -65,11 +66,6 @@ namespace Trace {
 			return (from i in database.Table<User>()
 					where i.Username.Equals(username)
 					select i).FirstOrDefault();
-			//var query = string.Format("select * from User where Username = \"{0}\"", username);
-			//Debug.WriteLine("GetUser(Query): " + query);
-			//IEnumerable<User> result = database.Query<User>(query);
-			//Debug.WriteLine("GetUser(Result): " + result.First());
-			//return result.FirstOrDefault();
 		}
 
 
@@ -96,9 +92,7 @@ namespace Trace {
 				from i in database.Table<T>()
 				where i.UserId == User.Instance.Id
 				select i;
-			//var query = string.Format("select * from \"{0}\" where UserId = {1}", typeof(T).Name, User.Instance.Id);
-			//IEnumerable<T> result = database.Query<T>(query);
-			//Debug.WriteLine("GetItems: " + string.Join(",", result.AsEnumerable()));
+			Debug.WriteLine("GetItems(): " + string.Join("\n", result.AsEnumerable()));
 			return result;
 		}
 

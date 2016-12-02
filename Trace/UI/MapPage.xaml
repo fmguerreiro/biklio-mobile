@@ -28,7 +28,7 @@
 		x:Name="MyStack"
 		HorizontalOptions="FillAndExpand"
 		Orientation="Vertical">
-		<locals:StoreTrajectoryMap
+		<locals:TraceMap
 			x:Name="CustomMap"
 			WidthRequest="320"
 			HeightRequest="200"

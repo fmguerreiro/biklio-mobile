@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using SQLite;
+using Xamarin.Auth;
 using Xamarin.Forms;
 
 namespace Trace {
@@ -12,12 +14,16 @@ namespace Trace {
 
 		private bool isRememberMe;
 
+		static INavigation navigation;
+
 		public SignInPage() {
 			InitializeComponent();
+			navigation = Navigation;
 			isRememberMe = true;
 			usernameText.Text = DependencyService.Get<DeviceKeychainInterface>().Username;
 			passwordText.Text = DependencyService.Get<DeviceKeychainInterface>().Password;
 		}
+
 
 		async void OnLogin(object sender, EventArgs e) {
 			var username = usernameText.Text;
@@ -41,13 +47,39 @@ namespace Trace {
 
 				// Fetch user information from the database.
 				SQLiteDB.Instance.InstantiateUser(username);
-				await DisplayAlert("DEBUG: User", User.Instance.ToString(), "Ok");
 
 				await Navigation.PushAsync(new HomePage());
 			}
 			else
 				await DisplayAlert("Error", result.error, "Ok");
 		}
+
+
+		void OnGoogleLogin(object sender, EventArgs e) {
+			// Use a custom renderer to display the Google auth UI
+			Navigation.PushModalAsync(new OAuthUIPage());
+		}
+
+		// TODO - redirects to Google atm. Need to replace with facebook credentials.
+		void OnFacebookLogin(object sender, EventArgs e) {
+			// Use a custom renderer to display the Facebook auth UI
+			Navigation.PushModalAsync(new OAuthUIPage());
+		}
+
+
+		public static Action SuccessfulOAuthLoginAction {
+			get {
+				return new Action(() => {
+					navigation.PopModalAsync();
+					// Is user logged in?
+					if(!string.IsNullOrEmpty(User.Instance.Email)) {
+						navigation.InsertPageBefore(new HomePage(), navigation.NavigationStack.First());
+						navigation.PopToRootAsync();
+					}
+				});
+			}
+		}
+
 
 		void OnRememberMe(object sender, EventArgs e) {
 			isRememberMe = !isRememberMe;

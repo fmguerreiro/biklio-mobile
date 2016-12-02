@@ -3,7 +3,7 @@
 	public class WSResult {
 
 		// Indicates whether the operation was successful or not.
-		public bool success { get; set; }
+		public bool success { get; set; } = false;
 
 		// Authentication token.
 		public string token { get; set; }

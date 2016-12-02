@@ -10,6 +10,7 @@ namespace Trace {
 
 	public partial class ChallengesPage : ContentPage {
 
+
 		public ChallengesPage() {
 			InitializeComponent();
 			// Show the challenges saved on the device.
@@ -26,6 +27,7 @@ namespace Trace {
 			var list = (ListView) sender;
 			await Task.Run(() => getChallenges());
 			list.IsRefreshing = false;
+			PullUpHintLabel.IsVisible = false;
 		}
 
 
@@ -57,6 +59,7 @@ namespace Trace {
 					// TODO owner id
 					Name = checkpoint.name,
 					Address = checkpoint.contacts.address,
+					LogoURL = checkpoint.logoURL,
 					AvailableHours = checkpoint.details.openTime + " - " + checkpoint.details.closeTime,
 					PhoneNumber = checkpoint.contacts.phone,
 					WebsiteAddress = checkpoint.contacts.address,
@@ -77,11 +80,12 @@ namespace Trace {
 				Checkpoint checkpoint = null;
 				if(checkpoints.ContainsKey(challenge.shopId))
 					checkpoint = checkpoints[challenge.shopId];
-				else { checkpoint = new Checkpoint { Name = "Non-existing shop" }; }
+				else { checkpoint = new Checkpoint(); }
 				// Then create the object and add it to the list for display.
 				challenges.Add(new Challenge {
 					//Id = challenge.id,
 					UserId = User.Instance.Id,
+					CheckpointId = challenge.shopId,
 					Reward = challenge.reward,
 					ThisCheckpoint = checkpoint,
 					CheckpointName = checkpoint.Name,
@@ -107,8 +111,9 @@ namespace Trace {
 			}
 
 			// Update the in-memory challenge list for display.
-			// We leave invalidated checkpoints in memory to save on the extra processing.
 			User.Instance.Challenges = SQLiteDB.Instance.GetItems<Challenge>().ToList();
+			foreach(Challenge c in User.Instance.Challenges)
+				c.ThisCheckpoint = User.Instance.Checkpoints[c.CheckpointId];
 
 			// Now that all changes are safely stored, update the device's snapshot version 
 			// to indicate it is in sync with the WwbServer version.

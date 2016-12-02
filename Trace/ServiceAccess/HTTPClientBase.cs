@@ -9,12 +9,14 @@ using Plugin.Connectivity;
 
 namespace Trace {
 	public class HTTPClientBase : HttpClient {
+		private const string NO_CONNECTION_ERROR_MSG = "Could not connect to the server.";
 
 		/// <summary>
 		/// Calls the HttpClient with a handler that calls the stack optimized for each platform.
 		/// </summary>
 		protected HTTPClientBase() :
 			base(new NativeMessageHandler()) { }
+
 
 		public async Task<JObject> GetAsyncJSON(string uri) {
 			string content = "";
@@ -24,10 +26,11 @@ namespace Trace {
 			return await Task.Run(() => JObject.Parse(content));
 		}
 
+
 		public async Task<JObject> PostAsyncJSON(string uri, string data) {
 			var content = new StringContent(data, Encoding.UTF8, "application/json");
 			HttpResponseMessage response = null;
-			string result = JObject.FromObject(new WSResult { success = true, payload = new WSPayload() }).ToString();
+			string result = JObject.FromObject(new WSResult { error = NO_CONNECTION_ERROR_MSG }).ToString();
 			if(CrossConnectivity.Current.IsConnected) {
 				response = await PostAsync(uri, content);
 
@@ -45,7 +48,7 @@ namespace Trace {
 
 
 		public async Task<JObject> GetAsyncFormURL(string uri, FormUrlEncodedContent query) {
-			string result = JObject.FromObject(new WSResult { success = true, payload = new WSPayload() }).ToString();
+			string result = JObject.FromObject(new WSResult { error = NO_CONNECTION_ERROR_MSG }).ToString();
 			if(CrossConnectivity.Current.IsConnected) {
 				var response = await GetAsync(uri + query.ReadAsStringAsync().Result);
 
@@ -53,7 +56,7 @@ namespace Trace {
 					response.EnsureSuccessStatusCode();
 				}
 				catch(HttpRequestException e) {
-					return await Task.Run(() => JObject.FromObject(new WSResult { success = false, error = e.Message }));
+					return await Task.Run(() => JObject.FromObject(new WSResult { error = e.Message }));
 				}
 
 				result = await response.Content.ReadAsStringAsync();
@@ -61,8 +64,9 @@ namespace Trace {
 			return await Task.Run(() => JObject.Parse(result));
 		}
 
+
 		public async Task<JObject> PostAsyncFormURL(string uri, FormUrlEncodedContent data) {
-			string result = JObject.FromObject(new WSResult { success = true, payload = new WSPayload() }).ToString();
+			string result = JObject.FromObject(new WSResult { error = NO_CONNECTION_ERROR_MSG }).ToString();
 			if(CrossConnectivity.Current.IsConnected) {
 				var response = await PostAsync(uri, data);
 
