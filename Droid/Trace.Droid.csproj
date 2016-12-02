@@ -213,8 +213,8 @@
     <AndroidResource Include="Resources\drawable\cross_error.png" />
     <AndroidResource Include="Resources\drawable\default_shop.png" />
     <AndroidResource Include="Resources\drawable\green_check.png" />
-    <AndroidResource Include="Resources\drawable\maps-icon.png" />
     <AndroidResource Include="Resources\drawable\trophy.png" />
+    <AndroidResource Include="Resources\drawable\maps_icon.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App\" />

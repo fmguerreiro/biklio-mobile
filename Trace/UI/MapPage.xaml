@@ -6,7 +6,7 @@
 	x:Class="Trace.MapPage"
 	x:Name="TRACEMapPage"
 	Title="Map"
-	Icon="maps-icon.png">
+	Icon="maps_icon.png">
 	<ContentPage.Resources>
 		<ResourceDictionary>
 			<Style
@@ -27,7 +27,8 @@
 	<StackLayout
 		x:Name="MyStack"
 		HorizontalOptions="FillAndExpand"
-		Orientation="Vertical">
+		Orientation="Vertical"
+		Spacing="0">
 		<locals:TraceMap
 			x:Name="CustomMap"
 			WidthRequest="320"
@@ -94,6 +95,10 @@
 		</Grid>
 		<Button
 			Text="Track"
-			Clicked="OnStartTracking" />
+			Clicked="OnStartTracking"
+			HorizontalOptions="FillAndExpand"
+			BackgroundColor="#2B84D3"
+			TextColor="White"
+			BorderRadius="0" />
 	</StackLayout>
 </ContentPage>

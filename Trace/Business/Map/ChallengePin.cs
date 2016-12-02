@@ -8,6 +8,7 @@ namespace Trace {
 
 		public Pin Pin { get; set; }
 		public string Id { get; set; }
-		public string Url { get; set; }
+		public string ImageURL { get; set; }
+		public Checkpoint Checkpoint { get; set; }
 	}
 }

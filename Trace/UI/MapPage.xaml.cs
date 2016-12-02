@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Xamarin.Forms;
@@ -19,6 +20,7 @@ namespace Trace {
 			InitializeComponent();
 			Locator = new Geolocator(CustomMap);
 			//Task.Run(() => Locator.Start());
+			initializeChallengePins();
 			Locator.Start();
 			currentActivity = new CurrentActivity();
 			DependencyService.Get<IMotionActivityManager>().InitMotionActivity();
@@ -146,6 +148,29 @@ namespace Trace {
 			var x = (alpha * (Math.PI / 180)) * Math.Cos((lat1 + lat2) * (Math.PI / 180) / 2);
 			var y = (Math.PI / 180) * (lat1 - lat2);
 			return Math.Sqrt(x * x + y * y) * EARTH_RADIUS_METERS;
+		}
+
+
+		private void initializeChallengePins() {
+
+			var pins = new List<ChallengePin>();
+			foreach(Challenge c in User.Instance.Challenges) {
+				var pin = new ChallengePin {
+					Pin = new Pin {
+						Type = PinType.Place,
+						Position = new Position(c.ThisCheckpoint.Latitude, c.ThisCheckpoint.Longitude),
+						Label = c.Description,
+						Address = c.Condition
+					},
+					Id = "",
+					Checkpoint = c.ThisCheckpoint,
+					ImageURL = c.ThisCheckpoint.LogoURL
+				};
+				pins.Add(pin);
+				CustomMap.Pins.Add(pin.Pin);
+			}
+
+			CustomMap.ChallengePins = pins;
 		}
 	}
 }
