@@ -43,7 +43,17 @@ namespace Trace {
 		[Ignore]
 		public List<Challenge> Challenges {
 			get { return challenges ?? new List<Challenge>(); }
-			set { challenges = value ?? new List<Challenge>(); }
+			set {
+				if(value != null) {
+					challenges = value;
+					// Don't forget to update the reference of each challenge to its checkpoint!
+					foreach(Challenge c in challenges) {
+						if(checkpoints.ContainsKey(c.CheckpointId))
+							c.ThisCheckpoint = checkpoints[c.CheckpointId];
+					}
+				}
+				else challenges = new List<Challenge>();
+			}
 		}
 
 
@@ -55,9 +65,10 @@ namespace Trace {
 		}
 
 		public override string ToString() {
-			string challengeString = string.Join("\n", Challenges) ?? "";
-			return string.Format("[User Id->{0} Username->{1} Email->{2} AuthToken->{3} Radius->{4} SnapshotVersion->{5} Challenges->{6}]",
-								 Id, Username, Email, AuthToken, SearchRadiusInKM, WSSnapshotVersion, challengeString);
+			//string challengeString = string.Join("\n\t", Challenges) ?? "";
+			//string checkpointString = string.Join("\n\t", Checkpoints) ?? "";
+			return string.Format("[User Id->{0} Username->{1} Email->{2} AuthToken->{3} Radius->{4} SnapshotVersion->{5}]",
+								 Id, Username, Email, AuthToken, SearchRadiusInKM, WSSnapshotVersion);
 		}
 	}
 }

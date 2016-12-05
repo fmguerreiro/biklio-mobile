@@ -9,7 +9,7 @@ namespace Trace {
 	public class SQLiteDB {
 
 		private readonly SQLiteConnection database;
-		//static readonly object locker = new object();
+		static readonly object locker = new object();
 
 		private static SQLiteDB instance;
 		public static SQLiteDB Instance {
@@ -26,7 +26,7 @@ namespace Trace {
 		/// </summary>
 		private SQLiteDB() {
 			database = DependencyService.Get<ISQLite>().GetConnection();
-			//DropAllTables();
+			DropAllTables();
 			database.CreateTable<User>();
 			database.CreateTable<Trajectory>();
 			database.CreateTable<Challenge>();
@@ -45,8 +45,6 @@ namespace Trace {
 				User.Instance = user;
 				User.Instance.Checkpoints = GetItems<Checkpoint>().ToDictionary(key => key.Id, val => val);
 				User.Instance.Challenges = GetItems<Challenge>().ToList();
-				foreach(Challenge c in User.Instance.Challenges)
-					c.ThisCheckpoint = User.Instance.Checkpoints[c.CheckpointId];
 				User.Instance.Trajectories = GetItems<Trajectory>().ToList();
 			}
 			else {
@@ -63,9 +61,11 @@ namespace Trace {
 		/// <param name="id">username to get</param>
 		/// <returns>User or null.</returns>
 		public User GetUser(string username) {
-			return (from i in database.Table<User>()
-					where i.Username.Equals(username)
-					select i).FirstOrDefault();
+			lock(locker) {
+				return (from i in database.Table<User>()
+						where i.Username.Equals(username)
+						select i).FirstOrDefault();
+			}
 		}
 
 
@@ -76,9 +76,11 @@ namespace Trace {
 		/// <param name="id">ID to get</param>
 		/// <returns>Item type T or null.</returns>
 		public T GetItem<T>(int id) where T : DatabaseEntityBase, new() {
-			return (from i in database.Table<T>()
-					where i.Id == id
-					select i).FirstOrDefault();
+			lock(locker) {
+				return (from i in database.Table<T>()
+						where i.Id == id
+						select i).FirstOrDefault();
+			}
 		}
 
 
@@ -88,12 +90,14 @@ namespace Trace {
 		/// <typeparam name="T">Type of item to get</typeparam>
 		/// <returns></returns>
 		public IEnumerable<T> GetItems<T>() where T : UserItemBase, new() {
-			var result =
-				from i in database.Table<T>()
-				where i.UserId == User.Instance.Id
-				select i;
-			Debug.WriteLine("GetItems(): " + string.Join("\n", result.AsEnumerable()));
-			return result;
+			lock(locker) {
+				var result =
+					from i in database.Table<T>()
+					where i.UserId == User.Instance.Id
+					select i;
+				Debug.WriteLine("GetItems():\n" + string.Join("\n", result.AsEnumerable()));
+				return result;
+			}
 		}
 
 
@@ -104,17 +108,19 @@ namespace Trace {
 		/// <param name="item">Item to save or update</param>
 		/// <returns>ID of item</returns>
 		public long SaveItem<T>(T item) where T : DatabaseEntityBase {
-			if(item.Id != 0) {
-				database.Update(item);
-				Debug.WriteLine("SaveItem(Update): " + item);
+			lock(locker) {
+				if(item.Id != 0) {
+					database.Update(item);
+					Debug.WriteLine("SaveItem(Update):\n" + item);
+					return item.Id;
+				}
+				//string getLastInsertedId = @"select last_insert_rowid()";
+				//long lastId = database.ExecuteScalar<long>(getLastInsertedId);
+				//Debug.WriteLine("SaveItem(LastId): " + lastId);
+				database.Insert(item);
+				Debug.WriteLine("SaveItem(Insert):\n" + item);
 				return item.Id;
 			}
-			//string getLastInsertedId = @"select last_insert_rowid()";
-			//long lastId = database.ExecuteScalar<long>(getLastInsertedId);
-			//Debug.WriteLine("SaveItem(LastId): " + lastId);
-			database.Insert(item);
-			Debug.WriteLine("SaveItem(Insert): " + item);
-			return item.Id;
 		}
 
 
@@ -129,6 +135,7 @@ namespace Trace {
 				SaveItem(item);
 			}
 			database.Commit();
+
 		}
 
 
@@ -138,9 +145,11 @@ namespace Trace {
 		/// <typeparam name="T">Type of item to delete</typeparam>
 		/// <param name="id">id of object to delete</param>
 		public int DeleteItem<T>(long id) where T : DatabaseEntityBase, new() {
-			var deletedId = database.Delete<T>(new T() { Id = id });
-			Debug.WriteLine("DeleteItem: id->" + deletedId);
-			return deletedId;
+			lock(locker) {
+				var deletedId = database.Delete<T>(new T() { Id = id });
+				Debug.WriteLine("DeleteItem(): id->" + deletedId);
+				return deletedId;
+			}
 		}
 
 		/// <summary>
@@ -149,19 +158,23 @@ namespace Trace {
 		/// <typeparam name="T">Type of item to delete</typeparam>
 		/// <param name="id">ids of objects to delete</param>
 		public int DeleteItems<T>(long[] ids) where T : DatabaseEntityBase, new() {
-			int rowsDeleted = database.Execute(string.Format("delete from \"{0}\" where Id in ({1})", typeof(T).Name, string.Join(", ", ids)));
-			Debug.WriteLine("DeletedItems: " + rowsDeleted);
-			return rowsDeleted;
+			lock(locker) {
+				int rowsDeleted = database.Execute(string.Format("delete from \"{0}\" where Id in ({1})", typeof(T).Name, string.Join(", ", ids)));
+				Debug.WriteLine("DeleteItems(): " + rowsDeleted);
+				return rowsDeleted;
+			}
 		}
 
 		/// <summary>
 		/// Deletes all tables in the DB.
 		/// </summary>
 		public void DropAllTables() {
-			database.DropTable<User>();
-			database.DropTable<Challenge>();
-			database.DropTable<Checkpoint>();
-			database.DropTable<Trajectory>();
+			lock(locker) {
+				database.DropTable<User>();
+				database.DropTable<Challenge>();
+				database.DropTable<Checkpoint>();
+				database.DropTable<Trajectory>();
+			}
 		}
 	}
 }

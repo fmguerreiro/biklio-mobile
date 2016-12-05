@@ -6,6 +6,12 @@
 	x:Class="Trace.ChallengesPage"
 	Title="Challenges"
 	Icon="trophy.png">
+	<ContentPage.Resources>
+		<ResourceDictionary>
+			<locals:ByteArrayToImageConverter
+				x:Key="arrayToimageConverter" />
+		</ResourceDictionary>
+	</ContentPage.Resources>
 	<ListView
 		x:Name="ChallengeListView"
 		ItemsSource="{Binding Challenges}"
@@ -31,7 +37,7 @@
 				<ImageCell
 					Text="{Binding Description}"
 					Detail="{Binding Condition, StringFormat='Bike for {0} km'}"
-					ImageSource="{Binding Image}">
+					ImageSource="{Binding ThisCheckpoint.LogoImageFilePath, Converter={StaticResource arrayToimageConverter}}">
 				</ImageCell>
 			</DataTemplate>
 		</ListView.ItemTemplate>

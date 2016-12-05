@@ -231,6 +231,7 @@
     <Compile Include="App\Security\OAuth.cs" />
     <Compile Include="UI\OAuthUIPageRenderer.cs" />
     <Compile Include="App\Business\Map\CustomMKAnnotationView.cs" />
+    <Compile Include="App\Data\FileSystem.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\logo.png" />

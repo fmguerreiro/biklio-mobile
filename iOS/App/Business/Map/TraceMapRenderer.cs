@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Drawing;
 using CoreGraphics;
 using CoreLocation;
 using MapKit;
@@ -42,7 +44,7 @@ namespace Trace.iOS {
 				var formsMap = (TraceMap) e.NewElement;
 				var nativeMap = Control as MKMapView;
 				customPins = formsMap.ChallengePins;
-				//nativeMap.GetViewForAnnotation = GetViewForAnnotation;
+				nativeMap.GetViewForAnnotation = GetViewForAnnotation;
 				//nativeMap.CalloutAccessoryControlTapped += OnCalloutAccessoryControlTapped;
 				//nativeMap.DidSelectAnnotationView += OnDidSelectAnnotationView;
 				//nativeMap.DidDeselectAnnotationView += OnDidDeselectAnnotationView;
@@ -63,9 +65,9 @@ namespace Trace.iOS {
 			}
 		}
 
-
 		/// <summary>
-		/// This method is called when the location of the pin becomes visible on the map.
+		/// Changes the display of the annotation/pin from the system default.
+		/// In our case, it replaces it with the checkpoint/shop icon.
 		/// </summary>
 		/// <returns>The view for annotation.</returns>
 		/// <param name="mapView">Map view.</param>
@@ -73,8 +75,10 @@ namespace Trace.iOS {
 		MKAnnotationView GetViewForAnnotation(MKMapView mapView, IMKAnnotation annotation) {
 			MKAnnotationView annotationView = null;
 
-			if(annotation is MKUserLocation)
+			// This is to prevent the user indicator (which is also considered an annotation) from being modified.
+			if(!(annotation is MKPointAnnotation)) {
 				return null;
+			}
 
 			var anno = annotation as MKPointAnnotation;
 			var customPin = GetCustomPin(anno);
@@ -83,9 +87,20 @@ namespace Trace.iOS {
 			}
 
 			annotationView = mapView.DequeueReusableAnnotation(customPin.Id);
+
+			// Load checkpoint image from URL if it exists, else use the default image.
+			UIImage image = null;
+			if(customPin.ImageURL != null) {
+				image = UIImage.FromFile("default_shop.png"); // TODO fetch byte_array
+			}
+			else
+				image = UIImage.FromFile("default_shop.png");
+			var maxWidth = 20f;
+			var maxHeight = maxWidth;
+			image = maxResizeImage(image, maxWidth, maxHeight);
 			if(annotationView == null) {
 				annotationView = new MKAnnotationView(annotation, customPin.Id);
-				annotationView.Image = UIImage.FromFile("default_shop.png");
+				annotationView.Image = image;
 				annotationView.CalloutOffset = new CGPoint(0, 0);
 				//annotationView.LeftCalloutAccessoryView = new UIImageView(UIImage.FromFile("green_check.png"));
 				//annotationView.RightCalloutAccessoryView = UIButton.FromType(UIButtonType.DetailDisclosure);
@@ -150,6 +165,20 @@ namespace Trace.iOS {
 				polylineRenderer.Alpha = 0.6f;
 			}
 			return polylineRenderer;
+		}
+
+		// resize the image to be contained within a maximum width and height, keeping aspect ratio
+		UIImage maxResizeImage(UIImage sourceImage, float maxWidth, float maxHeight) {
+			var sourceSize = sourceImage.Size;
+			var maxResizeFactor = Math.Min(maxWidth / sourceSize.Width, maxHeight / sourceSize.Height);
+			if(maxResizeFactor > 1) return sourceImage;
+			var width = (float) (maxResizeFactor * sourceSize.Width);
+			var height = (float) (maxResizeFactor * sourceSize.Height);
+			UIGraphics.BeginImageContextWithOptions(new SizeF(width, height), false, 2.0f);
+			sourceImage.Draw(new CGRect(0, 0, width, height));
+			var resultImage = UIGraphics.GetImageFromCurrentImageContext();
+			UIGraphics.EndImageContext();
+			return resultImage;
 		}
 	}
 }

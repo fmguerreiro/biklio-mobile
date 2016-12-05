@@ -10,9 +10,12 @@ namespace Trace {
 
 	public partial class ChallengesPage : ContentPage {
 
+		// Reference to the map page in order to update pins when challenges are updated.
+		MapPage mapPage;
 
-		public ChallengesPage() {
+		public ChallengesPage(MapPage mapPage) {
 			InitializeComponent();
+			this.mapPage = mapPage;
 			// Show the challenges saved on the device.
 			Task.Run(() => BindingContext = new ChallengeVM { Challenges = User.Instance.Challenges });
 		}
@@ -54,9 +57,9 @@ namespace Trace {
 			var checkpoints = new Dictionary<long, Checkpoint>();
 			foreach(WSShop checkpoint in result.payload.shops) {
 				checkpoints.Add(checkpoint.id, new Checkpoint {
-					//Id = checkpoint.id,
+					GId = checkpoint.id,
 					UserId = User.Instance.Id,
-					// TODO owner id
+					OwnerId = checkpoint.ownerId,
 					Name = checkpoint.name,
 					Address = checkpoint.contacts.address,
 					LogoURL = checkpoint.logoURL,
@@ -83,7 +86,7 @@ namespace Trace {
 				else { checkpoint = new Checkpoint(); }
 				// Then create the object and add it to the list for display.
 				challenges.Add(new Challenge {
-					//Id = challenge.id,
+					GId = challenge.id,
 					UserId = User.Instance.Id,
 					CheckpointId = challenge.shopId,
 					Reward = challenge.reward,
@@ -111,9 +114,8 @@ namespace Trace {
 			}
 
 			// Update the in-memory challenge list for display.
+			User.Instance.Checkpoints = SQLiteDB.Instance.GetItems<Checkpoint>().ToDictionary(key => key.Id, val => val);
 			User.Instance.Challenges = SQLiteDB.Instance.GetItems<Challenge>().ToList();
-			foreach(Challenge c in User.Instance.Challenges)
-				c.ThisCheckpoint = User.Instance.Checkpoints[c.CheckpointId];
 
 			// Now that all changes are safely stored, update the device's snapshot version 
 			// to indicate it is in sync with the WwbServer version.
@@ -123,6 +125,7 @@ namespace Trace {
 			// Finally, display results.
 			Device.BeginInvokeOnMainThread(() => {
 				BindingContext = new ChallengeVM { Challenges = User.Instance.Challenges };
+				mapPage.UpdatePins();
 			});
 		}
 
@@ -133,7 +136,6 @@ namespace Trace {
 		/// <param name="sender">Sender.</param>
 		/// <param name="e">The challenge in the listview that was clicked.</param>
 		void OnSelection(object sender, SelectedItemChangedEventArgs e) {
-			//((ListView)sender).SelectedItem = null; //uncomment line if you want to disable the visual selection state.
 			Checkpoint checkpoint = ((Challenge) e.SelectedItem).ThisCheckpoint;
 			if(checkpoint != null) {
 				Navigation.PushAsync(new CheckpointDetailsPage(checkpoint));

@@ -152,25 +152,34 @@ namespace Trace {
 
 
 		private void initializeChallengePins() {
-
 			var pins = new List<ChallengePin>();
 			foreach(Challenge c in User.Instance.Challenges) {
-				var pin = new ChallengePin {
-					Pin = new Pin {
-						Type = PinType.Place,
-						Position = new Position(c.ThisCheckpoint.Latitude, c.ThisCheckpoint.Longitude),
-						Label = c.Description,
-						Address = c.Condition
-					},
-					Id = "",
-					Checkpoint = c.ThisCheckpoint,
-					ImageURL = c.ThisCheckpoint.LogoURL
-				};
-				pins.Add(pin);
-				CustomMap.Pins.Add(pin.Pin);
+				if(c.ThisCheckpoint != null) {
+					var pin = new ChallengePin {
+						Pin = new Pin {
+							Type = PinType.Place,
+							Position = new Position(c.ThisCheckpoint.Latitude, c.ThisCheckpoint.Longitude),
+							Label = c.Description,
+							Address = c.Condition
+						},
+						Id = "",
+						Checkpoint = c.ThisCheckpoint,
+						ImageURL = c.ThisCheckpoint.LogoURL
+					};
+					pins.Add(pin);
+					CustomMap.Pins.Add(pin.Pin);
+				}
 			}
-
 			CustomMap.ChallengePins = pins;
+		}
+
+
+		public void UpdatePins() {
+			CustomMap.Pins.Clear();
+			initializeChallengePins();
+			// Refresh the map to force renderer to run OnElementChanged() and display the new pins.
+			MyStack.Children.RemoveAt(0);
+			MyStack.Children.Insert(0, CustomMap);
 		}
 	}
 }

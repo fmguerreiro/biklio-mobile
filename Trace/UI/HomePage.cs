@@ -1,6 +1,4 @@
-﻿using System;
-
-using Xamarin.Forms;
+﻿using Xamarin.Forms;
 
 namespace Trace {
 	public class HomePage : TabbedPage {
@@ -18,8 +16,10 @@ namespace Trace {
 			NavigationPage.SetHasBackButton(this, false);
 
 			// Add tabs to the page.
-			Children.Add(new ChallengesPage());
-			Children.Add(new MapPage());
+			var mapPage = new MapPage();
+			var challengesPage = new ChallengesPage(mapPage);
+			Children.Add(challengesPage);
+			Children.Add(mapPage);
 
 			// Add a Menu button to the page header to navigate the app.
 			ToolbarItems.Add(new ToolbarItem(MENU, "", async () => {

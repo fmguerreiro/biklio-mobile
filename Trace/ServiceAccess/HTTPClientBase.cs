@@ -1,9 +1,7 @@
-﻿using System;
-using System.Net.Http;
+﻿using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using ModernHttpClient;
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Plugin.Connectivity;
 
@@ -14,7 +12,7 @@ namespace Trace {
 		/// <summary>
 		/// Calls the HttpClient with a handler that calls the stack optimized for each platform.
 		/// </summary>
-		protected HTTPClientBase() :
+		public HTTPClientBase() :
 			base(new NativeMessageHandler()) { }
 
 
@@ -80,6 +78,15 @@ namespace Trace {
 				result = await response.Content.ReadAsStringAsync();
 			}
 			return await Task.Run(() => JObject.Parse(result));
+		}
+
+
+		public async Task<byte[]> DownloadImageAsync(string url) {
+			byte[] result = null;
+			if(CrossConnectivity.Current.IsConnected) {
+				result = await GetByteArrayAsync(url);
+			}
+			return result;
 		}
 	}
 }

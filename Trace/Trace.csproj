@@ -150,6 +150,8 @@
     <Compile Include="Security\OAuth\IOAuth.cs" />
     <Compile Include="Security\OAuth\GoogleOAuthUser.cs" />
     <Compile Include="Business\Map\ChallengePin.cs" />
+    <Compile Include="UI\SourceConverters\ByteArrayToImageConverter.cs" />
+    <Compile Include="Data\IFileSystem.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Business\" />
@@ -164,6 +166,7 @@
     <Folder Include="ServiceAccess\WebServiceObjects\" />
     <Folder Include="Weavers\" />
     <Folder Include="Security\OAuth\" />
+    <Folder Include="UI\SourceConverters\" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System.Device.Portable">

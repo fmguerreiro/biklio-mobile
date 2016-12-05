@@ -1,5 +1,8 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics;
+using System.Threading.Tasks;
 using SQLite;
+using Xamarin.Forms;
 
 namespace Trace {
 	public class Checkpoint : UserItemBase {
@@ -7,7 +10,29 @@ namespace Trace {
 		public string Name { get; set; }
 		public string Address { get; set; }
 		public string AvailableHours { get; set; }
-		public string LogoURL { get; set; }
+		public long OwnerId { get; set; }
+
+		private string logoURL;
+		public string LogoURL {
+			get {
+				return logoURL;
+			}
+			set {
+				if(value == null) return;
+				if(logoURL == null) {
+					logoURL = value;
+				}
+				if(LogoImageFilePath == null || value != logoURL) {
+					logoURL = value;
+					//Task.Run(() => FetchImageAsync(value)); // Set-off download in background.
+				}
+			}
+		}
+
+		// The image is read-only to other contexts. It should only be updated by the FetchImageAsync function.
+		// However, it needs a 'set' to be inserted into SQLite.
+		public string LogoImageFilePath { get; set; }
+
 		public string PhoneNumber { get; set; }
 		public string WebsiteAddress { get; set; }
 		public string FacebookAddress { get; set; }
@@ -21,6 +46,29 @@ namespace Trace {
 		// 'double' instead of 'Position' because SQLite only supports basic types. 
 		public double Longitude { get; set; }
 		public double Latitude { get; set; }
+
+
+		/// <summary>
+		/// Fetches and updates the image of this checkpoint.
+		/// This is set-off automatically when updating the checkpoint with a NEW url.
+		/// </summary>
+		/// <param name="url">The image URL.</param>
+		private async Task FetchImageAsync(string url) {
+			Debug.WriteLine("Downloading checkpoint img: " + url);
+			byte[] res = await new HTTPClientBase().DownloadImageAsync(url);
+			if(res != null) {
+				// Store bytes as img in file system.
+				var filePath = this.Id.ToString();
+				DependencyService.Get<IFileSystem>().SaveImage(filePath, res);
+				// Updates filepath property in SQLite.
+				LogoImageFilePath = filePath;
+				SQLiteDB.Instance.SaveItem<Checkpoint>(this);
+				Debug.WriteLine("Img: " + url + " downloaded.");
+				return;
+			}
+			Debug.WriteLine("Download for img: " + url + " failed.");
+		}
+
 
 		public override string ToString() {
 			return string.Format("[Checkpoint Id->{0} UserId->{1} Name->{2} Longitude->{3} Latitude->{4}]",

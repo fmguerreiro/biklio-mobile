@@ -195,6 +195,7 @@
     <Compile Include="App\Business\MotionActivity\MotionActivityManager.cs" />
     <Compile Include="App\Security\OAuth.cs" />
     <Compile Include="UI\OAuthUIPageRenderer.cs" />
+    <Compile Include="App\Data\FileSystem.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />
