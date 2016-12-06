@@ -56,7 +56,7 @@ namespace Trace {
 			// Load shop information into dictionary for fast lookup.
 			var checkpoints = new Dictionary<long, Checkpoint>();
 			foreach(WSShop checkpoint in result.payload.shops) {
-				checkpoints.Add(checkpoint.id, new Checkpoint {
+				var newCheckpoint = new Checkpoint {
 					GId = checkpoint.id,
 					UserId = User.Instance.Id,
 					OwnerId = checkpoint.ownerId,
@@ -65,14 +65,23 @@ namespace Trace {
 					LogoURL = checkpoint.logoURL,
 					AvailableHours = checkpoint.details.openTime + " - " + checkpoint.details.closeTime,
 					PhoneNumber = checkpoint.contacts.phone,
-					WebsiteAddress = checkpoint.contacts.address,
+					WebsiteAddress = checkpoint.contacts.website,
 					FacebookAddress = checkpoint.contacts.facebook,
 					TwitterAddress = checkpoint.contacts.twitter,
 					Longitude = checkpoint.longitude,
 					Latitude = checkpoint.latitude,
 					//BikeFacilities = checkpoint.facilities.ToString(), // todo facilities is a jArray
 					Description = checkpoint.details.description
-				});
+				};
+				// Check if logo is already downloaded into filesystem.
+				if(DependencyService.Get<IFileSystem>().Exists(newCheckpoint.GId.ToString())) {
+					newCheckpoint.LogoImageFilePath = newCheckpoint.GId.ToString();
+				}
+				// If it isn't, download it.
+				else if(newCheckpoint.LogoURL != null) {
+					Task.Run(async () => newCheckpoint.FetchImageAsync(newCheckpoint.LogoURL));
+				}
+				checkpoints.Add(checkpoint.id, newCheckpoint);
 			}
 			User.Instance.Checkpoints = checkpoints;
 

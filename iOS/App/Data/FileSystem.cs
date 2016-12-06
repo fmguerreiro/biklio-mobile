@@ -8,16 +8,33 @@ namespace Trace.iOS {
 	public class FileSystem : IFileSystem {
 
 		public void SaveImage(string filename, byte[] imgArray) {
-			var documentsPath = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
-			var filePath = Path.Combine(documentsPath, filename);
+			string filePath = getFilePath(filename);
 			File.WriteAllBytes(filePath, imgArray);
 		}
 
 
+		public void DeleteImage(string filename) {
+			string filePath = getFilePath(filename);
+			File.Delete(filePath);
+		}
+
+
 		public byte[] LoadImage(string filename) {
+			var filePath = getFilePath(filename);
+			return File.ReadAllBytes(filePath);
+		}
+
+
+		public bool Exists(string filename) {
+			var filePath = getFilePath(filename);
+			return File.Exists(filePath);
+		}
+
+
+		private string getFilePath(string filename) {
 			var documentsPath = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
 			var filePath = Path.Combine(documentsPath, filename);
-			return File.ReadAllBytes(filePath);
+			return filePath;
 		}
 	}
 }

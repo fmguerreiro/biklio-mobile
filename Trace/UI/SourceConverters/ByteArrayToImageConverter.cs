@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using Xamarin.Forms;
@@ -15,6 +16,7 @@ namespace Trace {
 		public object Convert(object value, Type targetType, object parameter, CultureInfo culture) {
 			ImageSource retSource = null;
 			var imagePath = (string) value;
+			Debug.WriteLine("ByteArrayToImageConverter: imgPath=" + imagePath);
 			if(imagePath != null) {
 				var imageAsBytes = DependencyService.Get<IFileSystem>().LoadImage(imagePath);
 				retSource = ImageSource.FromStream(() => new MemoryStream(imageAsBytes));

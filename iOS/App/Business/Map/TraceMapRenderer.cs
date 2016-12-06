@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Drawing;
 using CoreGraphics;
 using CoreLocation;
+using Foundation;
 using MapKit;
 using Trace;
 using Trace.iOS;
@@ -90,8 +91,9 @@ namespace Trace.iOS {
 
 			// Load checkpoint image from URL if it exists, else use the default image.
 			UIImage image = null;
-			if(customPin.ImageURL != null) {
-				image = UIImage.FromFile("default_shop.png"); // TODO fetch byte_array
+			if(customPin.Checkpoint.LogoImageFilePath != null) {
+				byte[] imageBytes = DependencyService.Get<IFileSystem>().LoadImage(customPin.Checkpoint.LogoImageFilePath);
+				image = UIImage.LoadFromData(NSData.FromArray(imageBytes));
 			}
 			else
 				image = UIImage.FromFile("default_shop.png");

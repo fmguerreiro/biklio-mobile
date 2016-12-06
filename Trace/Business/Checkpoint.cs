@@ -53,12 +53,12 @@ namespace Trace {
 		/// This is set-off automatically when updating the checkpoint with a NEW url.
 		/// </summary>
 		/// <param name="url">The image URL.</param>
-		private async Task FetchImageAsync(string url) {
+		public async Task FetchImageAsync(string url) {
 			Debug.WriteLine("Downloading checkpoint img: " + url);
 			byte[] res = await new HTTPClientBase().DownloadImageAsync(url);
 			if(res != null) {
 				// Store bytes as img in file system.
-				var filePath = this.Id.ToString();
+				var filePath = this.GId.ToString();
 				DependencyService.Get<IFileSystem>().SaveImage(filePath, res);
 				// Updates filepath property in SQLite.
 				LogoImageFilePath = filePath;
