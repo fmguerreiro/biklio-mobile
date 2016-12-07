@@ -6,6 +6,7 @@ using CoreGraphics;
 using CoreLocation;
 using Foundation;
 using MapKit;
+using Mono;
 using Trace;
 using Trace.iOS;
 using UIKit;
@@ -25,7 +26,7 @@ namespace Trace.iOS {
 		MKPolylineRenderer polylineRenderer;
 
 		UIView customPinView;
-		List<ChallengePin> customPins;
+		List<CustomPin> customPins;
 
 
 		protected override void OnElementChanged(ElementChangedEventArgs<View> e) {
@@ -44,7 +45,7 @@ namespace Trace.iOS {
 			if(e.NewElement != null) {
 				var formsMap = (TraceMap) e.NewElement;
 				var nativeMap = Control as MKMapView;
-				customPins = formsMap.ChallengePins;
+				customPins = formsMap.CustomPins;
 				nativeMap.GetViewForAnnotation = GetViewForAnnotation;
 				//nativeMap.CalloutAccessoryControlTapped += OnCalloutAccessoryControlTapped;
 				//nativeMap.DidSelectAnnotationView += OnDidSelectAnnotationView;
@@ -123,7 +124,7 @@ namespace Trace.iOS {
 			if(customView.Id == "") {
 				customPinView.Frame = new CGRect(0, 0, 200, 84);
 				var image = new UIImageView(new CGRect(0, 0, 200, 84));
-				image.Image = UIImage.FromFile("default_shop.png"); // TODO get specific checkpoint icon
+				image.Image = UIImage.FromFile("default_shop.png");
 				customPinView.AddSubview(image);
 				customPinView.Center = new CGPoint(0, -(e.View.Frame.Height + 75));
 				e.View.AddSubview(customPinView);
@@ -147,7 +148,7 @@ namespace Trace.iOS {
 		}
 
 
-		ChallengePin GetCustomPin(MKPointAnnotation annotation) {
+		CustomPin GetCustomPin(MKPointAnnotation annotation) {
 			var position = new Position(annotation.Coordinate.Latitude, annotation.Coordinate.Longitude);
 			foreach(var pin in customPins) {
 				if(pin.Pin.Position == position) {
@@ -160,7 +161,7 @@ namespace Trace.iOS {
 
 		MKOverlayRenderer GetOverlayRenderer(MKMapView mapView, IMKOverlay overlay) {
 			if(polylineRenderer == null) {
-				polylineRenderer = new MKPolylineRenderer(overlay as MKPolyline);
+				polylineRenderer = new MKPolylineRenderer(ObjCRuntime.Runtime.GetNSObject(overlay.Handle) as MKPolyline);
 				polylineRenderer.FillColor = UIColor.Red;
 				polylineRenderer.StrokeColor = UIColor.Blue;
 				polylineRenderer.LineWidth = 3;

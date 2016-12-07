@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Xamarin.Forms;
@@ -8,6 +10,7 @@ using Xamarin.Forms.Maps;
 namespace Trace {
 	public partial class MapPage : ContentPage {
 
+		private const long MIN_SIZE_TRAJECTORY = 250;
 		private Geolocator Locator;
 		private CurrentActivity currentActivity;
 
@@ -16,17 +19,19 @@ namespace Trace {
 
 		private string activityLogResult = "";
 
+
 		public MapPage() {
 			InitializeComponent();
 			Locator = new Geolocator(CustomMap);
 			//Task.Run(() => Locator.Start());
 			initializeChallengePins();
-			Locator.Start();
+			Locator.Start().DoNotAwait();
 			currentActivity = new CurrentActivity();
 			DependencyService.Get<IMotionActivityManager>().InitMotionActivity();
 		}
 
-		// TODO offload cpu-intensive work off the UI thread, the slowdown is noticeable!
+
+		// TODO offload cpu-intensive work off the UI thread
 		async void OnStartTracking(object send, EventArgs eventArgs) {
 
 			// On Stop Button pressed
@@ -44,10 +49,23 @@ namespace Trace {
 				calculateDistanceTask.Start();
 				await Task.WhenAll(calculateMotionTask, calculateDistanceTask);
 
+				// Create trajectory.
 				double distanceInMeters = calculateDistanceTask.Result;
 				Trajectory trajectory = await Task.Run(() => createTrajectory(distanceInMeters));
-				User.Instance.Trajectories.Add(trajectory);
-				SQLiteDB.Instance.SaveItem<Trajectory>(trajectory);
+
+				// Save trajectory only if it is of relevant size.
+				if(trajectory.TotalDistanceMeters > MIN_SIZE_TRAJECTORY) {
+
+					// Calculate Motion activities along the trajectory.
+					IList<ActivityEvent> activityEvents = DependencyService.Get<IMotionActivityManager>().ActivityEvents;
+					trajectory.Points = AssociatePointsWithActivity(activityEvents, CustomMap.RouteCoordinates);
+
+					User.Instance.Trajectories.Add(trajectory);
+					SQLiteDB.Instance.SaveItem<Trajectory>(trajectory);
+
+					// Send trajectory to the Web Server.
+					//trajectory.Points
+				}
 
 				Locator.AvgSpeed = 0;
 				Locator.MaxSpeed = 0;
@@ -83,9 +101,11 @@ namespace Trace {
 			Locator.IsTrackingInProgress = !Locator.IsTrackingInProgress;
 		}
 
-		void displayGrid(Button trackButton) {
+
+		private void displayGrid(Button trackButton) {
 			trackButton.Text = "Track";
 			ActivityLabel.IsVisible = false;
+			Debug.WriteLine("Trajectory # of points: " + CustomMap.RouteCoordinates.Count);
 			// Refresh the map to display the trajectory.
 			MyStack.Children.RemoveAt(0);
 			MyStack.Children.Insert(0, CustomMap);
@@ -94,7 +114,8 @@ namespace Trace {
 			ResultsGrid.IsVisible = true;
 		}
 
-		double calculateRouteDistance() {
+
+		private double calculateRouteDistance() {
 			double distanceInMeters = 0;
 			var coordinates = CustomMap.RouteCoordinates.GetEnumerator();
 			coordinates.MoveNext();
@@ -107,7 +128,8 @@ namespace Trace {
 			return distanceInMeters;
 		}
 
-		TotalDuration calculateRouteTime() {
+
+		private TotalDuration calculateRouteTime() {
 			TimeSpan elapsedTime = StopTrackingTime.Subtract(StartTrackingTime);
 			return new TotalDuration {
 				Hours = elapsedTime.Hours,
@@ -116,7 +138,8 @@ namespace Trace {
 			};
 		}
 
-		Trajectory createTrajectory(double distanceInMeters) {
+
+		private Trajectory createTrajectory(double distanceInMeters) {
 			return new Trajectory {
 				UserId = User.Instance.Id,
 				StartTime = (long) (StartTrackingTime - new DateTime(1970, 1, 1)).TotalSeconds,
@@ -125,9 +148,69 @@ namespace Trace {
 				MaxSpeed = (float) Locator.MaxSpeed,
 				TotalDistanceMeters = (long) distanceInMeters,
 				MostCommonActivity = DependencyService.Get<IMotionActivityManager>().GetMostCommonActivity().ToString(),
-				Points = CustomMap.RouteCoordinates,
-				PointsJSON = JsonConvert.SerializeObject(CustomMap.RouteCoordinates)
+				//Points = CustomMap.RouteCoordinates
+				//PointsJSON = JsonConvert.SerializeObject(CustomMap.RouteCoordinates)
 			};
+		}
+
+
+		/// <summary>
+		/// For each point in the trajectory, the corresponding activity type is matched.
+		/// Matching is done by finding the activity period on which it fits.
+		/// Running time is O(n+m), where 'n' is the size of the trajectory and 'm' is the size of activity event list.
+		/// </summary>
+		/// <param name="points">Points in the trajectory.</param>
+		public List<TrajectoryPoint> AssociatePointsWithActivity(IList<ActivityEvent> activityEvents, IEnumerable<Plugin.Geolocator.Abstractions.Position> points) {
+
+			var res = new List<TrajectoryPoint>();
+			IEnumerator activityEventPtr = activityEvents.GetEnumerator();
+
+			// Check for the case where there are no activities registered.
+			if(!activityEventPtr.MoveNext()) {
+				return fillTailWithUnknownPoints(points.GetEnumerator(), res);
+			}
+
+			foreach(Plugin.Geolocator.Abstractions.Position p in points) {
+				// Points are associated with the activity event period in which they occur.
+				var activityEvent = (ActivityEvent) activityEventPtr.Current;
+
+				if(p.Timestamp.UtcDateTime < activityEvent.EndDate) {
+					res.Add(createPoint(p, activityEvent));
+				}
+				// If the point does not belong to the activity period, search the next activity events until the period is found.
+				else {
+					while(p.Timestamp.UtcDateTime >= ((ActivityEvent) activityEventPtr.Current).EndDate)
+						activityEventPtr.MoveNext();
+					try {
+						activityEvent = (ActivityEvent) activityEventPtr.Current;
+					}
+					catch(Exception) { return fillTailWithUnknownPoints(points.GetEnumerator(), res); }
+					res.Add(createPoint(p, activityEvent));
+				}
+
+				if(activityEventPtr.MoveNext()) {
+					return fillTailWithUnknownPoints(points.GetEnumerator(), res);
+				};
+			}
+			return res;
+		}
+
+		private TrajectoryPoint createPoint(Plugin.Geolocator.Abstractions.Position p, ActivityEvent activityEvent) {
+			return new TrajectoryPoint() {
+				Longitude = p.Longitude,
+				Latitude = p.Latitude,
+				Timestamp = TimeConverter.DatetimeToEpochSeconds(p.Timestamp),
+				Activity = activityEvent.ActivityType
+			};
+		}
+
+		private List<TrajectoryPoint> fillTailWithUnknownPoints(IEnumerator<Plugin.Geolocator.Abstractions.Position> pointsPtr, List<TrajectoryPoint> res) {
+			var activityEvent = new ActivityEvent(ActivityType.Unknown);
+			while(pointsPtr.MoveNext()) {
+				var p = pointsPtr.Current;
+				res.Add(createPoint(p, activityEvent));
+			}
+			return res;
 		}
 
 		/// <summary>
@@ -137,7 +220,7 @@ namespace Trace {
 		/// <returns>The distance in meters.</returns>
 		/// <param name="pos1">Position 1.</param>
 		/// <param name="pos2">Position 2.</param>
-		private double distanceBetweenPoints(Position pos1, Position pos2) {
+		private double distanceBetweenPoints(Plugin.Geolocator.Abstractions.Position pos1, Plugin.Geolocator.Abstractions.Position pos2) {
 			const int EARTH_RADIUS_METERS = 6371009;
 
 			var lng1 = Math.Abs(pos1.Longitude);
@@ -152,10 +235,10 @@ namespace Trace {
 
 
 		private void initializeChallengePins() {
-			var pins = new List<ChallengePin>();
+			var pins = new List<CustomPin>();
 			foreach(Challenge c in User.Instance.Challenges) {
 				if(c.ThisCheckpoint != null) {
-					var pin = new ChallengePin {
+					var pin = new CustomPin {
 						Pin = new Pin {
 							Type = PinType.Place,
 							Position = new Position(c.ThisCheckpoint.Latitude, c.ThisCheckpoint.Longitude),
@@ -170,7 +253,7 @@ namespace Trace {
 					CustomMap.Pins.Add(pin.Pin);
 				}
 			}
-			CustomMap.ChallengePins = pins;
+			CustomMap.CustomPins = pins;
 		}
 
 

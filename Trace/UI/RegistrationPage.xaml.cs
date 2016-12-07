@@ -20,10 +20,14 @@ namespace Trace {
 			}
 
 			var client = new WebServerClient();
-			WSResult result = await Task.Run(() => client.register(username, password, email));
+			WSResult result = await Task.Run(() => client.Register(username, password, email));
 
-			if(result.error == null) {
-				SQLiteDB.Instance.SaveItem<User>(User.Instance = new User { Username = username, Email = email });
+			if(result.success) {
+				SQLiteDB.Instance.SaveItem<User>(User.Instance = new User {
+					Username = username,
+					Email = email,
+					AuthToken = result.token
+				});
 
 				await DisplayAlert("Result", "Registration successful.", "Ok");
 				await Navigation.PushAsync(new SignInPage());

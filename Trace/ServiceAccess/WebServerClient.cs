@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
@@ -15,6 +16,7 @@ namespace Trace {
 		/// </summary>
 		public WebServerClient() : base() { }
 
+
 		/// <summary>
 		/// Registers a new Trace User. 
 		/// Request and response is in JSON format.
@@ -23,7 +25,7 @@ namespace Trace {
 		/// <param name="username">Username.</param>
 		/// <param name="password">Password.</param>
 		/// <param name="email">Email.</param>
-		public WSResult register(string username, string password, string email) {
+		public async Task<WSResult> Register(string username, string password, string email) {
 			var user = new WSUser {
 				name = "Filipe Guerreiro",
 				username = username,
@@ -35,10 +37,12 @@ namespace Trace {
 			};
 
 			string request = JsonConvert.SerializeObject(user, Formatting.None);
-			Task<JObject> result = PostAsyncJSON(WebServerConstants.REGISTER_ENDPOINT, request);
+			JObject output = await PostAsyncJSON(WebServerConstants.REGISTER_ENDPOINT, request);
 			//Debug.WriteLine(result.Result.ToString());
-			return result.Result.ToObject<WSResult>();
+			var result = output.ToObject<WSResult>();
+			return result;
 		}
+
 
 		/// <summary>
 		/// Login using the user/password credentials.
@@ -48,15 +52,19 @@ namespace Trace {
 		/// <returns><c>string</c>, an authentication token, or an error if the authentication failed.</returns>
 		/// <param name="username">Username.</param>
 		/// <param name="password">Password.</param>
-		public WSResult loginWithCredentials(string username, string password) {
+		public async Task<WSResult> LoginWithCredentials(string username, string password) {
 			var request = new FormUrlEncodedContent(new[] {
 				new KeyValuePair<string, string>("username", username),
 				new KeyValuePair<string, string>("password", password)
 			});
 
-			var output = PostAsyncFormURL(WebServerConstants.LOGIN_ENDPOINT, request);
-			return output.Result.ToObject<WSResult>();
+			var output = await PostAsyncFormURL(WebServerConstants.LOGIN_ENDPOINT, request);
+			var result = output.ToObject<WSResult>();
+
+			User.Instance.AuthToken = result.token;
+			return result;
 		}
+
 
 		/// <summary>
 		/// Login using the user's authentication token.
@@ -65,14 +73,18 @@ namespace Trace {
 		/// </summary>
 		/// <returns><c>string</c>, an authentication token, or an error if the authentication failed.</returns>
 		/// <param name="authToken">Authentication token.</param>
-		public WSResult loginWithToken(string authToken) {
+		public async Task<WSResult> LoginWithToken(string authToken) {
 			var request = new FormUrlEncodedContent(new[] {
 				new KeyValuePair<string, string>("token", authToken)
 			});
 
-			var output = PostAsyncFormURL(WebServerConstants.LOGIN_ENDPOINT, request);
-			return output.Result.ToObject<WSResult>();
+			var output = await PostAsyncFormURL(WebServerConstants.LOGIN_ENDPOINT, request);
+			var result = output.ToObject<WSResult>();
+			User.Instance.AuthToken = result.token;
+
+			return result;
 		}
+
 
 		/// <summary>
 		/// Fetches the challenges from the Webserver in a defined radius from the given position.
@@ -82,17 +94,61 @@ namespace Trace {
 		/// <param name="position">Position.</param>
 		/// <param name="radiusInKM">Radius in KM.</param>
 		/// <param name="version">Version.</param>
-		public WSResult fetchChallenges(Position position, int radiusInKM, long version) {
+		public async Task<WSResult> FetchChallenges(Position position, int radiusInKM, long version) {
 			var query = new FormUrlEncodedContent(new[] {
 				new KeyValuePair<string, string>("latitude", position.Latitude.ToString()),
 				new KeyValuePair<string, string>("longitude", position.Longitude.ToString()),
 				new KeyValuePair<string, string>("radius", radiusInKM.ToString()),
 				new KeyValuePair<string, string>("version", version.ToString())
 			});
-			Debug.WriteLine(query.ReadAsStringAsync().Result);
-			Task<JObject> output = GetAsyncFormURL(WebServerConstants.FETCH_CHALLENGES_ENDPOINT, query);
-			Debug.WriteLine(output.Result.ToString());
-			return output.Result.ToObject<WSResult>();
+			//Debug.WriteLine(query.ReadAsStringAsync().Result);
+			JObject output = await GetAsyncFormURL(WebServerConstants.FETCH_CHALLENGES_ENDPOINT, query);
+			//Debug.WriteLine(output.Result.ToString());
+			WSResult result = output.ToObject<WSResult>();
+			User.Instance.AuthToken = result.token;
+
+			return result;
+		}
+
+
+		/// <summary>
+		/// Sends the trajectory to the Web Server.
+		/// It is divided into two POST requests, first we need to send a summary of the trajectory.
+		/// If this is successful we then send the trajectory.
+		/// Both request and result formats are in JSON.
+		/// </summary>
+		/// <returns><c>true</c>, if trajectory was sent, <c>false</c> otherwise.</returns>
+		/// <param name="trajectory">Trajectory.</param>
+		public async Task<bool> SendTrajectory(Trajectory trajectory) {
+			var trackSummary = new WSTrackSummary {
+				session = User.Instance.AuthToken,
+				startedAt = trajectory.StartTime,
+				endedAt = trajectory.EndTime,
+				elapsedTime = (int) trajectory.ElapsedTime(),
+				elapsedDistance = trajectory.TotalDistanceMeters,
+				avgSpeed = trajectory.AvgSpeed,
+				topSpeed = trajectory.MaxSpeed,
+				points = trajectory.Points.Count(),
+				modality = trajectory.MostCommonActivity.ToAndroidFormat()
+			};
+
+			string request = JsonConvert.SerializeObject(trackSummary, Formatting.None);
+			JObject output = await PostAsyncJSON(WebServerConstants.SUBMIT_TRAJECTORY_SUMMARY, request);
+			if(!output.ToObject<WSResult>().success)
+				return false;
+
+			// Send Trajectory.
+			var track = new WSTrajectory {
+				session = User.Instance.AuthToken,
+				track = WSTrajectory.ToWSPoints(trajectory.Points),
+			};
+
+			request = JsonConvert.SerializeObject(track, Formatting.None);
+			output = await PostAsyncJSON(WebServerConstants.SUBMIT_TRAJECTORY, request);
+			if(!output.ToObject<WSResult>().success)
+				return false;
+
+			return true;
 		}
 	}
 }

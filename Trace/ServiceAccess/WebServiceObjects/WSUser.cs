@@ -1,5 +1,9 @@
 ﻿namespace Trace {
 
+	/// <summary>
+	/// JSON representation of the user.
+	/// Used when logging in and registering.
+	/// </summary>
 	public class WSUser {
 
 		public string name { get; set; }

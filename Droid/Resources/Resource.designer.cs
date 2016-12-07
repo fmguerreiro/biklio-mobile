@@ -28,8 +28,8 @@ namespace Trace.Droid
 		{
 			global::PCLCrypto.Resource.String.ApplicationName = global::Trace.Droid.Resource.String.ApplicationName;
 			global::PCLCrypto.Resource.String.Hello = global::Trace.Droid.Resource.String.Hello;
-			global::Xamarin.Forms.Platform.Android.Resource.Attribute.actionBarSize = global::Trace.Droid.Resource.Attribute.actionBarSize;
 			global::ModernHttpClient.Resource.String.library_name = global::Trace.Droid.Resource.String.library_name;
+			global::Xamarin.Forms.Platform.Android.Resource.Attribute.actionBarSize = global::Trace.Droid.Resource.Attribute.actionBarSize;
 		}
 		
 		public partial class Animation

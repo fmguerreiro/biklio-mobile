@@ -1,10 +1,10 @@
 ﻿using System;
-using System.Collections;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Trace {
 	public abstract class IMotionActivityManager {
-		protected IList ActivityEvents;
+		public IList<ActivityEvent> ActivityEvents { get; set; }
 		protected long WalkingDuration;
 		protected long RunningDuration;
 		protected long CyclingDuration;

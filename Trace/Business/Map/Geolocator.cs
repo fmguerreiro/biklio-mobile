@@ -10,9 +10,7 @@ namespace Trace {
 		private const int LOCATOR_ACCURACY = 50;
 
 		public bool IsTrackingInProgress { get; set; }
-		private DateTime StartTrackingTime;
-		private DateTime StopTrackingTime;
-		private TraceMap Map;
+		private readonly TraceMap Map;
 
 		public double MaxSpeed;
 		public double AvgSpeed;
@@ -22,7 +20,7 @@ namespace Trace {
 			IsTrackingInProgress = false;
 		}
 
-		public async void Start() {
+		public async Task Start() {
 			var locator = CrossGeolocator.Current;
 			/*if(!locator.IsGeolocationEnabled) {
 				await DisplayAlert("", "GPS is disabled, please enable it and come back", "Return");
@@ -46,7 +44,7 @@ namespace Trace {
 					UpdateMap(e.Position);
 					if(e.Position.Speed > MaxSpeed) MaxSpeed = e.Position.Speed;
 					AvgSpeed += e.Position.Speed;
-					Map.RouteCoordinates.Add(new Position(e.Position.Latitude, e.Position.Longitude));
+					Map.RouteCoordinates.Add(e.Position);
 				}
 			};
 		}

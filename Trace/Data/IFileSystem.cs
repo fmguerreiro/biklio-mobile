@@ -9,5 +9,7 @@
 		byte[] LoadImage(string filename);
 
 		bool Exists(string filename);
+
+		string GetFilePath(string filename);
 	}
 }

@@ -44,7 +44,7 @@ namespace Trace {
 
 			// Fetch challenges from Webserver
 			var client = new WebServerClient();
-			WSResult result = await Task.Run(() => client.fetchChallenges(position, User.Instance.SearchRadiusInKM, User.Instance.WSSnapshotVersion));
+			WSResult result = await Task.Run(() => client.FetchChallenges(position, User.Instance.SearchRadiusInKM, User.Instance.WSSnapshotVersion));
 
 			if(!result.success) {
 				Device.BeginInvokeOnMainThread(() => {
@@ -77,9 +77,9 @@ namespace Trace {
 				if(DependencyService.Get<IFileSystem>().Exists(newCheckpoint.GId.ToString())) {
 					newCheckpoint.LogoImageFilePath = newCheckpoint.GId.ToString();
 				}
-				// If it isn't, download it.
+				// If it isn't, download it in the background.
 				else if(newCheckpoint.LogoURL != null) {
-					Task.Run(async () => newCheckpoint.FetchImageAsync(newCheckpoint.LogoURL));
+					Task.Run(() => newCheckpoint.FetchImageAsync(newCheckpoint.LogoURL)).DoNotAwait();
 				}
 				checkpoints.Add(checkpoint.id, newCheckpoint);
 			}
@@ -116,10 +116,13 @@ namespace Trace {
 				SQLiteDB.Instance.DeleteItems<Challenge>(canceledChallengeIds);
 			}
 
-			// Delete invalidated checkpoints (i.e., ids in 'canceled' payload field).
+			// Delete invalidated checkpoints (i.e., ids in 'canceled' payload field) and their images.
 			long[] canceledCheckpointsIds = result.payload.canceled;
 			if(canceledCheckpointsIds.Length > 0) {
 				SQLiteDB.Instance.DeleteItems<Checkpoint>(canceledCheckpointsIds);
+			}
+			foreach(long id in canceledCheckpointsIds) {
+				DependencyService.Get<IFileSystem>().DeleteImage(id.ToString());
 			}
 
 			// Update the in-memory challenge list for display.

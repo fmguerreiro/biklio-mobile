@@ -13,11 +13,8 @@
 				x:Key="lightTheme"
 				TargetType="Label">
 				<Setter
-					Property="BackgroundColor"
-					Value="Blue" />
-				<Setter
 					Property="TextColor"
-					Value="Black" />
+					Value="White" />
 				<Setter
 					Property="FontSize"
 					Value="Small" />
@@ -40,6 +37,8 @@
 			Text="{Binding ActivityType, StringFormat='Activity: {0}'}"
 			HorizontalTextAlignment="Center"
 			IsVisible="false"
+			BackgroundColor="#2B84D3"
+			TextColor="White"
 			VerticalTextAlignment="Center">
 		</Label>
 		<Label.BindingContext>
@@ -47,7 +46,8 @@
 		</Label.BindingContext>
 		<Grid
 			x:Name="ResultsGrid"
-			IsVisible="false">
+			IsVisible="false"
+			BackgroundColor="#2B84D3">
 			<Label
 				x:Name="MainActivityLabel"
 				Text="{Binding ActivityType, StringFormat='Main Activity: {0}'}"

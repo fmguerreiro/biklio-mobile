@@ -11,7 +11,6 @@ using Trace.Droid;
 [assembly: ExportRenderer(typeof(OAuthUIPage), typeof(OAuthUIPageRenderer))]
 namespace Trace.Droid {
 
-	// Use a custom page renderer to display the authentication UI on the AuthenticationPage
 	public class OAuthUIPageRenderer : PageRenderer {
 		bool isShown;
 
@@ -19,7 +18,7 @@ namespace Trace.Droid {
 			base.OnElementChanged(e);
 
 			// Retrieve any stored account information
-			var accounts = AccountStore.Create(Context).FindAccountsForService(OAuthConstants.KeystoreService);
+			var accounts = AccountStore.Create(Context).FindAccountsForService(OAuthConfigurationManager.KeystoreService);
 			var account = accounts.FirstOrDefault();
 
 			if(account == null) {
@@ -28,12 +27,12 @@ namespace Trace.Droid {
 
 					// Initialize the object that communicates with the OAuth service
 					var auth = new OAuth2Authenticator(
-									  OAuthConstants.GoogleClientId,
-									  OAuthConstants.GoogleClientSecret,
-									  OAuthConstants.Scope,
-									  new Uri(OAuthConstants.AuthorizeUrl),
-									  new Uri(OAuthConstants.RedirectUrl),
-									  new Uri(OAuthConstants.AccessTokenUrl));
+									  OAuthConfigurationManager.ClientId,
+									  OAuthConfigurationManager.ClientSecret,
+									  OAuthConfigurationManager.Scope,
+									  new Uri(OAuthConfigurationManager.AuthorizeUrl),
+									  new Uri(OAuthConfigurationManager.RedirectUrl),
+									  new Uri(OAuthConfigurationManager.AccessTokenUrl));
 
 					// Register an event handler for when the authentication process completes
 					auth.Completed += OnAuthenticationCompleted;
@@ -55,7 +54,7 @@ namespace Trace.Droid {
 		async void OnAuthenticationCompleted(object sender, AuthenticatorCompletedEventArgs e) {
 			if(e.IsAuthenticated) {
 				// If the user is authenticated, request their basic user data
-				var request = new OAuth2Request("GET", new Uri(OAuthConstants.UserInfoUrl), null, e.Account);
+				var request = new OAuth2Request("GET", new Uri(OAuthConfigurationManager.UserInfoUrl), null, e.Account);
 				var response = await request.GetResponseAsync();
 				if(response != null) {
 					// Deserialize the data and store it in the account store
@@ -63,7 +62,7 @@ namespace Trace.Droid {
 					string userJson = response.GetResponseText();
 					GoogleOAuthUser user = JsonConvert.DeserializeObject<GoogleOAuthUser>(userJson);
 					e.Account.Username = user.Email;
-					AccountStore.Create(Context).Save(e.Account, OAuthConstants.KeystoreService);
+					AccountStore.Create(Context).Save(e.Account, OAuthConfigurationManager.KeystoreService);
 
 					// Initialize the user
 					User.Instance.Username = User.Instance.Email = user.Email;

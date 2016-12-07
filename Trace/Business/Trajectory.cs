@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Newtonsoft.Json;
+using Plugin.Geolocator.Abstractions;
 using SQLite;
-using Xamarin.Forms.Maps;
 
 namespace Trace {
 
@@ -14,19 +14,23 @@ namespace Trace {
 		public long TotalDistanceMeters { get; set; }
 		public string MostCommonActivity { get; set; }
 
-		public long WSId { get; set; }
-
-		IEnumerable<Position> points;
+		IEnumerable<TrajectoryPoint> points;
 		[Ignore]
-		public IEnumerable<Position> Points {
+		public IEnumerable<TrajectoryPoint> Points {
 			get {
-				return points ?? JsonConvert.DeserializeObject<IEnumerable<Position>>(PointsJSON);
+				return points ?? JsonConvert.DeserializeObject<IEnumerable<TrajectoryPoint>>(PointsJSON);
 			}
 			set { points = value; }
 		}
 
 		// Used for serializing the points to store in SQLite.
 		public string PointsJSON { get; set; }
+
+
+		public long ElapsedTime() {
+			return EndTime - StartTime;
+		}
+
 
 		public override string ToString() {
 			return string.Format("[Trajectory Id->{0} UserId->{1} StartTime->{2} AvgSpeed->{3} TotalDistance->{4} MostCommonActivity->{5}]",

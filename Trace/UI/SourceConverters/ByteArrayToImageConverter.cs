@@ -29,7 +29,7 @@ namespace Trace {
 
 
 		public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) {
-			return null; // TODO not sure what this is for
+			return null;
 		}
 	}
 }

@@ -13,8 +13,8 @@ namespace Trace {
 	public partial class SignInPage : ContentPage {
 
 		private bool isRememberMe;
-
 		static INavigation navigation;
+
 
 		public SignInPage() {
 			InitializeComponent();
@@ -35,7 +35,7 @@ namespace Trace {
 			}
 
 			var client = new WebServerClient();
-			WSResult result = await Task.Run(() => client.loginWithCredentials(username, password));
+			WSResult result = await Task.Run(() => client.LoginWithCredentials(username, password));
 
 			if(result.success) {
 
@@ -57,12 +57,14 @@ namespace Trace {
 
 		void OnGoogleLogin(object sender, EventArgs e) {
 			// Use a custom renderer to display the Google auth UI
+			OAuthConfigurationManager.SetConfig(new GoogleOAuthConfig());
 			Navigation.PushModalAsync(new OAuthUIPage());
 		}
 
-		// TODO - redirects to Google atm. Need to replace with facebook credentials.
+
 		void OnFacebookLogin(object sender, EventArgs e) {
 			// Use a custom renderer to display the Facebook auth UI
+			OAuthConfigurationManager.SetConfig(new FacebookOAuthConfig());
 			Navigation.PushModalAsync(new OAuthUIPage());
 		}
 

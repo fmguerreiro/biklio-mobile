@@ -23,7 +23,13 @@ namespace Trace {
 
 		public string Username { get; set; } = "";
 		public string Email { get; set; } = "";
-		public string AuthToken { get; set; } = "";
+
+		private string authToken = "test";
+		public string AuthToken {
+			get { return authToken; }
+			set { if(!string.IsNullOrEmpty(value)) authToken = value; }
+		}
+
 		public int SearchRadiusInKM { get; set; } = DEFAULT_RADIUS;
 
 		// The webserver stores several snapshots of the challenge and checkpoint data.

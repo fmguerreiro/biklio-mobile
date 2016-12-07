@@ -10,11 +10,11 @@ namespace Trace.Droid {
 		public void Logout() {
 			CookieManager.Instance.RemoveAllCookie();
 
-			var accounts = AccountStore.Create(Android.App.Application.Context).FindAccountsForService(OAuthConstants.KeystoreService);
+			var accounts = AccountStore.Create(Android.App.Application.Context).FindAccountsForService(OAuthConfigurationManager.KeystoreService);
 			var account = accounts.FirstOrDefault();
 
 			if(account != null) {
-				AccountStore.Create(Android.App.Application.Context).Delete(account, OAuthConstants.KeystoreService);
+				AccountStore.Create(Android.App.Application.Context).Delete(account, OAuthConfigurationManager.KeystoreService);
 				User.Instance = new User();
 			}
 		}

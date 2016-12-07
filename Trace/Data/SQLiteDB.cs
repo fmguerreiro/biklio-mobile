@@ -26,7 +26,7 @@ namespace Trace {
 		/// </summary>
 		private SQLiteDB() {
 			database = DependencyService.Get<ISQLite>().GetConnection();
-			DropAllTables();
+			//DropAllTables();
 			database.CreateTable<User>();
 			database.CreateTable<Trajectory>();
 			database.CreateTable<Challenge>();

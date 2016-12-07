@@ -8,12 +8,12 @@
 
 		public static readonly string LOGOUT_ENDPOINT = ENDPOINT + "/auth/logout";
 
-		public static readonly string UPLOAD_TRACK_ENDPOINT = ENDPOINT + "/tracker/put/track/";
-
 		public static readonly string REGISTER_ENDPOINT = ENDPOINT + "/tracker/register";
 
 		public static readonly string FETCH_CHALLENGES_ENDPOINT = ENDPOINT + "/shops/challenges?";
 
-		public static readonly int VERSION = 0;
+		public static readonly string SUBMIT_TRAJECTORY_SUMMARY = ENDPOINT + "/routes/s";
+
+		public static readonly string SUBMIT_TRAJECTORY = ENDPOINT + "routes/s/track/trace";
 	}
 }

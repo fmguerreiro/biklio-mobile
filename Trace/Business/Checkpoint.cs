@@ -50,7 +50,7 @@ namespace Trace {
 
 		/// <summary>
 		/// Fetches and updates the image of this checkpoint.
-		/// This is set-off automatically when updating the checkpoint with a NEW url.
+		/// Also writes the image to the filesystem and updates SQLite with the filepath.
 		/// </summary>
 		/// <param name="url">The image URL.</param>
 		public async Task FetchImageAsync(string url) {

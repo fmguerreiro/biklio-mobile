@@ -12,10 +12,12 @@ namespace Trace.iOS {
 
 		CMMotionActivityManager motionActivityMgr;
 
+
 		public override void InitMotionActivity() {
 			motionActivityMgr = new CMMotionActivityManager();
 			ActivityEvents = new List<ActivityEvent>();
 		}
+
 
 		private void reset() {
 			WalkingDuration = 0;
@@ -25,15 +27,18 @@ namespace Trace.iOS {
 			ActivityEvents.Clear();
 		}
 
+
 		public override void StartMotionUpdates(Action<ActivityType> handler) {
 			motionActivityMgr.StartActivityUpdates(NSOperationQueue.MainQueue, ((activity) => {
 				handler(ActivityToType(activity));
 			}));
 		}
 
+
 		public override void StopMotionUpdates() {
 			motionActivityMgr.StopActivityUpdates();
 		}
+
 
 		public override ActivityType GetMostCommonActivity() {
 			long[] activityDurations = { WalkingDuration, RunningDuration, CyclingDuration, AutomativeDuration };
@@ -48,14 +53,17 @@ namespace Trace.iOS {
 			return AutomativeDuration > 0 ? ActivityType.Automative : ActivityType.Unknown;
 		}
 
+
 		public override async Task QueryHistoricalData(DateTime start, DateTime end) {
 			await queryHistoricalDataAsync(NSDateConverter.ToNSDate(start), NSDateConverter.ToNSDate(end));
 		}
+
 
 		async Task queryHistoricalDataAsync(NSDate startDate, NSDate endDate) {
 			var activities = await motionActivityMgr.QueryActivityAsync(startDate, endDate, NSOperationQueue.MainQueue);
 			ActivityEvents = aggregateActivitiesAsync(activities);
 		}
+
 
 		/// <summary>
 		/// Parses the output of the CMMotionActivityManager, removing low confidence and 
@@ -143,9 +151,9 @@ namespace Trace.iOS {
 				activityEvents.Add(activityEvent);
 				ActivityToDuration(activityEvent.ActivityType, activityEvent.ActivityDurationInSeconds());
 			}
-
 			return activityEvents;
 		}
+
 
 		#region Utility
 		public static ActivityType ActivityToType(CMMotionActivity activity) {

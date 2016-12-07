@@ -12,11 +12,11 @@ namespace Trace.iOS {
 				NSHttpCookieStorage.SharedStorage.DeleteCookie(cookie);
 			}
 
-			var accounts = AccountStore.Create().FindAccountsForService(OAuthConstants.KeystoreService);
+			var accounts = AccountStore.Create().FindAccountsForService(OAuthConfigurationManager.KeystoreService);
 			var account = accounts.FirstOrDefault();
 
 			if(account != null) {
-				AccountStore.Create().Delete(account, OAuthConstants.KeystoreService);
+				AccountStore.Create().Delete(account, OAuthConfigurationManager.KeystoreService);
 				User.Instance = new User();
 			}
 		}

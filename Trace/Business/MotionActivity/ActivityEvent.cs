@@ -3,8 +3,8 @@
 namespace Trace {
 	public class ActivityEvent {
 
-		private DateTime startDate;
-		private DateTime endDate;
+		private readonly DateTime startDate;
+		public DateTime EndDate { get; set; }
 
 		private ActivityType activityType;
 		public ActivityType ActivityType {
@@ -13,14 +13,16 @@ namespace Trace {
 			}
 		}
 
+		public ActivityEvent(ActivityType type) { activityType = type; }
+
 		public ActivityEvent(ActivityType type, DateTime start, DateTime end) {
 			activityType = type;
 			startDate = start;
-			endDate = end;
+			EndDate = end;
 		}
 
 		public long ActivityDurationInSeconds() {
-			return (long) (endDate - startDate).TotalSeconds;
+			return (long) (EndDate - startDate).TotalSeconds;
 		}
 	}
 }

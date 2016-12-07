@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using Xamarin.Forms;
+﻿using System.Collections.Generic;
 using Xamarin.Forms.Maps;
 
 namespace Trace {
@@ -12,12 +10,17 @@ namespace Trace {
 	/// </summary>
 	public class TraceMap : Map {
 
-		public List<Position> RouteCoordinates { get; set; }
-		public List<ChallengePin> ChallengePins { get; set; }
+		private List<Plugin.Geolocator.Abstractions.Position> routeCoordinates;
+		public List<Plugin.Geolocator.Abstractions.Position> RouteCoordinates {
+			get { return routeCoordinates ?? new List<Plugin.Geolocator.Abstractions.Position>(); }
+			set { routeCoordinates = value ?? new List<Plugin.Geolocator.Abstractions.Position>(); }
+		}
+
+		public List<CustomPin> CustomPins { get; set; }
 
 		public TraceMap() {
-			RouteCoordinates = new List<Position>();
-			ChallengePins = new List<ChallengePin>();
+			RouteCoordinates = new List<Plugin.Geolocator.Abstractions.Position>();
+			CustomPins = new List<CustomPin>();
 		}
 	}
 }
