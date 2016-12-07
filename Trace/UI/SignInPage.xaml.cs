@@ -38,7 +38,6 @@ namespace Trace {
 			WSResult result = await Task.Run(() => client.LoginWithCredentials(username, password));
 
 			if(result.success) {
-
 				// Remember me => Store credentials in keychain.
 				if(isRememberMe)
 					DependencyService.Get<DeviceKeychainInterface>().SaveCredentials(username, password);
@@ -46,7 +45,7 @@ namespace Trace {
 					DependencyService.Get<DeviceKeychainInterface>().DeleteCredentials();
 
 				// Fetch user information from the database.
-				SQLiteDB.Instance.InstantiateUser(username);
+				SQLiteDB.Instance.InstantiateUser(username, result.token);
 
 				await Navigation.PushAsync(new HomePage());
 			}

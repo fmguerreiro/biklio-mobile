@@ -15,7 +15,22 @@
 
 
 	static class ActivityTypeExtension {
-		public static string ToAndroidFormat(this ActivityType a) {
+
+		public static int ToAndroidInt(this string activity) {
+			if(activity == "Walking")
+				return (int) ActivityType.Walking;
+			if(activity == "Running")
+				return (int) ActivityType.Running;
+			if(activity == "Automotive")
+				return (int) ActivityType.Automative;
+			if(activity == "Stationary")
+				return (int) ActivityType.Stationary;
+			if(activity == "Cycling")
+				return (int) ActivityType.Cycling;
+			return (int) ActivityType.Unknown;
+		}
+
+		public static string ToAndroidString(this ActivityType a) {
 			switch(a) {
 				case ActivityType.Walking:
 					return "WALKING";
@@ -32,7 +47,7 @@
 			}
 		}
 
-		public static string ToAndroidFormat(this string activity) {
+		public static string ToAndroidString(this string activity) {
 			if(activity == "Walking")
 				return "WALKING";
 			if(activity == "Running")

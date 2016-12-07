@@ -126,7 +126,7 @@ namespace Trace {
 			}
 
 			// Update the in-memory challenge list for display.
-			User.Instance.Checkpoints = SQLiteDB.Instance.GetItems<Checkpoint>().ToDictionary(key => key.Id, val => val);
+			User.Instance.Checkpoints = SQLiteDB.Instance.GetItems<Checkpoint>().ToDictionary(key => key.GId, val => val);
 			User.Instance.Challenges = SQLiteDB.Instance.GetItems<Challenge>().ToList();
 
 			// Now that all changes are safely stored, update the device's snapshot version 

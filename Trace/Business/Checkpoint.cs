@@ -18,14 +18,7 @@ namespace Trace {
 				return logoURL;
 			}
 			set {
-				if(value == null) return;
-				if(logoURL == null) {
-					logoURL = value;
-				}
-				if(LogoImageFilePath == null || value != logoURL) {
-					logoURL = value;
-					//Task.Run(() => FetchImageAsync(value)); // Set-off download in background.
-				}
+				logoURL = value ?? logoURL;
 			}
 		}
 
@@ -71,8 +64,8 @@ namespace Trace {
 
 
 		public override string ToString() {
-			return string.Format("[Checkpoint Id->{0} UserId->{1} Name->{2} Longitude->{3} Latitude->{4}]",
-					 			 Id, UserId, Name, Longitude, Latitude);
+			return string.Format("[Checkpoint Id->{0} UserId->{1} Name->{2} LogoImageFilePath->{3} Longitude->{4} Latitude->{5}]",
+					 			 Id, UserId, Name, LogoImageFilePath, Longitude, Latitude);
 		}
 	}
 }

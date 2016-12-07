@@ -39,16 +39,18 @@ namespace Trace {
 		/// If no user with specified 'username' exists, it is created.
 		/// </summary>
 		/// <param name="username">Username.</param>
-		public void InstantiateUser(string username) {
+		/// <param name="authToken">Token used for authenticating the user before the Webserver.</param>
+		public void InstantiateUser(string username, string authToken) {
 			var user = GetUser(username);
 			if(user != null) {
 				User.Instance = user;
+				User.Instance.AuthToken = authToken;
 				User.Instance.Checkpoints = GetItems<Checkpoint>().ToDictionary(key => key.Id, val => val);
 				User.Instance.Challenges = GetItems<Challenge>().ToList();
 				User.Instance.Trajectories = GetItems<Trajectory>().ToList();
 			}
 			else {
-				User.Instance = new User { Username = username };
+				User.Instance = new User { Username = username, AuthToken = authToken };
 				User.Instance.Id = SaveItem<User>(User.Instance);
 			}
 			Debug.WriteLine("Signing in with user: " + User.Instance);

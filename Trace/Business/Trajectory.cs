@@ -1,17 +1,21 @@
 ﻿using System.Collections.Generic;
 using Newtonsoft.Json;
-using Plugin.Geolocator.Abstractions;
 using SQLite;
 
 namespace Trace {
 
 	public class Trajectory : UserItemBase {
 
+		// Start and end time of the trajectory in milliseconds since Unix epoch.
 		public long StartTime { get; set; }
 		public long EndTime { get; set; }
+
+		// Values obtained from GPS in m/s.
 		public float AvgSpeed { get; set; }
 		public float MaxSpeed { get; set; }
+
 		public long TotalDistanceMeters { get; set; }
+
 		public string MostCommonActivity { get; set; }
 
 		IEnumerable<TrajectoryPoint> points;
@@ -25,6 +29,11 @@ namespace Trace {
 
 		// Used for serializing the points to store in SQLite.
 		public string PointsJSON { get; set; }
+
+		// Flags used to check if each part of the trajectory is already stored in the WebServer
+		// and do not need to be retransmitted.
+		public bool wasTrackSummarySent = false;
+		public bool wasTrackSent = false;
 
 
 		public long ElapsedTime() {

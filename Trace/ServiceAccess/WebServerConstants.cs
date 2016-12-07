@@ -14,6 +14,6 @@
 
 		public static readonly string SUBMIT_TRAJECTORY_SUMMARY = ENDPOINT + "/routes/s";
 
-		public static readonly string SUBMIT_TRAJECTORY = ENDPOINT + "routes/s/track/trace";
+		public static readonly string SUBMIT_TRAJECTORY = ENDPOINT + "/routes/s/track/trace?session=";
 	}
 }

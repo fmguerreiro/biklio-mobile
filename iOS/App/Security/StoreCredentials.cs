@@ -32,7 +32,7 @@ namespace Trace.iOS {
 
 		public void DeleteCredentials() {
 			var iterator = AccountStore.Create().FindAccountsForService(App.AppName).GetEnumerator();
-			if(iterator.MoveNext() == true) {
+			if(iterator.MoveNext()) {
 				AccountStore.Create().Delete(iterator.Current, App.AppName);
 			}
 		}

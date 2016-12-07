@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.Linq;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -14,7 +15,9 @@ namespace Trace {
 		/// <summary>
 		/// Defers the constructor back to BaseHTTPClient to call HttpClient with handler optimized for each platform.
 		/// </summary>
-		public WebServerClient() : base() { }
+		public WebServerClient() : base() {
+			DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", User.Instance.AuthToken);
+		}
 
 
 		/// <summary>
@@ -57,12 +60,9 @@ namespace Trace {
 				new KeyValuePair<string, string>("username", username),
 				new KeyValuePair<string, string>("password", password)
 			});
-
 			var output = await PostAsyncFormURL(WebServerConstants.LOGIN_ENDPOINT, request);
-			var result = output.ToObject<WSResult>();
-
-			User.Instance.AuthToken = result.token;
-			return result;
+			Debug.WriteLine("NativeLogin(): " + output);
+			return output.ToObject<WSResult>();
 		}
 
 
@@ -113,7 +113,7 @@ namespace Trace {
 
 		/// <summary>
 		/// Sends the trajectory to the Web Server.
-		/// It is divided into two POST requests, first we need to send a summary of the trajectory.
+		/// It is divided into two POST requests, first we need to send a summary of the trajectory, which returns a token.
 		/// If this is successful we then send the trajectory.
 		/// Both request and result formats are in JSON.
 		/// </summary>
@@ -121,30 +121,32 @@ namespace Trace {
 		/// <param name="trajectory">Trajectory.</param>
 		public async Task<bool> SendTrajectory(Trajectory trajectory) {
 			var trackSummary = new WSTrackSummary {
-				session = User.Instance.AuthToken,
-				startedAt = trajectory.StartTime,
-				endedAt = trajectory.EndTime,
+				session = "",
+				startedAt = trajectory.StartTime * 1000, // this is in ms.
+				endedAt = trajectory.EndTime * 1000,
 				elapsedTime = (int) trajectory.ElapsedTime(),
 				elapsedDistance = trajectory.TotalDistanceMeters,
 				avgSpeed = trajectory.AvgSpeed,
 				topSpeed = trajectory.MaxSpeed,
 				points = trajectory.Points.Count(),
-				modality = trajectory.MostCommonActivity.ToAndroidFormat()
+				modality = trajectory.MostCommonActivity.ToAndroidInt()
 			};
 
 			string request = JsonConvert.SerializeObject(trackSummary, Formatting.None);
 			JObject output = await PostAsyncJSON(WebServerConstants.SUBMIT_TRAJECTORY_SUMMARY, request);
-			if(!output.ToObject<WSResult>().success)
+			Debug.WriteLine("SendTrackSummary(): " + output);
+			var trackSummaryResult = output.ToObject<WSResult>();
+			if(!trackSummaryResult.success)
 				return false;
 
 			// Send Trajectory.
-			var track = new WSTrajectory {
-				session = User.Instance.AuthToken,
-				track = WSTrajectory.ToWSPoints(trajectory.Points),
-			};
+			var track = WSTrajectory.ToWSPoints(trajectory.Points);
 
-			request = JsonConvert.SerializeObject(track, Formatting.None);
-			output = await PostAsyncJSON(WebServerConstants.SUBMIT_TRAJECTORY, request);
+			request = JsonConvert.SerializeObject(track, Formatting.Indented);
+			Debug.WriteLine("SendTrack() request path: " + WebServerConstants.SUBMIT_TRAJECTORY + trackSummaryResult.payload.session);
+			Debug.WriteLine("SendTrack() request: " + request);
+			output = await PostAsyncJSON(WebServerConstants.SUBMIT_TRAJECTORY + trackSummaryResult.payload.session, request);
+			Debug.WriteLine("SendTrack() response: " + output);
 			if(!output.ToObject<WSResult>().success)
 				return false;
 

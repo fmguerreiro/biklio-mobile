@@ -7,9 +7,9 @@
 
 		public string session { get; set; }
 
-		public long startedAt { get; set; }
+		public long startedAt { get; set; } // In milliseconds.
 
-		public long endedAt { get; set; }
+		public long endedAt { get; set; } // In milliseconds.
 
 		public int elapsedTime { get; set; } // In seconds.
 
@@ -21,6 +21,6 @@
 
 		public int points { get; set; } // Number of points in trajectory.
 
-		public string modality { get; set; } // Most common activity.
+		public int modality { get; set; } // Most common activity.
 	}
 }

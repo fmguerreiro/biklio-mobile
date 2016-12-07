@@ -64,7 +64,7 @@ namespace Trace {
 					SQLiteDB.Instance.SaveItem<Trajectory>(trajectory);
 
 					// Send trajectory to the Web Server.
-					//trajectory.Points
+					Task.Run(() => new WebServerClient().SendTrajectory(trajectory)).DoNotAwait();
 				}
 
 				Locator.AvgSpeed = 0;

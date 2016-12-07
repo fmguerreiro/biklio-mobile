@@ -18,7 +18,7 @@ namespace Trace {
 
 		async void OnSkip(object sender, EventArgs e) {
 			User.Instance.Username = "test";
-			SQLiteDB.Instance.InstantiateUser(User.Instance.Username);
+			SQLiteDB.Instance.InstantiateUser(User.Instance.Username, "test");
 			await Navigation.PushAsync(new HomePage());
 		}
 	}
