@@ -140,7 +140,7 @@
     </Compile>
     <Compile Include="Security\OAuth\IOAuth.cs" />
     <Compile Include="Business\Map\CustomPin.cs" />
-    <Compile Include="UI\SourceConverters\ByteArrayToImageConverter.cs" />
+    <Compile Include="UI\SourceConverters\ByteArrayToChallengeImageConverter.cs" />
     <Compile Include="Data\IFileSystem.cs" />
     <Compile Include="TaskExtensions.cs" />
     <Compile Include="Security\OAuth\OAuthConfigurationManager.cs" />
@@ -162,6 +162,7 @@
     <Compile Include="ServiceAccess\WebServiceObjects\SubmitRoute\WSTrajectory.cs" />
     <Compile Include="TimeConverter.cs" />
     <Compile Include="Business\TrajectoryPoint.cs" />
+    <Compile Include="UI\SourceConverters\ImageToRouteCheckConverter.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Business\" />

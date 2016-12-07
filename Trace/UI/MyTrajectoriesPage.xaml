@@ -2,8 +2,15 @@
 <ContentPage
 	xmlns="http://xamarin.com/schemas/2014/forms"
 	xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+	xmlns:locals="clr-namespace:Trace;assembly=Trace"
 	x:Class="Trace.MyTrajectoriesPage"
 	Title="My Routes">
+	<ContentPage.Resources>
+		<ResourceDictionary>
+			<locals:ImageToRouteCheckConverter
+				x:Key="converter" />
+		</ResourceDictionary>
+	</ContentPage.Resources>
 	<ListView
 		x:Name="MyTrajectoriesListView"
 		ItemsSource="{Binding Trajectories}"
@@ -22,10 +29,11 @@
 		</ListView.HeaderTemplate>
 		<ListView.ItemTemplate>
 			<DataTemplate>
-				<TextCell
+				<ImageCell
 					Text="{Binding Id}"
-					Detail="{Binding TotalDistanceMeters, StringFormat='{0} m'}">
-				</TextCell>
+					Detail="{Binding TotalDistanceMeters, StringFormat='{0} m'}"
+					ImageSource="{Binding WasTrackSent, Converter={StaticResource converter}}">
+				</ImageCell>
 			</DataTemplate>
 		</ListView.ItemTemplate>
 	</ListView>

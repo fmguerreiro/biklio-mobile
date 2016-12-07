@@ -32,8 +32,8 @@ namespace Trace {
 
 		// Flags used to check if each part of the trajectory is already stored in the WebServer
 		// and do not need to be retransmitted.
-		public bool wasTrackSummarySent = false;
-		public bool wasTrackSent = false;
+		public string TrackSession { get; set; }
+		public bool WasTrackSent { get; set; } = false;
 
 
 		public long ElapsedTime() {

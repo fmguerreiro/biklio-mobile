@@ -45,7 +45,7 @@ namespace Trace {
 			if(user != null) {
 				User.Instance = user;
 				User.Instance.AuthToken = authToken;
-				User.Instance.Checkpoints = GetItems<Checkpoint>().ToDictionary(key => key.Id, val => val);
+				User.Instance.Checkpoints = GetItems<Checkpoint>().ToDictionary(key => key.GId, val => val);
 				User.Instance.Challenges = GetItems<Challenge>().ToList();
 				User.Instance.Trajectories = GetItems<Trajectory>().ToList();
 			}

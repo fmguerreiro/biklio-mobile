@@ -117,9 +117,8 @@ namespace Trace {
 		/// If this is successful we then send the trajectory.
 		/// Both request and result formats are in JSON.
 		/// </summary>
-		/// <returns><c>true</c>, if trajectory was sent, <c>false</c> otherwise.</returns>
 		/// <param name="trajectory">Trajectory.</param>
-		public async Task<bool> SendTrajectory(Trajectory trajectory) {
+		public async Task SendTrajectory(Trajectory trajectory) {
 			var trackSummary = new WSTrackSummary {
 				session = "",
 				startedAt = trajectory.StartTime * 1000, // this is in ms.
@@ -132,25 +131,33 @@ namespace Trace {
 				modality = trajectory.MostCommonActivity.ToAndroidInt()
 			};
 
-			string request = JsonConvert.SerializeObject(trackSummary, Formatting.None);
-			JObject output = await PostAsyncJSON(WebServerConstants.SUBMIT_TRAJECTORY_SUMMARY, request);
-			Debug.WriteLine("SendTrackSummary(): " + output);
-			var trackSummaryResult = output.ToObject<WSResult>();
-			if(!trackSummaryResult.success)
-				return false;
+			string request = null;
+			JObject output = null;
+			WSResult trackSummaryResult = null;
+			if(trajectory.TrackSession == null) {
+				request = JsonConvert.SerializeObject(trackSummary, Formatting.None);
+				output = await PostAsyncJSON(WebServerConstants.SUBMIT_TRAJECTORY_SUMMARY, request);
+				//Debug.WriteLine("SendTrackSummary(): " + output);
+				trackSummaryResult = output.ToObject<WSResult>();
+				if(!trackSummaryResult.success)
+					return;
+				trajectory.TrackSession = trackSummaryResult.payload.session;
+				SQLiteDB.Instance.SaveItem<Trajectory>(trajectory);
+			}
 
-			// Send Trajectory.
-			var track = WSTrajectory.ToWSPoints(trajectory.Points);
-
-			request = JsonConvert.SerializeObject(track, Formatting.Indented);
-			Debug.WriteLine("SendTrack() request path: " + WebServerConstants.SUBMIT_TRAJECTORY + trackSummaryResult.payload.session);
-			Debug.WriteLine("SendTrack() request: " + request);
-			output = await PostAsyncJSON(WebServerConstants.SUBMIT_TRAJECTORY + trackSummaryResult.payload.session, request);
-			Debug.WriteLine("SendTrack() response: " + output);
-			if(!output.ToObject<WSResult>().success)
-				return false;
-
-			return true;
+			if(!trajectory.WasTrackSent) {
+				// Send Trajectory.
+				var track = WSTrajectory.ToWSPoints(trajectory.Points);
+				request = JsonConvert.SerializeObject(track, Formatting.None);
+				//Debug.WriteLine("SendTrack() request path: " + WebServerConstants.SUBMIT_TRAJECTORY + trajectory.trackSession);
+				//Debug.WriteLine("SendTrack() request: " + request);
+				output = await PostAsyncJSON(WebServerConstants.SUBMIT_TRAJECTORY + trajectory.TrackSession, request);
+				//Debug.WriteLine("SendTrack() response: " + output);
+				if(!output.ToObject<WSResult>().success)
+					return;
+				trajectory.WasTrackSent = true;
+				SQLiteDB.Instance.SaveItem<Trajectory>(trajectory);
+			}
 		}
 	}
 }

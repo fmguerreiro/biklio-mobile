@@ -8,7 +8,7 @@
 	Icon="trophy.png">
 	<ContentPage.Resources>
 		<ResourceDictionary>
-			<locals:ByteArrayToImageConverter
+			<locals:ByteArrayToChallengeImageConverter
 				x:Key="arrayToimageConverter" />
 		</ResourceDictionary>
 	</ContentPage.Resources>

@@ -10,7 +10,7 @@ namespace Trace {
 	/// This class is called on the Challenges page list to display the stored checkpoint image for that challenge.
 	/// In case no image exists, a default image is shown.
 	/// </summary>
-	public class ByteArrayToImageConverter : IValueConverter {
+	public class ByteArrayToChallengeImageConverter : IValueConverter {
 
 
 		public object Convert(object value, Type targetType, object parameter, CultureInfo culture) {
