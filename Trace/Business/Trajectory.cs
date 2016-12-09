@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Newtonsoft.Json;
+using Plugin.Geolocator.Abstractions;
 using SQLite;
 
 namespace Trace {
@@ -26,6 +28,12 @@ namespace Trace {
 			}
 			set { points = value; }
 		}
+		public List<Position> ToPosition() {
+			var res = new List<Position>();
+			foreach(TrajectoryPoint p in Points)
+				res.Add(p.ToPosition());
+			return res;
+		}
 
 		// Used for serializing the points to store in SQLite.
 		public string PointsJSON { get; set; }
@@ -35,6 +43,24 @@ namespace Trace {
 		public string TrackSession { get; set; }
 		public bool WasTrackSent { get; set; } = false;
 
+
+		// Used in the Trajectory Details page.
+		[Ignore]
+		public string DisplayTime {
+			get {
+				string format = @"dd\/MM\/yyyy HH:mm";
+				string start = StartTime.EpochSecondsToDatetime().ToString(format);
+				string end = EndTime.EpochSecondsToDatetime().ToString(format);
+				return start + " to " + end;
+			}
+		}
+		[Ignore]
+		public string DisplayDuration {
+			get {
+				string format = @"hh\:mm\:ss";
+				return TimeSpan.FromSeconds(ElapsedTime()).ToString(format);
+			}
+		}
 
 		public long ElapsedTime() {
 			return EndTime - StartTime;

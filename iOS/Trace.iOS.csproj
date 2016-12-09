@@ -206,12 +206,12 @@
   <ItemGroup>
     <Folder Include="Resources\" />
     <Folder Include="App\" />
-    <Folder Include="UI\" />
     <Folder Include="App\Security\" />
     <Folder Include="App\Data\" />
     <Folder Include="App\Business\" />
     <Folder Include="App\Business\Map\" />
     <Folder Include="App\Business\MotionActivity\" />
+    <Folder Include="App\UI\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
@@ -230,9 +230,9 @@
     <Compile Include="App\Business\MotionActivity\MotionActivityManager.cs" />
     <Compile Include="App\Business\MotionActivity\NSDateConverter.cs" />
     <Compile Include="App\Security\OAuth.cs" />
-    <Compile Include="UI\OAuthUIPageRenderer.cs" />
     <Compile Include="App\Business\Map\CustomMKAnnotationView.cs" />
     <Compile Include="App\Data\FileSystem.cs" />
+    <Compile Include="App\UI\OAuthUIPageRenderer.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\logo.png" />

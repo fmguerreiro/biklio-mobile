@@ -109,7 +109,7 @@
       <DependentUpon>RegistrationPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Business\Map\TraceMap.cs" />
-    <Compile Include="UI\ShowTrackedResultsPage.xaml.cs">
+    <Compile Include="UI\TrajectoryDetailsPage.xaml.cs">
       <DependentUpon>TrajectoryDetailsPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Business\Map\Geolocator.cs" />

@@ -4,10 +4,50 @@
 	xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
 	xmlns:locals="clr-namespace:Trace;assembly=Trace"
 	x:Class="Trace.TrajectoryDetailsPage"
-	Title="Route Details">
+	Title="Details">
+	<ContentPage.Padding>
+		<OnPlatform
+			x:TypeArguments="Thickness"
+			iOS="20, 5, 20, 20"
+			Android="20, 5, 20, 20"
+			WinPhone="20, 5, 20, 20" />
+	</ContentPage.Padding>
 	<StackLayout
 		x:Name="Stack"
 		Orientation="Vertical">
+		<Label
+			Text="{Binding Id}"
+			XAlign="Center" />
+		<locals:TraceMap
+			x:Name="CustomMap"
+			WidthRequest="320"
+			HeightRequest="200"
+			IsShowingUser="true"
+			MapType="Street" />
+		<Label
+			Text="{Binding DisplayTime, StringFormat='Date: {0}'}"
+			FontSize="Small" />
+		<Label
+			Text="{Binding DisplayDuration, StringFormat='Duration: {0}'}"
+			FontSize="Small" />
+		<Label
+			Text="{Binding TotalDistanceMeters, StringFormat='Distance: {0} m'}"
+			FontSize="Small" />
+		<Label
+			Text="{Binding MostCommonActivity, StringFormat='Most Common Activity: {0}'}"
+			FontSize="Small" />
+		<Label
+			Text="{Binding AvgSpeed, StringFormat='Average Speed: {0} m/s'}"
+			FontSize="Small" />
+		<Label
+			Text="{Binding MaxSpeed, StringFormat='Maximum Speed: {0} m/s'}"
+			FontSize="Small" />
+		<Button
+			x:Name="UploadTrajectoryButton"
+			Text="Upload"
+			IsVisible="false"
+			Clicked="OnUploadClicked">
+		</Button>
 	</StackLayout>
 	<ContentPage.Content>
 	</ContentPage.Content>

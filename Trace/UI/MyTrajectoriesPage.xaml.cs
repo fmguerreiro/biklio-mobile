@@ -1,9 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using Xamarin.Forms;
+﻿using Xamarin.Forms;
 
 namespace Trace {
 
+	/// <summary>
+	/// Page displaying the list of trajectories that the user produced.
+	/// An image is displayed next to each item, indicating whether the trajectory was uploaded to the server or not.
+	/// </summary>
 	public partial class MyTrajectoriesPage : ContentPage {
 
 		public MyTrajectoriesPage() {
@@ -20,7 +22,6 @@ namespace Trace {
 		void OnSelection(object sender, SelectedItemChangedEventArgs e) {
 			//((ListView)sender).SelectedItem = null; //uncomment line if you want to disable the visual selection state.
 			Trajectory trajectory = ((Trajectory) e.SelectedItem);
-
 			Navigation.PushAsync(new TrajectoryDetailsPage(trajectory));
 		}
 	}

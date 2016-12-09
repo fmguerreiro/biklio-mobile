@@ -62,8 +62,8 @@ namespace Trace.iOS {
 				}
 
 				var routeOverlay = MKPolyline.FromCoordinates(coords);
-				// todo fit map over trajectory - nativeMap.MapRectThatFits(routeOverlay.BoundingMapRect);
 				nativeMap.AddOverlay(routeOverlay);
+				nativeMap.SetVisibleMapRect(fitRegionToPolyline(routeOverlay), false);
 			}
 		}
 
@@ -170,7 +170,13 @@ namespace Trace.iOS {
 			return polylineRenderer;
 		}
 
-		// resize the image to be contained within a maximum width and height, keeping aspect ratio
+		/// <summary>
+		/// Resize the annotation image to be contained within a maximum width and height, keeping aspect ratio.
+		/// </summary>
+		/// <returns>The resize image.</returns>
+		/// <param name="sourceImage">Source image.</param>
+		/// <param name="maxWidth">Max width.</param>
+		/// <param name="maxHeight">Max height.</param>
 		UIImage maxResizeImage(UIImage sourceImage, float maxWidth, float maxHeight) {
 			var sourceSize = sourceImage.Size;
 			var maxResizeFactor = Math.Min(maxWidth / sourceSize.Width, maxHeight / sourceSize.Height);
@@ -182,6 +188,27 @@ namespace Trace.iOS {
 			var resultImage = UIGraphics.GetImageFromCurrentImageContext();
 			UIGraphics.EndImageContext();
 			return resultImage;
+		}
+
+
+		/// <summary>
+		/// Sets the region to display the entire polyline, along with 12.5% padding on each side.
+		/// </summary>
+		/// <returns>The region to polyline.</returns>
+		/// <param name="polyline">Polyline.</param>
+		MKMapRect fitRegionToPolyline(MKPolyline polyline) {
+			MKMapRect region = polyline.BoundingMapRect;
+			var wPadding = region.Size.Width * 0.25;
+			var hPadding = region.Size.Height * 0.25;
+
+			//Add padding to the region
+			region.Size.Width += wPadding;
+			region.Size.Height += hPadding;
+
+			//Center the region on the line
+			region.Origin.X -= wPadding / 2;
+			region.Origin.Y -= hPadding / 2;
+			return region;
 		}
 	}
 }

@@ -55,11 +55,13 @@ namespace Trace {
 
 				// Save trajectory only if it is of relevant size.
 				if(trajectory.TotalDistanceMeters > MIN_SIZE_TRAJECTORY) {
-
+					// TODO offload this out of UI thread
 					// Calculate Motion activities along the trajectory.
 					IList<ActivityEvent> activityEvents = DependencyService.Get<IMotionActivityManager>().ActivityEvents;
 					trajectory.Points = AssociatePointsWithActivity(activityEvents, CustomMap.RouteCoordinates);
+					trajectory.PointsJSON = JsonConvert.SerializeObject(trajectory.Points);
 
+					// Save created trajectory.
 					User.Instance.Trajectories.Add(trajectory);
 					SQLiteDB.Instance.SaveItem<Trajectory>(trajectory);
 
@@ -142,8 +144,8 @@ namespace Trace {
 		private Trajectory createTrajectory(double distanceInMeters) {
 			return new Trajectory {
 				UserId = User.Instance.Id,
-				StartTime = (long) (StartTrackingTime - new DateTime(1970, 1, 1)).TotalSeconds,
-				EndTime = (long) (StopTrackingTime - new DateTime(1970, 1, 1)).TotalSeconds,
+				StartTime = StartTrackingTime.DatetimeToEpochSeconds(),
+				EndTime = StopTrackingTime.DatetimeToEpochSeconds(),
 				AvgSpeed = (float) (Locator.AvgSpeed / CustomMap.RouteCoordinates.Count),
 				MaxSpeed = (float) Locator.MaxSpeed,
 				TotalDistanceMeters = (long) distanceInMeters,
@@ -161,7 +163,6 @@ namespace Trace {
 		/// </summary>
 		/// <param name="points">Points in the trajectory.</param>
 		public List<TrajectoryPoint> AssociatePointsWithActivity(IList<ActivityEvent> activityEvents, IEnumerable<Plugin.Geolocator.Abstractions.Position> points) {
-
 			var res = new List<TrajectoryPoint>();
 			IEnumerator activityEventPtr = activityEvents.GetEnumerator();
 
