@@ -163,6 +163,9 @@
     <Compile Include="TimeConverter.cs" />
     <Compile Include="Business\TrajectoryPoint.cs" />
     <Compile Include="UI\SourceConverters\ImageToRouteCheckConverter.cs" />
+    <Compile Include="Business\MotionActivity\RewardEligibilityStateMachine.cs" />
+    <Compile Include="Business\MotionActivity\RewardEligibilityManager.cs" />
+    <Compile Include="Business\MotionActivity\IAdvancedTimer.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Business\" />

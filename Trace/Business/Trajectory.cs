@@ -23,6 +23,7 @@ namespace Trace {
 		IEnumerable<TrajectoryPoint> points;
 		[Ignore]
 		public IEnumerable<TrajectoryPoint> Points {
+			// Lazily serializes the points when they are requested (when showing the trajectory in the Trajectory Details page).
 			get {
 				return points ?? JsonConvert.DeserializeObject<IEnumerable<TrajectoryPoint>>(PointsJSON);
 			}

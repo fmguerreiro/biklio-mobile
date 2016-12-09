@@ -10,7 +10,6 @@
 			Padding="0,20,0,0">
 			<Grid>
 				<Entry
-					x:Name="maxChallengesText"
 					Placeholder="Max number of challenges">
 					<Entry.Behaviors>
 						<local:NumberValidator />

@@ -13,7 +13,6 @@
 		</ResourceDictionary>
 	</ContentPage.Resources>
 	<ListView
-		x:Name="ChallengeListView"
 		ItemsSource="{Binding Challenges}"
 		ItemSelected="OnSelection"
 		IsPullToRefreshEnabled="true"

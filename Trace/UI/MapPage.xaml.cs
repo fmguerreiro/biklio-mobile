@@ -107,6 +107,7 @@ namespace Trace {
 		private void displayGrid(Button trackButton) {
 			trackButton.Text = "Track";
 			ActivityLabel.IsVisible = false;
+			MainActivityLabel.Text = DependencyService.Get<IMotionActivityManager>().GetMostCommonActivity().ToString();
 			Debug.WriteLine("Trajectory # of points: " + CustomMap.RouteCoordinates.Count);
 			// Refresh the map to display the trajectory.
 			MyStack.Children.RemoveAt(0);

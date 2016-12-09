@@ -12,7 +12,6 @@
 		</ResourceDictionary>
 	</ContentPage.Resources>
 	<ListView
-		x:Name="MyTrajectoriesListView"
 		ItemsSource="{Binding Trajectories}"
 		Header="{Binding Summary}"
 		ItemSelected="OnSelection">
