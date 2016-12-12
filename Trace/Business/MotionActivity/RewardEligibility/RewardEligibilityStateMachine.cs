@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace Trace {
 
@@ -59,6 +60,7 @@ namespace Trace {
 			// and 'unknownEligible' timer. Either way, the user goes back to beginning.
 			State nextState = State.Ineligible;
 			transitions.TryGetValue(transition, out nextState);
+			Debug.WriteLine("StateMachine: nextState() -> " + nextState);
 			return nextState;
 		}
 

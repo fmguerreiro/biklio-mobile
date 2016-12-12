@@ -163,9 +163,9 @@
     <Compile Include="TimeConverter.cs" />
     <Compile Include="Business\TrajectoryPoint.cs" />
     <Compile Include="UI\SourceConverters\ImageToRouteCheckConverter.cs" />
-    <Compile Include="Business\MotionActivity\RewardEligibilityStateMachine.cs" />
-    <Compile Include="Business\MotionActivity\RewardEligibilityManager.cs" />
-    <Compile Include="Business\MotionActivity\IAdvancedTimer.cs" />
+    <Compile Include="Business\MotionActivity\RewardEligibility\RewardEligibilityManager.cs" />
+    <Compile Include="Business\MotionActivity\RewardEligibility\RewardEligibilityStateMachine.cs" />
+    <Compile Include="Business\MotionActivity\RewardEligibility\Timer.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Business\" />
@@ -185,6 +185,7 @@
     <Folder Include="Security\OAuth\Google\" />
     <Folder Include="ServiceAccess\WebServiceObjects\SubmitRoute\" />
     <Folder Include="ServiceAccess\WebServiceObjects\GetChallenges\" />
+    <Folder Include="Business\MotionActivity\RewardEligibility\" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System.Device.Portable">

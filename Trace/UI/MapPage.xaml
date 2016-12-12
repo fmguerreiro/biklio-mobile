@@ -36,7 +36,7 @@
 			x:Name="ActivityLabel"
 			Text="{Binding ActivityType, StringFormat='Activity: {0}'}"
 			HorizontalTextAlignment="Center"
-			IsVisible="false"
+			IsVisible="true"
 			BackgroundColor="#2B84D3"
 			TextColor="White"
 			VerticalTextAlignment="Center">

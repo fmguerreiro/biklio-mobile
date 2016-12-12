@@ -10,15 +10,12 @@ using Xamarin.Forms.Maps;
 namespace Trace {
 	public partial class MapPage : ContentPage {
 
-		private const long MIN_SIZE_TRAJECTORY = 250;
+		private const long MIN_SIZE_TRAJECTORY = 250; // meters
 		private Geolocator Locator;
 		private CurrentActivity currentActivity;
 
 		private DateTime StartTrackingTime;
 		private DateTime StopTrackingTime;
-
-		private string activityLogResult = "";
-
 
 		public MapPage() {
 			InitializeComponent();
@@ -28,6 +25,12 @@ namespace Trace {
 			Locator.Start().DoNotAwait();
 			currentActivity = new CurrentActivity();
 			DependencyService.Get<IMotionActivityManager>().InitMotionActivity();
+			DependencyService.Get<IMotionActivityManager>().StartMotionUpdates((activity) => {
+				currentActivity.ActivityType = activity;
+				//activityLogResult += DateTime.Now + ": " + activity + "\n";
+				// Send input to state machine
+				RewardEligibilityManager.Instance.Input(activity);
+			});
 		}
 
 
@@ -90,15 +93,12 @@ namespace Trace {
 				((Button) send).Text = "Stop";
 				CustomMap.RouteCoordinates.Clear();
 				StartTrackingTime = DateTime.Now;
-				activityLogResult = "";
 				// Show Activity text after Map and before Stop button and remove Results grid.
 				ActivityLabel.IsVisible = true;
 				ResultsGrid.IsVisible = false;
 				ActivityLabel.BindingContext = currentActivity;
-				DependencyService.Get<IMotionActivityManager>().StartMotionUpdates((activity) => {
-					currentActivity.ActivityType = activity;
-					activityLogResult += DateTime.Now + ": " + activity + "\n";
-				});
+				// Reset in order to clean list of accumulated activities and counters.
+				DependencyService.Get<IMotionActivityManager>().Reset();
 			}
 			Locator.IsTrackingInProgress = !Locator.IsTrackingInProgress;
 		}

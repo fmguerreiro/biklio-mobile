@@ -19,15 +19,6 @@ namespace Trace.iOS {
 		}
 
 
-		private void reset() {
-			WalkingDuration = 0;
-			RunningDuration = 0;
-			CyclingDuration = 0;
-			AutomativeDuration = 0;
-			ActivityEvents.Clear();
-		}
-
-
 		public override void StartMotionUpdates(Action<ActivityType> handler) {
 			motionActivityMgr.StartActivityUpdates(NSOperationQueue.MainQueue, ((activity) => {
 				handler(ActivityToType(activity));
@@ -40,10 +31,22 @@ namespace Trace.iOS {
 		}
 
 
+		public override void Reset() {
+			WalkingDuration = 0;
+			RunningDuration = 0;
+			CyclingDuration = 0;
+			AutomativeDuration = 0;
+			NSOperationQueue.MainQueue.Dispose();
+			ActivityEvents.Clear();
+		}
+
+
 		public override ActivityType GetMostCommonActivity() {
 			long[] activityDurations = { WalkingDuration, RunningDuration, CyclingDuration, AutomativeDuration };
 			long max = activityDurations.Max();
 
+			if(max == 0)
+				return ActivityType.Unknown;
 			if(max == CyclingDuration)
 				return ActivityType.Cycling;
 			if(max == RunningDuration)

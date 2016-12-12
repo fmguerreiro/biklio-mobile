@@ -183,12 +183,6 @@
     <Reference Include="Plugin.Geolocator">
       <HintPath>..\packages\Xam.Plugin.Geolocator.3.0.4\lib\MonoAndroid10\Plugin.Geolocator.dll</HintPath>
     </Reference>
-    <Reference Include="AdvancedTimer.Forms.Plugin.Abstractions">
-      <HintPath>..\packages\Mobilist.AdvancedTimer.Forms.Plugin.1.0.1.0\lib\MonoAndroid10\AdvancedTimer.Forms.Plugin.Abstractions.dll</HintPath>
-    </Reference>
-    <Reference Include="AdvancedTimer.Forms.Plugin.Android">
-      <HintPath>..\packages\Mobilist.AdvancedTimer.Forms.Plugin.1.0.1.0\lib\MonoAndroid10\AdvancedTimer.Forms.Plugin.Android.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Trace\Trace.csproj">

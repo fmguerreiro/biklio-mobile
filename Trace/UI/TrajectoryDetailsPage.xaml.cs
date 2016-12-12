@@ -3,6 +3,10 @@ using Xamarin.Forms;
 
 namespace Trace {
 
+	/// <summary>
+	/// Page that shows the details for a particular trajectory.
+	/// This includes displaying the trajectory on the map, showing the dates, length and duration.
+	/// </summary>
 	public partial class TrajectoryDetailsPage : ContentPage {
 		private Trajectory trajectory;
 
@@ -16,7 +20,7 @@ namespace Trace {
 			Stack.Children.Insert(1, CustomMap);
 		}
 
-		async void OnUploadClicked(object sender, EventArgs args) {
+		async void onUploadClicked(object sender, EventArgs args) {
 			await new WebServerClient().SendTrajectory(trajectory);
 			if(trajectory.WasTrackSent) {
 				UploadTrajectoryButton.IsVisible = false;

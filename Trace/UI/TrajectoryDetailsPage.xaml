@@ -46,7 +46,7 @@
 			x:Name="UploadTrajectoryButton"
 			Text="Upload"
 			IsVisible="false"
-			Clicked="OnUploadClicked">
+			Clicked="onUploadClicked">
 		</Button>
 	</StackLayout>
 	<ContentPage.Content>

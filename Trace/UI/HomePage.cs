@@ -57,7 +57,8 @@ namespace Trace {
 		async Task OnLogoutClicked() {
 			bool isLogout = await DisplayAlert(LOGOUT, "Are you sure?", "Yes", "No");
 			if(isLogout) {
-				User.Instance = new User();
+				User.Instance = null;
+				RewardEligibilityManager.Instance = null;
 				await Navigation.PopToRootAsync();
 			}
 		}

@@ -13,6 +13,7 @@ namespace Trace {
 		public abstract void InitMotionActivity();
 		public abstract void StartMotionUpdates(Action<ActivityType> handler);
 		public abstract void StopMotionUpdates();
+		public abstract void Reset();
 		public abstract Task QueryHistoricalData(DateTime start, DateTime end);
 		public abstract ActivityType GetMostCommonActivity();
 	}

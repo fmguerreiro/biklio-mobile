@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using Xamarin.Forms;
 
 namespace Trace {
 
@@ -11,8 +10,8 @@ namespace Trace {
 	public class RewardEligibilityManager {
 		readonly RewardEligibilityStateMachine stateMachine;
 		Dictionary<State, Action> transitionGuards;
-		IAdvancedTimer timer;
-		readonly IAdvancedTimer vehicularTimer;
+		Timer timer;
+		Timer vehicularTimer;
 
 		// Successive count threshold for transitioning between states.
 		private const int THRESHOLD = 5;
@@ -28,13 +27,21 @@ namespace Trace {
 		int vehicularCount;
 		int nonVehicularCount;
 
+		static RewardEligibilityManager instance;
+		public static RewardEligibilityManager Instance {
+			get {
+				if(instance == null) { instance = new RewardEligibilityManager(); }
+				return instance;
+			}
+			set { instance = value; }
+		}
+
 		/// <summary>
 		/// Initializes a new instance of the <see cref="T:Trace.RewardEligibilityManager"/> class.
 		/// The 'transitionGuards' is a dictionary that provides constant look-up for the next action to call based on the current state.
 		/// </summary>
 		public RewardEligibilityManager() {
 			stateMachine = new RewardEligibilityStateMachine();
-			timer = DependencyService.Get<IAdvancedTimer>();
 			transitionGuards = new Dictionary<State, Action> {
 				{ State.Ineligible, new Action(ineligibleStateGuards) },
 				{ State.CyclingIneligible, new Action(cyclingIneligibleStateGuards) },
@@ -44,6 +51,18 @@ namespace Trace {
 			};
 		}
 
+		/// <summary>
+		/// Destructor called upon dereferencing (i.e. when user logs out).
+		/// </summary>
+		~RewardEligibilityManager() {
+			timer.Dispose();
+			vehicularTimer.Dispose();
+		}
+
+		/// <summary>
+		/// The feedback from the motion detector goes here, passes the guard checks and goes into the state-machine.
+		/// </summary>
+		/// <param name="activity">Activity.</param>
 		public void Input(ActivityType activity) {
 			incrementCounters(activity);
 			Action nextAction;
@@ -61,7 +80,7 @@ namespace Trace {
 			if(activity == ActivityType.Cycling) {
 				cyclingCount++; nonVehicularCount++; nonCyclingCount = vehicularCount = 0;
 			}
-			if(activity == ActivityType.Automative) {
+			else if(activity == ActivityType.Automative) {
 				vehicularCount++; nonCyclingCount++; cyclingCount = 0;
 			}
 			else {
@@ -81,19 +100,14 @@ namespace Trace {
 				stateMachine.MoveNext(Command.Cycling);
 
 				// Start timer -> If user continues using a bycicle for a certain time, go to: 'cyclingEligible'.
-				timer.initTimer(CYCLING_INELIGIBLE_TIMEOUT, (sender, e) => {
-					resetCounters();
-					// TODO notify user is eligible for rewards.
-					stateMachine.MoveNext(Command.Timeout);
-				}, false);
-				timer.startTimer();
+				timer = new Timer(new TimerCallback(goToCyclingEligibleCallback), null, CYCLING_INELIGIBLE_TIMEOUT);
 			}
 		}
 
 		void cyclingIneligibleStateGuards() {
 			// If user stops using a bycicle, go back to the start: 'ineligible'.
 			if(nonCyclingCount > THRESHOLD) {
-				timer.stopTimer();
+				timer.Dispose();
 				resetCounters();
 				stateMachine.MoveNext(Command.NotCycling);
 			}
@@ -107,39 +121,49 @@ namespace Trace {
 
 				// Start a long timer where the user is still eligible for rewards even when not using a bycicle.
 				// If the timer goes off (the user goes too long without using a bycicle), go back to 'ineligible'.
-				timer.initTimer(UNKNOWN_ELIGIBLE_TIMEOUT, (sender, e) => {
-					resetCounters();
-					// TODO warn user she is no longer eligible for rewards.
-					stateMachine.MoveNext(Command.Timeout);
-				}, false);
-				timer.startTimer();
+				timer = new Timer(new TimerCallback(goToIneligibleCallback), null, UNKNOWN_ELIGIBLE_TIMEOUT);
 			}
 		}
 
 		void unknownEligibleStateGuards() {
 			// If users start using a vehicle, go to 'inAVehicle' and start a shorter timer that makes her ineligible after it fires.
 			if(vehicularCount > THRESHOLD) {
-				timer.initTimer(VEHICULAR_TIMEOUT, (sender, e) => {
-					resetCounters();
-					// TODO warn user she is no longer eligible for rewards.
-					stateMachine.MoveNext(Command.Timeout);
-				}, false);
-				timer.startTimer();
+				resetCounters();
 				stateMachine.MoveNext(Command.InAVehicle);
+				vehicularTimer = new Timer(new TimerCallback(goToIneligibleCallback), null, VEHICULAR_TIMEOUT);
 			}
 			// If user starts cycling again, go back to 'cyclingEligible'.
 			if(cyclingCount > THRESHOLD) {
+				resetCounters();
 				stateMachine.MoveNext(Command.Cycling);
-				timer.stopTimer();
+				timer.Dispose();
 			}
 		}
 
 		void vehicularStateGuards() {
 			// If the user stops using a vehicle, go back to 'unknownEligible'.
 			if(nonVehicularCount > THRESHOLD) {
-				vehicularTimer.stopTimer();
+				resetCounters();
+				vehicularTimer.Dispose();
 				stateMachine.MoveNext(Command.NotInAVehicle);
 			}
+		}
+
+		/// <summary>
+		/// Timer callbacks.
+		/// </summary>
+		void goToCyclingEligibleCallback(object state) {
+			resetCounters();
+			// TODO notify user is eligible for rewards.
+			stateMachine.MoveNext(Command.Timeout);
+		}
+
+		void goToIneligibleCallback(object state) {
+			resetCounters();
+			// TODO warn user she is no longer eligible for rewards.
+			stateMachine.MoveNext(Command.Timeout);
+			timer.Dispose();
+			vehicularTimer.Dispose();
 		}
 	}
 }

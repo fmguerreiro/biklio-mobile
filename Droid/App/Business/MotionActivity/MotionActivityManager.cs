@@ -35,6 +35,10 @@ namespace Trace.Droid {
 			//motionActivityMgr.StopActivityUpdates();
 		}
 
+		public override void Reset() {
+			//throw new NotImplementedException();
+		}
+
 		public override ActivityType GetMostCommonActivity() {
 			return ActivityType.Unknown;
 		}
