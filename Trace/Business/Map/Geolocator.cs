@@ -1,12 +1,13 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Plugin.Geolocator;
 using Xamarin.Forms.Maps;
 
 namespace Trace {
 
+	// TODO: reduce accuracy to 1 when user did not click 'track' to save battery.
 	public class Geolocator {
 		private const int LOCATOR_TIMEOUT = 1000000;
+		private const int MOTION_ONLY_ACCURACY = 1;
 		private const int LOCATOR_ACCURACY = 50;
 
 		public bool IsTrackingInProgress { get; set; }

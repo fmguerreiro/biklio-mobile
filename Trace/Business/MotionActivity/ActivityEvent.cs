@@ -1,6 +1,10 @@
 ﻿using System;
 
 namespace Trace {
+	/// <summary>
+	/// An activity event is a period of time with the same sustained activity.
+	/// These are created after the user finishes running, where the raw outputs from the activity detector are cleaned and aggregated.
+	/// </summary>
 	public class ActivityEvent {
 
 		private readonly DateTime startDate;

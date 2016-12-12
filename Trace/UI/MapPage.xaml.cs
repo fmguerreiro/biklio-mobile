@@ -28,7 +28,8 @@ namespace Trace {
 			DependencyService.Get<IMotionActivityManager>().StartMotionUpdates((activity) => {
 				currentActivity.ActivityType = activity;
 				//activityLogResult += DateTime.Now + ": " + activity + "\n";
-				// Send input to state machine
+				// Send input to state machine 
+				// TODO use activity confidence as well
 				RewardEligibilityManager.Instance.Input(activity);
 			});
 		}
@@ -82,7 +83,7 @@ namespace Trace {
 				// TODO Calculate calories ...
 				CaloriesLabel.BindingContext = new TotalCalories { Calories = 0 };
 
-				// TODO Calculate how much time was spent driving.
+				// TODO Calculate how much time was spent on the most used activity (or driven, not sure -- check).
 				// Probably also show time for each activity!
 				DrivenLabel.BindingContext = new TotalDuration { Hours = 0, Minutes = 0, Seconds = 0 };
 				displayGrid((Button) send);

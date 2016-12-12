@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using Plugin.Geolocator;
 using Xamarin.Forms;
 
 namespace Trace {
@@ -59,6 +60,8 @@ namespace Trace {
 			if(isLogout) {
 				User.Instance = null;
 				RewardEligibilityManager.Instance = null;
+				await CrossGeolocator.Current.StopListeningAsync();
+				DependencyService.Get<IMotionActivityManager>().StopMotionUpdates();
 				await Navigation.PopToRootAsync();
 			}
 		}

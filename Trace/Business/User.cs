@@ -9,8 +9,6 @@ namespace Trace {
 	/// </summary>
 	public class User : DatabaseEntityBase {
 
-		const int DEFAULT_RADIUS = 10000;
-
 		static User instance;
 		[Ignore]
 		public static User Instance {
@@ -30,12 +28,20 @@ namespace Trace {
 			set { if(!string.IsNullOrEmpty(value)) authToken = value; }
 		}
 
-		public int SearchRadiusInKM { get; set; } = DEFAULT_RADIUS;
 
 		// The webserver stores several snapshots of the challenge and checkpoint data.
 		// This value is used to tell the webserver the most recent version of the data in the device.
 		public long WSSnapshotVersion { get; set; } = 0;
 
+		// Used in calories calculations. Defaults are European averages.
+		public int Age { get; set; } = 37;
+		public Sex Sex { get; set; } = Sex.Male;
+		public double Weight { get; set; } = 70.8;// kilograms
+		public double Height { get; set; } = 1.78; // meters
+
+		public int SearchRadius { get; set; } = 100; // kilometers
+
+		public Language Language { get; set; } = Language.English;
 
 		List<Trajectory> trajectories;
 		[Ignore]
@@ -74,7 +80,7 @@ namespace Trace {
 			//string challengeString = string.Join("\n\t", Challenges) ?? "";
 			//string checkpointString = string.Join("\n\t", Checkpoints) ?? "";
 			return string.Format("[User Id->{0} Username->{1} Email->{2} AuthToken->{3} Radius->{4} SnapshotVersion->{5}]",
-								 Id, Username, Email, AuthToken, SearchRadiusInKM, WSSnapshotVersion);
+								 Id, Username, Email, AuthToken, SearchRadius, WSSnapshotVersion);
 		}
 	}
 }

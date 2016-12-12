@@ -21,12 +21,14 @@ namespace Trace {
 		}
 
 		async void onUploadClicked(object sender, EventArgs args) {
+			UploadTrajectoryButton.IsVisible = false;
 			await new WebServerClient().SendTrajectory(trajectory);
 			if(trajectory.WasTrackSent) {
 				UploadTrajectoryButton.IsVisible = false;
 			}
 			else {
 				await DisplayAlert("Error", "Trajectory could not be uploaded to the server.", "Ok");
+				UploadTrajectoryButton.IsVisible = true;
 			}
 		}
 	}

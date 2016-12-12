@@ -5,23 +5,95 @@
 	xmlns:local="clr-namespace:Trace;assembly=Trace"
 	x:Class="Trace.SettingsPage"
 	Title="Settings">
+	<ContentPage.BindingContext>
+		<local:SettingsPageModel />
+	</ContentPage.BindingContext>
+	<ContentPage.Resources>
+		<ResourceDictionary>
+			<Style
+				TargetType="Label">
+				<Setter
+					Property="VerticalOptions"
+					Value="Center" />
+			</Style>
+			<Style
+				TargetType="Entry">
+				<Setter
+					Property="VerticalOptions"
+					Value="Center" />
+			</Style>
+			<Style
+				TargetType="{x:Type local:BindablePicker}">
+				<Setter
+					Property="VerticalOptions"
+					Value="Center" />
+			</Style>
+		</ResourceDictionary>
+	</ContentPage.Resources>
 	<ContentPage.Content>
-		<StackLayout
-			Padding="0,20,0,0">
-			<Grid>
-				<Entry
-					Placeholder="Max number of challenges">
-					<Entry.Behaviors>
-						<local:NumberValidator />
-						<local:MaxLengthValidator
-							MaxLength="3" />
-					</Entry.Behaviors>
-				</Entry>
-			</Grid>
-			<Button
-				Text="Delete cache"
-				Clicked="OnDeleteCache">
-			</Button>
-		</StackLayout>
+		<TableView
+			Intent="Settings">
+			<TableRoot>
+				<TableSection
+					Title="Calories Calculation">
+					<EntryCell
+						Completed="OnSettingChanged"
+						Label="Age"
+						Text="{Binding User.Age, Mode=TwoWay}" />
+					<ViewCell>
+						<StackLayout
+							Orientation="Horizontal">
+							<Label
+								TranslationX="15"
+								Text="Sex" />
+							<local:BindablePicker
+								TranslationX="65"
+								SelectedIndexChanged="OnSexChanged"
+								Title="{Binding User.Sex}"
+								SelectedValue="{Binding User.Sex, Mode=TwoWay}"
+								ItemsSource="{Binding Sexes}" />
+						</StackLayout>
+					</ViewCell>
+					<EntryCell
+						Completed="OnSettingChanged"
+						Label="Height"
+						Text="{Binding User.Height, Mode=TwoWay}" />
+					<EntryCell
+						Completed="OnSettingChanged"
+						Label="Weight"
+						Text="{Binding User.Weight, Mode=TwoWay}" />
+				</TableSection>
+				<TableSection
+					Title="Challenges">
+					<EntryCell
+						Completed="OnSettingChanged"
+						Label="Search Radius"
+						Text="{Binding User.SearchRadius, Mode=TwoWay}" />
+					<EntryCell
+						Completed="OnSettingChanged"
+						Label="Maximum"
+						Text="TODO" />
+				</TableSection>
+				<TableSection
+					Title="Language">
+					<ViewCell>
+						<local:BindablePicker
+							Title="{Binding User.Language}"
+							ItemsSource="{Binding Languages}"
+							SelectedIndexChanged="OnLanguageChanged"
+							SelectedItem="{Binding User.Language, Mode=TwoWay}" />
+					</ViewCell>
+				</TableSection>
+				<TableSection
+					Title="Delete">
+					<TextCell
+						Text="Challenges" />
+					<TextCell
+						Text="Routes" />
+					<TextCell
+						Text="USER" />
+				</TableSection>
+			</TableRoot>
+		</TableView>
 	</ContentPage.Content>
 </ContentPage>

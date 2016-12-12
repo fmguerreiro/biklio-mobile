@@ -44,7 +44,7 @@ namespace Trace {
 
 			// Fetch challenges from Webserver
 			var client = new WebServerClient();
-			WSResult result = await Task.Run(() => client.FetchChallenges(position, User.Instance.SearchRadiusInKM, User.Instance.WSSnapshotVersion));
+			WSResult result = await Task.Run(() => client.FetchChallenges(position, User.Instance.SearchRadius, User.Instance.WSSnapshotVersion));
 
 			if(!result.success) {
 				Device.BeginInvokeOnMainThread(() => {

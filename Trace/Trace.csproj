@@ -166,6 +166,10 @@
     <Compile Include="Business\MotionActivity\RewardEligibility\RewardEligibilityManager.cs" />
     <Compile Include="Business\MotionActivity\RewardEligibility\RewardEligibilityStateMachine.cs" />
     <Compile Include="Business\MotionActivity\RewardEligibility\Timer.cs" />
+    <Compile Include="Business\SettingsEnums.cs" />
+    <Compile Include="UI\Controls\BindablePicker.cs" />
+    <Compile Include="UI\SettingsPageModel.cs" />
+    <Compile Include="EnumUtil.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Business\" />
@@ -186,6 +190,7 @@
     <Folder Include="ServiceAccess\WebServiceObjects\SubmitRoute\" />
     <Folder Include="ServiceAccess\WebServiceObjects\GetChallenges\" />
     <Folder Include="Business\MotionActivity\RewardEligibility\" />
+    <Folder Include="UI\Controls\" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System.Device.Portable">
