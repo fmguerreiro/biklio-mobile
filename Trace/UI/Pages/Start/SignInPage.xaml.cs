@@ -47,7 +47,8 @@ namespace Trace {
 				// Fetch user information from the database.
 				SQLiteDB.Instance.InstantiateUser(username, result.token);
 
-				await Navigation.PushAsync(new HomePage());
+				//await Navigation.PushAsync(new HomePage());
+				Application.Current.MainPage = new MainPage();
 			}
 			else
 				await DisplayAlert("Error", result.error, "Ok");

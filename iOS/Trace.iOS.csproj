@@ -242,6 +242,18 @@
     <BundleResource Include="Resources\green_check.png" />
     <BundleResource Include="Resources\refresh_icon.png" />
     <BundleResource Include="Resources\maps_icon.png" />
+    <BundleResource Include="Resources\biklr.png" />
+    <BundleResource Include="Resources\home.png" />
+    <BundleResource Include="Resources\logout.png" />
+    <BundleResource Include="Resources\my_routes.png" />
+    <BundleResource Include="Resources\rewards.png" />
+    <BundleResource Include="Resources\settings.png" />
+    <BundleResource Include="Resources\cycling.png" />
+    <BundleResource Include="Resources\dashboard.png" />
+    <BundleResource Include="Resources\driving.png" />
+    <BundleResource Include="Resources\menu.png" />
+    <BundleResource Include="Resources\running.png" />
+    <BundleResource Include="Resources\walking.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
   <Import Project="..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" />

@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using Plugin.Geolocator;
 using Xamarin.Forms;
 
@@ -26,17 +27,17 @@ namespace Trace {
 			Children.Add(mapPage);
 
 			// Add a Menu button to the page header to navigate the app.
-			ToolbarItems.Add(new ToolbarItem(MENU, "", async () => {
-				var action = await DisplayActionSheet(MENU, CANCEL, null, MY_REWARDS, DASHBOARD, MY_ROUTES, SETTINGS, LOGOUT);
-				switch(action) {
-					case MY_REWARDS: OnMyRewardsClicked(); return;
-					case DASHBOARD: OnDashboardClicked(); return;
-					case MY_ROUTES: OnMyRoutesClicked(); return;
-					case SETTINGS: OnSettingsClicked(); return;
-					case LOGOUT: await OnLogoutClicked(); return;
-					default: return;
-				}
-			}));
+			//ToolbarItems.Add(new ToolbarItem(MENU, "", async () => {
+			//	var action = await DisplayActionSheet(MENU, CANCEL, null, MY_REWARDS, DASHBOARD, MY_ROUTES, SETTINGS, LOGOUT);
+			//	switch(action) {
+			//		case MY_REWARDS: OnMyRewardsClicked(); return;
+			//		case DASHBOARD: OnDashboardClicked(); return;
+			//		case MY_ROUTES: OnMyRoutesClicked(); return;
+			//		case SETTINGS: OnSettingsClicked(); return;
+			//		case LOGOUT: await OnLogoutClicked(); return;
+			//		default: return;
+			//	}
+			//}));
 		}
 
 		void OnMyRewardsClicked() {

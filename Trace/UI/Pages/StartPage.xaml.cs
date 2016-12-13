@@ -2,8 +2,8 @@
 using Xamarin.Forms;
 
 namespace Trace {
-	public partial class FirstPage : ContentPage {
-		public FirstPage() {
+	public partial class StartPage : ContentPage {
+		public StartPage() {
 			InitializeComponent();
 		}
 
@@ -15,10 +15,10 @@ namespace Trace {
 			await Navigation.PushAsync(new SignInPage());
 		}
 
-		async void OnSkip(object sender, EventArgs e) {
-			User.Instance.Username = "test";
-			SQLiteDB.Instance.InstantiateUser(User.Instance.Username, "test");
-			await Navigation.PushAsync(new HomePage());
-		}
+		//async void OnSkip(object sender, EventArgs e) {
+		//	User.Instance.Username = "test";
+		//	SQLiteDB.Instance.InstantiateUser(User.Instance.Username, "test");
+		//	await Navigation.PushAsync(new HomePage());
+		//}
 	}
 }

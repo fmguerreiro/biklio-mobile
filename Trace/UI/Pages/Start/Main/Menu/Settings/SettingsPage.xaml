@@ -93,6 +93,17 @@
 					<TextCell
 						Text="USER" />
 				</TableSection>
+				<TableSection
+					Title="Information">
+					<TextCell
+						Text="Licenses" />
+					<TextCell
+						Text="Terms of Service" />
+					<TextCell
+						Text="Privacy Policy" />
+					<TextCell
+						Text="About Us" />
+				</TableSection>
 			</TableRoot>
 		</TableView>
 	</ContentPage.Content>

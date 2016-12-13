@@ -8,7 +8,7 @@ namespace Trace {
 		public App() {
 			InitializeComponent();
 
-			MainPage = new NavigationPage(new FirstPage());
+			MainPage = new NavigationPage(new StartPage());
 		}
 
 		protected override void OnStart() {

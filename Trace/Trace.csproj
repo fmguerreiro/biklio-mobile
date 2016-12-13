@@ -29,40 +29,43 @@
   </PropertyGroup>
   <ItemGroup>
     <EmbeddedResource Include="App.xaml" />
-    <EmbeddedResource Include="UI\MapPage.xaml">
+    <EmbeddedResource Include="UI\Pages\StartPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\SignInPage.xaml">
+    <EmbeddedResource Include="UI\Pages\Start\SignInPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\ChallengesPage.xaml">
+    <EmbeddedResource Include="UI\Pages\Start\RegistrationPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\FirstPage.xaml">
+    <EmbeddedResource Include="UI\Pages\Start\Main\HomeMasterPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\RewardsPage.xaml">
+    <EmbeddedResource Include="UI\Pages\Start\OAuthUIPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\DashboardPage.xaml">
+    <EmbeddedResource Include="UI\Pages\Start\Main\Menu\DashboardPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\MyTrajectoriesPage.xaml">
+    <EmbeddedResource Include="UI\Pages\Start\Main\Menu\RewardsPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\SettingsPage.xaml">
+    <EmbeddedResource Include="UI\Pages\Start\Main\Menu\MyTrajectories\TrajectoryDetailsPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\RegistrationPage.xaml">
+    <EmbeddedResource Include="UI\Pages\Start\Main\Menu\MyTrajectories\MyTrajectoriesPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\TrajectoryDetailsPage.xaml">
+    <EmbeddedResource Include="UI\Pages\Start\Main\Menu\Settings\SettingsPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\CheckpointDetailsPage.xaml">
+    <EmbeddedResource Include="UI\Pages\Start\Main\Home\MapPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\OAuthUIPage.xaml">
+    <EmbeddedResource Include="UI\Pages\Start\Main\Home\Challenges\ChallengesPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\Pages\Start\Main\Home\Challenges\CheckpointDetailsPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
   </ItemGroup>
@@ -75,43 +78,12 @@
     <Compile Include="ServiceAccess\WebServerClient.cs" />
     <Compile Include="Business\Trajectory.cs" />
     <Compile Include="Business\User.cs" />
-    <Compile Include="UI\MapPage.xaml.cs">
-      <DependentUpon>MapPage.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Business\MotionActivity\ActivityType.cs" />
     <Compile Include="Business\MotionActivity\IMotionActivityManager.cs" />
     <Compile Include="Business\MotionActivity\ActivityEvent.cs" />
-    <Compile Include="UI\SignInPage.xaml.cs">
-      <DependentUpon>SignInPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="UI\ChallengesPage.xaml.cs">
-      <DependentUpon>ChallengesPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="UI\FirstPage.xaml.cs">
-      <DependentUpon>FirstPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="UI\HomePage.cs" />
     <Compile Include="Business\Challenge.cs" />
     <Compile Include="Business\Checkpoint.cs" />
-    <Compile Include="UI\RewardsPage.xaml.cs">
-      <DependentUpon>RewardsPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="UI\DashboardPage.xaml.cs">
-      <DependentUpon>DashboardPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="UI\MyTrajectoriesPage.xaml.cs">
-      <DependentUpon>MyTrajectoriesPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="UI\SettingsPage.xaml.cs">
-      <DependentUpon>SettingsPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="UI\RegistrationPage.xaml.cs">
-      <DependentUpon>RegistrationPage.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Business\Map\TraceMap.cs" />
-    <Compile Include="UI\TrajectoryDetailsPage.xaml.cs">
-      <DependentUpon>TrajectoryDetailsPage.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Business\Map\Geolocator.cs" />
     <Compile Include="Security\InputValidation\EmailValidator.cs" />
     <Compile Include="Security\InputValidation\NumberValidator.cs" />
@@ -124,9 +96,6 @@
     <Compile Include="Security\CredentialsHandling\AccountInterface.cs" />
     <Compile Include="ServiceAccess\WebServiceObjects\WSUser.cs" />
     <Compile Include="ServiceAccess\HTTPClientBase.cs" />
-    <Compile Include="UI\CheckpointDetailsPage.xaml.cs">
-      <DependentUpon>CheckpointDetailsPage.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Business\MotionActivity\CurrentActivity.cs" />
     <Compile Include="Business\Map\TotalDistance.cs" />
     <Compile Include="Business\Map\TotalCalories.cs" />
@@ -135,9 +104,6 @@
     <Compile Include="Data\DatabaseEntityBase.cs" />
     <Compile Include="Data\UserItemBase.cs" />
     <Compile Include="Weavers\AsyncErrorHandler.cs" />
-    <Compile Include="UI\OAuthUIPage.xaml.cs">
-      <DependentUpon>OAuthUIPage.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Security\OAuth\IOAuth.cs" />
     <Compile Include="Business\Map\CustomPin.cs" />
     <Compile Include="UI\SourceConverters\ByteArrayToChallengeImageConverter.cs" />
@@ -168,8 +134,50 @@
     <Compile Include="Business\MotionActivity\RewardEligibility\Timer.cs" />
     <Compile Include="Business\SettingsEnums.cs" />
     <Compile Include="UI\Controls\BindablePicker.cs" />
-    <Compile Include="UI\SettingsPageModel.cs" />
     <Compile Include="EnumUtil.cs" />
+    <Compile Include="UI\Pages\StartPage.xaml.cs">
+      <DependentUpon>StartPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Pages\Start\SignInPage.xaml.cs">
+      <DependentUpon>SignInPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Pages\Start\RegistrationPage.xaml.cs">
+      <DependentUpon>RegistrationPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Pages\Start\Main\HomeMasterPage.xaml.cs">
+      <DependentUpon>HomeMasterPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Pages\Start\Main\MainPage.cs" />
+    <Compile Include="UI\Pages\Start\Main\MasterPageItem.cs" />
+    <Compile Include="UI\Pages\Start\OAuthUIPage.xaml.cs">
+      <DependentUpon>OAuthUIPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Pages\Start\Main\Menu\DashboardPage.xaml.cs">
+      <DependentUpon>DashboardPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Pages\Start\Main\Menu\RewardsPage.xaml.cs">
+      <DependentUpon>RewardsPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Pages\Start\Main\Menu\MyTrajectories\TrajectoryDetailsPage.xaml.cs">
+      <DependentUpon>TrajectoryDetailsPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Pages\Start\Main\Menu\MyTrajectories\MyTrajectoriesPage.xaml.cs">
+      <DependentUpon>MyTrajectoriesPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Pages\Start\Main\Menu\Settings\SettingsPage.xaml.cs">
+      <DependentUpon>SettingsPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Pages\Start\Main\Menu\Settings\SettingsPageModel.cs" />
+    <Compile Include="UI\Pages\Start\Main\Home\HomePage.cs" />
+    <Compile Include="UI\Pages\Start\Main\Home\MapPage.xaml.cs">
+      <DependentUpon>MapPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Pages\Start\Main\Home\Challenges\ChallengesPage.xaml.cs">
+      <DependentUpon>ChallengesPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Pages\Start\Main\Home\Challenges\CheckpointDetailsPage.xaml.cs">
+      <DependentUpon>CheckpointDetailsPage.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Business\" />
@@ -191,6 +199,14 @@
     <Folder Include="ServiceAccess\WebServiceObjects\GetChallenges\" />
     <Folder Include="Business\MotionActivity\RewardEligibility\" />
     <Folder Include="UI\Controls\" />
+    <Folder Include="UI\Pages\" />
+    <Folder Include="UI\Pages\Start\" />
+    <Folder Include="UI\Pages\Start\Main\" />
+    <Folder Include="UI\Pages\Start\Main\Menu\" />
+    <Folder Include="UI\Pages\Start\Main\Menu\MyTrajectories\" />
+    <Folder Include="UI\Pages\Start\Main\Menu\Settings\" />
+    <Folder Include="UI\Pages\Start\Main\Home\" />
+    <Folder Include="UI\Pages\Start\Main\Home\Challenges\" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System.Device.Portable">
