@@ -91,6 +91,7 @@ namespace Trace {
 					var client = new WebServerClient();
 					WSResult result = await Task.Run(() => client.LoginWithToken(User.Instance.AuthToken));
 					if(result.success) {
+						User.Instance.Name = result.payload.name;
 						User.Instance.Email = result.payload.email;
 						User.Instance.PictureURL = result.payload.picture;
 						SQLiteDB.Instance.SaveItem(User.Instance);

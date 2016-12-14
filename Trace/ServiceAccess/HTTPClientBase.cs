@@ -1,4 +1,5 @@
-﻿using System.Net.Http;
+﻿using System;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using ModernHttpClient;
@@ -73,7 +74,7 @@ namespace Trace {
 					response = await PostAsync(uri, data);
 					response.EnsureSuccessStatusCode();
 				}
-				catch(HttpRequestException e) {
+				catch(Exception e) {
 					return await Task.Run(() => JObject.FromObject(new WSResult { success = false, error = e.Message }));
 				}
 

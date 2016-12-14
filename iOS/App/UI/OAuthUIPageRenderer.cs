@@ -20,7 +20,7 @@ namespace Trace.iOS {
 			// Retrieve any stored account information
 			var accounts = AccountStore.Create().FindAccountsForService(OAuthConfigurationManager.KeystoreService);
 			var account = accounts.FirstOrDefault();
-			//if(account != null) AccountStore.Create().Delete(account, OAuthConfigurationManager.KeystoreService);
+			//if(account != null) AccountStore.Create().Delete(account, OAuthConfigurationManager.KeystoreService); var _ = SQLiteDB.Instance;
 
 			if(account == null) {
 				if(!isShown) {

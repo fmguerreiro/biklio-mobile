@@ -22,7 +22,7 @@
 				Aspect="AspectFit">
 			</Image>
 			<Button
-				Text="Register New Account"
+				Text="Register"
 				Clicked="OnRegister" />
 			<Button
 				Text="Sign In"

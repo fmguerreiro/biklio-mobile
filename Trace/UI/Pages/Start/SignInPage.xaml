@@ -65,7 +65,7 @@
 			</StackLayout>
 			<StackLayout
 				Spacing="-13"
-				TranslationX="7">
+				TranslationX="6">
 				<Button
 					Text="Google Login"
 					Image="google_login_button"

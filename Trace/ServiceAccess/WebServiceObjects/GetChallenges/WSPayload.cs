@@ -19,9 +19,10 @@
 		// Ids of challenges that have expired.
 		public long[] canceledChallenges { get; set; }
 
-		// Information received by OAuth providers when logging in.
+		// Information passed by OAuth providers to the WS, which passes it to the user after sending the token.
 		public string id;
-		public string picture;
+		public string name;
 		public string email;
+		public string picture;
 	}
 }

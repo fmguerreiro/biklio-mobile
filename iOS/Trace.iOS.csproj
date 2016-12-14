@@ -256,6 +256,8 @@
     <BundleResource Include="Resources\walking.png" />
     <BundleResource Include="Resources\facebook_login_button.png" />
     <BundleResource Include="Resources\google_login_button.png" />
+    <BundleResource Include="Resources\photo_circle_mask.png" />
+    <BundleResource Include="Resources\twitter_login_button.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
   <Import Project="..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" />

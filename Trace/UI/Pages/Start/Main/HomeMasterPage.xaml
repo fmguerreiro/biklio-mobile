@@ -10,6 +10,30 @@
 	<ContentPage.Content>
 		<StackLayout
 			VerticalOptions="FillAndExpand">
+			<StackLayout
+				Orientation="Horizontal"
+				Grid.ColumnSpan="2">
+				<Grid>
+					<Image
+						Source="{Binding PictureURL}"
+						WidthRequest="48"
+						HeightRequest="48" />
+					<Image
+						Source="photo_circle_mask"
+						WidthRequest="48"
+						HeightRequest="48" />
+				</Grid>
+				<StackLayout
+					Orientation="Vertical">
+					<Label
+						Text="{Binding Name}"
+						TextColor="#2B84D3" />
+					<Label
+						Text="{Binding Email}"
+						FontSize="Small"
+						TextColor="Gray" />
+				</StackLayout>
+			</StackLayout>
 			<ListView
 				BackgroundColor="#2B84D3"
 				x:Name="listView"

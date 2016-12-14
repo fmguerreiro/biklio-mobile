@@ -43,6 +43,8 @@ namespace Trace {
 				TargetType = typeof(StartPage)
 			});
 			listView.ItemsSource = masterPageItems;
+
+			BindingContext = User.Instance;
 		}
 	}
 }

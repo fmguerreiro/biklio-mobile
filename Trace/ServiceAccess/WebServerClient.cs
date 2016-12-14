@@ -84,7 +84,7 @@ namespace Trace {
 			var output = await PostAsyncFormURL(WebServerConstants.LOGIN_ENDPOINT, request);
 			Debug.WriteLine("LoginWithToken() - result: " + output.ToString());
 			var result = output.ToObject<WSResult>();
-			User.Instance.AuthToken = result.token;
+			if(!string.IsNullOrWhiteSpace(result.token)) User.Instance.AuthToken = result.token;
 
 			return result;
 		}
@@ -109,7 +109,7 @@ namespace Trace {
 			JObject output = await GetAsyncFormURL(WebServerConstants.FETCH_CHALLENGES_ENDPOINT, query);
 			Debug.WriteLine("FetchChallenges() - response: " + output.ToString());
 			WSResult result = output.ToObject<WSResult>();
-			User.Instance.AuthToken = result.token;
+			if(!string.IsNullOrWhiteSpace(result.token)) User.Instance.AuthToken = result.token;
 			return result;
 		}
 
