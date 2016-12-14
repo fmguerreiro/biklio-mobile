@@ -2,8 +2,10 @@
 
 	public class GoogleOAuthConfig : OAuthConfig {
 
+		public override string Type { get { return "google"; } }
+
 		// OAuth for Google login
-		public override string ClientId { get { return "***REMOVED***-289qb3qjig6gn659k939iqm11csrdo8j.apps.googleusercontent.com"; } }
+		public override string ClientId { get { return "***REMOVED***l.apps.googleusercontent.com"; } }
 		public override string ClientSecret { get { return "***REMOVED***"; } }
 
 		// These values do not need changing

@@ -4,7 +4,7 @@
 
 		public static readonly string ENDPOINT = "http://146.193.41.50:8080/trace";
 
-		public static readonly string LOGIN_ENDPOINT = ENDPOINT + "/auth/login";
+		public static readonly string LOGIN_ENDPOINT = ENDPOINT + "/auth/v2/login";
 
 		public static readonly string LOGOUT_ENDPOINT = ENDPOINT + "/auth/logout";
 

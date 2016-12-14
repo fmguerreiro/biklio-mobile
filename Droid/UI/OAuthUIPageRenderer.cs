@@ -60,7 +60,7 @@ namespace Trace.Droid {
 					// Deserialize the data and store it in the account store
 					// The users email address will be used to identify data in SQLite
 					string userJson = response.GetResponseText();
-					GoogleOAuthUser user = JsonConvert.DeserializeObject<GoogleOAuthUser>(userJson);
+					OAuthUser user = JsonConvert.DeserializeObject<OAuthUser>(userJson);
 					e.Account.Username = user.Email;
 					AccountStore.Create(Context).Save(e.Account, OAuthConfigurationManager.KeystoreService);
 

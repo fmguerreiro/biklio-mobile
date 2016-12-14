@@ -72,7 +72,7 @@ namespace Trace.Droid {
 			base.OnElementPropertyChanged(sender, e);
 
 			if(e.PropertyName.Equals("VisibleRegion") && !isDrawn) {
-				map.Clear();
+				map?.Clear();
 
 				foreach(CustomPin pin in customPins) {
 					var marker = new MarkerOptions();

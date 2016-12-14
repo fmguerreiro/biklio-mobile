@@ -60,25 +60,29 @@ namespace Trace {
 				new KeyValuePair<string, string>("username", username),
 				new KeyValuePair<string, string>("password", password)
 			});
+			Debug.WriteLine("LoginWithCredentials() - request: " + request.ReadAsStringAsync().Result);
 			var output = await PostAsyncFormURL(WebServerConstants.LOGIN_ENDPOINT, request);
-			Debug.WriteLine("NativeLogin(): " + output);
+			Debug.WriteLine("LoginWithCredentials() - response: " + output);
 			return output.ToObject<WSResult>();
 		}
 
 
 		/// <summary>
 		/// Login using the user's authentication token.
-		/// Message request content is of type: 'application/x-www-form-urlencoded'
+		/// Message request content is of type: 'application/x-www-form-urlencoded'.
+		/// The request parameter is a JSON token with attributes: 'token' and 'type' (e.g., google or facebook).
 		/// WS response is in JSON format.
 		/// </summary>
 		/// <returns><c>string</c>, an authentication token, or an error if the authentication failed.</returns>
 		/// <param name="authToken">Authentication token.</param>
 		public async Task<WSResult> LoginWithToken(string authToken) {
+			var token = new WSFederatedToken { token = authToken, type = OAuthConfigurationManager.Type };
 			var request = new FormUrlEncodedContent(new[] {
-				new KeyValuePair<string, string>("token", authToken)
+				new KeyValuePair<string, string>("token", JsonConvert.SerializeObject(token))
 			});
-
+			Debug.WriteLine("LoginWithToken() - request: " + request.ReadAsStringAsync().Result);
 			var output = await PostAsyncFormURL(WebServerConstants.LOGIN_ENDPOINT, request);
+			Debug.WriteLine("LoginWithToken() - result: " + output.ToString());
 			var result = output.ToObject<WSResult>();
 			User.Instance.AuthToken = result.token;
 
@@ -101,12 +105,11 @@ namespace Trace {
 				new KeyValuePair<string, string>("radius", radiusInKM.ToString()),
 				new KeyValuePair<string, string>("version", version.ToString())
 			});
-			//Debug.WriteLine(query.ReadAsStringAsync().Result);
+			Debug.WriteLine("FetchChallenges() - request: " + query.ReadAsStringAsync().Result);
 			JObject output = await GetAsyncFormURL(WebServerConstants.FETCH_CHALLENGES_ENDPOINT, query);
-			//Debug.WriteLine(output.Result.ToString());
+			Debug.WriteLine("FetchChallenges() - response: " + output.ToString());
 			WSResult result = output.ToObject<WSResult>();
 			User.Instance.AuthToken = result.token;
-
 			return result;
 		}
 

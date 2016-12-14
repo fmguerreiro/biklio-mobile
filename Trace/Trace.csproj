@@ -113,7 +113,6 @@
     <Compile Include="Security\OAuth\OAuthConfig.cs" />
     <Compile Include="Security\OAuth\Facebook\FacebookOAuthConfig.cs" />
     <Compile Include="Security\OAuth\Google\GoogleOAuthConfig.cs" />
-    <Compile Include="Security\OAuth\Google\GoogleOAuthUser.cs" />
     <Compile Include="ServiceAccess\WebServiceObjects\SubmitRoute\WSAttributes.cs" />
     <Compile Include="ServiceAccess\WebServiceObjects\GetChallenges\WSChallenge.cs" />
     <Compile Include="ServiceAccess\WebServiceObjects\GetChallenges\WSCondition.cs" />
@@ -178,6 +177,8 @@
     <Compile Include="UI\Pages\Start\Main\Home\Challenges\CheckpointDetailsPage.xaml.cs">
       <DependentUpon>CheckpointDetailsPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Security\OAuth\OAuthUser.cs" />
+    <Compile Include="ServiceAccess\WebServiceObjects\WSFederatedToken.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Business\" />
@@ -271,6 +272,27 @@
     </Reference>
     <Reference Include="Xamarin.Forms.Maps">
       <HintPath>..\packages\Xamarin.Forms.Maps.2.3.3.175\lib\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+Xamarin.iOS10\Xamarin.Forms.Maps.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Threading.Tasks">
+      <HintPath>..\packages\Microsoft.Bcl.Async.1.0.168\lib\portable-net45+win8+wp8+wpa81\Microsoft.Threading.Tasks.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Threading.Tasks.Extensions">
+      <HintPath>..\packages\Microsoft.Bcl.Async.1.0.168\lib\portable-net45+win8+wp8+wpa81\Microsoft.Threading.Tasks.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="Google.Apis.Core">
+      <HintPath>..\packages\Google.Apis.Core.1.19.0\lib\portable-net45+sl50+netcore45+wpa81+wp8\Google.Apis.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Google.Apis.Auth">
+      <HintPath>..\packages\Google.Apis.Auth.1.19.0\lib\portable-net45+sl50+netcore45+wpa81+wp8\Google.Apis.Auth.dll</HintPath>
+    </Reference>
+    <Reference Include="Zlib.Portable">
+      <HintPath>..\packages\Zlib.Portable.Signed.1.11.0\lib\portable-net4+sl5+wp8+win8+wpa81+MonoTouch+MonoAndroid\Zlib.Portable.dll</HintPath>
+    </Reference>
+    <Reference Include="Google.Apis">
+      <HintPath>..\packages\Google.Apis.1.19.0\lib\portable-net45+sl50+netcore45+wpa81+wp8\Google.Apis.dll</HintPath>
+    </Reference>
+    <Reference Include="Google.Apis.Oauth2.v2">
+      <HintPath>..\packages\Google.Apis.Oauth2.v2.1.19.0.672\lib\portable-net45+netcore45+wpa81+wp8\Google.Apis.Oauth2.v2.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

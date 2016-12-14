@@ -20,6 +20,7 @@ namespace Trace.iOS {
 			// Retrieve any stored account information
 			var accounts = AccountStore.Create().FindAccountsForService(OAuthConfigurationManager.KeystoreService);
 			var account = accounts.FirstOrDefault();
+			//if(account != null) AccountStore.Create().Delete(account, OAuthConfigurationManager.KeystoreService);
 
 			if(account == null) {
 				if(!isShown) {
@@ -41,8 +42,8 @@ namespace Trace.iOS {
 			}
 			else {
 				if(!isShown) {
-					User.Instance.Email = User.Instance.Username = account.Username;
-					SQLiteDB.Instance.SaveItem(User.Instance);
+					SQLiteDB.Instance.InstantiateUser(account.Username);
+					//SQLiteDB.Instance.SaveItem(User.Instance);
 					SignInPage.SuccessfulOAuthLoginAction.Invoke();
 				}
 			}
@@ -52,19 +53,26 @@ namespace Trace.iOS {
 			if(e.IsAuthenticated) {
 				// If the user is authenticated, request their basic user data
 				var request = new OAuth2Request("GET", new Uri(OAuthConfigurationManager.UserInfoUrl), null, e.Account);
+
 				var response = await request.GetResponseAsync();
+				Debug.WriteLine("OAuth response url: " + response.ToString());
 				if(response != null) {
+
 					// Deserialize the data and store it in the account store
 					// The users email address will be used to identify data in SQLite DB
 					string userJson = response.GetResponseText();
-					Debug.WriteLine("OAuth - login with user: " + userJson);
-					GoogleOAuthUser user = JsonConvert.DeserializeObject<GoogleOAuthUser>(userJson);
-					e.Account.Username = user.Email;
+					Debug.WriteLine("OAuth response body: " + userJson);
+					OAuthUser user = JsonConvert.DeserializeObject<OAuthUser>(userJson);
+
+					// Store the credentials in keychain
+					User.Instance.Username = e.Account.Username = user.Id;
 					AccountStore.Create().Save(e.Account, OAuthConfigurationManager.KeystoreService);
 
-					// Initialize the user
-					User.Instance.Username = User.Instance.Email = user.Email;
+					// Store the user
+					var authToken = response.ResponseUri.Query.Split(new string[] { "?access_token=" }, StringSplitOptions.RemoveEmptyEntries)[0];
+					User.Instance.AuthToken = authToken;
 					SQLiteDB.Instance.SaveItem(User.Instance);
+					SQLiteDB.Instance.InstantiateUser(User.Instance.Username);
 				}
 			}
 			// If the user is logged in navigate to the Home page.

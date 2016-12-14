@@ -22,12 +22,13 @@ namespace Trace {
 		public string Username { get; set; } = "";
 		public string Email { get; set; } = "";
 
-		private string authToken = "test";
+		private string authToken = "";
 		public string AuthToken {
 			get { return authToken; }
 			set { if(!string.IsNullOrEmpty(value)) authToken = value; }
 		}
 
+		public string PictureURL { get; set; }
 
 		// The webserver stores several snapshots of the challenge and checkpoint data.
 		// This value is used to tell the webserver the most recent version of the data in the device.

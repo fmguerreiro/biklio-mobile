@@ -5,6 +5,9 @@ using System.Threading.Tasks;
 using SQLite;
 using Xamarin.Auth;
 using Xamarin.Forms;
+using Google.Apis.Oauth2.v2;
+using Google.Apis.Oauth2.v2.Data;
+using Google.Apis.Services;
 
 namespace Trace {
 	/// <summary>
@@ -45,9 +48,10 @@ namespace Trace {
 					DependencyService.Get<DeviceKeychainInterface>().DeleteCredentials();
 
 				// Fetch user information from the database.
-				SQLiteDB.Instance.InstantiateUser(username, result.token);
+				SQLiteDB.Instance.InstantiateUser(username);
+				User.Instance.AuthToken = result.token;
+				SQLiteDB.Instance.SaveItem(User.Instance);
 
-				//await Navigation.PushAsync(new HomePage());
 				Application.Current.MainPage = new MainPage();
 			}
 			else
@@ -62,6 +66,15 @@ namespace Trace {
 		}
 
 
+		//async Task googleLoginAsync() {
+		//	Google.Apis.Oauth2.v2.Oauth2BaseServiceRequest();
+		//	var service = new DiscoveryService(new BaseClientService.Initializer {
+		//		ApplicationName = "Discovery Sample",
+		//		ApiKey = "[YOUR_API_KEY_HERE]",
+		//	});
+		//}
+
+
 		void OnFacebookLogin(object sender, EventArgs e) {
 			// Use a custom renderer to display the Facebook auth UI
 			OAuthConfigurationManager.SetConfig(new FacebookOAuthConfig());
@@ -69,14 +82,24 @@ namespace Trace {
 		}
 
 
+		/// <summary>
+		/// If the OAuthLogin is successful, finish the login by sending the token to Web Server.
+		/// </summary>
 		public static Action SuccessfulOAuthLoginAction {
 			get {
-				return new Action(() => {
-					navigation.PopModalAsync();
-					// Is user logged in?
-					if(!string.IsNullOrEmpty(User.Instance.Email)) {
-						navigation.InsertPageBefore(new HomePage(), navigation.NavigationStack.First());
-						navigation.PopToRootAsync();
+				return new Action(async () => {
+					var client = new WebServerClient();
+					WSResult result = await Task.Run(() => client.LoginWithToken(User.Instance.AuthToken));
+					if(result.success) {
+						User.Instance.Email = result.payload.email;
+						User.Instance.PictureURL = result.payload.picture;
+						SQLiteDB.Instance.SaveItem(User.Instance);
+						await navigation.PopModalAsync();
+						Application.Current.MainPage = new MainPage();
+					}
+					else {
+						await navigation.PopModalAsync();
+						await navigation.NavigationStack.First().DisplayAlert("Error", result.error, "Ok");
 					}
 				});
 			}

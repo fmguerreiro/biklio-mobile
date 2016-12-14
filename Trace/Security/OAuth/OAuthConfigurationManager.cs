@@ -8,6 +8,8 @@
 			instance = config;
 		}
 
+		public static string Type { get { return instance.Type; } }
+
 		public static string ClientId { get { return instance.ClientId; } }
 		public static string ClientSecret { get { return instance.ClientSecret; } }
 

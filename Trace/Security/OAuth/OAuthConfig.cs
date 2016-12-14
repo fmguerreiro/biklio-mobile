@@ -1,6 +1,8 @@
 ﻿namespace Trace {
 	public abstract class OAuthConfig {
 
+		public abstract string Type { get; }
+
 		public abstract string ClientId { get; }
 		public abstract string ClientSecret { get; }
 

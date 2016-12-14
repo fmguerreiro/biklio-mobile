@@ -2,10 +2,10 @@
 
 namespace Trace {
 	/// <summary>
-	/// This is the format of the json object that is sent by the google OAuth API with user information.
+	/// This is the format of the json object that is sent by the OAuth API with user information.
 	/// </summary>
 	[JsonObject]
-	public class GoogleOAuthUser {
+	public class OAuthUser {
 
 		[JsonProperty("id")]
 		public string Id { get; set; }

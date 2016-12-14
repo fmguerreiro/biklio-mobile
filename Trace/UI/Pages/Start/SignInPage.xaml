@@ -54,18 +54,28 @@
 			</Grid>
 			<Button
 				Text="Sign In"
+				BackgroundColor="#2B84D3"
+				TextColor="White"
+				BorderColor="Navy"
 				Clicked="OnLogin" />
 			<StackLayout
 				HeightRequest="1"
 				BackgroundColor="Black"
 				HorizontalOptions="FillAndExpand">
 			</StackLayout>
-			<Button
-				Text="Google Login"
-				Clicked="OnGoogleLogin" />
-			<Button
-				Text="Facebook Login"
-				Clicked="OnFacebookLogin" />
+			<StackLayout
+				Spacing="-13"
+				TranslationX="7">
+				<Button
+					Text="Google Login"
+					Image="google_login_button"
+					Clicked="OnGoogleLogin" />
+				<Button
+					Text="Facebook Login"
+					BorderColor="Black"
+					Image="facebook_login_button"
+					Clicked="OnFacebookLogin" />
+			</StackLayout>
 		</StackLayout>
 	</ContentPage.Content>
 </ContentPage>
