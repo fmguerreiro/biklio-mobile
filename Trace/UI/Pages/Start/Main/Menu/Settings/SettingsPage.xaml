@@ -39,7 +39,8 @@
 					<EntryCell
 						Completed="OnSettingChanged"
 						Label="Age"
-						Text="{Binding User.Age, Mode=TwoWay}" />
+						Text="{Binding User.Age, Mode=TwoWay}">
+					</EntryCell>
 					<ViewCell>
 						<StackLayout
 							Orientation="Horizontal">
@@ -96,13 +97,17 @@
 				<TableSection
 					Title="Information">
 					<TextCell
-						Text="Licenses" />
+						Text="Licenses"
+						Tapped="OnLicensesClicked" />
 					<TextCell
-						Text="Terms of Service" />
+						Text="Terms of Service"
+						Tapped="OnTermsOfServiceClicked" />
 					<TextCell
-						Text="Privacy Policy" />
+						Text="Privacy Policy"
+						Tapped="OnPrivacyPolicyClicked" />
 					<TextCell
-						Text="About Us" />
+						Text="About Us"
+						Tapped="OnAboutUsClicked" />
 				</TableSection>
 			</TableRoot>
 		</TableView>

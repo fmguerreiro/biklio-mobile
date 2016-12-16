@@ -5,8 +5,7 @@
 	Padding="0,40,0,0"
 	x:Class="Trace.HomeMasterPage"
 	Title="Menu"
-	Icon="menu.png"
-	NavigationPage.HasBackButton="False">
+	Icon="menu.png">
 	<ContentPage.Content>
 		<StackLayout
 			VerticalOptions="FillAndExpand">

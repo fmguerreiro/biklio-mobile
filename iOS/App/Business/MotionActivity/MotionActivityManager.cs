@@ -10,6 +10,7 @@ namespace Trace.iOS {
 
 	public class MotionActivityManager : IMotionActivityManager {
 
+
 		CMMotionActivityManager motionActivityMgr;
 
 
@@ -35,14 +36,14 @@ namespace Trace.iOS {
 			WalkingDuration = 0;
 			RunningDuration = 0;
 			CyclingDuration = 0;
-			AutomativeDuration = 0;
+			DrivingDuration = 0;
 			NSOperationQueue.MainQueue.Dispose();
 			ActivityEvents.Clear();
 		}
 
 
 		public override ActivityType GetMostCommonActivity() {
-			long[] activityDurations = { WalkingDuration, RunningDuration, CyclingDuration, AutomativeDuration };
+			long[] activityDurations = { WalkingDuration, RunningDuration, CyclingDuration, DrivingDuration };
 			long max = activityDurations.Max();
 
 			if(max == 0)
@@ -53,7 +54,7 @@ namespace Trace.iOS {
 				return ActivityType.Running;
 			if(max == WalkingDuration)
 				return ActivityType.Walking;
-			return AutomativeDuration > 0 ? ActivityType.Automative : ActivityType.Unknown;
+			return DrivingDuration > 0 ? ActivityType.Automative : ActivityType.Unknown;
 		}
 
 
@@ -194,16 +195,16 @@ namespace Trace.iOS {
 		public void ActivityToDuration(ActivityType type, long duration) {
 			switch(type) {
 				case ActivityType.Walking:
-					WalkingDuration += duration;
+					WalkingDuration += (int) duration;
 					break;
 				case ActivityType.Running:
-					RunningDuration += duration;
+					RunningDuration += (int) duration;
 					break;
 				case ActivityType.Cycling:
-					CyclingDuration += duration;
+					CyclingDuration += (int) duration;
 					break;
 				case ActivityType.Automative:
-					AutomativeDuration += duration;
+					DrivingDuration += (int) duration;
 					break;
 			}
 		}

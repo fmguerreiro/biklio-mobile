@@ -19,6 +19,9 @@ namespace Trace.Droid {
 
 			global::Xamarin.Forms.Forms.Init(this, bundle);
 
+
+			OxyPlot.Xamarin.Forms.Platform.Android.PlotViewRenderer.Init();
+
 			// Initialize map
 			Xamarin.FormsMaps.Init(this, bundle);
 

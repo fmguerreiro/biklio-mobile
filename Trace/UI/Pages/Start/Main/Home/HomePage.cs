@@ -6,13 +6,6 @@ using Xamarin.Forms;
 namespace Trace {
 	public class HomePage : TabbedPage {
 		private const string PAGE_TITLE = "Home";
-		private const string MENU = "Menu";
-		private const string MY_REWARDS = "My Rewards";
-		private const string DASHBOARD = "Dashboard";
-		private const string MY_ROUTES = "My Routes";
-		private const string SETTINGS = "Settings";
-		private const string LOGOUT = "Logout";
-		private const string CANCEL = "Back";
 
 		public HomePage() {
 			Title = PAGE_TITLE;
@@ -25,6 +18,11 @@ namespace Trace {
 			var challengesPage = new ChallengesPage(mapPage);
 			Children.Add(challengesPage);
 			Children.Add(mapPage);
+
+			var giftMenuButton = new ToolbarItem("Rewards", "reward", async () => {
+				await Navigation.PushAsync(new RewardsPage());
+			});
+			ToolbarItems.Add(giftMenuButton);
 
 			// Add a Menu button to the page header to navigate the app.
 			//ToolbarItems.Add(new ToolbarItem(MENU, "", async () => {
@@ -57,7 +55,7 @@ namespace Trace {
 		}
 
 		async Task OnLogoutClicked() {
-			bool isLogout = await DisplayAlert(LOGOUT, "Are you sure?", "Yes", "No");
+			bool isLogout = await DisplayAlert("Logout", "Are you sure?", "Yes", "No");
 			if(isLogout) {
 				User.Instance = null;
 				RewardEligibilityManager.Instance = null;

@@ -8,9 +8,9 @@ namespace Trace {
 		public SettingsPage() {
 			InitializeComponent();
 			//list.Add($"New Spot {DateTime.Now.ToLocalTime()}");
-
 		}
 
+		// TODO: need to perform input validation
 		void OnSettingChanged(object sender, EventArgs e) {
 			SQLiteDB.Instance.SaveItem(User.Instance);
 		}
@@ -36,6 +36,26 @@ namespace Trace {
 				case ("Delete"): SQLiteDB.Instance.DropAllTables(); break;
 				default: return;
 			}
+		}
+
+		// TODO OnLicensesClicked
+		async void OnLicensesClicked(object sender, EventArgs e) {
+			await DisplayAlert("Error", "Not yet implemented.", "Ok");
+		}
+
+		// TODO OnTermsOfServiceClicked
+		async void OnTermsOfServiceClicked(object sender, EventArgs e) {
+			await DisplayAlert("Error", "Not yet implemented.", "Ok");
+		}
+
+		// TODO OnPrivacyPolicyClicked
+		async void OnPrivacyPolicyClicked(object sender, EventArgs e) {
+			await DisplayAlert("Error", "Not yet implemented.", "Ok");
+		}
+
+		// TODO OnAboutUsClicked
+		async void OnAboutUsClicked(object sender, EventArgs e) {
+			await DisplayAlert("Error", "Not yet implemented.", "Ok");
 		}
 	}
 }

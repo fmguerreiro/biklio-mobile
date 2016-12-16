@@ -14,14 +14,14 @@ namespace Trace.Droid {
 			WalkingDuration = 0;
 			RunningDuration = 0;
 			CyclingDuration = 0;
-			AutomativeDuration = 0;
+			DrivingDuration = 0;
 		}
 
 		private void reset() {
 			WalkingDuration = 0;
 			RunningDuration = 0;
 			CyclingDuration = 0;
-			AutomativeDuration = 0;
+			DrivingDuration = 0;
 			ActivityEvents.Clear();
 		}
 
@@ -187,7 +187,7 @@ namespace Trace.Droid {
 					CyclingDuration += duration;
 					break;
 				case ActivityType.Automative:
-					AutomativeDuration += duration;
+					DrivingDuration += duration;
 					break;
 			}
 		}

@@ -19,6 +19,10 @@ namespace Trace {
 		public long TotalDistanceMeters { get; set; }
 
 		public string MostCommonActivity { get; set; }
+		public int TimeSpentWalking { get; set; }
+		public int TimeSpentRunning { get; set; }
+		public int TimeSpentCycling { get; set; }
+		public int TimeSpentDriving { get; set; }
 
 		IEnumerable<TrajectoryPoint> points;
 		[Ignore]
@@ -63,10 +67,50 @@ namespace Trace {
 			}
 		}
 
+		// in seconds
 		public long ElapsedTime() {
 			return EndTime - StartTime;
 		}
 
+
+		public int CalculateWalkingDistance() { return (int) ((TotalDistanceMeters * TimeSpentWalking) / ElapsedTime()); }
+		public int CalculateRunningDistance() { return (int) ((TotalDistanceMeters * TimeSpentRunning) / ElapsedTime()); }
+		public int CalculateCyclingDistance() { return (int) ((TotalDistanceMeters * TimeSpentCycling) / ElapsedTime()); }
+		public int CalculateDrivingDistance() { return (int) ((TotalDistanceMeters * TimeSpentDriving) / ElapsedTime()); }
+
+
+		// In kcal. Source: http://www.ideafit.com/fitness-library/calculating-caloric-expenditure-0
+		public int CalculateCalories() {
+			return CalculateWalkingCalories() + CalculateCyclingCalories() + CalculateRunningCalories() + CalculateDrivingCalories();
+		}
+
+		public int CalculateWalkingCalories() {
+			var speed = 83.1494; // avg. walking speed (m/min)
+			var grade = 0.1; // land slope - we assume a slight angle
+			var formula = (0.1 * speed) + (1.8 * speed * grade) + 3.5; // (kg/m)
+			var total = (formula * User.Instance.Weight / 1000) * 5 * (ElapsedTime() / 60);
+			return (int) total;
+		}
+
+		public int CalculateRunningCalories() {
+			var speed = 210.701; // avg. running speed (m/min)
+			var grade = 0.1;
+			var formula = (0.2 * speed) + (0.9 * speed * grade) + 3.5; // (ml/kg/m)
+			var total = (formula * User.Instance.Weight / 1000) * 5 * (ElapsedTime() / 60);
+			return (int) total;
+		}
+
+		public int CalculateCyclingCalories() {
+			int workRate = 250; //
+			var formula = (1.8 * workRate) / User.Instance.Weight + 7;
+			var total = (formula * User.Instance.Weight / 1000) * 5 * (ElapsedTime() / 60);
+			return (int) total;
+		}
+
+		public int CalculateDrivingCalories() {
+			var total = (3.5 * User.Instance.Weight / 1000) * 5 * (ElapsedTime() / 60);
+			return (int) total;
+		}
 
 		public override string ToString() {
 			return string.Format("[Trajectory Id->{0} UserId->{1} StartTime->{2} AvgSpeed->{3} TotalDistance->{4} MostCommonActivity->{5}]",

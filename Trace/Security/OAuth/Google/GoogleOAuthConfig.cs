@@ -5,7 +5,7 @@
 		public override string Type { get { return "google"; } }
 
 		// OAuth for Google login
-		public override string ClientId { get { return "***REMOVED***l.apps.googleusercontent.com"; } }
+		public override string ClientId { get { return "605414852346-72spsqol42rol2v432e1sorq52vojdkc.apps.googleusercontent.com"; } }
 		public override string ClientSecret { get { return "***REMOVED***"; } }
 
 		// These values do not need changing

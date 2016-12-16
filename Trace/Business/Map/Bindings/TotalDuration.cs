@@ -1,5 +1,4 @@
-﻿using System;
-namespace Trace {
+﻿namespace Trace {
 	public class TotalDuration {
 
 		public int Hours { get; set; }

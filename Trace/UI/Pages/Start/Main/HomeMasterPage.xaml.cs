@@ -10,7 +10,6 @@ namespace Trace {
 
 		public HomeMasterPage() {
 			InitializeComponent();
-
 			var masterPageItems = new List<MasterPageItem>();
 			masterPageItems.Add(new MasterPageItem {
 				Title = "Home",
@@ -19,7 +18,7 @@ namespace Trace {
 			});
 			masterPageItems.Add(new MasterPageItem {
 				Title = "Rewards",
-				IconSource = "rewards.png",
+				IconSource = "reward_white.png",
 				TargetType = typeof(RewardsPage)
 			});
 			masterPageItems.Add(new MasterPageItem {

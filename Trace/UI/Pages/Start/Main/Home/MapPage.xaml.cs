@@ -58,7 +58,7 @@ namespace Trace {
 				Trajectory trajectory = await Task.Run(() => createTrajectory(distanceInMeters));
 
 				// Save trajectory only if it is of relevant size.
-				if(trajectory.TotalDistanceMeters > MIN_SIZE_TRAJECTORY) {
+				if(distanceInMeters > MIN_SIZE_TRAJECTORY) {
 					// TODO offload this out of UI thread
 					// Calculate Motion activities along the trajectory.
 					IList<ActivityEvent> activityEvents = DependencyService.Get<IMotionActivityManager>().ActivityEvents;
@@ -152,6 +152,10 @@ namespace Trace {
 				MaxSpeed = (float) Locator.MaxSpeed,
 				TotalDistanceMeters = (long) distanceInMeters,
 				MostCommonActivity = DependencyService.Get<IMotionActivityManager>().GetMostCommonActivity().ToString(),
+				TimeSpentWalking = DependencyService.Get<IMotionActivityManager>().WalkingDuration,
+				TimeSpentRunning = DependencyService.Get<IMotionActivityManager>().RunningDuration,
+				TimeSpentCycling = DependencyService.Get<IMotionActivityManager>().CyclingDuration,
+				TimeSpentDriving = DependencyService.Get<IMotionActivityManager>().DrivingDuration
 				//Points = CustomMap.RouteCoordinates
 				//PointsJSON = JsonConvert.SerializeObject(CustomMap.RouteCoordinates)
 			};

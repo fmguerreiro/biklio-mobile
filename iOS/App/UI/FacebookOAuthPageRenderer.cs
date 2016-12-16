@@ -8,10 +8,10 @@ using System;
 using Newtonsoft.Json;
 using System.Diagnostics;
 
-[assembly: ExportRenderer(typeof(OAuthUIPage), typeof(OAuthUIPageRenderer))]
+[assembly: ExportRenderer(typeof(FacebookOAuthUIPage), typeof(FacebookOAuthPageRenderer))]
 namespace Trace.iOS {
 
-	public class OAuthUIPageRenderer : PageRenderer {
+	public class FacebookOAuthPageRenderer : PageRenderer {
 		bool isShown;
 
 		public override void ViewDidAppear(bool animated) {
@@ -20,7 +20,7 @@ namespace Trace.iOS {
 			// Retrieve any stored account information
 			var accounts = AccountStore.Create().FindAccountsForService(OAuthConfigurationManager.KeystoreService);
 			var account = accounts.FirstOrDefault();
-			//if(account != null) AccountStore.Create().Delete(account, OAuthConfigurationManager.KeystoreService); var _ = SQLiteDB.Instance;
+			//if(account != null) { var _ = SQLiteDB.Instance; _.DropAllTables(); AccountStore.Create().Delete(account, OAuthConfigurationManager.KeystoreService); }
 
 			if(account == null) {
 				if(!isShown) {
@@ -68,16 +68,24 @@ namespace Trace.iOS {
 					User.Instance.Username = e.Account.Username = user.Id;
 					AccountStore.Create().Save(e.Account, OAuthConfigurationManager.KeystoreService);
 
-					// Store the user
+					// Check if the token was received.
 					var authToken = response.ResponseUri.Query.Split(new string[] { "?access_token=" }, StringSplitOptions.RemoveEmptyEntries)[0];
+					if(string.IsNullOrWhiteSpace(authToken)) {
+						SignInPage.UnsuccessfulOAuthLoginAction.Invoke();
+						return;
+					}
+
+					// Finally, store the user.
 					User.Instance.AuthToken = authToken;
 					SQLiteDB.Instance.SaveItem(User.Instance);
 					SQLiteDB.Instance.InstantiateUser(User.Instance.Username);
+					// If the user is logged in navigate to the Home page.
+					// Otherwise allow another login attempt.
+					SignInPage.SuccessfulOAuthLoginAction.Invoke();
+					return;
 				}
+				SignInPage.UnsuccessfulOAuthLoginAction.Invoke();
 			}
-			// If the user is logged in navigate to the Home page.
-			// Otherwise allow another login attempt.
-			SignInPage.SuccessfulOAuthLoginAction.Invoke();
 		}
 	}
 }

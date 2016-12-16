@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using Plugin.Geolocator;
+using Plugin.Geolocator.Abstractions;
 using Xamarin.Forms.Maps;
 
 namespace Trace {
@@ -31,15 +32,18 @@ namespace Trace {
 				await locator.StopListeningAsync();
 
 			locator.DesiredAccuracy = LOCATOR_ACCURACY;
-			locator.AllowsBackgroundUpdates = true;
-			locator.PausesLocationUpdatesAutomatically = false;
+			var locationSettings = new ListenerSettings() {
+				AllowBackgroundUpdates = true,
+				PauseLocationUpdatesAutomatically = true,
+				//ListenForSignificantChanges = true
+			};
 
 			// Get first position
 			var position = await locator.GetPositionAsync(timeoutMilliseconds: LOCATOR_TIMEOUT);
 			UpdateMap(position);
 
 			// Listen to position changes and update map
-			await locator.StartListeningAsync(minTime: 5000, minDistance: 15);
+			await locator.StartListeningAsync(minTime: 5000, minDistance: 15, includeHeading: false, settings: locationSettings);
 			locator.PositionChanged += (sender, e) => {
 				if(IsTrackingInProgress) {
 					UpdateMap(e.Position);
@@ -53,7 +57,7 @@ namespace Trace {
 		private void UpdateMap(Plugin.Geolocator.Abstractions.Position position) {
 			Map.MoveToRegion(
 				MapSpan.FromCenterAndRadius(
-					new Position(position.Latitude, position.Longitude), Distance.FromKilometers(1)));
+					new Xamarin.Forms.Maps.Position(position.Latitude, position.Longitude), Distance.FromKilometers(1)));
 		}
 	}
 }

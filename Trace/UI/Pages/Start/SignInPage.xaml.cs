@@ -62,7 +62,7 @@ namespace Trace {
 		void OnGoogleLogin(object sender, EventArgs e) {
 			// Use a custom renderer to display the Google auth UI
 			OAuthConfigurationManager.SetConfig(new GoogleOAuthConfig());
-			Navigation.PushModalAsync(new OAuthUIPage());
+			Navigation.PushModalAsync(new GoogleOAuthUIPage());
 		}
 
 
@@ -78,7 +78,7 @@ namespace Trace {
 		void OnFacebookLogin(object sender, EventArgs e) {
 			// Use a custom renderer to display the Facebook auth UI
 			OAuthConfigurationManager.SetConfig(new FacebookOAuthConfig());
-			Navigation.PushModalAsync(new OAuthUIPage());
+			Navigation.PushModalAsync(new FacebookOAuthUIPage());
 		}
 
 
@@ -95,13 +95,26 @@ namespace Trace {
 						User.Instance.Email = result.payload.email;
 						User.Instance.PictureURL = result.payload.picture;
 						SQLiteDB.Instance.SaveItem(User.Instance);
-						await navigation.PopModalAsync();
+						//await navigation.PopModalAsync();
 						Application.Current.MainPage = new MainPage();
 					}
 					else {
 						await navigation.PopModalAsync();
 						await navigation.NavigationStack.First().DisplayAlert("Error", result.error, "Ok");
 					}
+				});
+			}
+		}
+
+
+		/// <summary>
+		/// If the OAuthLogin is unsuccessful, simply come back to sign-in page.
+		/// </summary>
+		public static Action UnsuccessfulOAuthLoginAction {
+			get {
+				return new Action(async () => {
+					await navigation.PopModalAsync();
+					await navigation.NavigationStack.First().DisplayAlert("Error", "Failed to sign-in with the third-party provider.", "Ok");
 				});
 			}
 		}

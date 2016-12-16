@@ -7,11 +7,12 @@ using Xamarin.Forms;
 using Xamarin.Forms.Platform.Android;
 using Trace;
 using Trace.Droid;
+using System.Diagnostics;
 
-[assembly: ExportRenderer(typeof(OAuthUIPage), typeof(OAuthUIPageRenderer))]
+[assembly: ExportRenderer(typeof(FacebookOAuthUIPage), typeof(FacebookOAuthPageRenderer))]
 namespace Trace.Droid {
 
-	public class OAuthUIPageRenderer : PageRenderer {
+	public class FacebookOAuthPageRenderer : PageRenderer {
 		bool isShown;
 
 		protected override void OnElementChanged(ElementChangedEventArgs<Page> e) {
@@ -44,8 +45,8 @@ namespace Trace.Droid {
 			}
 			else {
 				if(!isShown) {
-					User.Instance.Email = User.Instance.Username = account.Username;
-					SQLiteDB.Instance.SaveItem(User.Instance);
+					SQLiteDB.Instance.InstantiateUser(account.Username);
+					//SQLiteDB.Instance.SaveItem(User.Instance);
 					SignInPage.SuccessfulOAuthLoginAction.Invoke();
 				}
 			}
@@ -55,23 +56,39 @@ namespace Trace.Droid {
 			if(e.IsAuthenticated) {
 				// If the user is authenticated, request their basic user data
 				var request = new OAuth2Request("GET", new Uri(OAuthConfigurationManager.UserInfoUrl), null, e.Account);
+
 				var response = await request.GetResponseAsync();
+				System.Diagnostics.Debug.WriteLine("OAuth response url: " + response.ToString());
 				if(response != null) {
+
 					// Deserialize the data and store it in the account store
-					// The users email address will be used to identify data in SQLite
+					// The users email address will be used to identify data in SQLite DB
 					string userJson = response.GetResponseText();
+					System.Diagnostics.Debug.WriteLine("OAuth response body: " + userJson);
 					OAuthUser user = JsonConvert.DeserializeObject<OAuthUser>(userJson);
-					e.Account.Username = user.Email;
+
+					// Store the credentials in keychain
+					User.Instance.Username = e.Account.Username = user.Id;
 					AccountStore.Create(Context).Save(e.Account, OAuthConfigurationManager.KeystoreService);
 
-					// Initialize the user
-					User.Instance.Username = User.Instance.Email = user.Email;
+					// Check if the token was received.
+					var authToken = response.ResponseUri.Query.Split(new string[] { "?access_token=" }, StringSplitOptions.RemoveEmptyEntries)[0];
+					if(string.IsNullOrWhiteSpace(authToken)) {
+						SignInPage.UnsuccessfulOAuthLoginAction.Invoke();
+						return;
+					}
+
+					// Finally, store the user.
+					User.Instance.AuthToken = authToken;
 					SQLiteDB.Instance.SaveItem(User.Instance);
+					SQLiteDB.Instance.InstantiateUser(User.Instance.Username);
+					// If the user is logged in navigate to the Home page.
+					// Otherwise allow another login attempt.
+					SignInPage.SuccessfulOAuthLoginAction.Invoke();
+					return;
 				}
 			}
-			// If the user is logged in navigate to the Home page.
-			// Otherwise allow another login attempt.
-			SignInPage.SuccessfulOAuthLoginAction.Invoke();
+			SignInPage.UnsuccessfulOAuthLoginAction.Invoke();
 		}
 	}
 }

@@ -1,5 +1,7 @@
 ﻿using System;
 using Foundation;
+using Google.Core;
+using Google.SignIn;
 using UIKit;
 
 namespace Trace.iOS {
@@ -18,6 +20,8 @@ namespace Trace.iOS {
 
 			LoadApplication(new App());
 
+			OxyPlot.Xamarin.Forms.Platform.iOS.PlotViewRenderer.Init();
+
 			// Apply light-blue theme to Navigation bar.
 			UINavigationBar.Appearance.BarTintColor = UIColor.FromRGB(43, 132, 211); //bar background
 			UINavigationBar.Appearance.TintColor = UIColor.White; //Tint color of button items
@@ -26,7 +30,21 @@ namespace Trace.iOS {
 				TextColor = UIColor.White
 			});
 
+			// Google sign-in for iOS.
+			string clientId = new GoogleOAuthConfig().ClientId;
+			NSError configureError;
+			Context.SharedInstance.Configure(out configureError);
+			if(configureError != null) {
+				// If something went wrong, assign the clientID manually
+				Console.WriteLine("Error configuring the Google context: {0}", configureError);
+				SignIn.SharedInstance.ClientID = clientId;
+			}
+
 			return base.FinishedLaunching(app, options);
+		}
+
+		public override bool OpenUrl(UIApplication application, NSUrl url, string sourceApplication, NSObject annotation) {
+			return SignIn.SharedInstance.HandleUrl(url, sourceApplication, annotation);
 		}
 	}
 }

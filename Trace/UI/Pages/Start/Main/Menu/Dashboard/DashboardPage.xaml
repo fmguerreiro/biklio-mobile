@@ -1,0 +1,76 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage
+	xmlns="http://xamarin.com/schemas/2014/forms"
+	xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+	xmlns:oxy="clr-namespace:OxyPlot.Xamarin.Forms;assembly=OxyPlot.Xamarin.Forms"
+	xmlns:local="clr-namespace:Trace;assembly=Trace"
+	x:Class="Trace.DashboardPage"
+	Title="Dashboard">
+	<ContentPage.Content>
+		<TableView
+			Intent="Data">
+			<TableRoot>
+				<TableSection
+					Title="Routes tracked">
+					<TextCell
+						Text="{Binding RoutesToday, StringFormat='Today: {0}'}"
+						Tapped="onTapped" />
+					<TextCell
+						Text="{Binding RoutesWeek, StringFormat='This Week: {0}'}"
+						Tapped="onTapped" />
+					<TextCell
+						Text="{Binding RoutesAllTime, StringFormat='All Time: {0}'}"
+						Tapped="onTapped" />
+				</TableSection>
+				<TableSection
+					Title="Rewards earned">
+					<TextCell
+						Text="{Binding RewardsToday, StringFormat='Today: {0}'}"
+						Tapped="onTapped" />
+					<TextCell
+						Text="{Binding RewardsWeek, StringFormat='This Week: {0}'}"
+						Tapped="onTapped" />
+					<TextCell
+						Text="{Binding RewardsAllTime, StringFormat='All Time: {0}'}"
+						Tapped="onTapped" />
+				</TableSection>
+				<TableSection
+					Title="Distance travelled">
+					<TextCell
+						Text="{Binding DistanceToday.Total, StringFormat='Today: {0} meters'}"
+						Tapped="onTappedDistance" />
+					<TextCell
+						Text="{Binding DistanceWeek.Total, StringFormat='This Week: {0} meters'}"
+						Tapped="onTappedDistance" />
+					<TextCell
+						Text="{Binding DistanceAllTime.Total, StringFormat='All Time: {0} meters'}"
+						Tapped="onTappedDistance" />
+				</TableSection>
+				<TableSection
+					Title="Time spent">
+					<TextCell
+						Text="{Binding TimeToday.Total, StringFormat='Today: {0}'}"
+						Tapped="onTappedTime" />
+					<TextCell
+						Text="{Binding TimeWeek.Total, StringFormat='This Week: {0}'}"
+						Tapped="onTappedTime" />
+					<TextCell
+						Text="{Binding TimeAllTime.Total, StringFormat='All Time: {0}'}"
+						Tapped="onTappedTime" />
+				</TableSection>
+				<TableSection
+					Title="Calories burned">
+					<TextCell
+						Text="{Binding CaloriesToday.Total, StringFormat='Today: {0} kcals'}"
+						Tapped="onTappedCalories" />
+					<TextCell
+						Text="{Binding CaloriesWeek.Total, StringFormat='This Week: {0} kcals'}"
+						Tapped="onTappedCalories" />
+					<TextCell
+						Text="{Binding CaloriesAllTime.Total, StringFormat='All Time: {0} kcals'}"
+						Tapped="onTappedCalories" />
+				</TableSection>
+			</TableRoot>
+		</TableView>
+	</ContentPage.Content>
+</ContentPage>
