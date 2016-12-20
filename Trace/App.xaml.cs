@@ -1,4 +1,5 @@
 ﻿using Plugin.Connectivity;
+using Trace.Localization;
 using Xamarin.Forms;
 
 namespace Trace {
@@ -7,6 +8,11 @@ namespace Trace {
 		public static string AppName { get { return "Trace"; } }
 
 		public App() {
+			// Localize the display language.
+			var ci = DependencyService.Get<ILocalize>().GetCurrentCultureInfo();
+			Language.Culture = ci; // set the RESX for resource localization
+			DependencyService.Get<ILocalize>().SetLocale(ci); // set the Thread for locale-aware methods
+
 			InitializeComponent();
 
 			MainPage = new NavigationPage(new StartPage());

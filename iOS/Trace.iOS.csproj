@@ -236,6 +236,7 @@
     <Folder Include="App\Business\MotionActivity\" />
     <Folder Include="App\UI\" />
     <Folder Include="Properties\" />
+    <Folder Include="Localization\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
@@ -259,6 +260,7 @@
     <Compile Include="App\UI\FacebookOAuthPageRenderer.cs" />
     <Compile Include="App\UI\GoogleOAuthPageRenderer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Localization\Localize.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\logo.png" />

@@ -39,13 +39,13 @@ namespace Trace {
 
 		// Used in calories calculations. Defaults are European averages.
 		public int Age { get; set; } = 37;
-		public Sex Sex { get; set; } = Sex.Male;
+		public SelectedGender Gender { get; set; } = SelectedGender.Male;
 		public double Weight { get; set; } = 70.8;// kilograms
 		public double Height { get; set; } = 1.78; // meters
 
 		public int SearchRadius { get; set; } = 100; // kilometers
 
-		public Language Language { get; set; } = Language.English;
+		public SelectedLanguage UserLanguage { get; set; } = SelectedLanguage.English;
 
 		List<Trajectory> trajectories;
 		[Ignore]

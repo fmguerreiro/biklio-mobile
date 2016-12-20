@@ -14,7 +14,7 @@ namespace Trace {
 
 
 		public static void TryLogin() {
-			LoginManager.IsOfflineLoggedIn = true;
+			IsOfflineLoggedIn = true;
 			if(CrossConnectivity.Current.IsConnected) {
 				Task.Run(() => OnConnectivityChanged(null, new ConnectivityChangedEventArgs() { IsConnected = true })).DoNotAwait();
 			}
@@ -40,7 +40,7 @@ namespace Trace {
 						else
 							result = await Task.Run(() => LoginWithToken());
 
-						// Send KPIs
+						// TODO Send KPIs
 						if(result) {
 							IsLoginVerified = true;
 						}

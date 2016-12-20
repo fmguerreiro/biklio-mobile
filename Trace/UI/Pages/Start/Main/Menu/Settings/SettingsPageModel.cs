@@ -6,13 +6,13 @@ namespace Trace {
 	public class SettingsPageModel {
 		public User User { get; }
 
-		public IEnumerable<String> Sexes { get; }
+		public IEnumerable<String> Genders { get; }
 		public IEnumerable<String> Languages { get; }
 
 		public SettingsPageModel() {
 			User = User.Instance;
-			Sexes = Enum.GetNames(typeof(Sex));
-			Languages = Enum.GetNames(typeof(Language));
+			Genders = Enum.GetNames(typeof(SelectedGender));
+			Languages = Enum.GetNames(typeof(SelectedLanguage));
 		}
 
 	}

@@ -71,6 +71,13 @@
     <EmbeddedResource Include="UI\Pages\Start\Main\Menu\Dashboard\DashboardPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
+    <EmbeddedResource Include="Localization\Language.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Language.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Localization\Language.de.resx" />
+    <EmbeddedResource Include="Localization\Language.es.resx" />
+    <EmbeddedResource Include="Localization\Language.fr.resx" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App.xaml.cs">
@@ -130,7 +137,6 @@
     <Compile Include="Business\MotionActivity\RewardEligibility\RewardEligibilityManager.cs" />
     <Compile Include="Business\MotionActivity\RewardEligibility\RewardEligibilityStateMachine.cs" />
     <Compile Include="Business\MotionActivity\RewardEligibility\Timer.cs" />
-    <Compile Include="Business\SettingsEnums.cs" />
     <Compile Include="UI\Controls\BindablePicker.cs" />
     <Compile Include="EnumUtil.cs" />
     <Compile Include="UI\Pages\StartPage.xaml.cs">
@@ -191,6 +197,13 @@
     <Compile Include="UI\Pages\Start\Main\Menu\Dashboard\Units\UnitPerActivity.cs" />
     <Compile Include="GeoUtils.cs" />
     <Compile Include="ServiceAccess\LoginManager.cs" />
+    <Compile Include="Localization\Language.Designer.cs">
+      <DependentUpon>Language.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Localization\ILocalize.cs" />
+    <Compile Include="Localization\PlatformCulture.cs" />
+    <Compile Include="Localization\Translate.cs" />
+    <Compile Include="UI\Pages\Start\Main\Menu\Settings\SettingsEnums.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Business\" />
@@ -222,6 +235,7 @@
     <Folder Include="UI\Pages\Start\Main\Menu\Dashboard\" />
     <Folder Include="Business\Map\Bindings\" />
     <Folder Include="UI\Pages\Start\Main\Menu\Dashboard\Units\" />
+    <Folder Include="Localization\" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System.Device.Portable">

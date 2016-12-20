@@ -1,12 +1,12 @@
 ﻿namespace Trace {
 
-	public enum Sex {
+	public enum SelectedGender {
 		Male,
 		Female,
 		Other // transgenders and whatnot.
 	}
 
-	public enum Language {
+	public enum SelectedLanguage {
 		Bulgarian,
 		Croatian,
 		Czech,

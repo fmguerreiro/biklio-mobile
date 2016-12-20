@@ -1,5 +1,6 @@
 ﻿using System.Reflection;
 using System.Runtime.CompilerServices;
+using System.Resources;
 using Xamarin.Forms.Xaml;
 
 // Information about this assembly is defined by the following attributes. 
@@ -27,3 +28,5 @@ using Xamarin.Forms.Xaml;
 //[assembly: AssemblyKeyFile("")]
 
 [assembly: XamlCompilation(XamlCompilationOptions.Compile)]
+
+[assembly: NeutralResourcesLanguage("en")]

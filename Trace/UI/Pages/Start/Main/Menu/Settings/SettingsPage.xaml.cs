@@ -15,17 +15,17 @@ namespace Trace {
 			SQLiteDB.Instance.SaveItem(User.Instance);
 		}
 
-		void OnSexChanged(object sender, EventArgs e) {
+		void OnGenderChanged(object sender, EventArgs e) {
 			var picker = (BindablePicker) sender;
 			string item = picker.Items[picker.SelectedIndex];
-			User.Instance.Sex = EnumUtil.ParseEnum<Sex>(item);
+			User.Instance.Gender = EnumUtil.ParseEnum<SelectedGender>(item);
 			SQLiteDB.Instance.SaveItem(User.Instance);
 		}
 
 		void OnLanguageChanged(object sender, EventArgs e) {
 			var picker = (BindablePicker) sender;
 			string item = picker.Items[picker.SelectedIndex];
-			User.Instance.Language = EnumUtil.ParseEnum<Language>(item);
+			User.Instance.UserLanguage = EnumUtil.ParseEnum<SelectedLanguage>(item);
 			SQLiteDB.Instance.SaveItem(User.Instance);
 			// TODO: change text UI for the new language.
 		}
