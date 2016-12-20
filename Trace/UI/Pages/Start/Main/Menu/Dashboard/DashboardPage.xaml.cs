@@ -63,7 +63,7 @@ namespace Trace {
 
 		void calculateStats() {
 			IList<Trajectory> trajectories = User.Instance.Trajectories;
-			long now = DateTime.UtcNow.DatetimeToEpochSeconds();
+			long now = TimeUtil.CurrentEpochTime();
 			var todayWindow = (long) TimeSpan.FromDays(1).TotalSeconds;
 			var weekWindow = (long) TimeSpan.FromDays(7).TotalSeconds;
 

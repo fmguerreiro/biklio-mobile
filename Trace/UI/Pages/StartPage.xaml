@@ -23,9 +23,13 @@
 			</Image>
 			<Button
 				Text="Register"
+				BackgroundColor="#24C121"
+				TextColor="White"
 				Clicked="OnRegister" />
 			<Button
 				Text="Sign In"
+				BackgroundColor="#24C121"
+				TextColor="White"
 				Clicked="OnLogin" />
 		</StackLayout>
 	</ContentPage.Content>

@@ -20,6 +20,24 @@ namespace Trace.iOS {
 			}
 		}
 
+		public string GetPassword(string username) {
+			var accounts = AccountStore.Create().FindAccountsForService(App.AppName);
+			foreach(Account a in accounts) {
+				if(a.Username.Equals(username))
+					return a.Properties["Password"];
+			}
+			return null;
+		}
+
+		public bool Exists(string username) {
+			var accounts = AccountStore.Create().FindAccountsForService(App.AppName);
+			foreach(Account a in accounts) {
+				if(a.Username.Equals(username))
+					return true;
+			}
+			return false;
+		}
+
 		public void SaveCredentials(string username, string password) {
 			if(!string.IsNullOrWhiteSpace(username) && !string.IsNullOrWhiteSpace(password)) {
 				var account = new Account {
@@ -30,11 +48,22 @@ namespace Trace.iOS {
 			}
 		}
 
-		public void DeleteCredentials() {
+		public void DeleteAllCredentials() {
 			var iterator = AccountStore.Create().FindAccountsForService(App.AppName).GetEnumerator();
-			if(iterator.MoveNext()) {
+			while(iterator.MoveNext()) {
 				AccountStore.Create().Delete(iterator.Current, App.AppName);
 			}
+		}
+
+		public void DeleteCredentials(string username) {
+			var accounts = AccountStore.Create().FindAccountsForService(App.AppName);
+			foreach(Account a in accounts) {
+				if(a.Username.Equals(username)) {
+					AccountStore.Create().Delete(a, App.AppName);
+					return;
+				}
+			}
+			return;
 		}
 	}
 }

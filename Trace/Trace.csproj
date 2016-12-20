@@ -124,7 +124,7 @@
     <Compile Include="ServiceAccess\WebServiceObjects\GetChallenges\WSShop.cs" />
     <Compile Include="ServiceAccess\WebServiceObjects\SubmitRoute\WSTrackSummary.cs" />
     <Compile Include="ServiceAccess\WebServiceObjects\SubmitRoute\WSTrajectory.cs" />
-    <Compile Include="TimeConverter.cs" />
+    <Compile Include="TimeUtil.cs" />
     <Compile Include="Business\TrajectoryPoint.cs" />
     <Compile Include="UI\SourceConverters\ImageToRouteCheckConverter.cs" />
     <Compile Include="Business\MotionActivity\RewardEligibility\RewardEligibilityManager.cs" />
@@ -189,6 +189,8 @@
     <Compile Include="UI\Pages\Start\Main\Menu\Dashboard\Units\DistancePerActivity.cs" />
     <Compile Include="UI\Pages\Start\Main\Menu\Dashboard\Units\CaloriesPerActivity.cs" />
     <Compile Include="UI\Pages\Start\Main\Menu\Dashboard\Units\UnitPerActivity.cs" />
+    <Compile Include="GeoUtils.cs" />
+    <Compile Include="ServiceAccess\LoginManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Business\" />

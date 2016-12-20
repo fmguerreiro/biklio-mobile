@@ -63,6 +63,8 @@
 			</Entry>
 			<Button
 				Text="Register"
+				BackgroundColor="#24C121"
+				TextColor="White"
 				Clicked="OnRegister" />
 		</StackLayout>
 	</ContentPage.Content>

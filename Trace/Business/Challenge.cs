@@ -1,14 +1,24 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using SQLite;
 
 namespace Trace {
 
+	/// <summary>
+	/// A Challenge is issued by a particular Checkpoint.
+	/// They have a 'reward', e.g., 10% discount, which is unlocked upon completing a given 'distance', e.g, cycle 2000 m.
+	/// </summary>
 	public class Challenge : UserItemBase {
 
 		public string Reward { get; set; }
-		public string CheckpointName { get; set; }
-		public string Condition { get; set; }
+		public int NeededCyclingDistance { get; set; }
+		[Indexed]
+		public bool isComplete { get; set; }
 
+		public long CreatedAt { get; set; }
+		public long ExpiresAt { get; set; }
+
+		public string CheckpointName { get; set; }
 		[Ignore]
 		public Checkpoint ThisCheckpoint { get; set; }
 		public long CheckpointId { get; set; }
@@ -20,20 +30,24 @@ namespace Trace {
 		public string Image { get { return ThisCheckpoint?.LogoURL ?? "default_shop.png"; } }
 
 		public override string ToString() {
-			return string.Format("[Challenge Id->{0} UserId->{1} CheckpointId->{2} Reward->{3} Checkpoint->{4} Condition->{5}]",
-								 Id, UserId, CheckpointId, Reward, CheckpointName, Condition);
+			return string.Format("[Challenge Id->{0} UserId->{1} CheckpointId->{2} Reward->{3} Checkpoint->{4} Distance->{5}]",
+								 Id, UserId, CheckpointId, Reward, CheckpointName, NeededCyclingDistance);
 		}
 	}
 
+	/// <summary>
+	/// The Challenge Visual Model is used to bind a list of challenges for display in the Challenge Page and Reward Page.
+	/// </summary>
 	class ChallengeVM {
-		public List<Challenge> Challenges { get; set; }
+		public IEnumerable<Challenge> Challenges { get; set; }
 		public string Summary {
 			get {
-				if(Challenges.Count == 0) {
+				int count = Challenges.Count();
+				if(count == 0) {
 					return "No challenges found.";
 				}
-				if(Challenges.Count != 1)
-					return "There are " + Challenges.Count + " challenges near you.";
+				if(count != 1)
+					return "There are " + count + " challenges near you.";
 				else
 					return "There is 1 challenge near you.";
 			}

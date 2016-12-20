@@ -2,8 +2,28 @@
 <ContentPage
 	xmlns="http://xamarin.com/schemas/2014/forms"
 	xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+	xmlns:locals="clr-namespace:Trace;assembly=Trace"
 	x:Class="Trace.RewardsPage"
 	Title="My Rewards">
+	<ContentPage.Resources>
+		<ResourceDictionary>
+			<locals:ByteArrayToChallengeImageConverter
+				x:Key="arrayToimageConverter" />
+		</ResourceDictionary>
+	</ContentPage.Resources>
 	<ContentPage.Content>
+		<ListView
+			ItemsSource="{Binding Challenges}"
+			ItemSelected="OnSelection">
+			<ListView.ItemTemplate>
+				<DataTemplate>
+					<ImageCell
+						Text="{Binding Description}"
+						Detail="{Binding Condition, StringFormat='Bike for {0} km'}"
+						ImageSource="{Binding ThisCheckpoint.LogoImageFilePath, Converter={StaticResource arrayToimageConverter}}">
+					</ImageCell>
+				</DataTemplate>
+			</ListView.ItemTemplate>
+		</ListView>
 	</ContentPage.Content>
 </ContentPage>

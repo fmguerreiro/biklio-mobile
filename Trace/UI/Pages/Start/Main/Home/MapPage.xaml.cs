@@ -8,6 +8,10 @@ using Xamarin.Forms;
 using Xamarin.Forms.Maps;
 
 namespace Trace {
+	/// <summary>
+	/// Page displaying the map showing the user location and the nearby challenges.
+	/// Allows the user to track their location, showing the trajectory and related statistics when finished tracking.
+	/// </summary>
 	public partial class MapPage : ContentPage {
 
 		private const long MIN_SIZE_TRAJECTORY = 250; // meters
@@ -126,7 +130,7 @@ namespace Trace {
 			var pos1 = coordinates.Current;
 			while(coordinates.MoveNext()) {
 				var pos2 = coordinates.Current;
-				distanceInMeters += distanceBetweenPoints(pos1, pos2);
+				distanceInMeters += GeoUtils.DistanceBetweenPoints(pos1, pos2);
 				pos1 = pos2;
 			}
 			return distanceInMeters;
@@ -206,7 +210,7 @@ namespace Trace {
 			return new TrajectoryPoint() {
 				Longitude = p.Longitude,
 				Latitude = p.Latitude,
-				Timestamp = TimeConverter.DatetimeToEpochSeconds(p.Timestamp),
+				Timestamp = TimeUtil.DatetimeToEpochSeconds(p.Timestamp),
 				Activity = activityEvent.ActivityType
 			};
 		}
@@ -220,26 +224,6 @@ namespace Trace {
 			return res;
 		}
 
-		/// <summary>
-		/// Calculate the distance between points using Equirectangular approximation.
-		/// This does not take into account the arc of the Earth, but is much quicker and acceptable for our purposes.
-		/// </summary>
-		/// <returns>The distance in meters.</returns>
-		/// <param name="pos1">Position 1.</param>
-		/// <param name="pos2">Position 2.</param>
-		private double distanceBetweenPoints(Plugin.Geolocator.Abstractions.Position pos1, Plugin.Geolocator.Abstractions.Position pos2) {
-			const int EARTH_RADIUS_METERS = 6371009;
-
-			var lng1 = Math.Abs(pos1.Longitude);
-			var lng2 = Math.Abs(pos2.Longitude);
-			var alpha = lng2 - lng1;
-			var lat1 = Math.Abs(pos1.Latitude);
-			var lat2 = Math.Abs(pos2.Latitude);
-			var x = (alpha * (Math.PI / 180)) * Math.Cos((lat1 + lat2) * (Math.PI / 180) / 2);
-			var y = (Math.PI / 180) * (lat1 - lat2);
-			return Math.Sqrt(x * x + y * y) * EARTH_RADIUS_METERS;
-		}
-
 
 		private void initializeChallengePins() {
 			var pins = new List<CustomPin>();
@@ -250,7 +234,7 @@ namespace Trace {
 							Type = PinType.Place,
 							Position = new Position(c.ThisCheckpoint.Latitude, c.ThisCheckpoint.Longitude),
 							Label = c.Description,
-							Address = c.Condition
+							Address = c.NeededCyclingDistance.ToString()
 						},
 						Id = "",
 						Checkpoint = c.ThisCheckpoint,
@@ -264,6 +248,10 @@ namespace Trace {
 		}
 
 
+		/// <summary>
+		/// Updates the pins on the map.
+		/// Occurs when the challenge list is updated.
+		/// </summary>
 		public void UpdatePins() {
 			CustomMap.Pins.Clear();
 			initializeChallengePins();

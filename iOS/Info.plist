@@ -62,24 +62,24 @@
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
-			<key>CFBundleURLTypes</key>
-			<string>Editor</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>pt.inesc.trace</string>
+				<string>***REMOVED***</string>
 			</array>
+			<key>CFBundleURLTypes</key>
+			<string>Editor</string>
 			<key>CFBundleURLIconFile</key>
 			<string>logo_58x58</string>
 		</dict>
 		<dict>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>com.googleusercontent.apps.605414852346-72spsqol42rol2v432e1sorq52vojdkc</string>
+				<string>pt.inesc.trace</string>
 			</array>
 			<key>CFBundleURLTypes</key>
 			<string>Editor</string>
 			<key>CFBundleURLIconFile</key>
-			<string>logo_58x58</string>
+			<string>icon/icon58px</string>
 		</dict>
 	</array>
 </dict>

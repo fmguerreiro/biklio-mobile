@@ -1,4 +1,5 @@
-﻿using Xamarin.Forms;
+﻿using Plugin.Connectivity;
+using Xamarin.Forms;
 
 namespace Trace {
 	public partial class App : Application {
@@ -13,14 +14,17 @@ namespace Trace {
 
 		protected override void OnStart() {
 			// Handle when your app starts
+			CrossConnectivity.Current.ConnectivityChanged += LoginManager.OnConnectivityChanged;
 		}
 
 		protected override void OnSleep() {
 			// Handle when your app sleeps
+			CrossConnectivity.Current.ConnectivityChanged -= LoginManager.OnConnectivityChanged;
 		}
 
 		protected override void OnResume() {
 			// Handle when your app resumes
+			CrossConnectivity.Current.ConnectivityChanged += LoginManager.OnConnectivityChanged;
 		}
 	}
 }

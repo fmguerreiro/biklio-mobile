@@ -37,7 +37,7 @@
 			Text="{Binding ActivityType, StringFormat='Activity: {0}'}"
 			HorizontalTextAlignment="Center"
 			IsVisible="true"
-			BackgroundColor="#2B84D3"
+			BackgroundColor="#24C121"
 			TextColor="White"
 			VerticalTextAlignment="Center">
 		</Label>
@@ -47,7 +47,7 @@
 		<Grid
 			x:Name="ResultsGrid"
 			IsVisible="false"
-			BackgroundColor="#2B84D3">
+			BackgroundColor="#24C121">
 			<Label
 				x:Name="MainActivityLabel"
 				Text="{Binding ActivityType, StringFormat='Main Activity: {0}'}"
@@ -97,7 +97,7 @@
 			Text="Track"
 			Clicked="OnStartTracking"
 			HorizontalOptions="FillAndExpand"
-			BackgroundColor="#2B84D3"
+			BackgroundColor="#4BB166"
 			TextColor="White"
 			BorderRadius="0" />
 	</StackLayout>

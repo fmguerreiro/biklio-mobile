@@ -178,16 +178,16 @@ namespace Trace.Droid {
 		public void ActivityToDuration(ActivityType type, long duration) {
 			switch(type) {
 				case ActivityType.Walking:
-					WalkingDuration += duration;
+					WalkingDuration += (int) duration;
 					break;
 				case ActivityType.Running:
-					RunningDuration += duration;
+					RunningDuration += (int) duration;
 					break;
 				case ActivityType.Cycling:
-					CyclingDuration += duration;
+					CyclingDuration += (int) duration;
 					break;
 				case ActivityType.Automative:
-					DrivingDuration += duration;
+					DrivingDuration += (int) duration;
 					break;
 			}
 		}

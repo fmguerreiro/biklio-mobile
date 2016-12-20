@@ -21,6 +21,24 @@ namespace Trace.Droid {
 			}
 		}
 
+		public string GetPassword(string username) {
+			var accounts = AccountStore.Create(Forms.Context).FindAccountsForService(App.AppName);
+			foreach(Account a in accounts) {
+				if(a.Username.Equals(username))
+					return a.Properties["Password"];
+			}
+			return null;
+		}
+
+		public bool Exists(string username) {
+			var accounts = AccountStore.Create(Forms.Context).FindAccountsForService(App.AppName);
+			foreach(Account a in accounts) {
+				if(a.Username.Equals(username))
+					return true;
+			}
+			return false;
+		}
+
 		public void SaveCredentials(string username, string password) {
 			if(!string.IsNullOrWhiteSpace(username) && !string.IsNullOrWhiteSpace(password)) {
 				var account = new Account {
@@ -31,10 +49,18 @@ namespace Trace.Droid {
 			}
 		}
 
-		public void DeleteCredentials() {
+		public void DeleteAllCredentials() {
 			var iterator = AccountStore.Create(Forms.Context).FindAccountsForService(App.AppName).GetEnumerator();
-			if(iterator.MoveNext() == true) {
+			while(iterator.MoveNext()) {
 				AccountStore.Create(Forms.Context).Delete(iterator.Current, App.AppName);
+			}
+		}
+
+		public void DeleteCredentials(string username) {
+			var iterator = AccountStore.Create(Forms.Context).FindAccountsForService(App.AppName).GetEnumerator();
+			while(iterator.MoveNext()) {
+				if(iterator.Current.Username.Equals(username))
+					AccountStore.Create(Forms.Context).Delete(iterator.Current, App.AppName);
 			}
 		}
 	}

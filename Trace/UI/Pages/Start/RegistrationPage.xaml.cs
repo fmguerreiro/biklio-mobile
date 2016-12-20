@@ -3,6 +3,11 @@ using System.Threading.Tasks;
 using Xamarin.Forms;
 
 namespace Trace {
+	/// <summary>
+	/// Page that handles new user registration.
+	/// Requires Internet connection to verify the information with the Web Server.
+	/// Stores the information on the device upon success for offline login later.
+	/// </summary>
 	public partial class RegistrationPage : ContentPage {
 		public RegistrationPage() {
 			InitializeComponent();
@@ -26,9 +31,9 @@ namespace Trace {
 				SQLiteDB.Instance.SaveItem<User>(User.Instance = new User {
 					Username = username,
 					Email = email,
-					AuthToken = result.token
+					// TODO verify if its needed -> AuthToken = result.token
 				});
-
+				DependencyService.Get<DeviceKeychainInterface>().SaveCredentials(username, password);
 				await DisplayAlert("Result", "Registration successful.", "Ok");
 				await Navigation.PushAsync(new SignInPage());
 			}

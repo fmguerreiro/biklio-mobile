@@ -70,6 +70,19 @@ namespace Trace {
 
 
 		/// <summary>
+		/// Gets all the completed challenges from the current user.
+		/// </summary>
+		/// <returns>The rewards.</returns>
+		public IEnumerable<Challenge> GetRewards() {
+			lock(locker) {
+				return (from i in database.Table<Challenge>()
+						where i.UserId == User.Instance.Id && i.isComplete == true
+						select i);
+			}
+		}
+
+
+		/// <summary>
 		/// Gets a specific item of type T with specified ID
 		/// </summary>
 		/// <typeparam name="T">Type of item to get</typeparam>

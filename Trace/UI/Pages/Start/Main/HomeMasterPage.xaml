@@ -26,7 +26,7 @@
 					Orientation="Vertical">
 					<Label
 						Text="{Binding Name}"
-						TextColor="#2B84D3" />
+						TextColor="#4BB166" />
 					<Label
 						Text="{Binding Email}"
 						FontSize="Small"
@@ -34,8 +34,9 @@
 				</StackLayout>
 			</StackLayout>
 			<ListView
-				BackgroundColor="#2B84D3"
+				BackgroundColor="#4BB166"
 				x:Name="listView"
+				SeparatorColor="#24C121"
 				VerticalOptions="FillAndExpand"
 				SeparatorVisibility="Default">
 				<ListView.ItemTemplate>

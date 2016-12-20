@@ -10,10 +10,14 @@ namespace Trace {
 
 		string Username { get; }
 
-		string Password { get; }
+		string GetPassword(string username);
+
+		bool Exists(string username);
 
 		void SaveCredentials(string username, string password);
 
-		void DeleteCredentials();
+		void DeleteAllCredentials();
+
+		void DeleteCredentials(string username);
 	}
 }

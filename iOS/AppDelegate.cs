@@ -20,15 +20,17 @@ namespace Trace.iOS {
 
 			LoadApplication(new App());
 
+			// Stats and plot lib initialization.
 			OxyPlot.Xamarin.Forms.Platform.iOS.PlotViewRenderer.Init();
 
-			// Apply light-blue theme to Navigation bar.
-			UINavigationBar.Appearance.BarTintColor = UIColor.FromRGB(43, 132, 211); //bar background
+			// Apply green theme to Navigation bar.
+			UINavigationBar.Appearance.BarTintColor = UIColor.FromRGB(75, 177, 102); //bar background
 			UINavigationBar.Appearance.TintColor = UIColor.White; //Tint color of button items
 			UINavigationBar.Appearance.SetTitleTextAttributes(new UITextAttributes() {
 				Font = UIFont.FromName("HelveticaNeue-Light", (nfloat) 20f),
 				TextColor = UIColor.White
 			});
+			UITabBar.Appearance.SelectedImageTintColor = UIColor.FromRGB(36, 193, 33);
 
 			// Google sign-in for iOS.
 			string clientId = new GoogleOAuthConfig().ClientId;

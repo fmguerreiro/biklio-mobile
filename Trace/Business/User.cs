@@ -20,6 +20,8 @@ namespace Trace {
 		}
 
 		public string Username { get; set; } = "";
+		[Ignore]
+		public string Password { get; set; } = "";
 		public string Name { get; set; } = "";
 		public string Email { get; set; } = "";
 		public string PictureURL { get; set; } = "";
@@ -61,9 +63,11 @@ namespace Trace {
 				if(value != null) {
 					challenges = value;
 					// Don't forget to update the reference of each challenge to its checkpoint!
-					foreach(Challenge c in challenges) {
-						if(checkpoints.ContainsKey(c.CheckpointId))
-							c.ThisCheckpoint = checkpoints[c.CheckpointId];
+					foreach(Challenge challenge in challenges) {
+						if(checkpoints.ContainsKey(challenge.CheckpointId)) {
+							challenge.ThisCheckpoint = checkpoints[challenge.CheckpointId];
+							challenge.ThisCheckpoint.Challenges.Add(challenge);
+						}
 					}
 				}
 				else challenges = new List<Challenge>();

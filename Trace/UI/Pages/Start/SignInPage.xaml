@@ -20,7 +20,8 @@
 			Spacing="15">
 			<Entry
 				x:Name="usernameText"
-				Placeholder="Username">
+				Placeholder="Username"
+				Completed="OnUsernameInput">
 				<Entry.Behaviors>
 					<local:UsernameValidator />
 					<local:MaxLengthValidator
@@ -54,26 +55,24 @@
 			</Grid>
 			<Button
 				Text="Sign In"
-				BackgroundColor="#2B84D3"
+				BackgroundColor="#24C121"
 				TextColor="White"
-				BorderColor="Navy"
 				Clicked="OnLogin" />
 			<StackLayout
 				HeightRequest="1"
 				BackgroundColor="Black"
 				HorizontalOptions="FillAndExpand">
 			</StackLayout>
-			<StackLayout
-				Spacing="-13"
-				TranslationX="6">
+			<StackLayout>
 				<Button
-					Text="Google Login"
-					Image="google_login_button"
+					Text="Login with Google"
+					TextColor="White"
+					BackgroundColor="#DD4B39"
 					Clicked="OnGoogleLogin" />
 				<Button
-					Text="Facebook Login"
-					BorderColor="Black"
-					Image="facebook_login_button"
+					TextColor="White"
+					BackgroundColor="#3B5998"
+					Text="Login with Facebook"
 					Clicked="OnFacebookLogin" />
 			</StackLayout>
 		</StackLayout>

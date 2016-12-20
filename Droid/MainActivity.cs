@@ -1,11 +1,5 @@
-﻿using System;
-
-using Android.App;
-using Android.Content;
+﻿using Android.App;
 using Android.Content.PM;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
 using Android.OS;
 
 namespace Trace.Droid {
@@ -19,7 +13,7 @@ namespace Trace.Droid {
 
 			global::Xamarin.Forms.Forms.Init(this, bundle);
 
-
+			// Chart and graph visualize tool init.
 			OxyPlot.Xamarin.Forms.Platform.Android.PlotViewRenderer.Init();
 
 			// Initialize map

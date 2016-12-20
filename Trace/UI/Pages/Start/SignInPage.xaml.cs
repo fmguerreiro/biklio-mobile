@@ -23,10 +23,14 @@ namespace Trace {
 			InitializeComponent();
 			navigation = Navigation;
 			isRememberMe = true;
+			// TODO this gets the first username available, but if there are multiple, it will still pick always the first, ideally, the last one used would show up first
 			usernameText.Text = DependencyService.Get<DeviceKeychainInterface>().Username;
-			passwordText.Text = DependencyService.Get<DeviceKeychainInterface>().Password;
+			passwordText.Text = DependencyService.Get<DeviceKeychainInterface>().GetPassword(usernameText.Text);
 		}
 
+		void OnUsernameInput(object sender, EventArgs e) {
+			passwordText.Text = DependencyService.Get<DeviceKeychainInterface>().GetPassword(((Entry) sender).Text);
+		}
 
 		async void OnLogin(object sender, EventArgs e) {
 			var username = usernameText.Text;
@@ -37,25 +41,41 @@ namespace Trace {
 				return;
 			}
 
-			var client = new WebServerClient();
-			WSResult result = await Task.Run(() => client.LoginWithCredentials(username, password));
+			//var client = new WebServerClient();
+			//WSResult result = await Task.Run(() => client.LoginWithCredentials(username, password));
 
-			if(result.success) {
-				// Remember me => Store credentials in keychain.
-				if(isRememberMe)
-					DependencyService.Get<DeviceKeychainInterface>().SaveCredentials(username, password);
-				else
-					DependencyService.Get<DeviceKeychainInterface>().DeleteCredentials();
-
-				// Fetch user information from the database.
-				SQLiteDB.Instance.InstantiateUser(username);
-				User.Instance.AuthToken = result.token;
-				SQLiteDB.Instance.SaveItem(User.Instance);
-
-				Application.Current.MainPage = new MainPage();
+			// Perform credentials validation against the local keystore/keychain.
+			bool doesUsernameExist = DependencyService.Get<DeviceKeychainInterface>().Exists(username);
+			string storedPassword = DependencyService.Get<DeviceKeychainInterface>().GetPassword(username);
+			bool doesPasswordMatch = storedPassword != null && storedPassword.Equals(password);
+			if(!doesUsernameExist || !doesPasswordMatch) {
+				await DisplayAlert("Error", "The username or password is incorrect. Make sure you have registered or, if this is a new device, logged in at least once.", "Ok");
+				return;
 			}
+
+			//if(result.success) {
+			// Remember me => Store credentials in keychain.
+			LoginManager.IsRememberMe = isRememberMe;
+			if(isRememberMe)
+				DependencyService.Get<DeviceKeychainInterface>().SaveCredentials(username, password);
 			else
-				await DisplayAlert("Error", result.error, "Ok");
+				DependencyService.Get<DeviceKeychainInterface>().DeleteCredentials(username);
+
+			// Fetch user information from the database.
+			SQLiteDB.Instance.InstantiateUser(username);
+			// TODO verify if authtoken is used besides fb and google login -> User.Instance.AuthToken = result.token;
+			//SQLiteDB.Instance.SaveItem(User.Instance);
+
+			// Used later for background login when user has internet connection.
+			User.Instance.Password = password;
+			LoginManager.IsOfflineLoggedIn = true;
+
+			LoginManager.TryLogin();
+
+			Application.Current.MainPage = new MainPage();
+			//}
+			//else
+			//	await DisplayAlert("Error", result.error, "Ok");
 		}
 
 
@@ -87,21 +107,25 @@ namespace Trace {
 		/// </summary>
 		public static Action SuccessfulOAuthLoginAction {
 			get {
-				return new Action(async () => {
-					var client = new WebServerClient();
-					WSResult result = await Task.Run(() => client.LoginWithToken(User.Instance.AuthToken));
-					if(result.success) {
-						User.Instance.Name = result.payload.name;
-						User.Instance.Email = result.payload.email;
-						User.Instance.PictureURL = result.payload.picture;
-						SQLiteDB.Instance.SaveItem(User.Instance);
-						//await navigation.PopModalAsync();
-						Application.Current.MainPage = new MainPage();
-					}
-					else {
-						await navigation.PopModalAsync();
-						await navigation.NavigationStack.First().DisplayAlert("Error", result.error, "Ok");
-					}
+				return new Action(() => {
+
+					LoginManager.TryLogin();
+
+					//var client = new WebServerClient();
+					//WSResult result = await Task.Run(() => client.LoginWithToken(User.Instance.AuthToken));
+					//if(result.success) {
+					//	User.Instance.Name = result.payload.name;
+					//	User.Instance.Email = result.payload.email;
+					//	User.Instance.PictureURL = result.payload.picture;
+					//	SQLiteDB.Instance.SaveItem(User.Instance);
+					//await navigation.PopModalAsync();
+
+					Application.Current.MainPage = new MainPage();
+					//}
+					//else {
+					//	await navigation.PopModalAsync();
+					//	await navigation.NavigationStack.First().DisplayAlert("Error", result.error, "Ok");
+					//}
 				});
 			}
 		}

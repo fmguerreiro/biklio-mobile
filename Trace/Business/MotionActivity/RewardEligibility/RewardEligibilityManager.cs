@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
+using Plugin.Geolocator.Abstractions;
 
 namespace Trace {
 
@@ -12,6 +14,7 @@ namespace Trace {
 		Dictionary<State, Action> transitionGuards;
 		Timer timer;
 		Timer vehicularTimer;
+		Task checkNearbyCheckpointsTask;
 
 		// Successive count threshold for transitioning between states.
 		private const int THRESHOLD = 5;
@@ -21,6 +24,12 @@ namespace Trace {
 		private const int UNKNOWN_ELIGIBLE_TIMEOUT = 12 * 60 * 60 * 1000;
 		// Timeout threshold between 'inAVehicle' to 'ineligible' in ms. 5 min.
 		private const int VEHICULAR_TIMEOUT = 5 * 60 * 1000;
+
+		// Minimum distance between user and checkpoints for reward eligibility.
+		private readonly double CKPT_DISTANCE_THRESHOLD = 20;
+		// Minimum time between verification attempts.
+		private readonly int CHECK_NEARBY_TIMEOUT = 90 * 1000;
+		private Timer checkNearbyCheckpointsTimer;
 
 		int cyclingCount;
 		int nonCyclingCount;
@@ -57,6 +66,7 @@ namespace Trace {
 		~RewardEligibilityManager() {
 			timer.Dispose();
 			vehicularTimer.Dispose();
+			checkNearbyCheckpointsTimer.Dispose();
 		}
 
 		/// <summary>
@@ -92,8 +102,8 @@ namespace Trace {
 			cyclingCount = nonCyclingCount = vehicularCount = nonVehicularCount = 0;
 		}
 
-		void ineligibleStateGuards() {
 
+		void ineligibleStateGuards() {
 			// If user starts using a bycicle, go to: 'cyclingIneligible'.
 			if(cyclingCount > THRESHOLD) {
 				resetCounters();
@@ -104,6 +114,7 @@ namespace Trace {
 			}
 		}
 
+
 		void cyclingIneligibleStateGuards() {
 			// If user stops using a bycicle, go back to the start: 'ineligible'.
 			if(nonCyclingCount > THRESHOLD) {
@@ -112,6 +123,7 @@ namespace Trace {
 				stateMachine.MoveNext(Command.NotCycling);
 			}
 		}
+
 
 		void cyclingEligibleStateGuards() {
 			// If user stops using a bycicle, go to: 'unknownEligible'.
@@ -125,7 +137,14 @@ namespace Trace {
 			}
 		}
 
+
 		void unknownEligibleStateGuards() {
+			// When user leaves bike, check for nearby checkpoints/shops for reward notification every CHECK_NEARBY_TIMEOUT period.
+			if(checkNearbyCheckpointsTask == null) {
+				checkNearbyCheckpointsTask = new Task(() => checkNearbyCheckpoints());
+				checkNearbyCheckpointsTask.Start();
+			}
+
 			// If users start using a vehicle, go to 'inAVehicle' and start a shorter timer that makes her ineligible after it fires.
 			if(vehicularCount > THRESHOLD) {
 				resetCounters();
@@ -140,6 +159,7 @@ namespace Trace {
 			}
 		}
 
+
 		void vehicularStateGuards() {
 			// If the user stops using a vehicle, go back to 'unknownEligible'.
 			if(nonVehicularCount > THRESHOLD) {
@@ -150,6 +170,54 @@ namespace Trace {
 		}
 
 		/// <summary>
+		/// When a user goes from 'cyclingEligible' to 'unknownEligible', i.e., stops cycling, 
+		/// check for shops nearby to see if she is eligible for rewards.
+		/// </summary>
+		async Task checkNearbyCheckpoints() {
+			var now = TimeUtil.CurrentEpochTime();
+			// Compare the distance between the user and the checkpoints.
+			var userLocation = await GeoUtils.GetCurrentUserLocation();
+			foreach(var checkpoint in User.Instance.Checkpoints) {
+				var ckptLocation = new Position {
+					Longitude = checkpoint.Value.Longitude,
+					Latitude = checkpoint.Value.Latitude
+				};
+				var distance = GeoUtils.DistanceBetweenPoints(userLocation, ckptLocation);
+
+				if(distance < CKPT_DISTANCE_THRESHOLD) {
+					// Check their challenges' conditions.
+					foreach(var challenge in checkpoint.Value.Challenges) {
+						var createdAt = challenge.CreatedAt;
+						var expiresAt = challenge.ExpiresAt;
+						// For the valid challenges ...
+						if(TimeUtil.IsWithinPeriod(now, createdAt, expiresAt)) {
+							// Check if distance cycled meets the criteria.
+							if(challenge.NeededCyclingDistance <= cycledDistanceBetween(createdAt, expiresAt)) {
+								challenge.isComplete = true;
+							}
+						}
+					}
+				}
+			}
+			// Start a timer that makes the 'checkNearbyCheckpoints' process available after a certain period.
+			checkNearbyCheckpointsTimer = new Timer(new TimerCallback(
+													(obj) => { checkNearbyCheckpointsTask = null; }),
+ 													null,
+ 													CHECK_NEARBY_TIMEOUT);
+		}
+
+
+		private long cycledDistanceBetween(long start, long end) {
+			long res = 0;
+			foreach(Trajectory t in User.Instance.Trajectories) {
+				if(TimeUtil.IsWithinPeriod(t.EndTime, start, end))
+					res += t.CalculateCyclingDistance();
+			}
+			return res;
+		}
+
+
+		/// <summary>
 		/// Timer callbacks.
 		/// </summary>
 		void goToCyclingEligibleCallback(object state) {
@@ -157,6 +225,7 @@ namespace Trace {
 			// TODO notify user is eligible for rewards.
 			stateMachine.MoveNext(Command.Timeout);
 		}
+
 
 		void goToIneligibleCallback(object state) {
 			resetCounters();

@@ -1,13 +1,15 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading.Tasks;
-using Plugin.Geolocator;
 using Xamarin.Forms;
 using System.Linq;
 using System;
 
 namespace Trace {
 
+	/// <summary>
+	/// Page that displays the list of incomplete challenges.
+	/// </summary>
 	public partial class ChallengesPage : ContentPage {
 
 		// Reference to the map page in order to update pins when challenges are updated.
@@ -40,7 +42,7 @@ namespace Trace {
 		/// </summary>
 		private async Task getChallenges() {
 			// Get current position to fetch closest challenges
-			var position = await CrossGeolocator.Current.GetPositionAsync(timeoutMilliseconds: 10000);
+			var position = await GeoUtils.GetCurrentUserLocation();
 
 			// Fetch challenges from Webserver
 			var client = new WebServerClient();
@@ -56,23 +58,7 @@ namespace Trace {
 			// Load shop information into dictionary for fast lookup.
 			var checkpoints = new Dictionary<long, Checkpoint>();
 			foreach(WSShop checkpoint in result.payload.shops) {
-				var newCheckpoint = new Checkpoint {
-					GId = checkpoint.id,
-					UserId = User.Instance.Id,
-					OwnerId = checkpoint.ownerId,
-					Name = checkpoint.name,
-					Address = checkpoint.contacts.address,
-					LogoURL = checkpoint.logoURL,
-					AvailableHours = checkpoint.details.openTime + " - " + checkpoint.details.closeTime,
-					PhoneNumber = checkpoint.contacts.phone,
-					WebsiteAddress = checkpoint.contacts.website,
-					FacebookAddress = checkpoint.contacts.facebook,
-					TwitterAddress = checkpoint.contacts.twitter,
-					Longitude = checkpoint.longitude,
-					Latitude = checkpoint.latitude,
-					//BikeFacilities = checkpoint.facilities.ToString(), // todo facilities is a jArray
-					Description = checkpoint.details.description
-				};
+				Checkpoint newCheckpoint = createCheckpoint(checkpoint);
 				// Check if logo is already downloaded into filesystem.
 				if(DependencyService.Get<IFileSystem>().Exists(newCheckpoint.GId.ToString())) {
 					newCheckpoint.LogoImageFilePath = newCheckpoint.GId.ToString();
@@ -93,16 +79,8 @@ namespace Trace {
 				if(checkpoints.ContainsKey(challenge.shopId))
 					checkpoint = checkpoints[challenge.shopId];
 				else { checkpoint = new Checkpoint(); }
-				// Then create the object and add it to the list for display.
-				challenges.Add(new Challenge {
-					GId = challenge.id,
-					UserId = User.Instance.Id,
-					CheckpointId = challenge.shopId,
-					Reward = challenge.reward,
-					ThisCheckpoint = checkpoint,
-					CheckpointName = checkpoint.Name,
-					Condition = challenge.conditions.distance
-				});
+				// Then create the object and add it to the list for displaying later.
+				challenges.Add(createChallenge(challenge, checkpoint));
 			}
 
 			// Update or create the received challenges and checkpoints.
@@ -139,6 +117,48 @@ namespace Trace {
 				BindingContext = new ChallengeVM { Challenges = User.Instance.Challenges };
 				mapPage.UpdatePins();
 			});
+		}
+
+
+		static Challenge createChallenge(WSChallenge challenge, Checkpoint checkpoint) {
+			return new Challenge {
+				GId = challenge.id,
+				UserId = User.Instance.Id,
+				CheckpointId = challenge.shopId,
+				Reward = challenge.reward,
+				ThisCheckpoint = checkpoint,
+				CheckpointName = checkpoint.Name,
+				CreatedAt = challenge.createdAt,
+				ExpiresAt = challenge.expiresAt,
+				NeededCyclingDistance = (int) challenge.conditions.distance * 1000 // TODO check if this is correct
+			};
+		}
+
+
+		static Checkpoint createCheckpoint(WSShop checkpoint) {
+			var newCheckpoint = new Checkpoint {
+				GId = checkpoint.id,
+				UserId = User.Instance.Id,
+				OwnerId = checkpoint.ownerId,
+				Name = checkpoint.name,
+				Address = checkpoint.contacts.address,
+				LogoURL = checkpoint.logoURL,
+				AvailableHours = checkpoint.details.openTime + " - " + checkpoint.details.closeTime,
+				PhoneNumber = checkpoint.contacts.phone,
+				WebsiteAddress = checkpoint.contacts.website,
+				FacebookAddress = checkpoint.contacts.facebook,
+				TwitterAddress = checkpoint.contacts.twitter,
+				Longitude = checkpoint.longitude,
+				Latitude = checkpoint.latitude,
+				//BikeFacilities = checkpoint.facilities.ToString(), // todo facilities is a jArray
+				Description = checkpoint.details.description
+			};
+			return newCheckpoint;
+		}
+
+
+		static void checkForRewards() {
+
 		}
 
 
