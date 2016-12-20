@@ -3,8 +3,9 @@
 	xmlns="http://xamarin.com/schemas/2014/forms"
 	xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
 	xmlns:local="clr-namespace:Trace;assembly=Trace"
+	xmlns:language="clr-namespace:Trace.Localization;assembly=Trace"
 	x:Class="Trace.RegistrationPage"
-	Title="Registration">
+	Title="{language:Translate Registration}">
 	<ContentPage.Padding>
 		<OnPlatform
 			x:TypeArguments="Thickness"
@@ -19,11 +20,11 @@
 			Orientation="Vertical"
 			Spacing="15">
 			<Label
-				Text="Username is 6-20 characters long. Can only contain alphanumeric characters, underscore and dot."
+				Text="{language:Translate UsernameRegisterConditions}"
 				FontSize="Micro" />
 			<Entry
 				x:Name="usernameText"
-				Placeholder="Username">
+				Placeholder="{language:Translate Username}">
 				<Entry.Behaviors>
 					<local:UsernameValidator />
 					<local:MaxLengthValidator
@@ -32,7 +33,7 @@
 			</Entry>
 			<Entry
 				x:Name="emailText"
-				Placeholder="E-mail">
+				Placeholder="{language:Translate Email}">
 				<Entry.Behaviors>
 					<local:EmailValidator />
 					<local:MaxLengthValidator
@@ -40,11 +41,11 @@
 				</Entry.Behaviors>
 			</Entry>
 			<Label
-				Text="Password is 6-20 characters long with at least 1 letter and 1 number."
+				Text="{language:Translate PasswordRegisterConditions}"
 				FontSize="Micro" />
 			<Entry
 				x:Name="passwordText"
-				Placeholder="Password"
+				Placeholder="{language:Translate Password}"
 				IsPassword="true">
 				<Entry.Behaviors>
 					<local:PasswordValidator />
@@ -54,7 +55,7 @@
 			</Entry>
 			<Entry
 				x:Name="confirmPasswordText"
-				Placeholder="Confirm Password"
+				Placeholder="{language:Translate ConfirmPassword}"
 				IsPassword="true">
 				<Entry.Behaviors>
 					<local:ConfirmPasswordValidator
@@ -62,7 +63,7 @@
 				</Entry.Behaviors>
 			</Entry>
 			<Button
-				Text="Register"
+				Text="{language:Translate Register}"
 				BackgroundColor="#24C121"
 				TextColor="White"
 				Clicked="OnRegister" />

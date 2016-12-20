@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Xamarin.Forms;
 using System.Linq;
 using System;
+using Trace.Localization;
 
 namespace Trace {
 
@@ -50,7 +51,7 @@ namespace Trace {
 
 			if(!result.success) {
 				Device.BeginInvokeOnMainThread(() => {
-					DisplayAlert("Error fetching challenges from server", result.error, "Ok");
+					DisplayAlert(Language.ErrorFetchingChallenges, result.error, Language.Ok);
 				});
 				return;
 			}
@@ -158,7 +159,7 @@ namespace Trace {
 
 
 		static void checkForRewards() {
-
+			// TODO check which challenges are already met
 		}
 
 
@@ -173,7 +174,7 @@ namespace Trace {
 				Navigation.PushAsync(new CheckpointDetailsPage(checkpoint));
 			}
 			else {
-				DisplayAlert("Error", "That challenge does not have an associated checkpoint. Probably a DB consistency issue, please report", "Ok");
+				DisplayAlert(Language.Error, Language.ChallengeWithoutCheckpointError, Language.Ok);
 			}
 		}
 	}

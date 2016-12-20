@@ -1,6 +1,7 @@
-﻿using Plugin.Connectivity;
-using Trace.Localization;
+﻿using System.Reflection;
+using Plugin.Connectivity;
 using Xamarin.Forms;
+using Trace.Localization;
 
 namespace Trace {
 	public partial class App : Application {
@@ -12,6 +13,12 @@ namespace Trace {
 			var ci = DependencyService.Get<ILocalize>().GetCurrentCultureInfo();
 			Language.Culture = ci; // set the RESX for resource localization
 			DependencyService.Get<ILocalize>().SetLocale(ci); // set the Thread for locale-aware methods
+
+			// This is for checking if the language resource file is linked correctly, i.e., Language.Designer.cs
+			//var assembly = typeof(StartPage).GetTypeInfo().Assembly;
+			//foreach(var res in assembly.GetManifestResourceNames()) {
+			//	System.Diagnostics.Debug.WriteLine("found resource: " + res);
+			//}
 
 			InitializeComponent();
 

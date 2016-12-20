@@ -2,8 +2,9 @@
 <ContentPage
 	xmlns="http://xamarin.com/schemas/2014/forms"
 	xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+	xmlns:language="clr-namespace:Trace.Localization;assembly=Trace"
 	x:Class="Trace.CheckpointDetailsPage"
-	Title="Details">
+	Title="{language:Translate CheckpointDetails}">
 	<ContentPage.Padding>
 		<OnPlatform
 			x:TypeArguments="Thickness"
@@ -17,16 +18,16 @@
 				Text="{Binding Name}"
 				XAlign="Center" />
 			<Label
-				Text="{Binding AvailableHours, StringFormat='Open between {0}'}"
+				Text="{Binding AvailableHours, StringFormat={language:Translate ShopOpenBetween}}"
 				FontSize="Small" />
 			<Label
-				Text="{Binding Address, StringFormat='Address: {0}'}"
+				Text="{Binding Address, StringFormat={language:Translate ShopAddress}}"
 				FontSize="Small" />
 			<Label
-				Text="{Binding PhoneNumber, StringFormat='Phone number: {0}'}"
+				Text="{Binding PhoneNumber, StringFormat={language:Translate ShopPhoneNumber}}"
 				FontSize="Small" />
 			<Label
-				Text="{Binding WebsiteAddress, StringFormat='Website: {0}'}"
+				Text="{Binding WebsiteAddress, StringFormat={language:Translate ShopWebsite}}"
 				FontSize="Small" />
 			<Label
 				Text="{Binding FacebookAddress, StringFormat='Facebook: {0}'}"
@@ -35,7 +36,7 @@
 				Text="{Binding TwitterAddress, StringFormat='Twitter: {0}'}"
 				FontSize="Small" />
 			<Label
-				Text="{Binding Description, StringFormat='Description: {0}'}"
+				Text="{Binding Description, StringFormat={language:Translate ShopDescription}}"
 				FontSize="Small" />
 		</StackLayout>
 	</ContentPage.Content>

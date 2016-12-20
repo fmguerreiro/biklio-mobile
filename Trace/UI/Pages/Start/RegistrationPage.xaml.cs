@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Trace.Localization;
 using Xamarin.Forms;
 
 namespace Trace {
@@ -20,7 +21,7 @@ namespace Trace {
 			var confirmPassword = confirmPasswordText.Text;
 
 			if(username == null || email == null || password == null || confirmPassword == null) {
-				await DisplayAlert("Error", "Please fill every field.", "Ok");
+				await DisplayAlert(Language.Error, Language.FillEveryField, Language.Ok);
 				return;
 			}
 
@@ -34,11 +35,11 @@ namespace Trace {
 					// TODO verify if its needed -> AuthToken = result.token
 				});
 				DependencyService.Get<DeviceKeychainInterface>().SaveCredentials(username, password);
-				await DisplayAlert("Result", "Registration successful.", "Ok");
+				await DisplayAlert(Language.Result, Language.RegistrationSuccessful, Language.Ok);
 				await Navigation.PushAsync(new SignInPage());
 			}
 			else
-				await DisplayAlert("Result", result.error, "Ok");
+				await DisplayAlert(Language.Result, result.error, Language.Ok);
 		}
 	}
 }

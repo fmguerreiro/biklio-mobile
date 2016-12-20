@@ -16,7 +16,7 @@ namespace Trace.Localization {
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class Language {
+    public class Language {
         
         private static System.Resources.ResourceManager resourceMan;
         
@@ -27,7 +27,7 @@ namespace Trace.Localization {
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static System.Resources.ResourceManager ResourceManager {
+        public static System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.Equals(null, resourceMan)) {
                     System.Resources.ResourceManager temp = new System.Resources.ResourceManager("Trace.Localization.Language", typeof(Language).GetTypeInfo().Assembly);
@@ -38,7 +38,7 @@ namespace Trace.Localization {
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static System.Globalization.CultureInfo Culture {
+        public static System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
@@ -47,69 +47,297 @@ namespace Trace.Localization {
             }
         }
         
-        internal static string AddButton {
+        public static string Register {
             get {
-                return ResourceManager.GetString("AddButton", resourceCulture);
+                return ResourceManager.GetString("Register", resourceCulture);
             }
         }
         
-        internal static string ApplicationHeading {
+        public static string Registration {
             get {
-                return ResourceManager.GetString("ApplicationHeading", resourceCulture);
+                return ResourceManager.GetString("Registration", resourceCulture);
             }
         }
         
-        internal static string ApplicationTitle {
+        public static string SignIn {
             get {
-                return ResourceManager.GetString("ApplicationTitle", resourceCulture);
+                return ResourceManager.GetString("SignIn", resourceCulture);
             }
         }
         
-        internal static string CancelButton {
+        public static string Login {
             get {
-                return ResourceManager.GetString("CancelButton", resourceCulture);
+                return ResourceManager.GetString("Login", resourceCulture);
             }
         }
         
-        internal static string DeleteButton {
+        public static string Error {
             get {
-                return ResourceManager.GetString("DeleteButton", resourceCulture);
+                return ResourceManager.GetString("Error", resourceCulture);
             }
         }
         
-        internal static string DoneLabel {
+        public static string Result {
             get {
-                return ResourceManager.GetString("DoneLabel", resourceCulture);
+                return ResourceManager.GetString("Result", resourceCulture);
             }
         }
         
-        internal static string NameLabel {
+        public static string Ok {
             get {
-                return ResourceManager.GetString("NameLabel", resourceCulture);
+                return ResourceManager.GetString("Ok", resourceCulture);
             }
         }
         
-        internal static string NotesLabel {
+        public static string FillEveryField {
             get {
-                return ResourceManager.GetString("NotesLabel", resourceCulture);
+                return ResourceManager.GetString("FillEveryField", resourceCulture);
             }
         }
         
-        internal static string SaveButton {
+        public static string Username {
             get {
-                return ResourceManager.GetString("SaveButton", resourceCulture);
+                return ResourceManager.GetString("Username", resourceCulture);
             }
         }
         
-        internal static string SpeakButton {
+        public static string Email {
             get {
-                return ResourceManager.GetString("SpeakButton", resourceCulture);
+                return ResourceManager.GetString("Email", resourceCulture);
             }
         }
         
-        internal static string SpeakTaskCount {
+        public static string Password {
             get {
-                return ResourceManager.GetString("SpeakTaskCount", resourceCulture);
+                return ResourceManager.GetString("Password", resourceCulture);
+            }
+        }
+        
+        public static string ConfirmPassword {
+            get {
+                return ResourceManager.GetString("ConfirmPassword", resourceCulture);
+            }
+        }
+        
+        public static string RegistrationSuccessful {
+            get {
+                return ResourceManager.GetString("RegistrationSuccessful", resourceCulture);
+            }
+        }
+        
+        public static string UsernameRegisterConditions {
+            get {
+                return ResourceManager.GetString("UsernameRegisterConditions", resourceCulture);
+            }
+        }
+        
+        public static string PasswordRegisterConditions {
+            get {
+                return ResourceManager.GetString("PasswordRegisterConditions", resourceCulture);
+            }
+        }
+        
+        public static string RememberMe {
+            get {
+                return ResourceManager.GetString("RememberMe", resourceCulture);
+            }
+        }
+        
+        public static string LoginWithGoogle {
+            get {
+                return ResourceManager.GetString("LoginWithGoogle", resourceCulture);
+            }
+        }
+        
+        public static string LoginWithFacebook {
+            get {
+                return ResourceManager.GetString("LoginWithFacebook", resourceCulture);
+            }
+        }
+        
+        public static string UsernameOrPasswordError {
+            get {
+                return ResourceManager.GetString("UsernameOrPasswordError", resourceCulture);
+            }
+        }
+        
+        public static string OAuthError {
+            get {
+                return ResourceManager.GetString("OAuthError", resourceCulture);
+            }
+        }
+        
+        public static string Logout {
+            get {
+                return ResourceManager.GetString("Logout", resourceCulture);
+            }
+        }
+        
+        public static string AreYouSure {
+            get {
+                return ResourceManager.GetString("AreYouSure", resourceCulture);
+            }
+        }
+        
+        public static string Yes {
+            get {
+                return ResourceManager.GetString("Yes", resourceCulture);
+            }
+        }
+        
+        public static string No {
+            get {
+                return ResourceManager.GetString("No", resourceCulture);
+            }
+        }
+        
+        public static string Menu {
+            get {
+                return ResourceManager.GetString("Menu", resourceCulture);
+            }
+        }
+        
+        public static string Home {
+            get {
+                return ResourceManager.GetString("Home", resourceCulture);
+            }
+        }
+        
+        public static string Rewards {
+            get {
+                return ResourceManager.GetString("Rewards", resourceCulture);
+            }
+        }
+        
+        public static string Dashboard {
+            get {
+                return ResourceManager.GetString("Dashboard", resourceCulture);
+            }
+        }
+        
+        public static string MyRoutes {
+            get {
+                return ResourceManager.GetString("MyRoutes", resourceCulture);
+            }
+        }
+        
+        public static string Settings {
+            get {
+                return ResourceManager.GetString("Settings", resourceCulture);
+            }
+        }
+        
+        public static string Map {
+            get {
+                return ResourceManager.GetString("Map", resourceCulture);
+            }
+        }
+        
+        public static string Track {
+            get {
+                return ResourceManager.GetString("Track", resourceCulture);
+            }
+        }
+        
+        public static string Stop {
+            get {
+                return ResourceManager.GetString("Stop", resourceCulture);
+            }
+        }
+        
+        public static string CurrentActivityLabel {
+            get {
+                return ResourceManager.GetString("CurrentActivityLabel", resourceCulture);
+            }
+        }
+        
+        public static string MainActivityLabel {
+            get {
+                return ResourceManager.GetString("MainActivityLabel", resourceCulture);
+            }
+        }
+        
+        public static string DistanceLabel {
+            get {
+                return ResourceManager.GetString("DistanceLabel", resourceCulture);
+            }
+        }
+        
+        public static string DurationLabel {
+            get {
+                return ResourceManager.GetString("DurationLabel", resourceCulture);
+            }
+        }
+        
+        public static string CaloriesLabel {
+            get {
+                return ResourceManager.GetString("CaloriesLabel", resourceCulture);
+            }
+        }
+        
+        public static string Challenges {
+            get {
+                return ResourceManager.GetString("Challenges", resourceCulture);
+            }
+        }
+        
+        public static string PullUpToUpdate {
+            get {
+                return ResourceManager.GetString("PullUpToUpdate", resourceCulture);
+            }
+        }
+        
+        public static string BikeCondition {
+            get {
+                return ResourceManager.GetString("BikeCondition", resourceCulture);
+            }
+        }
+        
+        public static string ErrorFetchingChallenges {
+            get {
+                return ResourceManager.GetString("ErrorFetchingChallenges", resourceCulture);
+            }
+        }
+        
+        public static string ChallengeWithoutCheckpointError {
+            get {
+                return ResourceManager.GetString("ChallengeWithoutCheckpointError", resourceCulture);
+            }
+        }
+        
+        public static string CheckpointDetails {
+            get {
+                return ResourceManager.GetString("CheckpointDetails", resourceCulture);
+            }
+        }
+        
+        public static string ShopOpenBetween {
+            get {
+                return ResourceManager.GetString("ShopOpenBetween", resourceCulture);
+            }
+        }
+        
+        public static string ShopAddress {
+            get {
+                return ResourceManager.GetString("ShopAddress", resourceCulture);
+            }
+        }
+        
+        public static string ShopPhoneNumber {
+            get {
+                return ResourceManager.GetString("ShopPhoneNumber", resourceCulture);
+            }
+        }
+        
+        public static string ShopWebsite {
+            get {
+                return ResourceManager.GetString("ShopWebsite", resourceCulture);
+            }
+        }
+        
+        public static string ShopDescription {
+            get {
+                return ResourceManager.GetString("ShopDescription", resourceCulture);
             }
         }
     }

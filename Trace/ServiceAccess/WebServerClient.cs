@@ -140,9 +140,10 @@ namespace Trace {
 			JObject output = null;
 			WSResult trackSummaryResult = null;
 			if(trajectory.TrackSession == null) {
-				request = JsonConvert.SerializeObject(trackSummary, Formatting.None);
+				request = JsonConvert.SerializeObject(trackSummary, Formatting.Indented);
+				Debug.WriteLine("SendTrackSummary() - request: " + request);
 				output = await PostAsyncJSON(WebServerConstants.SUBMIT_TRAJECTORY_SUMMARY, request);
-				//Debug.WriteLine("SendTrackSummary(): " + output);
+				Debug.WriteLine("SendTrackSummary() - result: " + output);
 				trackSummaryResult = output.ToObject<WSResult>();
 				if(!trackSummaryResult.success)
 					return;

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using Trace.Localization;
 using Xamarin.Forms;
 using Xamarin.Forms.Maps;
 
@@ -95,7 +96,7 @@ namespace Trace {
 
 			// On Track Button pressed
 			else {
-				((Button) send).Text = "Stop";
+				((Button) send).Text = Language.Stop;
 				CustomMap.RouteCoordinates.Clear();
 				StartTrackingTime = DateTime.Now;
 				// Show Activity text after Map and before Stop button and remove Results grid.
@@ -110,7 +111,7 @@ namespace Trace {
 
 
 		private void displayGrid(Button trackButton) {
-			trackButton.Text = "Track";
+			trackButton.Text = Language.Track;
 			ActivityLabel.IsVisible = false;
 			MainActivityLabel.Text = DependencyService.Get<IMotionActivityManager>().GetMostCommonActivity().ToString();
 			Debug.WriteLine("Trajectory # of points: " + CustomMap.RouteCoordinates.Count);

@@ -82,5 +82,14 @@
 			<string>icon/icon58px</string>
 		</dict>
 	</array>
+	<key>CFBundleLocalizations</key>
+	<array>
+		<string>de</string>
+		<string>es</string>
+		<string>fr</string>
+		<string>pt</string>
+	</array>
+	<key>CFBundleDevelopmentRegion</key>
+	<string>en</string>
 </dict>
 </plist>

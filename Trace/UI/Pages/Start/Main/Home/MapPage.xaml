@@ -3,9 +3,10 @@
 	xmlns="http://xamarin.com/schemas/2014/forms"
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 	xmlns:locals="clr-namespace:Trace;assembly=Trace"
+	xmlns:language="clr-namespace:Trace.Localization;assembly=Trace"
 	x:Class="Trace.MapPage"
 	x:Name="TRACEMapPage"
-	Title="Map"
+	Title="{language:Translate Map}"
 	Icon="maps_icon.png">
 	<ContentPage.Resources>
 		<ResourceDictionary>
@@ -34,7 +35,7 @@
 			MapType="Street" />
 		<Label
 			x:Name="ActivityLabel"
-			Text="{Binding ActivityType, StringFormat='Activity: {0}'}"
+			Text="{Binding ActivityType, StringFormat={language:Translate CurrentActivityLabel}}"
 			HorizontalTextAlignment="Center"
 			IsVisible="true"
 			BackgroundColor="#24C121"
@@ -50,7 +51,7 @@
 			BackgroundColor="#24C121">
 			<Label
 				x:Name="MainActivityLabel"
-				Text="{Binding ActivityType, StringFormat='Main Activity: {0}'}"
+				Text="{Binding ActivityType, StringFormat={language:Translate MainActivityLabel}}"
 				Grid.Row="0"
 				Grid.Column="1"
 				Grid.ColumnSpan="3"
@@ -58,7 +59,7 @@
 				XAlign="Center" />
 			<Label
 				x:Name="TotalDistanceLabel"
-				Text="{Binding Distance, StringFormat='Distance: {0} m'}"
+				Text="{Binding Distance, StringFormat={language:Translate DistanceLabel}}"
 				Grid.Row="1"
 				Grid.Column="0"
 				Grid.ColumnSpan="2"
@@ -66,7 +67,7 @@
 				XAlign="Center" />
 			<Label
 				x:Name="DurationLabel"
-				Text="{Binding Duration, StringFormat='Duration: {0}'}"
+				Text="{Binding Duration, StringFormat={language:Translate DurationLabel}}"
 				Grid.Row="1"
 				Grid.Column="3"
 				Grid.ColumnSpan="2"
@@ -74,7 +75,7 @@
 				XAlign="Center" />
 			<Label
 				x:Name="CaloriesLabel"
-				Text="{Binding Calories, StringFormat='Calories: {0} kcals'}"
+				Text="{Binding Calories, StringFormat={language:Translate CaloriesLabel}}"
 				Grid.Row="2"
 				Grid.Column="0"
 				Grid.ColumnSpan="2"

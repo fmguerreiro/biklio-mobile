@@ -44,11 +44,10 @@ namespace Trace.iOS {
 						ci = new System.Globalization.CultureInfo("en");
 					}
 				}
+				return cultureInfo = ci;
 			}
-			else {
-				return cultureInfo;
-			}
-			return cultureInfo = ci;
+			return cultureInfo;
+
 		}
 
 

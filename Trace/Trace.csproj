@@ -72,12 +72,13 @@
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Include="Localization\Language.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
+      <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Language.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Localization\Language.de.resx" />
     <EmbeddedResource Include="Localization\Language.es.resx" />
     <EmbeddedResource Include="Localization\Language.fr.resx" />
+    <EmbeddedResource Include="Localization\Language.pt.resx" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App.xaml.cs">

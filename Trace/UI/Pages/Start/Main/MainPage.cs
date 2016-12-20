@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Plugin.Geolocator;
+using Trace.Localization;
 using Xamarin.Forms;
 
 namespace Trace {
@@ -36,7 +37,7 @@ namespace Trace {
 		}
 
 		async Task logout(MasterPageItem item) {
-			bool isLogout = await DisplayAlert("Logout", "Are you sure?", "Yes", "No");
+			bool isLogout = await DisplayAlert(Language.Logout, Language.AreYouSure, Language.Yes, Language.No);
 			if(isLogout) {
 				User.Instance = null;
 				RewardEligibilityManager.Instance = null;

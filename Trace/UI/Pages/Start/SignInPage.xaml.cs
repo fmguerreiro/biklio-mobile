@@ -8,6 +8,7 @@ using Xamarin.Forms;
 using Google.Apis.Oauth2.v2;
 using Google.Apis.Oauth2.v2.Data;
 using Google.Apis.Services;
+using Trace.Localization;
 
 namespace Trace {
 	/// <summary>
@@ -37,7 +38,7 @@ namespace Trace {
 			var password = passwordText.Text;
 
 			if(username == null || password == null) {
-				await DisplayAlert("Error", "Please fill every field.", "Ok");
+				await DisplayAlert(Language.Error, Language.FillEveryField, Language.Ok);
 				return;
 			}
 
@@ -49,7 +50,7 @@ namespace Trace {
 			string storedPassword = DependencyService.Get<DeviceKeychainInterface>().GetPassword(username);
 			bool doesPasswordMatch = storedPassword != null && storedPassword.Equals(password);
 			if(!doesUsernameExist || !doesPasswordMatch) {
-				await DisplayAlert("Error", "The username or password is incorrect. Make sure you have registered or, if this is a new device, logged in at least once.", "Ok");
+				await DisplayAlert(Language.Error, Language.UsernameOrPasswordError, Language.Ok);
 				return;
 			}
 
@@ -138,7 +139,7 @@ namespace Trace {
 			get {
 				return new Action(async () => {
 					await navigation.PopModalAsync();
-					await navigation.NavigationStack.First().DisplayAlert("Error", "Failed to sign-in with the third-party provider.", "Ok");
+					await navigation.NavigationStack.First().DisplayAlert(Language.Error, Language.OAuthError, Language.Ok);
 				});
 			}
 		}

@@ -2,8 +2,9 @@
 <ContentPage
 	xmlns="http://xamarin.com/schemas/2014/forms"
 	xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+	xmlns:language="clr-namespace:Trace.Localization;assembly=Trace"
 	x:Class="Trace.StartPage"
-	Title="Login">
+	Title="{language:Translate Login}">
 	<ContentPage.Padding>
 		<OnPlatform
 			x:TypeArguments="Thickness"
@@ -22,12 +23,12 @@
 				Aspect="AspectFit">
 			</Image>
 			<Button
-				Text="Register"
+				Text="{language:Translate Register}"
 				BackgroundColor="#24C121"
 				TextColor="White"
 				Clicked="OnRegister" />
 			<Button
-				Text="Sign In"
+				Text="{language:Translate SignIn}"
 				BackgroundColor="#24C121"
 				TextColor="White"
 				Clicked="OnLogin" />

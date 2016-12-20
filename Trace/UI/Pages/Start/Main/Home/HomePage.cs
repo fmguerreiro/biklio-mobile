@@ -1,14 +1,14 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Plugin.Geolocator;
+using Trace.Localization;
 using Xamarin.Forms;
 
 namespace Trace {
 	public class HomePage : TabbedPage {
-		private const string PAGE_TITLE = "Home";
 
 		public HomePage() {
-			Title = PAGE_TITLE;
+			Title = Language.Home;
 
 			// Remove 'Back' button to stop users from logging out accidently.
 			NavigationPage.SetHasBackButton(this, false);
@@ -19,7 +19,7 @@ namespace Trace {
 			Children.Add(challengesPage);
 			Children.Add(mapPage);
 
-			var giftMenuButton = new ToolbarItem("Rewards", "reward", async () => {
+			var giftMenuButton = new ToolbarItem(Language.Rewards, "reward.png", async () => {
 				await Navigation.PushAsync(new RewardsPage());
 			});
 			ToolbarItems.Add(giftMenuButton);
@@ -55,7 +55,7 @@ namespace Trace {
 		}
 
 		async Task OnLogoutClicked() {
-			bool isLogout = await DisplayAlert("Logout", "Are you sure?", "Yes", "No");
+			bool isLogout = await DisplayAlert(Language.Logout, Language.AreYouSure, Language.Yes, Language.No);
 			if(isLogout) {
 				User.Instance = null;
 				RewardEligibilityManager.Instance = null;

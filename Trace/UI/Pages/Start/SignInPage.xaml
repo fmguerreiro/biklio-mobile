@@ -3,8 +3,9 @@
 	xmlns="http://xamarin.com/schemas/2014/forms"
 	xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
 	xmlns:local="clr-namespace:Trace;assembly=Trace"
+	xmlns:language="clr-namespace:Trace.Localization;assembly=Trace"
 	x:Class="Trace.SignInPage"
-	Title="Sign In">
+	Title="{language:Translate SignIn}">
 	<ContentPage.Padding>
 		<OnPlatform
 			x:TypeArguments="Thickness"
@@ -20,7 +21,7 @@
 			Spacing="15">
 			<Entry
 				x:Name="usernameText"
-				Placeholder="Username"
+				Placeholder="{language:Translate Username}"
 				Completed="OnUsernameInput">
 				<Entry.Behaviors>
 					<local:UsernameValidator />
@@ -30,7 +31,7 @@
 			</Entry>
 			<Entry
 				x:Name="passwordText"
-				Placeholder="Password"
+				Placeholder="{language:Translate Password}"
 				IsPassword="true">
 				<Entry.Behaviors>
 					<local:PasswordValidator />
@@ -40,7 +41,7 @@
 			</Entry>
 			<Grid>
 				<Label
-					Text="Remember me"
+					Text="{language:Translate RememberMe}"
 					XAlign="Start"
 					YAlign="Center"
 					FontSize="Small"
@@ -54,7 +55,7 @@
 					Grid.Column="1" />
 			</Grid>
 			<Button
-				Text="Sign In"
+				Text="{language:Translate SignIn}"
 				BackgroundColor="#24C121"
 				TextColor="White"
 				Clicked="OnLogin" />
@@ -65,14 +66,14 @@
 			</StackLayout>
 			<StackLayout>
 				<Button
-					Text="Login with Google"
+					Text="{language:Translate LoginWithGoogle}"
 					TextColor="White"
 					BackgroundColor="#DD4B39"
 					Clicked="OnGoogleLogin" />
 				<Button
 					TextColor="White"
 					BackgroundColor="#3B5998"
-					Text="Login with Facebook"
+					Text="{language:Translate LoginWithFacebook}"
 					Clicked="OnFacebookLogin" />
 			</StackLayout>
 		</StackLayout>

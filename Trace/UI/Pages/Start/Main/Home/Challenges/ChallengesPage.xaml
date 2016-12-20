@@ -3,8 +3,9 @@
 	xmlns="http://xamarin.com/schemas/2014/forms"
 	xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
 	xmlns:locals="clr-namespace:Trace;assembly=Trace"
+	xmlns:language="clr-namespace:Trace.Localization;assembly=Trace"
 	x:Class="Trace.ChallengesPage"
-	Title="Challenges"
+	Title="{language:Translate Challenges}"
 	Icon="trophy.png">
 	<ContentPage.Resources>
 		<ResourceDictionary>
@@ -26,7 +27,7 @@
 					XAlign="Center" />
 				<Label
 					x:Name="PullUpHintLabel"
-					Text="Pull up to update."
+					Text="{language:Translate PullUpToUpdate}"
 					XAlign="Center"
 					FontSize="Small" />
 			</StackLayout>
@@ -35,7 +36,7 @@
 			<DataTemplate>
 				<ImageCell
 					Text="{Binding Description}"
-					Detail="{Binding Condition, StringFormat='Bike for {0} km'}"
+					Detail="{Binding Condition, StringFormat={language:Translate BikeCondition}"
 					ImageSource="{Binding ThisCheckpoint.LogoImageFilePath, Converter={StaticResource arrayToimageConverter}}">
 				</ImageCell>
 			</DataTemplate>

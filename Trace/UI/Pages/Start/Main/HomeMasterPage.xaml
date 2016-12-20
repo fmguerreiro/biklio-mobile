@@ -2,9 +2,10 @@
 <ContentPage
 	xmlns="http://xamarin.com/schemas/2014/forms"
 	xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+	xmlns:language="clr-namespace:Trace.Localization;assembly=Trace"
 	Padding="0,40,0,0"
 	x:Class="Trace.HomeMasterPage"
-	Title="Menu"
+	Title="{language:Translate Menu}"
 	Icon="menu.png">
 	<ContentPage.Content>
 		<StackLayout
