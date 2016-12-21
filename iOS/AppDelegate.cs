@@ -42,6 +42,9 @@ namespace Trace.iOS {
 				SignIn.SharedInstance.ClientID = clientId;
 			}
 
+			// Initialize Firebase for push notifications.
+			Firebase.Analytics.App.Configure();
+
 			return base.FinishedLaunching(app, options);
 		}
 

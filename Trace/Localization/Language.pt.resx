@@ -308,4 +308,7 @@
 	<data name="ChallengesNear" xml:space="preserve">
         <value>desafios perto de ti.</value>
   	</data>
+	<data name="OnlineLoginError" xml:space="preserve">
+    	<value>As credenciais introduzidas em modo offline são diferentes das do servidor. Por favor tente iniciar sessão novamente.</value>
+  	</data>
 </root>

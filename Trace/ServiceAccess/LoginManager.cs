@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Threading.Tasks;
 using Plugin.Connectivity;
 using Plugin.Connectivity.Abstractions;
+using Trace.Localization;
 using Xamarin.Forms;
 
 namespace Trace {
@@ -47,7 +48,7 @@ namespace Trace {
 						else {
 							// If user credentials were wrong, boot the user out of the application.
 							Device.BeginInvokeOnMainThread(async () => {
-								await Application.Current.MainPage.DisplayAlert("Error", "The credentials you entered when you previously logged in in were incorrect, please try again.", "Ok");
+								await Application.Current.MainPage.DisplayAlert(Language.Error, Language.OnlineLoginError, Language.Ok);
 								DependencyService.Get<DeviceKeychainInterface>().DeleteCredentials(User.Instance.Username);
 								IsOfflineLoggedIn = false;
 								Application.Current.MainPage = new NavigationPage(new StartPage());

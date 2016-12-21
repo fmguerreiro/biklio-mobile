@@ -211,6 +211,9 @@
     <Reference Include="Google.SignIn">
       <HintPath>..\packages\Xamarin.Google.iOS.SignIn.4.0.1\lib\Xamarin.iOS10\Google.SignIn.dll</HintPath>
     </Reference>
+    <Reference Include="Firebase.CloudMessaging">
+      <HintPath>..\packages\Xamarin.Firebase.iOS.CloudMessaging.1.2.1\lib\Xamarin.iOS10\Firebase.CloudMessaging.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Trace\Trace.csproj">
@@ -306,4 +309,5 @@
   <Import Project="..\packages\Xamarin.Firebase.iOS.Analytics.3.5.1\build\Xamarin.Firebase.iOS.Analytics.targets" Condition="Exists('..\packages\Xamarin.Firebase.iOS.Analytics.3.5.1\build\Xamarin.Firebase.iOS.Analytics.targets')" />
   <Import Project="..\packages\Xamarin.Google.iOS.Core.3.0.3.1\build\Xamarin.Google.iOS.Core.targets" Condition="Exists('..\packages\Xamarin.Google.iOS.Core.3.0.3.1\build\Xamarin.Google.iOS.Core.targets')" />
   <Import Project="..\packages\Xamarin.Google.iOS.SignIn.4.0.1\build\Xamarin.Google.iOS.SignIn.targets" Condition="Exists('..\packages\Xamarin.Google.iOS.SignIn.4.0.1\build\Xamarin.Google.iOS.SignIn.targets')" />
+  <Import Project="..\packages\Xamarin.Firebase.iOS.CloudMessaging.1.2.1\build\Xamarin.Firebase.iOS.CloudMessaging.targets" Condition="Exists('..\packages\Xamarin.Firebase.iOS.CloudMessaging.1.2.1\build\Xamarin.Firebase.iOS.CloudMessaging.targets')" />
 </Project>

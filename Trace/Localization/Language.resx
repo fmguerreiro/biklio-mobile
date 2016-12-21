@@ -309,4 +309,7 @@
 	<data name="ChallengesNear" xml:space="preserve">
     	<value>challenges near you.</value>
   	</data>
+	<data name="OnlineLoginError" xml:space="preserve">
+    	<value>The credentials you entered when you previously logged in were incorrect, please try again.</value>
+  	</data>
 </root>

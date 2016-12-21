@@ -84,7 +84,7 @@ namespace Trace {
 			});
 			Debug.WriteLine("LoginWithToken() - request: " + request.ReadAsStringAsync().Result);
 			var output = await PostAsyncFormURL(WebServerConstants.LOGIN_ENDPOINT, request);
-			Debug.WriteLine("LoginWithToken() - result: " + output.ToString());
+			Debug.WriteLine("LoginWithToken() - result: " + output);
 			var result = output.ToObject<WSResult>();
 			if(!string.IsNullOrWhiteSpace(result.token)) User.Instance.AuthToken = result.token;
 

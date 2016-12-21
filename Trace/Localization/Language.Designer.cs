@@ -628,5 +628,11 @@ namespace Trace.Localization {
                 return ResourceManager.GetString("ChallengesNear", resourceCulture);
             }
         }
+        
+        public static string OnlineLoginError {
+            get {
+                return ResourceManager.GetString("OnlineLoginError", resourceCulture);
+            }
+        }
     }
 }
