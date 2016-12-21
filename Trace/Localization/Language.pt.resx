@@ -18,57 +18,294 @@
 				 PORTUGUESE
 	-->
 	<data name="Register" xml:space="preserve">
-    <value>Criar conta</value>
+        <value>Criar conta</value>
   	</data>
 	<data name="Registration" xml:space="preserve">
-    <value>Registro</value>
+        <value>Registro</value>
   	</data>
 	<data name="SignIn" xml:space="preserve">
-    <value>Iniciar sessão</value>
+        <value>Iniciar sessão</value>
   	</data>
 	<data name="Login" xml:space="preserve">
-    <value>Login</value>
+        <value>Login</value>
+  	</data>
+	<data name="Start" xml:space="preserve">
+        <value>Início</value>
   	</data>
 	<data name="Error" xml:space="preserve">
-    <value>Erro</value>
+        <value>Erro</value>
   	</data>
 	<data name="Result" xml:space="preserve">
-    <value>Resultado</value>
+        <value>Resultado</value>
   	</data>
 	<data name="Ok" xml:space="preserve">
-    <value>Ok</value>
+        <value>Ok</value>
   	</data>
 	<data name="FillEveryField" xml:space="preserve">
-    <value>Preencha todos os campos.</value>
+        <value>Preencha todos os campos.</value>
   	</data>
 	<data name="Username" xml:space="preserve">
-    <value>Nome de utilizador</value>
+        <value>Nome de utilizador</value>
   	</data>
 	<data name="Email" xml:space="preserve">
-    <value>Email</value>
+        <value>Email</value>
   	</data>
 	<data name="Password" xml:space="preserve">
-    <value>Senha</value>
+        <value>Senha</value>
   	</data>
 	<data name="ConfirmPassword" xml:space="preserve">
-    <value>Confirmar Senha</value>
+        <value>Confirmar Senha</value>
   	</data>
 	<data name="RegistrationSuccessful" xml:space="preserve">
-    <value>Registro feito com sucesso.</value>
+        <value>Registro feito com sucesso.</value>
   	</data>
 	<data name="UsernameRegisterConditions" xml:space="preserve">
-    <value>O nome de utilizador tem 6-20 caracteres. Só pode conter caracteres alfanuméricos, underscores e pontos.</value>
+        <value>O nome de utilizador tem 6-20 caracteres. Só pode conter caracteres alfanuméricos, underscores e pontos.</value>
   	</data>
 	<data name="PasswordRegisterConditions" xml:space="preserve">
-    <value>A senha tem 6-20 characters com pelo menos uma letra e um número.</value>
+        <value>A senha tem 6-20 characters com pelo menos uma letra e um número.</value>
   	</data>
 	<data name="RememberMe" xml:space="preserve">
-    <value>Manter sessão iniciada</value>
+        <value>Manter sessão iniciada</value>
   	</data>
 	<data name="LoginWithGoogle" xml:space="preserve">
-    <value>Entrar com o Google</value>
+        <value>Entrar com o Google</value>
   	</data>
 	<data name="LoginWithFacebook" xml:space="preserve">
-    <value>Entrar com o Facebook</value>
+        <value>Entrar com o Facebook</value>
+  	</data>
+	<data name="LocalIncorrectCredentialsWarning" xml:space="preserve">
+        <value>Pelo menos um dos campos está incorrecto falhou a verificação local. Quer tentar fazer a verificação online?</value>
+  	</data>
+	<data name="LoginError" xml:space="preserve">
+        <value>Um dos campos está incorrecto. Certifique-se que já fez o registro.</value>
+  	</data>
+	<data name="OAuthError" xml:space="preserve">
+        <value>O início de sessão com o autenticador externo falhou.</value>
+  	</data>
+	<data name="Logout" xml:space="preserve">
+        <value>Sair</value>
+  	</data>
+	<data name="AreYouSure" xml:space="preserve">
+        <value>Tem a certeza?</value>
+  	</data>
+	<data name="Yes" xml:space="preserve">
+        <value>Sim</value>
+  	</data>
+	<data name="No" xml:space="preserve">
+        <value>Não</value>
+  	</data>
+	<data name="Menu" xml:space="preserve">
+        <value>Menu</value>
+  	</data>
+	<data name="Home" xml:space="preserve">
+        <value>Início</value>
+  	</data>
+	<data name="Rewards" xml:space="preserve">
+        <value>Recompensas</value>
+  	</data>
+	<data name="Dashboard" xml:space="preserve">
+        <value>Estatísticas</value>
+  	</data>
+	<data name="MyRoutes" xml:space="preserve">
+        <value>Trajectos</value>
+  	</data>
+	<data name="Settings" xml:space="preserve">
+        <value>Definições</value>
+  	</data>
+	<data name="Map" xml:space="preserve">
+        <value>Mapa</value>
+  	</data>
+	<data name="Track" xml:space="preserve">
+        <value>Começar</value>
+  	</data>
+	<data name="Stop" xml:space="preserve">
+        <value>Parar</value>
+  	</data>
+	<data name="CurrentActivityLabel" xml:space="preserve">
+        <value>Actividade: {0}</value>
+  	</data>
+	<data name="MainActivityLabel" xml:space="preserve">
+        <value>Actividade Principal: {0}</value>
+  	</data>
+	<data name="DistanceLabel" xml:space="preserve">
+        <value>Distância: {0} m</value>
+  	</data>
+	<data name="DurationLabel" xml:space="preserve">
+        <value>Duração: {0} s</value>
+  	</data>
+	<data name="CaloriesLabel" xml:space="preserve">
+        <value>Calorias: {0} kcal</value>
+  	</data>
+	<data name="Challenges" xml:space="preserve">
+        <value>Desafios</value>
+  	</data>
+	<data name="PullUpToUpdate" xml:space="preserve">
+        <value>Puxe para atualizar.</value>
+  	</data>
+	<data name="BikeCondition" xml:space="preserve">
+        <value>Ande {0} km de bicicleta</value>
+  	</data>
+	<data name="ErrorFetchingChallenges" xml:space="preserve">
+        <value>Erro ao tentar obter desafios do servidor.</value>
+  	</data>
+	<data name="ChallengeWithoutCheckpointError" xml:space="preserve">
+        <value>Este desafio não tem uma loja associada. Provalmente um erro da nossa parte. Por favor, reporte o caso.</value>
+  	</data>
+	<data name="CheckpointDetails" xml:space="preserve">
+        <value>Detalhes</value>
+  	</data>
+	<data name="ShopOpenBetween" xml:space="preserve">
+        <value>Aberto entre {0}</value>
+  	</data>
+	<data name="ShopAddress" xml:space="preserve">
+        <value>Morada: {0}</value>
+  	</data>
+	<data name="ShopPhoneNumber" xml:space="preserve">
+        <value>Número de telefone: {0}</value>
+  	</data>
+	<data name="ShopWebsite" xml:space="preserve">
+        <value>Website: {0}</value>
+  	</data>
+	<data name="ShopDescription" xml:space="preserve">
+        <value>Descrição: {0}</value>
+  	</data>
+	<data name="Walking" xml:space="preserve">
+        <value>Andar</value>
+  	</data>
+	<data name="Running" xml:space="preserve">
+        <value>Correr</value>
+  	</data>
+	<data name="Cycling" xml:space="preserve">
+        <value>Andar de bicicleta</value>
+  	</data>
+	<data name="Driving" xml:space="preserve">
+        <value>Conduzir</value>
+  	</data>
+	<data name="RoutesTracked" xml:space="preserve">
+        <value>Trajetos feitos</value>
+  	</data>
+	<data name="RewardsEarned" xml:space="preserve">
+        <value>Recompensas adquiridas</value>
+  	</data>
+	<data name="DistanceTravelledMeters" xml:space="preserve">
+        <value>Distância viajada (em metros)</value>
+  	</data>
+	<data name="TimeSpentHours" xml:space="preserve">
+        <value>Tempo gasto (em horas)</value>
+  	</data>
+	<data name="CaloriesBurnedKCals" xml:space="preserve">
+        <value>Calorias queimadas (em kcals)</value>
+  	</data>
+	<data name="TodayStats" xml:space="preserve">
+        <value>Hoje: {0}</value>
+  	</data>
+	<data name="ThisWeekStats" xml:space="preserve">
+        <value>Esta Semana: {0}</value>
+  	</data>
+	<data name="AllTimeStats" xml:space="preserve">
+        <value>Total: {0}</value>
+  	</data>
+	<data name="DistancePerActivity" xml:space="preserve">
+        <value>Distância por Atividade</value>
+  	</data>
+	<data name="TimePerActivity" xml:space="preserve">
+        <value>Tempo por Atividade</value>
+  	</data>
+	<data name="CaloriesPerActivity" xml:space="preserve">
+        <value>Calorias por Atividade</value>
+  	</data>
+	<data name="Details" xml:space="preserve">
+        <value>Detalhes</value>
+  	</data>
+	<data name="DateDetails" xml:space="preserve">
+        <value>Data: {0}</value>
+  	</data>
+	<data name="DurationDetails" xml:space="preserve">
+        <value>Duração: {0} m</value>
+  	</data>
+	<data name="DistanceDetails" xml:space="preserve">
+        <value>Distância: {0} m</value>
+  	</data>
+	<data name="MostCommonActivityDetails" xml:space="preserve">
+        <value>Atividade Mais Comum: {0}</value>
+  	</data>
+	<data name="AvgSpeedDetails" xml:space="preserve">
+        <value>Velocidade Média: {0} m/s</value>
+  	</data>
+	<data name="MaxSpeedDetails" xml:space="preserve">
+        <value>Velocidade máxima: {0} m/s</value>
+  	</data>
+	<data name="Upload" xml:space="preserve">
+        <value>Enviar</value>
+  	</data>
+	<data name="CaloriesCalculation" xml:space="preserve">
+        <value>Cálculo de Calorias</value>
+  	</data>
+	<data name="Age" xml:space="preserve">
+        <value>Idade</value>
+  	</data>
+	<data name="Gender" xml:space="preserve">
+        <value>Sexo</value>
+  	</data>
+	<data name="Height" xml:space="preserve">
+        <value>Altura</value>
+  	</data>
+	<data name="Weight" xml:space="preserve">
+        <value>Peso</value>
+  	</data>
+	<data name="SearchRadius" xml:space="preserve">
+        <value>Raio de procura</value>
+  	</data>
+	<data name="Delete" xml:space="preserve">
+        <value>Apagar</value>
+  	</data>
+	<data name="Routes" xml:space="preserve">
+        <value>Trajetos</value>
+  	</data>
+	<data name="Everything" xml:space="preserve">
+        <value>Tudo</value>
+  	</data>
+	<data name="Information" xml:space="preserve">
+        <value>Informação</value>
+  	</data>
+	<data name="Licenses" xml:space="preserve">
+        <value>Licenças</value>
+  	</data>
+	<data name="ToS" xml:space="preserve">
+        <value>Termos de Serviço</value>
+  	</data>
+	<data name="PrivacyPolicy" xml:space="preserve">
+        <value>Política de Privacidade</value>
+  	</data>
+	<data name="AboutUs" xml:space="preserve">
+        <value>Acerca de nós</value>
+  	</data>
+	<data name="Warning" xml:space="preserve">
+        <value>Aviso</value>
+  	</data>
+	<data name="DeleteEverythingWarning" xml:space="preserve">
+        <value>Esta ação irá apagar todas os trajetos, lojas e desafios do dispositivo. Tudo o que fez desde o último início de sessão será perdido.</value>
+  	</data>
+	<data name="Back" xml:space="preserve">
+        <value>Voltar</value>
+  	</data>
+	<data name="ServerConnectionError" xml:space="preserve">
+        <value>A ligação ao servidor falhou.</value>
+  	</data>
+	<data name="At" xml:space="preserve">
+        <value>em</value>
+  	</data>
+	<data name="NoChallengesFound" xml:space="preserve">
+        <value>Nenhum desafio encontrado.</value>
+  	</data>
+	<data name="OneChallengeFound" xml:space="preserve">
+        <value>Existe um desafio perto de ti.</value>
+  	</data>
+	<data name="ThereAre" xml:space="preserve">
+        <value>Existem</value>
+  	</data>
+	<data name="ChallengesNear" xml:space="preserve">
+        <value>desafios perto de ti.</value>
   	</data>
 </root>

@@ -178,6 +178,23 @@ namespace Trace {
 			}
 		}
 
+
+		/// <summary>
+		/// Deletes all current user items to free space on device.
+		/// This includes challenges, trajectories and checkpoints.
+		/// </summary>
+		public void DeleteAllUserItems() {
+			database.BeginTransaction();
+			var challenges = GetItems<Challenge>().Select((Challenge i) => i.Id).ToArray();
+			DeleteItems<Challenge>(challenges);
+			var trajectories = GetItems<Trajectory>().Select((Trajectory i) => i.Id).ToArray();
+			DeleteItems<Trajectory>(trajectories);
+			var checkpoints = GetItems<Checkpoint>().Select((Checkpoint i) => i.Id).ToArray();
+			DeleteItems<Checkpoint>(checkpoints);
+			database.Commit();
+		}
+
+
 		/// <summary>
 		/// Deletes all tables in the DB.
 		/// </summary>

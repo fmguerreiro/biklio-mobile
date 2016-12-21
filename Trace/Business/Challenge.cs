@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using SQLite;
+using Trace.Localization;
 
 namespace Trace {
 
@@ -25,7 +26,7 @@ namespace Trace {
 
 		// These properties are used to display information when listed in the ChallengesPage.
 		[Ignore]
-		public string Description { get { return Reward + " at " + CheckpointName; } }
+		public string Description { get { return Reward + " " + Language.At + " " + CheckpointName; } }
 		[Ignore]
 		public string Image { get { return ThisCheckpoint?.LogoURL ?? "default_shop.png"; } }
 
@@ -44,12 +45,12 @@ namespace Trace {
 			get {
 				int count = Challenges.Count();
 				if(count == 0) {
-					return "No challenges found.";
+					return Language.NoChallengesFound;
 				}
 				if(count != 1)
-					return "There are " + count + " challenges near you.";
+					return Language.ThereAre + " " + count + " " + Language.ChallengesNear;
 				else
-					return "There is 1 challenge near you.";
+					return Language.OneChallengeFound;
 			}
 		}
 	}

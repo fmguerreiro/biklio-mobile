@@ -7,7 +7,7 @@ using Xamarin.Forms;
 namespace Trace {
 
 	/// <summary>
-	/// This extension adds the ability to bind a list of items to the picker options at run-time.
+	/// This extension adds the ability to bind a list of items dynamically to the picker at run-time.
 	/// </summary>
 	public class BindablePicker : Picker {
 

@@ -3,8 +3,9 @@
 	xmlns="http://xamarin.com/schemas/2014/forms"
 	xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
 	xmlns:local="clr-namespace:Trace;assembly=Trace"
+	xmlns:language="clr-namespace:Trace.Localization;assembly=Trace"
 	x:Class="Trace.SettingsPage"
-	Title="Settings">
+	Title="{language:Translate Settings}">
 	<ContentPage.BindingContext>
 		<local:SettingsPageModel />
 	</ContentPage.BindingContext>
@@ -35,10 +36,10 @@
 			Intent="Settings">
 			<TableRoot>
 				<TableSection
-					Title="Calories Calculation">
+					Title="{language:Translate CaloriesCalculation}">
 					<EntryCell
 						Completed="OnSettingChanged"
-						Label="Age"
+						Label="{language:Translate Age}"
 						Text="{Binding User.Age, Mode=TwoWay}">
 					</EntryCell>
 					<ViewCell>
@@ -46,9 +47,9 @@
 							Orientation="Horizontal">
 							<Label
 								TranslationX="15"
-								Text="Gender" />
+								Text="{language:Translate Gender}" />
 							<local:BindablePicker
-								TranslationX="65"
+								TranslationX="25"
 								SelectedIndexChanged="OnGenderChanged"
 								Title="{Binding User.Gender}"
 								SelectedValue="{Binding User.Gender, Mode=TwoWay}"
@@ -57,23 +58,23 @@
 					</ViewCell>
 					<EntryCell
 						Completed="OnSettingChanged"
-						Label="Height"
+						Label="{language:Translate Height}"
 						Text="{Binding User.Height, Mode=TwoWay}" />
 					<EntryCell
 						Completed="OnSettingChanged"
-						Label="Weight"
+						Label="{language:Translate Weight}"
 						Text="{Binding User.Weight, Mode=TwoWay}" />
 				</TableSection>
 				<TableSection
-					Title="Challenges">
+					Title="{language:Translate Challenges}">
 					<EntryCell
 						Completed="OnSettingChanged"
-						Label="Search Radius"
+						Label="{language:Translate SearchRadius}"
 						Text="{Binding User.SearchRadius, Mode=TwoWay}" />
 					<EntryCell
 						Completed="OnSettingChanged"
 						Label="Maximum"
-						Text="TODO" />
+						Text="todo" />
 				</TableSection>
 				<TableSection
 					Title="Language">
@@ -86,27 +87,30 @@
 					</ViewCell>
 				</TableSection>
 				<TableSection
-					Title="Delete">
+					Title="{language:Translate Delete}">
 					<TextCell
-						Text="Challenges" />
-					<TextCell
-						Text="Routes" />
-					<TextCell
-						Text="USER" />
-				</TableSection>
-				<TableSection
-					Title="Information">
-					<TextCell
-						Text="Licenses"
+						Text="{language:Translate Challenges}"
 						Tapped="OnLicensesClicked" />
 					<TextCell
-						Text="Terms of Service"
+						Text="{language:Translate Routes}"
+						Tapped="OnLicensesClicked" />
+					<TextCell
+						Text="{language:Translate Everything}"
+						Tapped="OnDeleteEverything" />
+				</TableSection>
+				<TableSection
+					Title="{language:Translate Information}">
+					<TextCell
+						Text="{language:Translate Licenses}"
+						Tapped="OnLicensesClicked" />
+					<TextCell
+						Text="{language:Translate ToS}"
 						Tapped="OnTermsOfServiceClicked" />
 					<TextCell
-						Text="Privacy Policy"
+						Text="{language:Translate PrivacyPolicy}"
 						Tapped="OnPrivacyPolicyClicked" />
 					<TextCell
-						Text="About Us"
+						Text="{language:Translate AboutUs}"
 						Tapped="OnAboutUsClicked" />
 				</TableSection>
 			</TableRoot>

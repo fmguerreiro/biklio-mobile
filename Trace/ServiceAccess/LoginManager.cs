@@ -13,10 +13,10 @@ namespace Trace {
 		public static bool IsRememberMe { get; set; }
 
 
-		public static void TryLogin() {
+		public static async Task TryLogin() {
 			IsOfflineLoggedIn = true;
 			if(CrossConnectivity.Current.IsConnected) {
-				Task.Run(() => OnConnectivityChanged(null, new ConnectivityChangedEventArgs() { IsConnected = true })).DoNotAwait();
+				await Task.Run(() => OnConnectivityChanged(null, new ConnectivityChangedEventArgs() { IsConnected = true }));
 			}
 		}
 
@@ -49,6 +49,7 @@ namespace Trace {
 							Device.BeginInvokeOnMainThread(async () => {
 								await Application.Current.MainPage.DisplayAlert("Error", "The credentials you entered when you previously logged in in were incorrect, please try again.", "Ok");
 								DependencyService.Get<DeviceKeychainInterface>().DeleteCredentials(User.Instance.Username);
+								IsOfflineLoggedIn = false;
 								Application.Current.MainPage = new NavigationPage(new StartPage());
 							});
 							return;

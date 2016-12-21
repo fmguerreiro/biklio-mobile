@@ -4,70 +4,71 @@
 	xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
 	xmlns:oxy="clr-namespace:OxyPlot.Xamarin.Forms;assembly=OxyPlot.Xamarin.Forms"
 	xmlns:local="clr-namespace:Trace;assembly=Trace"
+	xmlns:language="clr-namespace:Trace.Localization;assembly=Trace"
 	x:Class="Trace.DashboardPage"
-	Title="Dashboard">
+	Title="{language:Translate Dashboard}">
 	<ContentPage.Content>
 		<TableView
 			Intent="Data">
 			<TableRoot>
 				<TableSection
-					Title="Routes tracked">
+					Title="{language:Translate RoutesTracked}">
 					<TextCell
-						Text="{Binding RoutesToday, StringFormat='Today: {0}'}"
+						Text="{Binding RoutesToday, StringFormat={language:Translate TodayStats}}"
 						Tapped="onTapped" />
 					<TextCell
-						Text="{Binding RoutesWeek, StringFormat='This Week: {0}'}"
+						Text="{Binding RoutesWeek, StringFormat={language:Translate ThisWeekStats}}"
 						Tapped="onTapped" />
 					<TextCell
-						Text="{Binding RoutesAllTime, StringFormat='All Time: {0}'}"
-						Tapped="onTapped" />
-				</TableSection>
-				<TableSection
-					Title="Rewards earned">
-					<TextCell
-						Text="{Binding RewardsToday, StringFormat='Today: {0}'}"
-						Tapped="onTapped" />
-					<TextCell
-						Text="{Binding RewardsWeek, StringFormat='This Week: {0}'}"
-						Tapped="onTapped" />
-					<TextCell
-						Text="{Binding RewardsAllTime, StringFormat='All Time: {0}'}"
+						Text="{Binding RoutesAllTime, StringFormat={language:Translate AllTimeStats}}"
 						Tapped="onTapped" />
 				</TableSection>
 				<TableSection
-					Title="Distance travelled">
+					Title="{language:Translate RewardsEarned}">
 					<TextCell
-						Text="{Binding DistanceToday.Total, StringFormat='Today: {0} meters'}"
+						Text="{Binding RewardsToday, StringFormat={language:Translate TodayStats}}"
+						Tapped="onTapped" />
+					<TextCell
+						Text="{Binding RewardsWeek, StringFormat={language:Translate ThisWeekStats}}"
+						Tapped="onTapped" />
+					<TextCell
+						Text="{Binding RewardsAllTime, StringFormat={language:Translate AllTimeStats}}"
+						Tapped="onTapped" />
+				</TableSection>
+				<TableSection
+					Title="{language:Translate DistanceTravelledMeters}">
+					<TextCell
+						Text="{Binding DistanceToday.Total, StringFormat={language:Translate TodayStats}}"
 						Tapped="onTappedDistance" />
 					<TextCell
-						Text="{Binding DistanceWeek.Total, StringFormat='This Week: {0} meters'}"
+						Text="{Binding DistanceWeek.Total, StringFormat={language:Translate ThisWeekStats}}"
 						Tapped="onTappedDistance" />
 					<TextCell
-						Text="{Binding DistanceAllTime.Total, StringFormat='All Time: {0} meters'}"
+						Text="{Binding DistanceAllTime.Total, StringFormat={language:Translate AllTimeStats}}"
 						Tapped="onTappedDistance" />
 				</TableSection>
 				<TableSection
-					Title="Time spent">
+					Title="{language:Translate TimeSpentHours}">
 					<TextCell
-						Text="{Binding TimeToday.Total, StringFormat='Today: {0}'}"
+						Text="{Binding TimeToday.Total, StringFormat={language:Translate TodayStats}}"
 						Tapped="onTappedTime" />
 					<TextCell
-						Text="{Binding TimeWeek.Total, StringFormat='This Week: {0}'}"
+						Text="{Binding TimeWeek.Total, StringFormat={language:Translate ThisWeekStats}}"
 						Tapped="onTappedTime" />
 					<TextCell
-						Text="{Binding TimeAllTime.Total, StringFormat='All Time: {0}'}"
+						Text="{Binding TimeAllTime.Total, StringFormat={language:Translate AllTimeStats}}"
 						Tapped="onTappedTime" />
 				</TableSection>
 				<TableSection
-					Title="Calories burned">
+					Title="{language:Translate CaloriesBurnedKCals}">
 					<TextCell
-						Text="{Binding CaloriesToday.Total, StringFormat='Today: {0} kcals'}"
+						Text="{Binding CaloriesToday.Total, StringFormat={language:Translate TodayStats}}"
 						Tapped="onTappedCalories" />
 					<TextCell
-						Text="{Binding CaloriesWeek.Total, StringFormat='This Week: {0} kcals'}"
+						Text="{Binding CaloriesWeek.Total, StringFormat={language:Translate ThisWeekStats}}"
 						Tapped="onTappedCalories" />
 					<TextCell
-						Text="{Binding CaloriesAllTime.Total, StringFormat='All Time: {0} kcals'}"
+						Text="{Binding CaloriesAllTime.Total, StringFormat={language:Translate AllTimeStats}}"
 						Tapped="onTappedCalories" />
 				</TableSection>
 			</TableRoot>

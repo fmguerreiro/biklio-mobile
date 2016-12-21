@@ -5,10 +5,11 @@ using System.Threading.Tasks;
 using ModernHttpClient;
 using Newtonsoft.Json.Linq;
 using Plugin.Connectivity;
+using Trace.Localization;
 
 namespace Trace {
 	public class HTTPClientBase : HttpClient {
-		private const string NO_CONNECTION_ERROR_MSG = "Could not connect to the server.";
+		private string NO_CONNECTION_ERROR_MSG = Language.ServerConnectionError;
 
 		/// <summary>
 		/// Calls the HttpClient with a handler that calls the stack optimized for each platform.

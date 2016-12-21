@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using Trace.Localization;
 using Xamarin.Forms;
 
 namespace Trace {
@@ -30,11 +31,14 @@ namespace Trace {
 			// TODO: change text UI for the new language.
 		}
 
-		async void OnDeleteCache(object sender, EventArgs args) {
-			var action = await DisplayActionSheet("Warning:\n This will delete all trajectories and challenges. They will NOT be saved.", "Back", "Delete");
-			switch(action) {
-				case ("Delete"): SQLiteDB.Instance.DropAllTables(); break;
-				default: return;
+		async void OnDeleteEverything(object sender, EventArgs args) {
+			var isDelete = await DisplayAlert(Language.Warning, Language.DeleteEverythingWarning, Language.Delete, Language.Back);
+			if(isDelete) {
+				Debug.WriteLine("DELETING ALL USER INFO");
+				SQLiteDB.Instance.DeleteAllUserItems();
+				User.Instance.Challenges = null;
+				User.Instance.Checkpoints = null;
+				User.Instance.Trajectories = null;
 			}
 		}
 

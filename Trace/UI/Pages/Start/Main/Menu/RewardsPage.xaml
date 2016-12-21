@@ -3,8 +3,9 @@
 	xmlns="http://xamarin.com/schemas/2014/forms"
 	xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
 	xmlns:locals="clr-namespace:Trace;assembly=Trace"
+	xmlns:language="clr-namespace:Trace.Localization;assembly=Trace"
 	x:Class="Trace.RewardsPage"
-	Title="My Rewards">
+	Title="{language:Translate Rewards}">
 	<ContentPage.Resources>
 		<ResourceDictionary>
 			<locals:ByteArrayToChallengeImageConverter
@@ -19,7 +20,7 @@
 				<DataTemplate>
 					<ImageCell
 						Text="{Binding Description}"
-						Detail="{Binding Condition, StringFormat='Bike for {0} km'}"
+						Detail="{Binding Condition, StringFormat={language:Translate BikeDistanceCondition}}"
 						ImageSource="{Binding ThisCheckpoint.LogoImageFilePath, Converter={StaticResource arrayToimageConverter}}">
 					</ImageCell>
 				</DataTemplate>

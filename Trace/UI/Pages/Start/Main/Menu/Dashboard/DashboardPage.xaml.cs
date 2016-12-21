@@ -3,6 +3,7 @@ using OxyPlot.Xamarin.Forms;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using Trace.Localization;
 
 namespace Trace {
 	public partial class DashboardPage : ContentPage {
@@ -48,16 +49,17 @@ namespace Trace {
 		}
 
 		async void onTappedDistance(object sender, EventArgs e) {
-			await Navigation.PushAsync(new DrawPlotPage(DistanceAllTime, "Distance per Activity"));
+			await Navigation.PushAsync(new DrawPlotPage(DistanceAllTime, Language.DistancePerActivity));
 		}
 
 		async void onTappedCalories(object sender, EventArgs e) {
-			await Navigation.PushAsync(new DrawPlotPage(CaloriesAllTime, "Calories per Activity"));
+			await Navigation.PushAsync(new DrawPlotPage(CaloriesAllTime, Language.CaloriesPerActivity));
 		}
 
 		async void onTappedTime(object sender, EventArgs e) {
+			// TODO just an example, delete this
 			CaloriesAllTime.Cycling = 50; CaloriesAllTime.Driving = 20; caloriesAllTime.Running = 2; caloriesAllTime.Walking = 80;
-			await Navigation.PushAsync(new DrawPlotPage(CaloriesAllTime, "Time per Activity"));
+			await Navigation.PushAsync(new DrawPlotPage(CaloriesAllTime, Language.TimePerActivity));
 		}
 
 

@@ -4,6 +4,7 @@ using OxyPlot;
 using OxyPlot.Axes;
 using OxyPlot.Series;
 using OxyPlot.Xamarin.Forms;
+using Trace.Localization;
 using Xamarin.Forms;
 
 namespace Trace {
@@ -47,14 +48,17 @@ namespace Trace {
 				AngleSpan = 360,
 				StartAngle = 0
 			};
-			ps.Slices.Add(new PieSlice("Walking", stats.Walking));
-			ps.Slices.Add(new PieSlice("Running", stats.Running));
-			ps.Slices.Add(new PieSlice("Cycling", stats.Cycling));
-			ps.Slices.Add(new PieSlice("Driving", stats.Driving));
+			ps.Slices.Add(new PieSlice(Language.Walking, stats.Walking));
+			ps.Slices.Add(new PieSlice(Language.Running, stats.Running));
+			ps.Slices.Add(new PieSlice(Language.Cycling, stats.Cycling));
+			ps.Slices.Add(new PieSlice(Language.Driving, stats.Driving));
 			model.Series.Add(ps);
 			return model;
 		}
 
+		/// <summary>
+		/// Examples for building charts.
+		/// </summary>
 		public static PlotModel buildPieModel() {
 			var model = new PlotModel { Title = "World population by continent" };
 			var ps = new PieSeries {

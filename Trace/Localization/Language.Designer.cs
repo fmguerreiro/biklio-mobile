@@ -71,6 +71,12 @@ namespace Trace.Localization {
             }
         }
         
+        public static string Start {
+            get {
+                return ResourceManager.GetString("Start", resourceCulture);
+            }
+        }
+        
         public static string Error {
             get {
                 return ResourceManager.GetString("Error", resourceCulture);
@@ -155,9 +161,15 @@ namespace Trace.Localization {
             }
         }
         
-        public static string UsernameOrPasswordError {
+        public static string LocalIncorrectCredentialsWarning {
             get {
-                return ResourceManager.GetString("UsernameOrPasswordError", resourceCulture);
+                return ResourceManager.GetString("LocalIncorrectCredentialsWarning", resourceCulture);
+            }
+        }
+        
+        public static string LoginError {
+            get {
+                return ResourceManager.GetString("LoginError", resourceCulture);
             }
         }
         
@@ -338,6 +350,282 @@ namespace Trace.Localization {
         public static string ShopDescription {
             get {
                 return ResourceManager.GetString("ShopDescription", resourceCulture);
+            }
+        }
+        
+        public static string Walking {
+            get {
+                return ResourceManager.GetString("Walking", resourceCulture);
+            }
+        }
+        
+        public static string Running {
+            get {
+                return ResourceManager.GetString("Running", resourceCulture);
+            }
+        }
+        
+        public static string Cycling {
+            get {
+                return ResourceManager.GetString("Cycling", resourceCulture);
+            }
+        }
+        
+        public static string Driving {
+            get {
+                return ResourceManager.GetString("Driving", resourceCulture);
+            }
+        }
+        
+        public static string RoutesTracked {
+            get {
+                return ResourceManager.GetString("RoutesTracked", resourceCulture);
+            }
+        }
+        
+        public static string RewardsEarned {
+            get {
+                return ResourceManager.GetString("RewardsEarned", resourceCulture);
+            }
+        }
+        
+        public static string DistanceTravelledMeters {
+            get {
+                return ResourceManager.GetString("DistanceTravelledMeters", resourceCulture);
+            }
+        }
+        
+        public static string TimeSpentHours {
+            get {
+                return ResourceManager.GetString("TimeSpentHours", resourceCulture);
+            }
+        }
+        
+        public static string CaloriesBurnedKCals {
+            get {
+                return ResourceManager.GetString("CaloriesBurnedKCals", resourceCulture);
+            }
+        }
+        
+        public static string TodayStats {
+            get {
+                return ResourceManager.GetString("TodayStats", resourceCulture);
+            }
+        }
+        
+        public static string ThisWeekStats {
+            get {
+                return ResourceManager.GetString("ThisWeekStats", resourceCulture);
+            }
+        }
+        
+        public static string AllTimeStats {
+            get {
+                return ResourceManager.GetString("AllTimeStats", resourceCulture);
+            }
+        }
+        
+        public static string DistancePerActivity {
+            get {
+                return ResourceManager.GetString("DistancePerActivity", resourceCulture);
+            }
+        }
+        
+        public static string TimePerActivity {
+            get {
+                return ResourceManager.GetString("TimePerActivity", resourceCulture);
+            }
+        }
+        
+        public static string CaloriesPerActivity {
+            get {
+                return ResourceManager.GetString("CaloriesPerActivity", resourceCulture);
+            }
+        }
+        
+        public static string Details {
+            get {
+                return ResourceManager.GetString("Details", resourceCulture);
+            }
+        }
+        
+        public static string DateDetails {
+            get {
+                return ResourceManager.GetString("DateDetails", resourceCulture);
+            }
+        }
+        
+        public static string DurationDetails {
+            get {
+                return ResourceManager.GetString("DurationDetails", resourceCulture);
+            }
+        }
+        
+        public static string DistanceDetails {
+            get {
+                return ResourceManager.GetString("DistanceDetails", resourceCulture);
+            }
+        }
+        
+        public static string MostCommonActivityDetails {
+            get {
+                return ResourceManager.GetString("MostCommonActivityDetails", resourceCulture);
+            }
+        }
+        
+        public static string AvgSpeedDetails {
+            get {
+                return ResourceManager.GetString("AvgSpeedDetails", resourceCulture);
+            }
+        }
+        
+        public static string MaxSpeedDetails {
+            get {
+                return ResourceManager.GetString("MaxSpeedDetails", resourceCulture);
+            }
+        }
+        
+        public static string Upload {
+            get {
+                return ResourceManager.GetString("Upload", resourceCulture);
+            }
+        }
+        
+        public static string CaloriesCalculation {
+            get {
+                return ResourceManager.GetString("CaloriesCalculation", resourceCulture);
+            }
+        }
+        
+        public static string Age {
+            get {
+                return ResourceManager.GetString("Age", resourceCulture);
+            }
+        }
+        
+        public static string Gender {
+            get {
+                return ResourceManager.GetString("Gender", resourceCulture);
+            }
+        }
+        
+        public static string Height {
+            get {
+                return ResourceManager.GetString("Height", resourceCulture);
+            }
+        }
+        
+        public static string Weight {
+            get {
+                return ResourceManager.GetString("Weight", resourceCulture);
+            }
+        }
+        
+        public static string SearchRadius {
+            get {
+                return ResourceManager.GetString("SearchRadius", resourceCulture);
+            }
+        }
+        
+        public static string Delete {
+            get {
+                return ResourceManager.GetString("Delete", resourceCulture);
+            }
+        }
+        
+        public static string Routes {
+            get {
+                return ResourceManager.GetString("Routes", resourceCulture);
+            }
+        }
+        
+        public static string Everything {
+            get {
+                return ResourceManager.GetString("Everything", resourceCulture);
+            }
+        }
+        
+        public static string Information {
+            get {
+                return ResourceManager.GetString("Information", resourceCulture);
+            }
+        }
+        
+        public static string Licenses {
+            get {
+                return ResourceManager.GetString("Licenses", resourceCulture);
+            }
+        }
+        
+        public static string ToS {
+            get {
+                return ResourceManager.GetString("ToS", resourceCulture);
+            }
+        }
+        
+        public static string PrivacyPolicy {
+            get {
+                return ResourceManager.GetString("PrivacyPolicy", resourceCulture);
+            }
+        }
+        
+        public static string AboutUs {
+            get {
+                return ResourceManager.GetString("AboutUs", resourceCulture);
+            }
+        }
+        
+        public static string Warning {
+            get {
+                return ResourceManager.GetString("Warning", resourceCulture);
+            }
+        }
+        
+        public static string DeleteEverythingWarning {
+            get {
+                return ResourceManager.GetString("DeleteEverythingWarning", resourceCulture);
+            }
+        }
+        
+        public static string Back {
+            get {
+                return ResourceManager.GetString("Back", resourceCulture);
+            }
+        }
+        
+        public static string ServerConnectionError {
+            get {
+                return ResourceManager.GetString("ServerConnectionError", resourceCulture);
+            }
+        }
+        
+        public static string At {
+            get {
+                return ResourceManager.GetString("At", resourceCulture);
+            }
+        }
+        
+        public static string NoChallengesFound {
+            get {
+                return ResourceManager.GetString("NoChallengesFound", resourceCulture);
+            }
+        }
+        
+        public static string OneChallengeFound {
+            get {
+                return ResourceManager.GetString("OneChallengeFound", resourceCulture);
+            }
+        }
+        
+        public static string ThereAre {
+            get {
+                return ResourceManager.GetString("ThereAre", resourceCulture);
+            }
+        }
+        
+        public static string ChallengesNear {
+            get {
+                return ResourceManager.GetString("ChallengesNear", resourceCulture);
             }
         }
     }

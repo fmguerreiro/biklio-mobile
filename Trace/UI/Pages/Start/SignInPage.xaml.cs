@@ -50,8 +50,12 @@ namespace Trace {
 			string storedPassword = DependencyService.Get<DeviceKeychainInterface>().GetPassword(username);
 			bool doesPasswordMatch = storedPassword != null && storedPassword.Equals(password);
 			if(!doesUsernameExist || !doesPasswordMatch) {
-				await DisplayAlert(Language.Error, Language.UsernameOrPasswordError, Language.Ok);
-				return;
+				await DisplayAlert(Language.Warning, Language.LocalIncorrectCredentialsWarning, Language.Yes, Language.No);
+				await LoginManager.TryLogin();
+				if(!LoginManager.IsLoginVerified) {
+					await DisplayAlert(Language.Error, Language.LoginError, Language.Ok);
+					return;
+				}
 			}
 
 			//if(result.success) {
@@ -69,9 +73,8 @@ namespace Trace {
 
 			// Used later for background login when user has internet connection.
 			User.Instance.Password = password;
-			LoginManager.IsOfflineLoggedIn = true;
 
-			LoginManager.TryLogin();
+			LoginManager.TryLogin().DoNotAwait();
 
 			Application.Current.MainPage = new MainPage();
 			//}
@@ -110,7 +113,7 @@ namespace Trace {
 			get {
 				return new Action(() => {
 
-					LoginManager.TryLogin();
+					LoginManager.TryLogin().DoNotAwait();
 
 					//var client = new WebServerClient();
 					//WSResult result = await Task.Run(() => client.LoginWithToken(User.Instance.AuthToken));

@@ -3,8 +3,9 @@
 	xmlns="http://xamarin.com/schemas/2014/forms"
 	xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
 	xmlns:locals="clr-namespace:Trace;assembly=Trace"
+	xmlns:language="clr-namespace:Trace.Localization;assembly=Trace"
 	x:Class="Trace.MyTrajectoriesPage"
-	Title="My Routes">
+	Title="{language:Translate MyRoutes}">
 	<ContentPage.Resources>
 		<ResourceDictionary>
 			<locals:ImageToRouteCheckConverter

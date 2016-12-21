@@ -3,8 +3,9 @@
 	xmlns="http://xamarin.com/schemas/2014/forms"
 	xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
 	xmlns:locals="clr-namespace:Trace;assembly=Trace"
+	xmlns:language="clr-namespace:Trace.Localization;assembly=Trace"
 	x:Class="Trace.TrajectoryDetailsPage"
-	Title="Details">
+	Title="{language:Translate Details}">
 	<ContentPage.Padding>
 		<OnPlatform
 			x:TypeArguments="Thickness"
@@ -25,26 +26,26 @@
 			IsShowingUser="true"
 			MapType="Street" />
 		<Label
-			Text="{Binding DisplayTime, StringFormat='Date: {0}'}"
+			Text="{Binding DisplayTime, StringFormat={language:Translate DateDetails}}"
 			FontSize="Small" />
 		<Label
-			Text="{Binding DisplayDuration, StringFormat='Duration: {0}'}"
+			Text="{Binding DisplayDuration, StringFormat={language:Translate DurationDetails}}"
 			FontSize="Small" />
 		<Label
-			Text="{Binding TotalDistanceMeters, StringFormat='Distance: {0} m'}"
+			Text="{Binding TotalDistanceMeters, StringFormat={language:Translate DistanceDetails}}"
 			FontSize="Small" />
 		<Label
-			Text="{Binding MostCommonActivity, StringFormat='Most Common Activity: {0}'}"
+			Text="{Binding MostCommonActivity, StringFormat={language:Translate MostCommonActivityDetails}}"
 			FontSize="Small" />
 		<Label
-			Text="{Binding AvgSpeed, StringFormat='Average Speed: {0} m/s'}"
+			Text="{Binding AvgSpeed, StringFormat={language:Translate AvgSpeedDetails}}"
 			FontSize="Small" />
 		<Label
-			Text="{Binding MaxSpeed, StringFormat='Maximum Speed: {0} m/s'}"
+			Text="{Binding MaxSpeed, StringFormat={language:Translate MaxSpeedDetails}}"
 			FontSize="Small" />
 		<Button
 			x:Name="UploadTrajectoryButton"
-			Text="Upload"
+			Text="{language:Translate Upload}"
 			IsVisible="false"
 			Clicked="onUploadClicked">
 		</Button>
