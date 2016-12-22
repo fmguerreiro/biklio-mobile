@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using Xamarin.Auth;
 
 [assembly: Xamarin.Forms.Dependency(typeof(Trace.iOS.StoreCredentials))]
@@ -23,6 +24,7 @@ namespace Trace.iOS {
 		public string GetPassword(string username) {
 			var accounts = AccountStore.Create().FindAccountsForService(App.AppName);
 			foreach(Account a in accounts) {
+				Debug.WriteLine("GetPassword(): " + username);
 				if(a.Username.Equals(username))
 					return a.Properties["Password"];
 			}
@@ -49,9 +51,9 @@ namespace Trace.iOS {
 		}
 
 		public void DeleteAllCredentials() {
-			var iterator = AccountStore.Create().FindAccountsForService(App.AppName).GetEnumerator();
-			while(iterator.MoveNext()) {
-				AccountStore.Create().Delete(iterator.Current, App.AppName);
+			foreach(var a in AccountStore.Create().FindAccountsForService(App.AppName)) {
+				Debug.WriteLine("DeleteAllCredentials(): " + a.Username);
+				AccountStore.Create().Delete(a, App.AppName);
 			}
 		}
 

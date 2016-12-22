@@ -634,5 +634,17 @@ namespace Trace.Localization {
                 return ResourceManager.GetString("OnlineLoginError", resourceCulture);
             }
         }
+        
+        public static string RewardsUnlocked {
+            get {
+                return ResourceManager.GetString("RewardsUnlocked", resourceCulture);
+            }
+        }
+        
+        public static string RewardsUnlockedMessage {
+            get {
+                return ResourceManager.GetString("RewardsUnlockedMessage", resourceCulture);
+            }
+        }
     }
 }

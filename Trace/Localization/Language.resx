@@ -312,4 +312,10 @@
 	<data name="OnlineLoginError" xml:space="preserve">
     	<value>The credentials you entered when you previously logged in were incorrect, please try again.</value>
   	</data>
+	<data name="RewardsUnlocked" xml:space="preserve">
+    	<value>Rewards unlocked</value>
+  	</data>
+	<data name="RewardsUnlockedMessage" xml:space="preserve">
+    	<value>"You have {0} rewards available."</value>
+  	</data>
 </root>

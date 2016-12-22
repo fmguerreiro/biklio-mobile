@@ -26,16 +26,29 @@ namespace Trace {
 		public string Email { get; set; } = "";
 		public string PictureURL { get; set; } = "";
 
-		private string authToken = "";
-		public string AuthToken {
-			get { return authToken; }
-			set { if(!string.IsNullOrEmpty(value)) authToken = value; }
+		// Token from the third-party OAuth provider that uniquely identifies the user.
+		private string idToken = "";
+		public string IDToken {
+			get { return idToken; }
+			set { if(!string.IsNullOrEmpty(value)) idToken = value; }
 		}
+
+
+		// Token received from the WebServer to perform privileged operations.
+		[Ignore]
+		public string SessionToken { get; set; }
+
+
+		// Position where the user last obtained challenges,
+		// when user gets too far from here, reset WSSnapshotVersion
+		public double PrevLongitude = 0.0;
+		public double PrevLatitude = 0.0;
 
 
 		// The webserver stores several snapshots of the challenge and checkpoint data.
 		// This value is used to tell the webserver the most recent version of the data in the device.
 		public long WSSnapshotVersion { get; set; } = 0;
+
 
 		// Used in calories calculations. Defaults are European averages.
 		public int Age { get; set; } = 37;
@@ -62,7 +75,7 @@ namespace Trace {
 			set {
 				if(value != null) {
 					challenges = value;
-					// Don't forget to update the reference of each challenge to its checkpoint!
+					// Update the reference of each challenge to its checkpoint and vice-versa.
 					foreach(Challenge challenge in challenges) {
 						if(checkpoints.ContainsKey(challenge.CheckpointId)) {
 							challenge.ThisCheckpoint = checkpoints[challenge.CheckpointId];
@@ -82,11 +95,12 @@ namespace Trace {
 			set { checkpoints = value ?? new Dictionary<long, Checkpoint>(); }
 		}
 
+
 		public override string ToString() {
 			//string challengeString = string.Join("\n\t", Challenges) ?? "";
 			//string checkpointString = string.Join("\n\t", Checkpoints) ?? "";
 			return string.Format("[User Id->{0} Username->{1} Email->{2} AuthToken->{3} Radius->{4} SnapshotVersion->{5}]",
-								 Id, Username, Email, AuthToken, SearchRadius, WSSnapshotVersion);
+								 Id, Username, Email, IDToken, SearchRadius, WSSnapshotVersion);
 		}
 	}
 }

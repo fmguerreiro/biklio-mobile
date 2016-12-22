@@ -33,8 +33,12 @@ namespace Trace {
 		public string BikeFacilities { get; set; }
 		public string Description { get; set; }
 
+		List<Challenge> challenges;
 		[Ignore]
-		public List<Challenge> Challenges { get; set; }
+		public List<Challenge> Challenges {
+			get { return challenges ?? new List<Challenge>(); }
+			set { challenges = value ?? new List<Challenge>(); }
+		}
 
 		// 'double' instead of 'Position' because SQLite only supports basic types. 
 		public double Longitude { get; set; }

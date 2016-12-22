@@ -142,13 +142,12 @@ namespace Trace.iOS {
 
 
 		/// <summary>
-		/// Function that handles received local notification.
-		/// Actions include showing a number icon (badge) next to the app icon and displaying an alert pop-up if app is in the foreground.
+		/// Function that handles received local notification in background for iOS 9 or lower.
 		/// </summary>
 		/// <param name="application">Application.</param>
 		/// <param name="notification">Notification.</param>
 		public override void ReceivedLocalNotification(UIApplication application, UILocalNotification notification) {
-			Debug.WriteLine("Received local notification - body: " + notification.AlertBody);
+			Debug.WriteLine("ReceivedLocalNotification(): " + notification.AlertBody);
 			// show an alert
 			UIAlertController okayAlertController = UIAlertController.Create(notification.AlertAction, notification.AlertBody, UIAlertControllerStyle.Alert);
 			okayAlertController.AddAction(UIAlertAction.Create("OK", UIAlertActionStyle.Default, null));

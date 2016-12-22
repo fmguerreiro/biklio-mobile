@@ -64,10 +64,9 @@ namespace Trace {
 
 				// Save trajectory only if it is of relevant size.
 				if(distanceInMeters > MIN_SIZE_TRAJECTORY) {
-					// TODO offload this out of UI thread
 					// Calculate Motion activities along the trajectory.
 					IList<ActivityEvent> activityEvents = DependencyService.Get<IMotionActivityManager>().ActivityEvents;
-					trajectory.Points = AssociatePointsWithActivity(activityEvents, CustomMap.RouteCoordinates);
+					trajectory.Points = await Task.Run(() => AssociatePointsWithActivity(activityEvents, CustomMap.RouteCoordinates));
 					trajectory.PointsJSON = JsonConvert.SerializeObject(trajectory.Points);
 
 					// Save created trajectory.

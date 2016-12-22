@@ -48,7 +48,7 @@ namespace Trace {
 			bool doesPasswordMatch = storedPassword != null && storedPassword.Equals(password);
 			if(!doesUsernameExist || !doesPasswordMatch) {
 				await DisplayAlert(Language.Warning, Language.LocalIncorrectCredentialsWarning, Language.Yes, Language.No);
-				await LoginManager.TryLogin();
+				await LoginManager.TryLogin(isCredentialsLogin: true);
 				if(!LoginManager.IsLoginVerified) {
 					await DisplayAlert(Language.Error, Language.LoginError, Language.Ok);
 					return;
@@ -71,7 +71,7 @@ namespace Trace {
 			// Used later for background login when user has internet connection.
 			User.Instance.Password = password;
 
-			LoginManager.TryLogin().DoNotAwait();
+			LoginManager.TryLogin(isCredentialsLogin: true).DoNotAwait();
 
 			Application.Current.MainPage = new MainPage();
 			//}
@@ -85,15 +85,6 @@ namespace Trace {
 			OAuthConfigurationManager.SetConfig(new GoogleOAuthConfig());
 			Navigation.PushModalAsync(new GoogleOAuthUIPage());
 		}
-
-
-		//async Task googleLoginAsync() {
-		//	Google.Apis.Oauth2.v2.Oauth2BaseServiceRequest();
-		//	var service = new DiscoveryService(new BaseClientService.Initializer {
-		//		ApplicationName = "Discovery Sample",
-		//		ApiKey = "[YOUR_API_KEY_HERE]",
-		//	});
-		//}
 
 
 		void OnFacebookLogin(object sender, EventArgs e) {
@@ -110,7 +101,7 @@ namespace Trace {
 			get {
 				return new Action(() => {
 
-					LoginManager.TryLogin().DoNotAwait();
+					LoginManager.TryLogin(isCredentialsLogin: false).DoNotAwait();
 
 					//var client = new WebServerClient();
 					//WSResult result = await Task.Run(() => client.LoginWithToken(User.Instance.AuthToken));

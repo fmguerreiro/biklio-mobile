@@ -6,8 +6,6 @@ using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using Plugin.Connectivity;
-using Plugin.Connectivity.Abstractions;
 using Plugin.Geolocator.Abstractions;
 
 namespace Trace {
@@ -17,9 +15,7 @@ namespace Trace {
 		/// <summary>
 		/// Defers the constructor back to BaseHTTPClient to call HttpClient with handler optimized for each platform.
 		/// </summary>
-		public WebServerClient() : base() {
-			DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", User.Instance.AuthToken);
-		}
+		public WebServerClient() : base() { }
 
 
 		/// <summary>
@@ -86,7 +82,7 @@ namespace Trace {
 			var output = await PostAsyncFormURL(WebServerConstants.LOGIN_ENDPOINT, request);
 			Debug.WriteLine("LoginWithToken() - result: " + output);
 			var result = output.ToObject<WSResult>();
-			if(!string.IsNullOrWhiteSpace(result.token)) User.Instance.AuthToken = result.token;
+			if(!string.IsNullOrWhiteSpace(result.token)) User.Instance.IDToken = result.token;
 
 			return result;
 		}
@@ -102,8 +98,8 @@ namespace Trace {
 		/// <param name="version">Version.</param>
 		public async Task<WSResult> FetchChallenges(Position position, int radiusInKM, long version) {
 			var query = new FormUrlEncodedContent(new[] {
-				new KeyValuePair<string, string>("latitude", position.Latitude.ToString()),
-				new KeyValuePair<string, string>("longitude", position.Longitude.ToString()),
+				new KeyValuePair<string, string>("latitude", position.Latitude.ToString().Replace(',','.')),
+				new KeyValuePair<string, string>("longitude", position.Longitude.ToString().Replace(',','.')),
 				new KeyValuePair<string, string>("radius", radiusInKM.ToString()),
 				new KeyValuePair<string, string>("version", version.ToString())
 			});
@@ -111,7 +107,7 @@ namespace Trace {
 			JObject output = await GetAsyncFormURL(WebServerConstants.FETCH_CHALLENGES_ENDPOINT, query);
 			Debug.WriteLine("FetchChallenges() - response: " + output.ToString());
 			WSResult result = output.ToObject<WSResult>();
-			if(!string.IsNullOrWhiteSpace(result.token)) User.Instance.AuthToken = result.token;
+			if(!string.IsNullOrWhiteSpace(result.token)) User.Instance.IDToken = result.token;
 			return result;
 		}
 
@@ -124,6 +120,8 @@ namespace Trace {
 		/// </summary>
 		/// <param name="trajectory">Trajectory.</param>
 		public async Task SendTrajectory(Trajectory trajectory) {
+			DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", User.Instance.SessionToken ?? User.Instance.IDToken);
+
 			var trackSummary = new WSTrackSummary {
 				session = "",
 				startedAt = trajectory.StartTime * 1000, // this is in ms.
@@ -143,26 +141,26 @@ namespace Trace {
 				request = JsonConvert.SerializeObject(trackSummary, Formatting.Indented);
 				Debug.WriteLine("SendTrackSummary() - request: " + request);
 				output = await PostAsyncJSON(WebServerConstants.SUBMIT_TRAJECTORY_SUMMARY, request);
-				Debug.WriteLine("SendTrackSummary() - result: " + output);
+				Debug.WriteLine("SendTrackSummary(): " + WebServerConstants.SUBMIT_TRAJECTORY_SUMMARY + "\nresult: " + output);
 				trackSummaryResult = output.ToObject<WSResult>();
 				if(!trackSummaryResult.success)
 					return;
 				trajectory.TrackSession = trackSummaryResult.payload.session;
-				SQLiteDB.Instance.SaveItem<Trajectory>(trajectory);
+				SQLiteDB.Instance.SaveItem(trajectory);
 			}
 
 			if(!trajectory.WasTrackSent) {
 				// Send Trajectory.
 				var track = WSTrajectory.ToWSPoints(trajectory.Points);
-				request = JsonConvert.SerializeObject(track, Formatting.None);
-				//Debug.WriteLine("SendTrack() request path: " + WebServerConstants.SUBMIT_TRAJECTORY + trajectory.trackSession);
-				//Debug.WriteLine("SendTrack() request: " + request);
+				request = JsonConvert.SerializeObject(track, Formatting.Indented);
+				Debug.WriteLine("SendTrack() request path: " + WebServerConstants.SUBMIT_TRAJECTORY + trajectory.TrackSession);
+				Debug.WriteLine("SendTrack() request: " + request);
 				output = await PostAsyncJSON(WebServerConstants.SUBMIT_TRAJECTORY + trajectory.TrackSession, request);
-				//Debug.WriteLine("SendTrack() response: " + output);
+				Debug.WriteLine("SendTrack() response: " + output);
 				if(!output.ToObject<WSResult>().success)
 					return;
 				trajectory.WasTrackSent = true;
-				SQLiteDB.Instance.SaveItem<Trajectory>(trajectory);
+				SQLiteDB.Instance.SaveItem(trajectory);
 			}
 		}
 	}

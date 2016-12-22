@@ -13,11 +13,10 @@ namespace Trace {
 		public static bool IsLoginVerified { get; set; }
 		public static bool IsRememberMe { get; set; }
 
-
-		public static async Task TryLogin() {
+		public static async Task TryLogin(bool isCredentialsLogin) {
 			IsOfflineLoggedIn = true;
 			if(CrossConnectivity.Current.IsConnected) {
-				await Task.Run(() => OnConnectivityChanged(null, new ConnectivityChangedEventArgs() { IsConnected = true }));
+				await Task.Run(() => OnConnectivityChanged(isCredentialsLogin, new ConnectivityChangedEventArgs() { IsConnected = true }));
 			}
 		}
 
@@ -27,7 +26,7 @@ namespace Trace {
 		/// </summary>
 		/// <param name="sender">Sender.</param>
 		/// <param name="e">E.</param>
-		public static async void OnConnectivityChanged(object sender, ConnectivityChangedEventArgs e) {
+		public static async void OnConnectivityChanged(object isCrendentialsLogin, ConnectivityChangedEventArgs e) {
 			Debug.WriteLine("OnConnectivityChanged() - IsLoginVerified: " + IsLoginVerified + " and isOfflineLoggedIn: " + IsOfflineLoggedIn);
 			if(e.IsConnected) {
 				var isWSReachable = await CrossConnectivity.Current.IsRemoteReachable(WebServerConstants.HOST, WebServerConstants.PORT, 5000);
@@ -36,7 +35,7 @@ namespace Trace {
 					if(!IsLoginVerified && IsOfflineLoggedIn) {
 						Debug.WriteLine("Verifying login.");
 						bool result = false;
-						if(string.IsNullOrEmpty(User.Instance.AuthToken))
+						if((bool) isCrendentialsLogin)
 							result = await Task.Run(() => LoginWithCredentials());
 						else
 							result = await Task.Run(() => LoginWithToken());
@@ -87,12 +86,13 @@ namespace Trace {
 		public static async Task<bool> LoginWithToken() {
 
 			var client = new WebServerClient();
-			WSResult result = await Task.Run(() => client.LoginWithToken(User.Instance.AuthToken));
+			WSResult result = await Task.Run(() => client.LoginWithToken(User.Instance.IDToken));
 
 			if(result.success) {
 				User.Instance.Name = result.payload.name;
 				User.Instance.Email = result.payload.email;
 				User.Instance.PictureURL = result.payload.picture;
+				User.Instance.SessionToken = result.payload.token;
 				SQLiteDB.Instance.SaveItem(User.Instance);
 			}
 			return result.success;

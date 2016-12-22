@@ -79,7 +79,7 @@ namespace Trace.Droid {
 					}
 
 					// Finally, store the user.
-					User.Instance.AuthToken = authToken;
+					User.Instance.IDToken = authToken;
 					SQLiteDB.Instance.SaveItem(User.Instance);
 					SQLiteDB.Instance.InstantiateUser(User.Instance.Username);
 					// If the user is logged in navigate to the Home page.

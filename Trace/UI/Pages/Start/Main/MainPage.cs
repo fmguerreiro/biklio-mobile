@@ -41,6 +41,7 @@ namespace Trace {
 			if(isLogout) {
 				User.Instance = null;
 				RewardEligibilityManager.Instance = null;
+				LoginManager.IsLoginVerified = LoginManager.IsOfflineLoggedIn = false;
 				await CrossGeolocator.Current.StopListeningAsync();
 				DependencyService.Get<IMotionActivityManager>().StopMotionUpdates();
 				Application.Current.MainPage = new NavigationPage((Page) Activator.CreateInstance(item.TargetType));

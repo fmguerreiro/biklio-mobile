@@ -24,10 +24,10 @@ namespace Trace.iOS {
 				//Debug.WriteLine("DidSignIn");
 				if(gUser == null) {
 					Debug.WriteLine("GoogleOAuthPageRenderer.DidSignIn(): Failure Google User == null", "Login");
-					if(!didTryLoginOnce)
-						SignIn.SharedInstance.SignInUser();
+					//if(!didTryLoginOnce)
+					//	SignIn.SharedInstance.SignInUser();
 					didTryLoginOnce = true;
-					//SignInPage.UnsuccessfulOAuthLoginAction.Invoke();
+					SignInPage.UnsuccessfulOAuthLoginAction.Invoke();
 					return;
 				}
 
@@ -65,7 +65,7 @@ namespace Trace.iOS {
 					AccountStore.Create().Save(account, OAuthConfigurationManager.KeystoreService);
 
 					// Store information in SQLite. 
-					User.Instance.AuthToken = idToken;
+					User.Instance.IDToken = idToken;
 					User.Instance.Name = fullname;
 					User.Instance.Email = email;
 					User.Instance.PictureURL = pictureURL;
@@ -97,8 +97,8 @@ namespace Trace.iOS {
 			SignIn.SharedInstance.Delegate = this;
 
 			// Sign the user in automatically
-			//SignIn.SharedInstance.SignInUser();
-			SignIn.SharedInstance.SignInUserSilently();
+			SignIn.SharedInstance.SignInUser();
+			//SignIn.SharedInstance.SignInUserSilently();
 		}
 	}
 }

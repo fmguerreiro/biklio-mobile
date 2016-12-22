@@ -19,6 +19,9 @@
 		// Ids of challenges that have expired.
 		public long[] canceledChallenges { get; set; }
 
+		// Session token used for sending route.
+		public string token { get; set; }
+
 		// Information passed by OAuth providers to the WS, which passes it to the user after sending the token.
 		public string id;
 		public string name;

@@ -192,14 +192,14 @@ namespace Trace {
 						// For the valid challenges ...
 						if(TimeUtil.IsWithinPeriod(now, createdAt, expiresAt)) {
 							// Check if distance cycled meets the criteria.
-							if(challenge.NeededCyclingDistance <= cycledDistanceBetween(createdAt, expiresAt)) {
+							if(challenge.NeededCyclingDistance <= CycledDistanceBetween(createdAt, expiresAt)) {
 								challenge.isComplete = true;
 							}
 						}
 					}
 				}
 			}
-			// Start a timer that makes the 'checkNearbyCheckpoints' process available after a certain period.
+			// Start a timer that waits a certain period before doing 'checkNearbyCheckpoints' again.
 			checkNearbyCheckpointsTimer = new Timer(new TimerCallback(
 													(obj) => { checkNearbyCheckpointsTask = null; }),
  													null,
@@ -207,7 +207,7 @@ namespace Trace {
 		}
 
 
-		private long cycledDistanceBetween(long start, long end) {
+		public static long CycledDistanceBetween(long start, long end) {
 			long res = 0;
 			foreach(Trajectory t in User.Instance.Trajectories) {
 				if(TimeUtil.IsWithinPeriod(t.EndTime, start, end))

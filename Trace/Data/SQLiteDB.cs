@@ -26,7 +26,7 @@ namespace Trace {
 		/// </summary>
 		private SQLiteDB() {
 			database = DependencyService.Get<ISQLite>().GetConnection();
-			//DropAllTables();
+			//NuclearOption();
 			database.CreateTable<User>();
 			database.CreateTable<Trajectory>();
 			database.CreateTable<Challenge>();
@@ -196,14 +196,16 @@ namespace Trace {
 
 
 		/// <summary>
-		/// Deletes all tables in the DB.
+		/// Deletes all tables in the DB and all stored credentials.
 		/// </summary>
-		public void DropAllTables() {
+		public void NuclearOption() {
 			lock(locker) {
 				database.DropTable<User>();
 				database.DropTable<Challenge>();
 				database.DropTable<Checkpoint>();
 				database.DropTable<Trajectory>();
+				//DependencyService.Get<DeviceKeychainInterface>().SaveCredentials("username", "password");
+				DependencyService.Get<DeviceKeychainInterface>().DeleteAllCredentials();
 			}
 		}
 	}
