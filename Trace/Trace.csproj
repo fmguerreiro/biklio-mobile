@@ -115,7 +115,6 @@
     <Compile Include="Business\Map\CustomPin.cs" />
     <Compile Include="UI\SourceConverters\ByteArrayToChallengeImageConverter.cs" />
     <Compile Include="Data\IFileSystem.cs" />
-    <Compile Include="TaskExtensions.cs" />
     <Compile Include="Security\OAuth\OAuthConfigurationManager.cs" />
     <Compile Include="Security\OAuth\OAuthConfig.cs" />
     <Compile Include="Security\OAuth\Facebook\FacebookOAuthConfig.cs" />
@@ -132,14 +131,12 @@
     <Compile Include="ServiceAccess\WebServiceObjects\GetChallenges\WSShop.cs" />
     <Compile Include="ServiceAccess\WebServiceObjects\SubmitRoute\WSTrackSummary.cs" />
     <Compile Include="ServiceAccess\WebServiceObjects\SubmitRoute\WSTrajectory.cs" />
-    <Compile Include="TimeUtil.cs" />
     <Compile Include="Business\TrajectoryPoint.cs" />
     <Compile Include="UI\SourceConverters\ImageToRouteCheckConverter.cs" />
     <Compile Include="Business\MotionActivity\RewardEligibility\RewardEligibilityManager.cs" />
     <Compile Include="Business\MotionActivity\RewardEligibility\RewardEligibilityStateMachine.cs" />
     <Compile Include="Business\MotionActivity\RewardEligibility\Timer.cs" />
     <Compile Include="UI\Controls\BindablePicker.cs" />
-    <Compile Include="EnumUtil.cs" />
     <Compile Include="UI\Pages\StartPage.xaml.cs">
       <DependentUpon>StartPage.xaml</DependentUpon>
     </Compile>
@@ -196,7 +193,6 @@
     <Compile Include="UI\Pages\Start\Main\Menu\Dashboard\Units\DistancePerActivity.cs" />
     <Compile Include="UI\Pages\Start\Main\Menu\Dashboard\Units\CaloriesPerActivity.cs" />
     <Compile Include="UI\Pages\Start\Main\Menu\Dashboard\Units\UnitPerActivity.cs" />
-    <Compile Include="GeoUtils.cs" />
     <Compile Include="ServiceAccess\LoginManager.cs" />
     <Compile Include="Localization\Language.Designer.cs">
       <DependentUpon>Language.resx</DependentUpon>
@@ -205,6 +201,11 @@
     <Compile Include="Localization\PlatformCulture.cs" />
     <Compile Include="Localization\Translate.cs" />
     <Compile Include="UI\Pages\Start\Main\Menu\Settings\SettingsEnums.cs" />
+    <Compile Include="Utils\EnumUtil.cs" />
+    <Compile Include="Utils\GeoUtils.cs" />
+    <Compile Include="Utils\TaskExtensions.cs" />
+    <Compile Include="Utils\TimeUtil.cs" />
+    <Compile Include="ServiceAccess\Notifications\INotificationMessage.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Business\" />
@@ -237,6 +238,8 @@
     <Folder Include="Business\Map\Bindings\" />
     <Folder Include="UI\Pages\Start\Main\Menu\Dashboard\Units\" />
     <Folder Include="Localization\" />
+    <Folder Include="Utils\" />
+    <Folder Include="ServiceAccess\Notifications\" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System.Device.Portable">

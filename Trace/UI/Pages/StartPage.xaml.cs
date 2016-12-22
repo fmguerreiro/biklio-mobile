@@ -2,6 +2,9 @@
 using Xamarin.Forms;
 
 namespace Trace {
+	/// <summary>
+	/// First page of the app, showing the logo and the logic for the user to sign into the application.
+	/// </summary>
 	public partial class StartPage : ContentPage {
 		public StartPage() {
 			InitializeComponent();

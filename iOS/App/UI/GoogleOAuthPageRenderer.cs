@@ -84,7 +84,7 @@ namespace Trace.iOS {
 
 			// If the account is already on the device keychain, no need for another request.
 			var account = AccountStore.Create().FindAccountsForService(OAuthConfigurationManager.KeystoreService).FirstOrDefault();
-			if(account != null) { // TODO !=
+			if(account != null) {
 				Debug.WriteLine("GoogleOAuthPageRenderer.ViewDidLoad(): User already in keychain, skipping google oauth.");
 				SQLiteDB.Instance.InstantiateUser(account.Username);
 				SignInPage.SuccessfulOAuthLoginAction.Invoke();
