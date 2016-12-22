@@ -10,7 +10,18 @@
 
 
 		// These values do not need changing
-		public override string Scope { get { return "https://www.googleapis.com/auth/userinfo.email"; } }
+		public string[] Scopes {
+			get {
+				return
+					new string[] { "https://www.googleapis.com/auth/userinfo.email", "https://www.googleapis.com/auth/userinfo.profile" };
+			}
+		}
+		public override string Scope {
+			get {
+				return "https://www.googleapis.com/auth/userinfo.email+" +
+					   "https://www.googleapis.com/auth/userinfo.profile";
+			}
+		}
 		public override string AuthorizeUrl { get { return "https://accounts.google.com/o/oauth2/auth"; } }
 		public override string AccessTokenUrl { get { return "https://accounts.google.com/o/oauth2/token"; } }
 		public override string UserInfoUrl { get { return "https://www.googleapis.com/oauth2/v2/userinfo"; } }

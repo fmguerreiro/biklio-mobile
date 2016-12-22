@@ -290,18 +290,6 @@
     <Reference Include="Zlib.Portable">
       <HintPath>..\packages\Zlib.Portable.Signed.1.11.0\lib\portable-net4+sl5+wp8+win8+wpa81+MonoTouch+MonoAndroid\Zlib.Portable.dll</HintPath>
     </Reference>
-    <Reference Include="Google.Apis.Core">
-      <HintPath>..\packages\Google.Apis.Core.1.20.0\lib\portable-net45+sl50+netcore45+wpa81+wp8\Google.Apis.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="Google.Apis.Auth">
-      <HintPath>..\packages\Google.Apis.Auth.1.20.0\lib\portable-net45+sl50+netcore45+wpa81+wp8\Google.Apis.Auth.dll</HintPath>
-    </Reference>
-    <Reference Include="Google.Apis">
-      <HintPath>..\packages\Google.Apis.1.20.0\lib\portable-net45+sl50+netcore45+wpa81+wp8\Google.Apis.dll</HintPath>
-    </Reference>
-    <Reference Include="Google.Apis.Oauth2.v2">
-      <HintPath>..\packages\Google.Apis.Oauth2.v2.1.20.0.672\lib\portable-net45+netcore45+wpa81+wp8\Google.Apis.Oauth2.v2.dll</HintPath>
-    </Reference>
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\packages\Newtonsoft.Json.9.0.2-beta1\lib\portable-net45+wp80+win8+wpa81\Newtonsoft.Json.dll</HintPath>
     </Reference>

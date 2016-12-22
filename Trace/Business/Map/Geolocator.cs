@@ -5,25 +5,30 @@ using Xamarin.Forms.Maps;
 
 namespace Trace {
 
-	// TODO: reduce accuracy to 1 when user did not click 'track' to save battery.
 	public class Geolocator {
-		private const int LOCATOR_TIMEOUT = 1000000;
-		private const int MOTION_ONLY_ACCURACY = 1;
-		private const int LOCATOR_ACCURACY = 50;
 
-		public bool IsTrackingInProgress { get; set; }
+		private const int LOCATOR_TIMEOUT = 1000000;
+
+		private const int LOCATOR_GOOD_ACCURACY = 50;
+		private const int MOTION_ONLY_ACCURACY = 1;
+
+		private static IGeolocator locator;
+
+		public static bool IsTrackingInProgress { get; set; }
 		private readonly TraceMap Map;
 
 		public double MaxSpeed;
 		public double AvgSpeed;
+
 
 		public Geolocator(TraceMap map) {
 			Map = map;
 			IsTrackingInProgress = false;
 		}
 
+
 		public async Task Start() {
-			var locator = CrossGeolocator.Current;
+			locator = CrossGeolocator.Current;
 			/*if(!locator.IsGeolocationEnabled) {
 				await DisplayAlert("", "GPS is disabled, please enable it and come back", "Return");
 				return;
@@ -31,7 +36,7 @@ namespace Trace {
 			if(locator.IsListening)
 				await locator.StopListeningAsync();
 
-			locator.DesiredAccuracy = LOCATOR_ACCURACY;
+			locator.DesiredAccuracy = LOCATOR_GOOD_ACCURACY;
 			var locationSettings = new ListenerSettings() {
 				AllowBackgroundUpdates = true,
 				PauseLocationUpdatesAutomatically = true,
@@ -54,10 +59,23 @@ namespace Trace {
 			};
 		}
 
+
 		private void UpdateMap(Plugin.Geolocator.Abstractions.Position position) {
 			Map.MoveToRegion(
 				MapSpan.FromCenterAndRadius(
 					new Xamarin.Forms.Maps.Position(position.Latitude, position.Longitude), Distance.FromKilometers(1)));
+		}
+
+
+		public static void ImproveAccuracy() {
+			if(locator != null)
+				locator.DesiredAccuracy = LOCATOR_GOOD_ACCURACY;
+		}
+
+
+		public static void LowerAccuracy() {
+			if(locator != null && !IsTrackingInProgress)
+				locator.DesiredAccuracy = MOTION_ONLY_ACCURACY;
 		}
 	}
 }

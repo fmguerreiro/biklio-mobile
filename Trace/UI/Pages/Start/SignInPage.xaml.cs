@@ -5,9 +5,6 @@ using System.Threading.Tasks;
 using SQLite;
 using Xamarin.Auth;
 using Xamarin.Forms;
-using Google.Apis.Oauth2.v2;
-using Google.Apis.Oauth2.v2.Data;
-using Google.Apis.Services;
 using Trace.Localization;
 
 namespace Trace {

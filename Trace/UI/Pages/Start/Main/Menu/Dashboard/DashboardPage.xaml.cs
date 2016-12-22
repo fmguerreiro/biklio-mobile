@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using Trace.Localization;
+using System.Threading.Tasks;
 
 namespace Trace {
 	public partial class DashboardPage : ContentPage {
@@ -39,9 +40,8 @@ namespace Trace {
 			timeToday = new TimePerActivity(); timeWeek = new TimePerActivity(); timeAllTime = new TimePerActivity();
 			distanceToday = new DistancePerActivity(); distanceWeek = new DistancePerActivity(); distanceAllTime = new DistancePerActivity();
 			caloriesToday = new CaloriesPerActivity(); caloriesWeek = new CaloriesPerActivity(); caloriesAllTime = new CaloriesPerActivity();
-			calculateStats();
+			Task.Run(() => calculateStats());
 			InitializeComponent();
-			BindingContext = this;
 		}
 
 		async void onTapped(object sender, EventArgs e) {
@@ -102,6 +102,8 @@ namespace Trace {
 			}
 			Debug.WriteLine("DistanceAllTime.Total: " + DistanceAllTime.Total);
 			Debug.WriteLine("DistanceAllTime.WalkDistance: " + DistanceAllTime.Walking);
+
+			BindingContext = this;
 		}
 
 		static bool wasTrajectoryDoneToday(long now, long todayWindow, Trajectory t) {

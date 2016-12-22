@@ -15,15 +15,19 @@ namespace Trace.iOS {
 
 	public class GoogleOAuthPageRenderer : PageRenderer, ISignInUIDelegate, ISignInDelegate {
 
+		private bool didTryLoginOnce = false;
+
 		public void DidSignIn(SignIn signIn, GoogleUser gUser, NSError error) {
 			Device.BeginInvokeOnMainThread(() => {
-
 				//var alert = new UIAlertView("Login", "In DidSignIn", null, "OK", null);
 				//alert.Show();
 				//Debug.WriteLine("DidSignIn");
 				if(gUser == null) {
 					Debug.WriteLine("GoogleOAuthPageRenderer.DidSignIn(): Failure Google User == null", "Login");
-					SignInPage.UnsuccessfulOAuthLoginAction.Invoke();
+					if(!didTryLoginOnce)
+						SignIn.SharedInstance.SignInUser();
+					didTryLoginOnce = true;
+					//SignInPage.UnsuccessfulOAuthLoginAction.Invoke();
 					return;
 				}
 
@@ -34,30 +38,34 @@ namespace Trace.iOS {
 				}
 
 				if(gUser != null) {
-					var accessToken = SignIn.SharedInstance.CurrentUser.Authentication.AccessToken;
-					var fullname = SignIn.SharedInstance.CurrentUser.Profile.Name;
-					var pictureURL = SignIn.SharedInstance.CurrentUser.Profile.GetImageUrl(48).AbsoluteString;
-					var email = SignIn.SharedInstance.CurrentUser.Profile.Email;
+					var accessToken = gUser.Authentication.AccessToken;
+					var idToken = gUser.Authentication.IdToken;
+					var fullname = gUser.Profile.Name;
+					var pictureURL = gUser.Profile.GetImageUrl(48).AbsoluteString;
+					var email = gUser.Profile.Email;
 
 					var jToken = JObject.FromObject(new {
 						access_token = accessToken,
-						authorization_code = SignIn.SharedInstance.CurrentUser.ServerAuthCode,
-						id_token = SignIn.SharedInstance.CurrentUser.Authentication.IdToken,
+						server_auth_code = gUser.ServerAuthCode,
+						id_token = idToken,
 						profile = JObject.FromObject(new {
 							name = fullname,
 							img = pictureURL,
-							public_email = email
+							public_email = email,
+							app_id = gUser.Authentication.ClientId,
+							description = gUser.Authentication.Description
+							// ***REMOVED***
 						})
 					});
 					Debug.WriteLine("Google OAuth token: " + jToken);
 
 					// Store token in keychain for later offline login.
-					var account = new Account(email);
+					User.Instance.Username = gUser.UserID;
+					var account = new Account(User.Instance.Username);
 					AccountStore.Create().Save(account, OAuthConfigurationManager.KeystoreService);
 
 					// Store information in SQLite. 
-					User.Instance.AuthToken = accessToken;
-					User.Instance.Username = email;
+					User.Instance.AuthToken = idToken;
 					User.Instance.Name = fullname;
 					User.Instance.Email = email;
 					User.Instance.PictureURL = pictureURL;
@@ -76,10 +84,11 @@ namespace Trace.iOS {
 
 			// If the account is already on the device keychain, no need for another request.
 			var account = AccountStore.Create().FindAccountsForService(OAuthConfigurationManager.KeystoreService).FirstOrDefault();
-			if(account != null) {
+			if(account != null) { // TODO !=
 				Debug.WriteLine("GoogleOAuthPageRenderer.ViewDidLoad(): User already in keychain, skipping google oauth.");
 				SQLiteDB.Instance.InstantiateUser(account.Username);
 				SignInPage.SuccessfulOAuthLoginAction.Invoke();
+				return;
 			}
 			Debug.WriteLine("GoogleOAuthPageRenderer.ViewDidLoad(): New user, using google oauth.");
 
@@ -88,8 +97,8 @@ namespace Trace.iOS {
 			SignIn.SharedInstance.Delegate = this;
 
 			// Sign the user in automatically
-			SignIn.SharedInstance.SignInUser();
-			//SignIn.SharedInstance.SignInUserSilently();
+			//SignIn.SharedInstance.SignInUser();
+			SignIn.SharedInstance.SignInUserSilently();
 		}
 	}
 }

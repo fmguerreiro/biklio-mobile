@@ -2,6 +2,7 @@
 using Plugin.Connectivity;
 using Xamarin.Forms;
 using Trace.Localization;
+using System.Diagnostics;
 
 namespace Trace {
 	public partial class App : Application {
@@ -33,11 +34,13 @@ namespace Trace {
 		protected override void OnSleep() {
 			// Handle when your app sleeps
 			CrossConnectivity.Current.ConnectivityChanged -= LoginManager.OnConnectivityChanged;
+			Geolocator.LowerAccuracy();
 		}
 
 		protected override void OnResume() {
 			// Handle when your app resumes
 			CrossConnectivity.Current.ConnectivityChanged += LoginManager.OnConnectivityChanged;
+			Geolocator.ImproveAccuracy();
 		}
 	}
 }

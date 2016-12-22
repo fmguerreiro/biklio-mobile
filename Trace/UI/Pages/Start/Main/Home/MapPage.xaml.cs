@@ -44,7 +44,7 @@ namespace Trace {
 		async void OnStartTracking(object send, EventArgs eventArgs) {
 
 			// On Stop Button pressed
-			if(Locator.IsTrackingInProgress) {
+			if(Geolocator.IsTrackingInProgress) {
 				// Calculate stats and show the results to the user.
 				StopTrackingTime = DateTime.Now;
 				DependencyService.Get<IMotionActivityManager>().StopMotionUpdates();
@@ -106,7 +106,7 @@ namespace Trace {
 				// Reset in order to clean list of accumulated activities and counters.
 				DependencyService.Get<IMotionActivityManager>().Reset();
 			}
-			Locator.IsTrackingInProgress = !Locator.IsTrackingInProgress;
+			Geolocator.IsTrackingInProgress = !Geolocator.IsTrackingInProgress;
 		}
 
 
