@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Collections.Generic;
 using OxyPlot;
 using OxyPlot.Axes;
 using OxyPlot.Series;
@@ -29,13 +28,43 @@ namespace Trace {
 
 		PlotModel buildHistogram(UnitPerActivity stats, string title) {
 			var model = new PlotModel { Title = title };
-			model.Axes.Add(new CategoryAxis());
+			model.LegendBorderThickness = 0;
+			model.PlotAreaBorderThickness = new OxyThickness(left: 1.0, top: 0.0, right: 0.0, bottom: 1.0);
+
+			// Customize axis.
+			var xAxis = new CategoryColorAxis();
+			xAxis.ActualLabels.Add(Language.Walking);
+			xAxis.ActualLabels.Add(Language.Running);
+			xAxis.ActualLabels.Add(Language.Cycling);
+			xAxis.ActualLabels.Add(Language.Driving);
+			xAxis.TickStyle = TickStyle.None; // or Outside
+			xAxis.IntervalLength = 50;
+			xAxis.GapWidth = 0.2;
+
+			var yAxis = new LinearAxis();
+			yAxis.Position = AxisPosition.Left;
+			yAxis.TickStyle = TickStyle.None;
+			yAxis.MajorGridlineStyle = LineStyle.Solid;
+			yAxis.MajorGridlineColor = OxyColors.PowderBlue;
+			yAxis.MajorGridlineThickness = 1.5;
+			yAxis.MinorGridlineColor = OxyColors.Gray;
+			yAxis.MinorGridlineStyle = LineStyle.LongDash;
+
+			model.Axes.Add(xAxis);
+			model.Axes.Add(yAxis);
+			model.LegendColumnSpacing = 2.0;
+
 			var series = new ColumnSeries();
+			series.ColumnWidth = 10;
+			series.FillColor = OxyColors.LightSeaGreen;
+			series.LabelMargin = 2.5;
+
 			model.Series.Add(series);
 			series.Items.Add(new ColumnItem(stats.Walking));
 			series.Items.Add(new ColumnItem(stats.Running));
 			series.Items.Add(new ColumnItem(stats.Cycling));
 			series.Items.Add(new ColumnItem(stats.Driving));
+
 			return model;
 		}
 

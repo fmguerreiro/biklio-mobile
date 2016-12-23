@@ -5,7 +5,6 @@ using Google.SignIn;
 using Newtonsoft.Json.Linq;
 using Trace;
 using Trace.iOS;
-using UIKit;
 using Xamarin.Auth;
 using Xamarin.Forms;
 using Xamarin.Forms.Platform.iOS;
@@ -15,7 +14,7 @@ namespace Trace.iOS {
 
 	public class GoogleOAuthPageRenderer : PageRenderer, ISignInUIDelegate, ISignInDelegate {
 
-		private bool didTryLoginOnce = false;
+		//private bool didTryLoginOnce = false;
 
 		public void DidSignIn(SignIn signIn, GoogleUser gUser, NSError error) {
 			Device.BeginInvokeOnMainThread(() => {
@@ -26,7 +25,7 @@ namespace Trace.iOS {
 					Debug.WriteLine("GoogleOAuthPageRenderer.DidSignIn(): Failure Google User == null", "Login");
 					//if(!didTryLoginOnce)
 					//	SignIn.SharedInstance.SignInUser();
-					didTryLoginOnce = true;
+					//didTryLoginOnce = true;
 					SignInPage.UnsuccessfulOAuthLoginAction.Invoke();
 					return;
 				}

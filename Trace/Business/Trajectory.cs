@@ -101,7 +101,7 @@ namespace Trace {
 		}
 
 		public int CalculateCyclingCalories() {
-			int workRate = 250; //
+			int workRate = 250;
 			var formula = (1.8 * workRate) / User.Instance.Weight + 7;
 			var total = (formula * User.Instance.Weight / 1000) * 5 * (ElapsedTime() / 60);
 			return (int) total;

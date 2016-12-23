@@ -56,6 +56,8 @@ namespace Trace {
 				Device.BeginInvokeOnMainThread(() => {
 					DisplayAlert(Language.ErrorFetchingChallenges, result.error, Language.Ok);
 				});
+				ChallengeListView.IsRefreshing = false;
+				PullUpHintLabel.IsVisible = false;
 				return;
 			}
 

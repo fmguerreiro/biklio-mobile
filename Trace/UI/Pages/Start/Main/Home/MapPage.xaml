@@ -82,8 +82,8 @@
 				Style="{StaticResource lightTheme}"
 				XAlign="Center" />
 			<Label
-				x:Name="DrivenLabel"
-				Text="{Binding Duration, StringFormat='Drove: {0}'}"
+				x:Name="CyclingDurationLabel"
+				Text="{Binding TimeSpentCycling, StringFormat={language:Translate CycledForLabel}}"
 				Grid.Row="2"
 				Grid.Column="3"
 				Grid.ColumnSpan="2"

@@ -287,6 +287,12 @@ namespace Trace.Localization {
             }
         }
         
+        public static string CycledForLabel {
+            get {
+                return ResourceManager.GetString("CycledForLabel", resourceCulture);
+            }
+        }
+        
         public static string Challenges {
             get {
                 return ResourceManager.GetString("Challenges", resourceCulture);

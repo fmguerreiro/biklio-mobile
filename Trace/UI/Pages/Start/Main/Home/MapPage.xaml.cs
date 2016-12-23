@@ -84,12 +84,12 @@ namespace Trace {
 				TotalDuration duration = calculateRouteTime();
 				DurationLabel.BindingContext = duration;
 
-				// TODO Calculate calories ...
-				CaloriesLabel.BindingContext = new TotalCalories { Calories = 0 };
+				var calories = await Task.Run(() => trajectory.CalculateCalories());
+				CaloriesLabel.BindingContext = new TotalCalories { Calories = calories };
 
 				// TODO Calculate how much time was spent on the most used activity (or driven, not sure -- check).
 				// Probably also show time for each activity!
-				DrivenLabel.BindingContext = new TotalDuration { Hours = 0, Minutes = 0, Seconds = 0 };
+				CyclingDurationLabel.BindingContext = trajectory;
 				displayGrid((Button) send);
 			}
 

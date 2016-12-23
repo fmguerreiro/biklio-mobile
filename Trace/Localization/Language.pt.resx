@@ -137,6 +137,9 @@
 	<data name="CaloriesLabel" xml:space="preserve">
         <value>Calorias: {0} kcal</value>
   	</data>
+	<data name="CycledForLabel" xml:space="preserve">
+    	<value>Bicicleta: {0} s</value>
+  	</data>
 	<data name="Challenges" xml:space="preserve">
         <value>Desafios</value>
   	</data>
