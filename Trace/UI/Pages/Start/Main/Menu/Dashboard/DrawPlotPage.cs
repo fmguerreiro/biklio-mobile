@@ -8,6 +8,9 @@ using Xamarin.Forms;
 
 namespace Trace {
 
+	/// <summary>
+	/// Page responsible for presenting a graph plot to the user, showing the distribution per activity.
+	/// </summary>
 	public class DrawPlotPage : ContentPage {
 
 		public DrawPlotPage() {
@@ -31,7 +34,6 @@ namespace Trace {
 			model.LegendBorderThickness = 0;
 			model.PlotAreaBorderThickness = new OxyThickness(left: 1.0, top: 0.0, right: 0.0, bottom: 1.0);
 
-			// Customize axis.
 			var xAxis = new CategoryColorAxis();
 			xAxis.ActualLabels.Add(Language.Walking);
 			xAxis.ActualLabels.Add(Language.Running);

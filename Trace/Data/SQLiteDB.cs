@@ -76,7 +76,7 @@ namespace Trace {
 		public IEnumerable<Challenge> GetRewards() {
 			lock(locker) {
 				return (from i in database.Table<Challenge>()
-						where i.UserId == User.Instance.Id && i.isComplete == true
+						where i.UserId == User.Instance.Id && i.IsComplete == true
 						select i);
 			}
 		}

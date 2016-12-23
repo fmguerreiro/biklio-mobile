@@ -3,6 +3,7 @@ using Plugin.Connectivity;
 using Xamarin.Forms;
 using Trace.Localization;
 using System.Diagnostics;
+using System.Threading.Tasks;
 
 namespace Trace {
 	public partial class App : Application {
@@ -37,10 +38,11 @@ namespace Trace {
 			Geolocator.LowerAccuracy();
 		}
 
-		protected override void OnResume() {
+		protected async override void OnResume() {
 			// Handle when your app resumes
 			CrossConnectivity.Current.ConnectivityChanged += LoginManager.OnConnectivityChanged;
 			Geolocator.ImproveAccuracy();
+			await Task.Delay(1000);
 		}
 	}
 }

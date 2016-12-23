@@ -253,6 +253,7 @@
     <AndroidResource Include="Resources\drawable\trophy.png" />
     <AndroidResource Include="Resources\drawable\twitter_login_button.png" />
     <AndroidResource Include="Resources\drawable\walking.png" />
+    <AndroidResource Include="Resources\drawable\bootstrap_social.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App\" />

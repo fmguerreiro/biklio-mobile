@@ -64,18 +64,27 @@ namespace Trace {
 
 
 		void calculateStats() {
+			IList<Challenge> challenges = User.Instance.Challenges;
 			IList<Trajectory> trajectories = User.Instance.Trajectories;
 			long now = TimeUtil.CurrentEpochTime();
-			var todayWindow = (long) TimeSpan.FromDays(1).TotalSeconds;
-			var weekWindow = (long) TimeSpan.FromDays(7).TotalSeconds;
+			var aDayAgo = now - (long) TimeSpan.FromDays(1).TotalSeconds;
+			var aWeekAgo = now - (long) TimeSpan.FromDays(7).TotalSeconds;
 
+			// Calculate rewards unlocked.
+			foreach(Challenge c in challenges) {
+				if(c.IsComplete) {
+					RewardsAllTime++;
+					if(TimeUtil.IsWithinPeriod(c.CompletedAt, aDayAgo, now)) RewardsWeek++;
+					if(TimeUtil.IsWithinPeriod(c.CompletedAt, aWeekAgo, now)) RewardsWeek++;
+				}
+			}
+
+			// Calculate routes, their distance, time and calories per activity.
 			foreach(Trajectory t in trajectories) {
 				// Calculate # routes. TODO routes per most common activity 
 				RoutesAllTime++;
-				if(wasTrajectoryDoneToday(now, todayWindow, t)) RoutesToday++;
-				if(wasTrajectoryDoneThisWeek(now, weekWindow, t)) RoutesWeek++;
-
-				// todo: rewards stats
+				if(TimeUtil.IsWithinPeriod(t.StartTime, aDayAgo, now)) RoutesToday++;
+				if(TimeUtil.IsWithinPeriod(t.StartTime, aWeekAgo, now)) RoutesWeek++;
 
 				// Calculate distance per activity.
 				var walkDistance = t.CalculateWalkingDistance();
@@ -83,13 +92,13 @@ namespace Trace {
 				var cycleDistance = t.CalculateCyclingDistance();
 				var driveDistance = t.CalculateDrivingDistance();
 				calculate(distanceAllTime, walkDistance, runDistance, cycleDistance, driveDistance);
-				if(wasTrajectoryDoneToday(now, todayWindow, t)) calculate(distanceToday, walkDistance, runDistance, cycleDistance, driveDistance);
-				if(wasTrajectoryDoneThisWeek(now, weekWindow, t)) calculate(distanceWeek, walkDistance, runDistance, cycleDistance, driveDistance);
+				if(TimeUtil.IsWithinPeriod(t.StartTime, aDayAgo, now)) calculate(distanceToday, walkDistance, runDistance, cycleDistance, driveDistance);
+				if(TimeUtil.IsWithinPeriod(t.StartTime, aWeekAgo, now)) calculate(distanceWeek, walkDistance, runDistance, cycleDistance, driveDistance);
 
 				// Calculate time per activity.
 				calculate(timeAllTime, t.TimeSpentWalking, t.TimeSpentRunning, t.TimeSpentCycling, t.TimeSpentDriving);
-				if(wasTrajectoryDoneToday(now, todayWindow, t)) calculate(timeToday, t.TimeSpentWalking, t.TimeSpentRunning, t.TimeSpentCycling, t.TimeSpentDriving);
-				if(wasTrajectoryDoneThisWeek(now, weekWindow, t)) calculate(timeWeek, t.TimeSpentWalking, t.TimeSpentRunning, t.TimeSpentCycling, t.TimeSpentDriving);
+				if(TimeUtil.IsWithinPeriod(t.StartTime, aDayAgo, now)) calculate(timeToday, t.TimeSpentWalking, t.TimeSpentRunning, t.TimeSpentCycling, t.TimeSpentDriving);
+				if(TimeUtil.IsWithinPeriod(t.StartTime, aWeekAgo, now)) calculate(timeWeek, t.TimeSpentWalking, t.TimeSpentRunning, t.TimeSpentCycling, t.TimeSpentDriving);
 
 				// Calculate calories per activity.
 				var walkCal = t.CalculateWalkingCalories();
@@ -97,8 +106,8 @@ namespace Trace {
 				var cycleCal = t.CalculateCyclingCalories();
 				var driveCal = t.CalculateDrivingCalories();
 				calculate(caloriesAllTime, walkCal, runCal, cycleCal, driveCal);
-				if(wasTrajectoryDoneToday(now, todayWindow, t)) calculate(caloriesToday, walkCal, runCal, cycleCal, driveCal);
-				if(wasTrajectoryDoneThisWeek(now, weekWindow, t)) calculate(caloriesWeek, walkCal, runCal, cycleCal, driveCal);
+				if(TimeUtil.IsWithinPeriod(t.StartTime, aDayAgo, now)) calculate(caloriesToday, walkCal, runCal, cycleCal, driveCal);
+				if(TimeUtil.IsWithinPeriod(t.StartTime, aWeekAgo, now)) calculate(caloriesWeek, walkCal, runCal, cycleCal, driveCal);
 			}
 			Debug.WriteLine("DistanceAllTime.Total: " + DistanceAllTime.Total);
 			Debug.WriteLine("DistanceAllTime.WalkDistance: " + DistanceAllTime.Walking);
@@ -106,13 +115,6 @@ namespace Trace {
 			BindingContext = this;
 		}
 
-		static bool wasTrajectoryDoneToday(long now, long todayWindow, Trajectory t) {
-			return t.StartTime > (now - todayWindow);
-		}
-
-		static bool wasTrajectoryDoneThisWeek(long now, long weekWindow, Trajectory t) {
-			return t.StartTime > (now - weekWindow);
-		}
 
 		static void calculate(UnitPerActivity d, int walking, int running, int cycling, int driving) {
 			d.Walking += walking;

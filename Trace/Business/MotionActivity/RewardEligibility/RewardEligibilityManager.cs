@@ -193,7 +193,8 @@ namespace Trace {
 						if(TimeUtil.IsWithinPeriod(now, createdAt, expiresAt)) {
 							// Check if distance cycled meets the criteria.
 							if(challenge.NeededCyclingDistance <= CycledDistanceBetween(createdAt, expiresAt)) {
-								challenge.isComplete = true;
+								challenge.IsComplete = true;
+								challenge.CompletedAt = now;
 							}
 						}
 					}

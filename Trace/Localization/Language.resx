@@ -137,8 +137,8 @@
 	<data name="CaloriesLabel" xml:space="preserve">
     	<value>Calories: {0} kcal</value>
   	</data>
-	<data name="CycledForLabel" xml:space="preserve">
-    	<value>Cycled: {0} s</value>
+	<data name="AvgSpeedLabel" xml:space="preserve">
+    	<value>Avg Speed: {0} m/s</value>
   	</data>
 	<data name="Challenges" xml:space="preserve">
     	<value>Challenges</value>

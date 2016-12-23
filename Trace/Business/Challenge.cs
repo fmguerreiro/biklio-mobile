@@ -13,11 +13,13 @@ namespace Trace {
 
 		public string Reward { get; set; }
 		public int NeededCyclingDistance { get; set; }
-		[Indexed]
-		public bool isComplete { get; set; }
 
 		public long CreatedAt { get; set; }
 		public long ExpiresAt { get; set; }
+
+		[Indexed]
+		public bool IsComplete { get; set; }
+		public long CompletedAt { get; set; }
 
 		public string CheckpointName { get; set; }
 		[Ignore]

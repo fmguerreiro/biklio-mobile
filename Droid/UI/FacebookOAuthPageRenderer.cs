@@ -28,12 +28,10 @@ namespace Trace.Droid {
 
 					// Initialize the object that communicates with the OAuth service
 					var auth = new OAuth2Authenticator(
-									  OAuthConfigurationManager.ClientId,
-									  OAuthConfigurationManager.ClientSecret,
-									  OAuthConfigurationManager.Scope,
-									  new Uri(OAuthConfigurationManager.AuthorizeUrl),
-									  new Uri(OAuthConfigurationManager.RedirectUrl),
-									  new Uri(OAuthConfigurationManager.AccessTokenUrl));
+				   					OAuthConfigurationManager.ClientId,
+		   							OAuthConfigurationManager.Scope,
+		   							new Uri(OAuthConfigurationManager.AuthorizeUrl),
+		   							new Uri(OAuthConfigurationManager.RedirectUrl));
 
 					// Register an event handler for when the authentication process completes
 					auth.Completed += OnAuthenticationCompleted;
@@ -87,8 +85,8 @@ namespace Trace.Droid {
 					SignInPage.SuccessfulOAuthLoginAction.Invoke();
 					return;
 				}
+				SignInPage.UnsuccessfulOAuthLoginAction.Invoke();
 			}
-			SignInPage.UnsuccessfulOAuthLoginAction.Invoke();
 		}
 	}
 }

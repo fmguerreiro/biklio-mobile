@@ -82,8 +82,8 @@
 				Style="{StaticResource lightTheme}"
 				XAlign="Center" />
 			<Label
-				x:Name="CyclingDurationLabel"
-				Text="{Binding TimeSpentCycling, StringFormat={language:Translate CycledForLabel}}"
+				x:Name="AvgSpeedLabel"
+				Text="{Binding TimeSpentCycling, StringFormat={language:Translate AvgSpeedLabel}}"
 				Grid.Row="2"
 				Grid.Column="3"
 				Grid.ColumnSpan="2"

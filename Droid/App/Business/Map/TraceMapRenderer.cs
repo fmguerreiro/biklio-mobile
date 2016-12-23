@@ -54,18 +54,22 @@ namespace Trace.Droid {
 			polylineOptions.InvokeColor(0x66FF0000);
 
 			var builder = new LatLngBounds.Builder();
+			var nPoints = 0;
 			foreach(var position in routeCoordinates) {
+				nPoints++;
 				var point = new LatLng(position.Latitude, position.Longitude);
 				builder.Include(point);
 				polylineOptions.Add(point);
 			}
 
-			LatLngBounds bounds = builder.Build();
-			int padding = 20; // offset from edges of the map in pixels
-			CameraUpdate cu = CameraUpdateFactory.NewLatLngBounds(bounds, padding);
-			map.AnimateCamera(cu);
+			if(nPoints > 1) {
+				LatLngBounds bounds = builder.Build();
+				int padding = 20; // offset from edges of the map in pixels
+				CameraUpdate cu = CameraUpdateFactory.NewLatLngBounds(bounds, padding);
+				map.AnimateCamera(cu);
 
-			map.AddPolyline(polylineOptions);
+				map.AddPolyline(polylineOptions);
+			}
 		}
 
 		protected override void OnElementPropertyChanged(object sender, PropertyChangedEventArgs e) {
@@ -86,8 +90,12 @@ namespace Trace.Droid {
 					else {
 						marker.SetIcon(BitmapDescriptorFactory.FromFile("default_shop.png"));
 					}
-
-					map.AddMarker(marker);
+					try {
+						map.AddMarker(marker);
+					}
+					catch(Java.Lang.NullPointerException npE) {
+						System.Diagnostics.Debug.WriteLine("Error drawing pin: " + npE.Message);
+					}
 				}
 				isDrawn = true;
 			}

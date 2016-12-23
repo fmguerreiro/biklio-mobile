@@ -204,13 +204,14 @@ namespace Trace {
 			var now = TimeUtil.CurrentEpochTime();
 			int rewardCounter = 0;
 			foreach(Challenge c in User.Instance.Challenges) {
-				if(!c.isComplete) {
+				if(!c.IsComplete) {
 					var start = c.CreatedAt;
 					var end = c.ExpiresAt;
 					if(TimeUtil.IsWithinPeriod(now, start, end)) {
 						// Check if distance cycled meets the criteria.
 						if(c.NeededCyclingDistance <= RewardEligibilityManager.CycledDistanceBetween(start, end)) {
-							c.isComplete = true;
+							c.IsComplete = true;
+							c.CompletedAt = now;
 							rewardCounter++;
 						}
 					}

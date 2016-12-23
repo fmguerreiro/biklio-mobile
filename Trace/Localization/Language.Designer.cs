@@ -287,9 +287,9 @@ namespace Trace.Localization {
             }
         }
         
-        public static string CycledForLabel {
+        public static string AvgSpeedLabel {
             get {
-                return ResourceManager.GetString("CycledForLabel", resourceCulture);
+                return ResourceManager.GetString("AvgSpeedLabel", resourceCulture);
             }
         }
         

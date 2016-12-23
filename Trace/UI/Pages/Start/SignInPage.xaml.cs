@@ -6,6 +6,7 @@ using SQLite;
 using Xamarin.Auth;
 using Xamarin.Forms;
 using Trace.Localization;
+using System.Diagnostics;
 
 namespace Trace {
 	/// <summary>
@@ -14,12 +15,12 @@ namespace Trace {
 	public partial class SignInPage : ContentPage {
 
 		private bool isRememberMe;
-		static INavigation navigation;
+		static INavigation NavPage;
 
 
 		public SignInPage() {
 			InitializeComponent();
-			navigation = Navigation;
+			NavPage = Navigation;
 			isRememberMe = true;
 			// TODO this gets the first username available, but if there are multiple, it will still pick always the first, ideally, the last one used would show up first
 			usernameText.Text = DependencyService.Get<DeviceKeychainInterface>().Username;
@@ -99,7 +100,7 @@ namespace Trace {
 		/// </summary>
 		public static Action SuccessfulOAuthLoginAction {
 			get {
-				return new Action(() => {
+				return new Action(async () => {
 
 					LoginManager.TryLogin(isCredentialsLogin: false).DoNotAwait();
 
@@ -112,12 +113,27 @@ namespace Trace {
 					//	SQLiteDB.Instance.SaveItem(User.Instance);
 					//await navigation.PopModalAsync();
 
+					//Application.Current.MainPage = new MainPage();
+
+					// Leave OAuth provider page.
+					Debug.WriteLine("ModalPage - start: " + NavPage.ModalStack.FirstOrDefault().GetType().Name);
+					Debug.WriteLine("Page - start: " + NavPage.NavigationStack.FirstOrDefault().GetType().Name);
+					//NavPage.PopModalAsync();
+
+					//Application.Current.MainPage = new MainPage();
+					//Debug.WriteLine("ModalPage after OAuth: " + NavPage.ModalStack.FirstOrDefault().GetType().Name);
+					//Debug.WriteLine("Page after OAuth: " + NavPage.NavigationStack.FirstOrDefault().GetType().Name);
+
+					// Set root page as MainPage, so user can't use Back button to leave app.
+					//NavPage.InsertPageBefore(new MainPage(), NavPage.NavigationStack.First());
+
+					// Remove all pages from the navigation stack but the MainPage.
+					//NavPage.PopToRootAsync();
+
+					// HACK sorry, spent 4 hours trying to make this pretty. I gave up. 
+					// If you remove this, the Android app crashes at this point.
+					await Task.Delay(1000);
 					Application.Current.MainPage = new MainPage();
-					//}
-					//else {
-					//	await navigation.PopModalAsync();
-					//	await navigation.NavigationStack.First().DisplayAlert("Error", result.error, "Ok");
-					//}
 				});
 			}
 		}
@@ -128,9 +144,9 @@ namespace Trace {
 		/// </summary>
 		public static Action UnsuccessfulOAuthLoginAction {
 			get {
-				return new Action(async () => {
-					await navigation.PopModalAsync();
-					await navigation.NavigationStack.First().DisplayAlert(Language.Error, Language.OAuthError, Language.Ok);
+				return new Action(() => {
+					NavPage.PopModalAsync();
+					NavPage.NavigationStack.First().DisplayAlert(Language.Error, Language.OAuthError, Language.Ok);
 				});
 			}
 		}

@@ -89,7 +89,7 @@ namespace Trace {
 
 				// TODO Calculate how much time was spent on the most used activity (or driven, not sure -- check).
 				// Probably also show time for each activity!
-				CyclingDurationLabel.BindingContext = trajectory;
+				AvgSpeedLabel.BindingContext = trajectory.AvgSpeed;
 				displayGrid((Button) send);
 			}
 
