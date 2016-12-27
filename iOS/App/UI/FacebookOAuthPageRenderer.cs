@@ -22,7 +22,7 @@ namespace Trace.iOS {
 			var account = accounts.FirstOrDefault();
 			//if(account != null) { var _ = SQLiteDB.Instance; _.DropAllTables(); AccountStore.Create().Delete(account, OAuthConfigurationManager.KeystoreService); }
 
-			if(account == null) {
+			if(null == null) {
 				if(!isShown) {
 					isShown = true;
 
@@ -42,6 +42,7 @@ namespace Trace.iOS {
 			}
 			else {
 				if(!isShown) {
+					Debug.WriteLine("Offline FB login with account: " + account.Username);
 					SQLiteDB.Instance.InstantiateUser(account.Username);
 					//SQLiteDB.Instance.SaveItem(User.Instance);
 					SignInPage.SuccessfulOAuthLoginAction.Invoke();

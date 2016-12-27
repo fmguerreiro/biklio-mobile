@@ -28,13 +28,13 @@ namespace Trace {
 		/// <param name="email">Email.</param>
 		public async Task<WSResult> Register(string username, string password, string email) {
 			var user = new WSUser {
-				name = "Filipe Guerreiro",
+				name = "XamarinName", // TODO replace these with input from user in the Registration window
 				username = username,
 				password = password,
 				confirm = password,
 				email = email,
 				phone = "966845129",
-				address = "Tapada das Merces"
+				address = "XamarinAddress"
 			};
 
 			string request = JsonConvert.SerializeObject(user, Formatting.None);
@@ -161,6 +161,32 @@ namespace Trace {
 					return;
 				trajectory.WasTrackSent = true;
 				SQLiteDB.Instance.SaveItem(trajectory);
+			}
+		}
+
+
+		/// <summary>
+		/// Sends the available KPIs to the Web Server.
+		/// Sent KPIs are then removed from the device.
+		/// Both request and result formats are in JSON.
+		/// </summary>
+		/// <returns>The KPI.</returns>
+		/// <param name="kpis">Kpis.</param>
+		public async Task SendKPIs(IEnumerable<KPI> kpis) {
+			DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", User.Instance.SessionToken ?? User.Instance.IDToken);
+
+			foreach(KPI kpi in kpis) {
+				string request = kpi.SerializedKPI;
+				JObject output = null;
+				WSResult result = null;
+				Debug.WriteLine("SendKPIs() - request: " + request);
+				output = await PostAsyncJSON(WebServerConstants.SUBMIT_KPI, request);
+				Debug.WriteLine("SendKPIs(): " + WebServerConstants.SUBMIT_KPI + "\nresult: " + output);
+				result = output.ToObject<WSResult>();
+				// Delete sent KPIs.
+				if(result.success) {
+					SQLiteDB.Instance.DeleteItem<KPI>(kpi.Id);
+				}
 			}
 		}
 	}

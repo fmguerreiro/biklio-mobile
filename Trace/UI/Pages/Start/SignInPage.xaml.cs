@@ -74,6 +74,9 @@ namespace Trace {
 
 			LoginManager.TryLogin(isCredentialsLogin: true).DoNotAwait();
 
+			// Record login event.
+			User.Instance.GetCurrentKPI().AddLoginEvent(TimeUtil.CurrentEpochTimeSeconds());
+
 			Application.Current.MainPage = new MainPage();
 			//}
 			//else
@@ -101,23 +104,9 @@ namespace Trace {
 		public static Action SuccessfulOAuthLoginAction {
 			get {
 				return new Action(async () => {
-
 					LoginManager.TryLogin(isCredentialsLogin: false).DoNotAwait();
 
-					//var client = new WebServerClient();
-					//WSResult result = await Task.Run(() => client.LoginWithToken(User.Instance.AuthToken));
-					//if(result.success) {
-					//	User.Instance.Name = result.payload.name;
-					//	User.Instance.Email = result.payload.email;
-					//	User.Instance.PictureURL = result.payload.picture;
-					//	SQLiteDB.Instance.SaveItem(User.Instance);
-					//await navigation.PopModalAsync();
-
-					//Application.Current.MainPage = new MainPage();
-
 					// Leave OAuth provider page.
-					Debug.WriteLine("ModalPage - start: " + NavPage.ModalStack.FirstOrDefault().GetType().Name);
-					Debug.WriteLine("Page - start: " + NavPage.NavigationStack.FirstOrDefault().GetType().Name);
 					//NavPage.PopModalAsync();
 
 					//Application.Current.MainPage = new MainPage();
@@ -130,10 +119,15 @@ namespace Trace {
 					// Remove all pages from the navigation stack but the MainPage.
 					//NavPage.PopToRootAsync();
 
-					// HACK sorry, spent 4 hours trying to make this pretty. I gave up. 
-					// If you remove this, the Android app crashes at this point.
+					// HACK Spent 4 hours trying to get this to work. I gave up. 
+					// If you remove this, the Android app crashes at this point. Seems to be an issue with Xamarin.Auth.GetUI().
 					await Task.Delay(1000);
 					Application.Current.MainPage = new MainPage();
+
+					// Record login event.
+					//Device.BeginInvokeOnMainThread(() => {
+					//	User.Instance.GetCurrentKPI().AddLoginEvent(TimeUtil.CurrentEpochTimeSeconds());
+					//});
 				});
 			}
 		}
@@ -144,9 +138,13 @@ namespace Trace {
 		/// </summary>
 		public static Action UnsuccessfulOAuthLoginAction {
 			get {
-				return new Action(() => {
-					NavPage.PopModalAsync();
-					NavPage.NavigationStack.First().DisplayAlert(Language.Error, Language.OAuthError, Language.Ok);
+				return new Action(async () => {
+					await Task.Delay(1000);
+					var navigation = new NavigationPage(new StartPage());
+					Application.Current.MainPage = navigation;
+					await navigation.DisplayAlert(Language.Error, Language.OAuthError, Language.Ok);
+					//NavPage.PopModalAsync();
+					//NavPage.NavigationStack.First().DisplayAlert(Language.Error, Language.OAuthError, Language.Ok);
 				});
 			}
 		}

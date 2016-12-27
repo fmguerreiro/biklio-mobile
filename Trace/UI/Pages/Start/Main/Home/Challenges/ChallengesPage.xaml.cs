@@ -201,7 +201,7 @@ namespace Trace {
 		/// Check if the user has met the conditions for any received challenge.
 		/// </summary>
 		private void checkForRewards() {
-			var now = TimeUtil.CurrentEpochTime();
+			var now = TimeUtil.CurrentEpochTimeSeconds();
 			int rewardCounter = 0;
 			foreach(Challenge c in User.Instance.Challenges) {
 				if(!c.IsComplete) {
@@ -213,6 +213,10 @@ namespace Trace {
 							c.IsComplete = true;
 							c.CompletedAt = now;
 							rewardCounter++;
+							// Record challenge completed event. TODO calculate claimedAt ...
+							User.Instance.GetCurrentKPI().AddChallengeConditionCompletedEvent(c.GId,
+																							  TimeUtil.CurrentEpochTimeSeconds(),
+																							  0);
 						}
 					}
 				}

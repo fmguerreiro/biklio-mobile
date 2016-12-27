@@ -49,7 +49,6 @@
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>location</string>
-		<string>remote-notification</string>
 	</array>
 	<key>NSMotionUsageDescription</key>
 	<string>We need your motion activity to determine if you are eligible for rewards</string>

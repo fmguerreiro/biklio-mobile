@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
 using SQLite;
 
 namespace Trace {
@@ -34,7 +36,7 @@ namespace Trace {
 		}
 
 
-		// Token received from the WebServer to perform privileged operations.
+		// Token received from the WebServer upon login to perform privileged operations.
 		[Ignore]
 		public string SessionToken { get; set; }
 
@@ -56,9 +58,13 @@ namespace Trace {
 		public double Weight { get; set; } = 70.8;// kilograms
 		public double Height { get; set; } = 1.78; // meters
 
+
 		public int SearchRadius { get; set; } = 100; // kilometers
 
+
+		// TODO delete. user language is taken from phone settings
 		public SelectedLanguage UserLanguage { get; set; } = SelectedLanguage.English;
+
 
 		List<Trajectory> trajectories;
 		[Ignore]
@@ -93,6 +99,42 @@ namespace Trace {
 		public Dictionary<long, Checkpoint> Checkpoints {
 			get { return checkpoints ?? new Dictionary<long, Checkpoint>(); }
 			set { checkpoints = value ?? new Dictionary<long, Checkpoint>(); }
+		}
+
+
+		List<KPI> kpis;
+		[Ignore]
+		public List<KPI> KPIs {
+			get {
+				if(kpis == null) {
+					kpis = new List<KPI>();
+				}
+				return kpis;
+			}
+			set { kpis = value ?? new List<KPI>(); }
+		}
+
+		private void AddKPI(KPI newKPIs) {
+			kpis.Insert(0, newKPIs);
+		}
+
+		public KPI GetCurrentKPI() {
+			var curr = kpis.FirstOrDefault();
+			if(curr == null || curr.IsKPIExpired()) {
+				curr?.StoreKPI();
+				curr = new KPI { Date = TimeUtil.CurrentEpochTimeSeconds() };
+				AddKPI(curr);
+			}
+			return curr;
+		}
+
+		public IEnumerable<KPI> GetFinishedKPIs() {
+			// Updates list in case this is the first access.
+			GetCurrentKPI();
+			// Returns all but the first element in the list.
+			var tail = KPIs.Skip(1);
+			Debug.WriteLine("GetFinishedKPIs: " + KPIs.Count() + " " + tail.Count());
+			return tail;
 		}
 
 

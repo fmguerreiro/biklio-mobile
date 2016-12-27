@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Plugin.Geolocator;
 using Trace.Localization;
 using Xamarin.Forms;
@@ -19,8 +18,8 @@ namespace Trace {
 			Children.Add(challengesPage);
 			Children.Add(mapPage);
 
-			var giftMenuButton = new ToolbarItem(Language.Rewards, "reward.png", async () => {
-				await Navigation.PushAsync(new RewardsPage());
+			var giftMenuButton = new ToolbarItem(Language.Rewards, "reward.png", () => {
+				Navigation.PushAsync(new RewardsPage());
 			});
 			ToolbarItems.Add(giftMenuButton);
 

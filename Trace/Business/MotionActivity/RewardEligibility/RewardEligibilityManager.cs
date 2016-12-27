@@ -16,6 +16,8 @@ namespace Trace {
 		Timer vehicularTimer;
 		Task checkNearbyCheckpointsTask;
 
+		long cyclingEventStart;
+
 		// Successive count threshold for transitioning between states.
 		private const int THRESHOLD = 5;
 		// Timeout threshold between 'cyclingIneligible' to 'cyclingEligible' in ms. 1,5 min.
@@ -107,8 +109,8 @@ namespace Trace {
 			// If user starts using a bycicle, go to: 'cyclingIneligible'.
 			if(cyclingCount > THRESHOLD) {
 				resetCounters();
+				cyclingEventStart = TimeUtil.CurrentEpochTimeSeconds();
 				stateMachine.MoveNext(Command.Cycling);
-
 				// Start timer -> If user continues using a bycicle for a certain time, go to: 'cyclingEligible'.
 				timer = new Timer(new TimerCallback(goToCyclingEligibleCallback), null, CYCLING_INELIGIBLE_TIMEOUT);
 			}
@@ -120,6 +122,8 @@ namespace Trace {
 			if(nonCyclingCount > THRESHOLD) {
 				timer.Dispose();
 				resetCounters();
+				// Ignore small cycling events.
+				cyclingEventStart = 0;
 				stateMachine.MoveNext(Command.NotCycling);
 			}
 		}
@@ -129,6 +133,10 @@ namespace Trace {
 			// If user stops using a bycicle, go to: 'unknownEligible'.
 			if(nonCyclingCount > THRESHOLD) {
 				resetCounters();
+
+				// Record cycling event.
+				User.Instance.GetCurrentKPI().AddCyclingEvent(cyclingEventStart, TimeUtil.CurrentEpochTimeSeconds());
+
 				stateMachine.MoveNext(Command.NotCycling);
 
 				// Start a long timer where the user is still eligible for rewards even when not using a bycicle.
@@ -154,6 +162,7 @@ namespace Trace {
 			// If user starts cycling again, go back to 'cyclingEligible'.
 			if(cyclingCount > THRESHOLD) {
 				resetCounters();
+				cyclingEventStart = TimeUtil.CurrentEpochTimeSeconds();
 				stateMachine.MoveNext(Command.Cycling);
 				timer.Dispose();
 			}
@@ -174,7 +183,7 @@ namespace Trace {
 		/// check for shops nearby to see if she is eligible for rewards.
 		/// </summary>
 		async Task checkNearbyCheckpoints() {
-			var now = TimeUtil.CurrentEpochTime();
+			var now = TimeUtil.CurrentEpochTimeSeconds();
 			// Compare the distance between the user and the checkpoints.
 			var userLocation = await GeoUtils.GetCurrentUserLocation();
 			foreach(var checkpoint in User.Instance.Checkpoints) {
@@ -195,6 +204,9 @@ namespace Trace {
 							if(challenge.NeededCyclingDistance <= CycledDistanceBetween(createdAt, expiresAt)) {
 								challenge.IsComplete = true;
 								challenge.CompletedAt = now;
+								// Record event
+								User.Instance.GetCurrentKPI().AddCheckInEvent(TimeUtil.CurrentEpochTimeSeconds(),
+																			  challenge.CheckpointId);
 							}
 						}
 					}

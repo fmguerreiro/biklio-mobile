@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using SQLite;
@@ -31,6 +30,7 @@ namespace Trace {
 			database.CreateTable<Trajectory>();
 			database.CreateTable<Challenge>();
 			database.CreateTable<Checkpoint>();
+			database.CreateTable<KPI>();
 		}
 
 
@@ -46,10 +46,11 @@ namespace Trace {
 				User.Instance.Checkpoints = GetItems<Checkpoint>().ToDictionary(key => key.GId, val => val);
 				User.Instance.Challenges = GetItems<Challenge>().ToList();
 				User.Instance.Trajectories = GetItems<Trajectory>().ToList();
+				User.Instance.KPIs = GetItems<KPI>().ToList();
 			}
 			else {
 				User.Instance = new User { Username = username };
-				User.Instance.Id = SaveItem<User>(User.Instance);
+				User.Instance.Id = SaveItem(User.Instance);
 			}
 			Debug.WriteLine("Signing in with user: " + User.Instance);
 		}
@@ -58,7 +59,7 @@ namespace Trace {
 		/// <summary>
 		/// Gets a user with specified Username.
 		/// </summary>
-		/// <param name="id">username to get</param>
+		/// <param name="username">username to get</param>
 		/// <returns>User or null.</returns>
 		public User GetUser(string username) {
 			lock(locker) {
@@ -169,7 +170,7 @@ namespace Trace {
 		/// Deletes all items with the ids specified.
 		/// </summary>
 		/// <typeparam name="T">Type of item to delete</typeparam>
-		/// <param name="id">ids of objects to delete</param>
+		/// <param name="ids">ids of objects to delete</param>
 		public int DeleteItems<T>(long[] ids) where T : DatabaseEntityBase, new() {
 			lock(locker) {
 				int rowsDeleted = database.Execute(string.Format("delete from \"{0}\" where Id in ({1})", typeof(T).Name, string.Join(", ", ids)));

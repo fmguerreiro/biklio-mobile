@@ -62,6 +62,13 @@ namespace Trace {
 				double distanceInMeters = calculateDistanceTask.Result;
 				Trajectory trajectory = await Task.Run(() => createTrajectory(distanceInMeters));
 
+				// Update KPI with new activity information.
+				User.Instance.GetCurrentKPI().AddActivityEvent(trajectory.StartTime,
+															   trajectory.TimeSpentWalking,
+															   trajectory.TimeSpentRunning,
+															   trajectory.TimeSpentCycling,
+															   trajectory.TimeSpentDriving);
+
 				// Save trajectory only if it is of relevant size.
 				if(distanceInMeters > MIN_SIZE_TRAJECTORY) {
 					// Calculate Motion activities along the trajectory.
@@ -71,12 +78,13 @@ namespace Trace {
 
 					// Save created trajectory.
 					User.Instance.Trajectories.Add(trajectory);
-					SQLiteDB.Instance.SaveItem<Trajectory>(trajectory);
+					SQLiteDB.Instance.SaveItem(trajectory);
 
-					// Send trajectory to the Web Server.
+					// Try to send trajectory to the Web Server right away.
 					Task.Run(() => new WebServerClient().SendTrajectory(trajectory)).DoNotAwait();
 				}
 
+				// Reset GPS recorded speeds.
 				Locator.AvgSpeed = 0;
 				Locator.MaxSpeed = 0;
 
@@ -87,9 +95,8 @@ namespace Trace {
 				var calories = await Task.Run(() => trajectory.CalculateCalories());
 				CaloriesLabel.BindingContext = new TotalCalories { Calories = calories };
 
-				// TODO Calculate how much time was spent on the most used activity (or driven, not sure -- check).
-				// Probably also show time for each activity!
 				AvgSpeedLabel.BindingContext = trajectory.AvgSpeed;
+
 				displayGrid((Button) send);
 			}
 
@@ -201,7 +208,7 @@ namespace Trace {
 
 				if(activityEventPtr.MoveNext()) {
 					return fillTailWithUnknownPoints(points.GetEnumerator(), res);
-				};
+				}
 			}
 			return res;
 		}

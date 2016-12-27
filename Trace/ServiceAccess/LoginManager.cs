@@ -33,19 +33,20 @@ namespace Trace {
 				if(isWSReachable) {
 					// Check login info.
 					if(!IsLoginVerified && IsOfflineLoggedIn) {
-						Debug.WriteLine("Verifying login.");
+						Debug.WriteLine("LoginManager: Verifying login.");
 						bool result = false;
 						if((bool) isCrendentialsLogin)
 							result = await Task.Run(() => LoginWithCredentials());
 						else
 							result = await Task.Run(() => LoginWithToken());
 
-						// TODO Send KPIs
 						if(result) {
 							IsLoginVerified = true;
+							// Upon successful login, send available KPIs to the server.
+							new WebServerClient().SendKPIs(User.Instance.GetFinishedKPIs()).DoNotAwait();
 						}
 						else {
-							// If user credentials were wrong, boot the user out of the application.
+							// If user credentials were wrong, send the user to sign in screen and show error message.
 							Device.BeginInvokeOnMainThread(async () => {
 								await Application.Current.MainPage.DisplayAlert(Language.Error, Language.OnlineLoginError, Language.Ok);
 								DependencyService.Get<DeviceKeychainInterface>().DeleteCredentials(User.Instance.Username);
@@ -56,8 +57,8 @@ namespace Trace {
 						}
 					}
 					else {
-						// TODO Send KPIs.
-
+						// If user was already logged in, send KPIs to the server.
+						new WebServerClient().SendKPIs(User.Instance.GetFinishedKPIs()).DoNotAwait();
 					}
 				}
 			}
@@ -94,6 +95,7 @@ namespace Trace {
 				User.Instance.PictureURL = result.payload.picture;
 				User.Instance.SessionToken = result.payload.token;
 				SQLiteDB.Instance.SaveItem(User.Instance);
+				// TODO User.Instance.GetCurrentKPI().AddLoginEvent(TimeUtil.CurrentEpochTimeSeconds());
 			}
 			return result.success;
 		}

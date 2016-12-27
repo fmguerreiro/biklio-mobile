@@ -205,6 +205,14 @@
     <Compile Include="Utils\TaskExtensions.cs" />
     <Compile Include="Utils\TimeUtil.cs" />
     <Compile Include="ServiceAccess\Notifications\INotificationMessage.cs" />
+    <Compile Include="Business\KPI.cs" />
+    <Compile Include="ServiceAccess\WebServiceObjects\SubmitKPIs\WSKPIs.cs" />
+    <Compile Include="ServiceAccess\WebServiceObjects\SubmitKPIs\WSModalitiesDuration.cs" />
+    <Compile Include="ServiceAccess\WebServiceObjects\SubmitKPIs\WSCyclingEvent.cs" />
+    <Compile Include="ServiceAccess\WebServiceObjects\SubmitKPIs\WSLoginEvent.cs" />
+    <Compile Include="ServiceAccess\WebServiceObjects\SubmitKPIs\WSClaimedRewardEvent.cs" />
+    <Compile Include="ServiceAccess\WebServiceObjects\SubmitKPIs\WSChallengeConditionCompletedEvent.cs" />
+    <Compile Include="ServiceAccess\WebServiceObjects\SubmitKPIs\WSCheckInEvent.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Business\" />
@@ -239,6 +247,7 @@
     <Folder Include="Localization\" />
     <Folder Include="Utils\" />
     <Folder Include="ServiceAccess\Notifications\" />
+    <Folder Include="ServiceAccess\WebServiceObjects\SubmitKPIs\" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Microsoft.Threading.Tasks">

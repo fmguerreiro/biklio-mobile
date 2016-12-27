@@ -9,6 +9,7 @@ namespace Trace {
 	public class Trajectory : UserItemBase {
 
 		// Start and end time of the trajectory in milliseconds since Unix epoch.
+		// [Indexed]
 		public long StartTime { get; set; }
 		public long EndTime { get; set; }
 
@@ -67,7 +68,7 @@ namespace Trace {
 			}
 		}
 
-		// in seconds
+		// In milliseconds.
 		public long ElapsedTime() {
 			return EndTime - StartTime;
 		}

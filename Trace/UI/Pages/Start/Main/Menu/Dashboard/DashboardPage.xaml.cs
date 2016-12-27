@@ -57,7 +57,7 @@ namespace Trace {
 		}
 
 		async void onTappedTime(object sender, EventArgs e) {
-			// TODO just an example, delete this
+			// TODO just an example to test the graph, delete this
 			CaloriesAllTime.Cycling = 50; CaloriesAllTime.Driving = 20; caloriesAllTime.Running = 2; caloriesAllTime.Walking = 80;
 			await Navigation.PushAsync(new DrawPlotPage(CaloriesAllTime, Language.TimePerActivity));
 		}
@@ -66,7 +66,7 @@ namespace Trace {
 		void calculateStats() {
 			IList<Challenge> challenges = User.Instance.Challenges;
 			IList<Trajectory> trajectories = User.Instance.Trajectories;
-			long now = TimeUtil.CurrentEpochTime();
+			long now = TimeUtil.CurrentEpochTimeSeconds();
 			var aDayAgo = now - (long) TimeSpan.FromDays(1).TotalSeconds;
 			var aWeekAgo = now - (long) TimeSpan.FromDays(7).TotalSeconds;
 

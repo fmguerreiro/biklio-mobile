@@ -1,124 +1,131 @@
-﻿using System.Diagnostics;
-using Android.Gms.Common;
-using Android.Gms.Common.Apis;
+﻿using System;
+using Android.App;
+using Android.Content;
+using Android.Runtime;
+using Android.Views;
+using Android.Widget;
 using Android.OS;
+using Android.Gms.Common.Apis;
 using Android.Support.V7.App;
-using Newtonsoft.Json.Linq;
+using Android.Gms.Common;
+using Android.Util;
 using Trace;
 using Trace.Droid;
 using Xamarin.Forms;
+using Android.Gms.Auth.Api.SignIn;
+using Android.Gms.Auth.Api;
 using Xamarin.Forms.Platform.Android;
-
+using System.Threading.Tasks;
 
 [assembly: ExportRenderer(typeof(GoogleOAuthUIPage), typeof(GoogleOAuthPageRenderer))]
 namespace Trace.Droid {
-	// TODO implement!
-	public class GoogleOAuthPageRenderer
-//:  AppCompatActivity, View.IOnClickListener, GoogleApiClient.IConnectionCallbacks, GoogleApiClient.IOnConnectionFailedListener 
-{
+
+	public class GoogleOAuthPageRenderer : PageRenderer,
+	GoogleApiClient.IConnectionCallbacks, GoogleApiClient.IOnConnectionFailedListener {
+
+		global::Android.Views.View view;
 
 		GoogleApiClient mGoogleApiClient;
 
-		//protected override void OnCreate(Bundle savedInstanceState) {
-		//	base.OnCreate(savedInstanceState);
+		readonly int RC_SIGN_IN = 23;
 
-		//	mGoogleApiClient = new GoogleApiClient.Builder(this)
-		//		.AddConnectionCallbacks(this)
-		//		.AddOnConnectionFailedListener(this)
-		//		.AddApi(PlusClass.API)
-		//		.AddScope(new Scope(Scopes.Profile))
-		//		.Build();
-		//}
 
-		//protected override void OnStart ()
-		//{
-		//	base.OnStart ();
-		//	mGoogleApiClient.Connect ();
-		//}
+		protected override void OnElementChanged(ElementChangedEventArgs<Page> e) {
+			base.OnElementChanged(e);
 
-		//protected override void OnStop ()
-		//{
-		//	base.OnStop ();
-		//	mGoogleApiClient.Disconnect ();
-		//}
+			if(e.OldElement != null || Element == null)
+				return;
 
-		//protected override void OnActivityResult (int requestCode, Result resultCode, Intent data)
-		//{
-		//	base.OnActivityResult (requestCode, resultCode, data);
-		//	Log.Debug (TAG, "onActivityResult:" + requestCode + ":" + resultCode + ":" + data);
+			// Configure sign-in to request the user's ID, email address, and basic profile. ID and
+			// basic profile are included in DEFAULT_SIGN_IN.
+			GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DefaultSignIn)
+				.RequestEmail()
+				.Build();
 
-		//	if (requestCode == RC_SIGN_IN) {
-		//		if (resultCode != Result.Ok) {
-		//			mShouldResolve = false;
+			System.Diagnostics.Debug.WriteLine(gso.ToString());
+
+			var activity = this.Context as Activity;
+			//activity.LayoutInflater.Inflate(, this, false);
+			//FragmentManager fm = activity.FragmentManager;
+			//FragmentTransaction fragmentTransaction = fm.BeginTransaction();
+
+			var fragment = new Android.Support.V4.App.FragmentActivity();
+			//fragmentTransaction.Add(fragment, "GOOGLE_SIGNIN");
+
+			mGoogleApiClient = new GoogleApiClient.Builder(activity)
+				.EnableAutoManage(fragment, this)
+				.AddApi(Auth.GOOGLE_SIGN_IN_API, gso)
+				.Build();
+
+			//Task.Run(() => {
+			mGoogleApiClient.BlockingConnect();
+			System.Diagnostics.Debug.WriteLine(mGoogleApiClient.IsConnected);
+			//});
+
+			//Intent signInIntent = Auth.GoogleSignInApi.GetSignInIntent(mGoogleApiClient);
+
+			//StartActivityForResult(signInIntent, RC_SIGN_IN);
+
+			//AddView(view);
+		}
+
+
+		//public void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+		//	OnActivityResult(requestCode, (Result) resultCode, data);
+
+		//	string name;
+		//	string email;
+		//	string token;
+		//	// Result returned from launching the Intent from
+		//	//   GoogleSignInApi.getSignInIntent(...);
+		//	if(requestCode == RC_SIGN_IN) {
+		//		GoogleSignInResult result = Auth.GoogleSignInApi.GetSignInResultFromIntent(data);
+		//		if(result.IsSuccess) {
+		//			GoogleSignInAccount acct = result.SignInAccount;
+		//			// Get account information
+		//			name = acct.DisplayName;
+		//			email = acct.Email;
+		//			token = acct.IdToken;
+		//			System.Diagnostics.Debug.WriteLine("Got user info: " + name + " " + email + " " + token);
 		//		}
-
-		//		mIsResolving = false;
-		//		mGoogleApiClient.Connect ();
 		//	}
 		//}
 
-		//public void OnConnected (Bundle connectionHint)
-		//{
-		//	Log.Debug (TAG, "onConnected:" + connectionHint);
-
-		//	UpdateUI (true);
+		//protected override void OnStart() {
+		//	base.OnStart();
+		//	mGoogleApiClient.Connect();
 		//}
 
-		//public void OnConnectionSuspended (int cause)
-		//{
-		//	Log.Warn (TAG, "onConnectionSuspended:" + cause);
+		//protected override void OnStop() {
+		//	base.OnStop();
+		//	mGoogleApiClient.Disconnect();
 		//}
 
-		//public void OnConnectionFailed (ConnectionResult result)
-		//{
-		//	Log.Debug (TAG, "onConnectionFailed:" + result);
-
-		//	if (!mIsResolving && mShouldResolve) {
-		//		if (result.HasResolution) {
-		//			try {
-		//				result.StartResolutionForResult (this, RC_SIGN_IN);
-		//				mIsResolving = true;
-		//			} catch (IntentSender.SendIntentException e) {
-		//				Log.Error (TAG, "Could not resolve ConnectionResult.", e);
-		//				mIsResolving = false;
-		//				mGoogleApiClient.Connect ();
-		//			}
-		//		} else {
-		//			ShowErrorDialog (result);
-		//		}
-		//	} else {
-		//		UpdateUI (false);
-		//	}
+		//protected override void OnSaveInstanceState(Bundle outState) {
+		//	base.OnSaveInstanceState(outState);
 		//}
 
-		//class DialogInterfaceOnCancelListener : Java.Lang.Object, IDialogInterfaceOnCancelListener
-		//{
-		//	public Action<IDialogInterface> OnCancelImpl { get; set; }
+		public void OnConnected(Bundle connectionHint) {
+			System.Diagnostics.Debug.WriteLine("OnConnected: " + connectionHint);
+		}
 
-		//	public void OnCancel (IDialogInterface dialog)
-		//	{
-		//		OnCancelImpl (dialog);
-		//	}
-		//}
+		public void OnConnectionSuspended(int cause) {
+			System.Diagnostics.Debug.WriteLine("OnConnectionSuspended: " + cause);
+		}
 
-		//void ShowErrorDialog (ConnectionResult connectionResult)
-		//{
-		//	int errorCode = connectionResult.ErrorCode;
+		public void OnConnectionFailed(ConnectionResult result) {
+			System.Diagnostics.Debug.WriteLine("OnConnectionFailed: " + result);
+		}
 
-		//	if (GooglePlayServicesUtil.IsUserRecoverableError (errorCode)) {
-		//		var listener = new DialogInterfaceOnCancelListener ();
-		//		listener.OnCancelImpl = (dialog) => {
-		//			mShouldResolve = false;
-		//			UpdateUI (false);
-		//		};
-		//		GooglePlayServicesUtil.GetErrorDialog (errorCode, this, RC_SIGN_IN, listener).Show ();
-		//	} else {
-		//		var errorstring = string.Format(GetString (Resource.String.play_services_error_fmt), errorCode);
-		//		Toast.MakeText (this, errorstring, ToastLength.Short).Show ();
+		class DialogInterfaceOnCancelListener : Java.Lang.Object, IDialogInterfaceOnCancelListener {
+			public Action<IDialogInterface> OnCancelImpl { get; set; }
 
-		//		mShouldResolve = false;
-		//		UpdateUI (false);
-		//	}
-		//}
+			public void OnCancel(IDialogInterface dialog) {
+				OnCancelImpl(dialog);
+			}
+		}
+
 	}
+
 }

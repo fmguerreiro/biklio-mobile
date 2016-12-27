@@ -33,16 +33,16 @@ namespace Trace.iOS {
 				catch(CultureNotFoundException e1) {
 					// iOS locale not valid .NET culture (eg. "en-ES" : English in Spain)
 					// fallback to first characters, in this case "en"
-					try {
-						var fallback = ToDotnetFallbackLanguage(new PlatformCulture(netLanguage));
-						Debug.WriteLine(netLanguage + " failed, trying " + fallback + " (" + e1.Message + ")");
-						ci = new System.Globalization.CultureInfo(fallback);
-					}
-					catch(CultureNotFoundException e2) {
-						// iOS language not valid .NET culture, falling back to English
-						Debug.WriteLine(netLanguage + " couldn't be set, using 'en' (" + e2.Message + ")");
-						ci = new System.Globalization.CultureInfo("en");
-					}
+					//try {
+					//	var fallback = ToDotnetFallbackLanguage(new PlatformCulture(netLanguage));
+					//	Debug.WriteLine(netLanguage + " failed, trying " + fallback + " (" + e1.Message + ")");
+					//	ci = new System.Globalization.CultureInfo(fallback);
+					//}
+					//catch(CultureNotFoundException e2) {
+					// iOS language not valid .NET culture, falling back to English
+					Debug.WriteLine(netLanguage + " couldn't be set, using 'en' (" + e1.Message + ")");
+					ci = new System.Globalization.CultureInfo("en");
+
 				}
 				return cultureInfo = ci;
 			}

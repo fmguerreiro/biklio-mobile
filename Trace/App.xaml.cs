@@ -33,16 +33,19 @@ namespace Trace {
 		}
 
 		protected override void OnSleep() {
-			// Handle when your app sleeps
+			// Handle when your app enters background. Runs for about 5 seconds.
 			CrossConnectivity.Current.ConnectivityChanged -= LoginManager.OnConnectivityChanged;
 			Geolocator.LowerAccuracy();
+
+			// Serialize and store KPIs obtained.
+			User.Instance.GetCurrentKPI().StoreKPI();
 		}
 
-		protected async override void OnResume() {
+		protected override void OnResume() {
 			// Handle when your app resumes
 			CrossConnectivity.Current.ConnectivityChanged += LoginManager.OnConnectivityChanged;
 			Geolocator.ImproveAccuracy();
-			await Task.Delay(1000);
+			//await Task.Delay(1000);
 		}
 	}
 }
