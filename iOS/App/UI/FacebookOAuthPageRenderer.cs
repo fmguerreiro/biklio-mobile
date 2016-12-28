@@ -7,6 +7,7 @@ using System.Linq;
 using System;
 using Newtonsoft.Json;
 using System.Diagnostics;
+using Trace.Localization;
 
 [assembly: ExportRenderer(typeof(FacebookOAuthUIPage), typeof(FacebookOAuthPageRenderer))]
 namespace Trace.iOS {

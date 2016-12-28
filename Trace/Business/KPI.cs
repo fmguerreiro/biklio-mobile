@@ -19,7 +19,9 @@ namespace Trace {
 			get {
 				return date;
 			}
-			set { date = TimeUtil.RoundDownDay(value); }
+			set {
+				date = TimeUtil.RoundDownDay(value);
+			}
 		}
 
 		WSKPIs wsFormatKPI;
@@ -51,7 +53,9 @@ namespace Trace {
 
 
 		public bool IsKPIExpired() {
-			Debug.WriteLine("IsKPIExpired(): \nCurrent->" + TimeUtil.CurrentEpochTimeSeconds() + " \nLimit--->" + (Date + KPI_PERIOD));
+			Debug.WriteLine("KPI.IsKPIExpired(): " + (TimeUtil.CurrentEpochTimeSeconds() > (Date + KPI_PERIOD))
+				+ "\nCurrent->" + TimeUtil.CurrentEpochTimeSeconds()
+				+ "\nLimit--->" + (Date + KPI_PERIOD));
 			return TimeUtil.CurrentEpochTimeSeconds() > Date + KPI_PERIOD;
 		}
 

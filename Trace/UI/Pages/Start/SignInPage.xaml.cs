@@ -87,14 +87,14 @@ namespace Trace {
 		void OnGoogleLogin(object sender, EventArgs e) {
 			// Use a custom renderer to display the Google auth UI
 			OAuthConfigurationManager.SetConfig(new GoogleOAuthConfig());
-			Navigation.PushModalAsync(new GoogleOAuthUIPage());
+			Navigation.PushAsync(new GoogleOAuthUIPage());
 		}
 
 
 		void OnFacebookLogin(object sender, EventArgs e) {
 			// Use a custom renderer to display the Facebook auth UI
 			OAuthConfigurationManager.SetConfig(new FacebookOAuthConfig());
-			Navigation.PushModalAsync(new FacebookOAuthUIPage());
+			Navigation.PushAsync(new FacebookOAuthUIPage());
 		}
 
 
@@ -125,9 +125,9 @@ namespace Trace {
 					Application.Current.MainPage = new MainPage();
 
 					// Record login event.
-					//Device.BeginInvokeOnMainThread(() => {
-					//	User.Instance.GetCurrentKPI().AddLoginEvent(TimeUtil.CurrentEpochTimeSeconds());
-					//});
+					Device.BeginInvokeOnMainThread(() => {
+						User.Instance.GetCurrentKPI().AddLoginEvent(TimeUtil.CurrentEpochTimeSeconds());
+					});
 				});
 			}
 		}

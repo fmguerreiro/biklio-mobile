@@ -37,6 +37,17 @@ namespace Trace {
 				// TODO use activity confidence as well
 				RewardEligibilityManager.Instance.Input(activity);
 			});
+			// create start tracking button
+			//var normalFab = new FloatingActionButton();
+			//normalFab.Source = "default_shop.png";
+			//normalFab.Size = FabSize.Normal;
+			//MyStack.Children.Add(
+			//	normalFab
+			////xConstraint: Constraint.RelativeToParent((parent) => { return (parent.Width - normalFab.Width) - 16; }),
+			////yConstraint: Constraint.RelativeToParent((parent) => { return (parent.Height - normalFab.Height) - 16; })
+			//);
+
+			//normalFab.SizeChanged += (sender, args) => { MyStack.ForceLayout(); };
 		}
 
 

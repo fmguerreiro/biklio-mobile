@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Newtonsoft.Json;
 using Plugin.Geolocator.Abstractions;
 using SQLite;
+using Trace.Localization;
 
 namespace Trace {
 
@@ -124,12 +125,12 @@ namespace Trace {
 		public string Summary {
 			get {
 				if(Trajectories.Count == 0) {
-					return "No routes yet.";
+					return Language.NoRoutesYet;
 				}
 				if(Trajectories.Count != 1)
-					return "You have " + Trajectories.Count + " routes.";
+					return Language.YouHave + " " + Trajectories.Count + " " + Language.Routes;
 				else
-					return "You have 1 route.";
+					return Language.OneRoute;
 			}
 		}
 	}

@@ -115,11 +115,11 @@ namespace Trace {
 		}
 
 		private void AddKPI(KPI newKPIs) {
-			kpis.Insert(0, newKPIs);
+			KPIs.Insert(0, newKPIs);
 		}
 
 		public KPI GetCurrentKPI() {
-			var curr = kpis.FirstOrDefault();
+			var curr = KPIs.FirstOrDefault();
 			if(curr == null || curr.IsKPIExpired()) {
 				curr?.StoreKPI();
 				curr = new KPI { Date = TimeUtil.CurrentEpochTimeSeconds() };
@@ -133,7 +133,7 @@ namespace Trace {
 			GetCurrentKPI();
 			// Returns all but the first element in the list.
 			var tail = KPIs.Skip(1);
-			Debug.WriteLine("GetFinishedKPIs: " + KPIs.Count() + " " + tail.Count());
+			Debug.WriteLine("User.GetFinishedKPIs(): total=" + KPIs.Count() + " finished=" + tail.Count());
 			return tail;
 		}
 

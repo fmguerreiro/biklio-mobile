@@ -95,7 +95,6 @@ namespace Trace {
 				User.Instance.PictureURL = result.payload.picture;
 				User.Instance.SessionToken = result.payload.token;
 				SQLiteDB.Instance.SaveItem(User.Instance);
-				// TODO User.Instance.GetCurrentKPI().AddLoginEvent(TimeUtil.CurrentEpochTimeSeconds());
 			}
 			return result.success;
 		}

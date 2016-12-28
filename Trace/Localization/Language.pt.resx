@@ -311,6 +311,18 @@
 	<data name="ChallengesNear" xml:space="preserve">
         <value>desafios perto de ti.</value>
   	</data>
+	<data name="NoRoutesYet" xml:space="preserve">
+    	<value>Ainda não tens trajetos.</value>
+  	</data>
+	<data name="OneRoute" xml:space="preserve">
+    	<value>Tens 1 trajeto.</value>
+  	</data>
+	<data name="YouHave" xml:space="preserve">
+    	<value>Tens</value>
+  	</data>
+	<data name="Routes" xml:space="preserve">
+    	<value>trajetos.</value>
+  	</data>
 	<data name="OnlineLoginError" xml:space="preserve">
     	<value>As credenciais introduzidas em modo offline são diferentes das do servidor. Por favor tente iniciar sessão novamente.</value>
   	</data>

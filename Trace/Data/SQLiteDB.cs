@@ -205,6 +205,7 @@ namespace Trace {
 				database.DropTable<Challenge>();
 				database.DropTable<Checkpoint>();
 				database.DropTable<Trajectory>();
+				database.DropTable<KPI>();
 				//DependencyService.Get<DeviceKeychainInterface>().SaveCredentials("username", "password");
 				DependencyService.Get<DeviceKeychainInterface>().DeleteAllCredentials();
 			}

@@ -28,14 +28,14 @@ namespace Trace.Droid {
 				catch(CultureNotFoundException) {
 					// iOS locale not valid .NET culture (eg. "en-ES" : English in Spain)
 					// fallback to first characters, in this case "en"
-					try {
-						var fallback = ToDotnetFallbackLanguage(new PlatformCulture(netLanguage));
-						ci = new CultureInfo(fallback);
-					}
-					catch(CultureNotFoundException) {
-						// iOS language not valid .NET culture, falling back to English
-						ci = new CultureInfo("en");
-					}
+					//try {
+					//	var fallback = ToDotnetFallbackLanguage(new PlatformCulture(netLanguage));
+					//	ci = new CultureInfo(fallback);
+					//}
+					//catch(CultureNotFoundException) {
+					// iOS language not valid .NET culture, falling back to English
+					ci = new CultureInfo("en");
+					//}
 				}
 				return cultureInfo = ci;
 			}

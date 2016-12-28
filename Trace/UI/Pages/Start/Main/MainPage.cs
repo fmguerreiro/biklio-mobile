@@ -11,8 +11,6 @@ namespace Trace {
 		public MainPage() {
 			masterPage = new HomeMasterPage();
 			Master = masterPage;
-			//var navPage = ((NavigationPage) Application.Current.MainPage);
-			//navPage.PushAsync(new HomePage());
 			Detail = new NavigationPage(new HomePage());
 
 			masterPage.ListView.ItemSelected += OnItemSelected;

@@ -635,6 +635,24 @@ namespace Trace.Localization {
             }
         }
         
+        public static string NoRoutesYet {
+            get {
+                return ResourceManager.GetString("NoRoutesYet", resourceCulture);
+            }
+        }
+        
+        public static string OneRoute {
+            get {
+                return ResourceManager.GetString("OneRoute", resourceCulture);
+            }
+        }
+        
+        public static string YouHave {
+            get {
+                return ResourceManager.GetString("YouHave", resourceCulture);
+            }
+        }
+        
         public static string OnlineLoginError {
             get {
                 return ResourceManager.GetString("OnlineLoginError", resourceCulture);

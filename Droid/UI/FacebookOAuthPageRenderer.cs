@@ -8,6 +8,7 @@ using Xamarin.Forms.Platform.Android;
 using Trace;
 using Trace.Droid;
 using System.Diagnostics;
+using Trace.Localization;
 
 [assembly: ExportRenderer(typeof(FacebookOAuthUIPage), typeof(FacebookOAuthPageRenderer))]
 namespace Trace.Droid {

@@ -312,6 +312,18 @@
 	<data name="ChallengesNear" xml:space="preserve">
     	<value>challenges near you.</value>
   	</data>
+	<data name="NoRoutesYet" xml:space="preserve">
+    	<value>No routes yet.</value>
+  	</data>
+	<data name="OneRoute" xml:space="preserve">
+    	<value>You have 1 route.</value>
+  	</data>
+	<data name="YouHave" xml:space="preserve">
+    	<value>You have</value>
+  	</data>
+	<data name="Routes" xml:space="preserve">
+    	<value>routes.</value>
+  	</data>
 	<data name="OnlineLoginError" xml:space="preserve">
     	<value>The credentials you entered when you previously logged in were incorrect, please try again.</value>
   	</data>

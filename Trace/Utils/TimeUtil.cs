@@ -34,10 +34,8 @@ namespace Trace {
 
 		public static long RoundDownDay(long epochTimeS) {
 			// the 'Date' component has the time set to (00:00:00)
-			//return new DateTime().AddSeconds(epochTimeS).Date.;
-			var origin = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
-			TimeSpan diff = new DateTime().AddSeconds(epochTimeS).Date.ToUniversalTime() - origin;
-			return (long) diff.TotalSeconds;
+			var dateInSeconds = DateTime.UtcNow - new DateTime(1970, 1, 1).Date;
+			return (long) dateInSeconds.TotalSeconds;
 		}
 	}
 }
