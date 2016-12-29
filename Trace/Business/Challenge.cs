@@ -42,10 +42,10 @@ namespace Trace {
 	/// The Challenge Visual Model is used to bind a list of challenges for display in the Challenge Page and Reward Page.
 	/// </summary>
 	class ChallengeVM {
-		public IEnumerable<Challenge> Challenges { get; set; }
+		public IList<Challenge> Challenges { get; set; }
 		public string Summary {
 			get {
-				int count = Challenges.Count();
+				int count = Challenges.Count;
 				if(count == 0) {
 					return Language.NoChallengesFound;
 				}

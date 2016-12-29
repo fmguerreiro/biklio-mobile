@@ -1,4 +1,6 @@
-﻿namespace Trace {
+﻿using Trace.Localization;
+
+namespace Trace {
 
 	/// <summary>
 	/// The values are matched to the Google Activity Detection specifications.
@@ -15,6 +17,23 @@
 
 
 	static class ActivityTypeExtension {
+
+		public static string ToLocalizedString(this ActivityType e) {
+			switch(e) {
+				case ActivityType.Unknown:
+					return Language.Unknown;
+				case ActivityType.Walking:
+					return Language.Walking;
+				case ActivityType.Running:
+					return Language.Running;
+				case ActivityType.Cycling:
+					return Language.Cycling;
+				case ActivityType.Automative:
+					return Language.Driving;
+				default:
+					return Language.Stationary;
+			}
+		}
 
 		public static int ToAndroidInt(this string activity) {
 			if(activity == "Walking")

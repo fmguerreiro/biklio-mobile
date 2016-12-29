@@ -110,6 +110,9 @@
 	<data name="MyRoutes" xml:space="preserve">
     	<value>My Routes</value>
   	</data>
+	<data name="JoinACampaign" xml:space="preserve">
+    	<value>Campaigns</value>
+  	</data>
 	<data name="Settings" xml:space="preserve">
     	<value>Settings</value>
   	</data>
@@ -123,22 +126,28 @@
     	<value>Stop</value>
   	</data>
 	<data name="CurrentActivityLabel" xml:space="preserve">
-    	<value>Activity: {0}</value>
+    	<value>Activity:
+{0}</value>
   	</data>
 	<data name="MainActivityLabel" xml:space="preserve">
-    	<value>Main Activity: {0}</value>
+    	<value>Main Activity:
+{0}</value>
   	</data>
 	<data name="DistanceLabel" xml:space="preserve">
-    	<value>Distance: {0} m</value>
+    	<value>Distance:
+{0} m</value>
   	</data>
 	<data name="DurationLabel" xml:space="preserve">
-    	<value>Duration: {0} s</value>
+    	<value>Duration:
+{0}</value>
   	</data>
 	<data name="CaloriesLabel" xml:space="preserve">
-    	<value>Calories: {0} kcal</value>
+    	<value>Calories:
+{0} kcal</value>
   	</data>
 	<data name="AvgSpeedLabel" xml:space="preserve">
-    	<value>Avg Speed: {0} m/s</value>
+    	<value>Avg Speed:
+{0} m/s</value>
   	</data>
 	<data name="Challenges" xml:space="preserve">
     	<value>Challenges</value>
@@ -173,6 +182,9 @@
 	<data name="ShopDescription" xml:space="preserve">
     	<value>Description: {0}</value>
   	</data>
+	<data name="Unknown" xml:space="preserve">
+    	<value>Unknown</value>
+  	</data>
 	<data name="Walking" xml:space="preserve">
     	<value>Walking</value>
   	</data>
@@ -184,6 +196,9 @@
   	</data>
 	<data name="Driving" xml:space="preserve">
     	<value>Driving</value>
+  	</data>
+	<data name="Stationary" xml:space="preserve">
+    	<value>Stationary</value>
   	</data>
 	<data name="RoutesTracked" xml:space="preserve">
     	<value>Routes tracked</value>
@@ -332,5 +347,33 @@
   	</data>
 	<data name="RewardsUnlockedMessage" xml:space="preserve">
     	<value>"You have {0} rewards available."</value>
+    	<comment>Do not remove "".</comment>
+  	</data>
+	<data name="Campaigns" xml:space="preserve">
+    	<value>Campaigns</value>
+  	</data>
+	<data name="NewCampaigns" xml:space="preserve">
+    	<value>New Campaigns</value>
+  	</data>
+	<data name="CurrentCampaigns" xml:space="preserve">
+    	<value>Subscribed Campaigns</value>
+  	</data>
+	<data name="NewCampaign" xml:space="preserve">
+    	<value>New Campaign</value>
+  	</data>
+	<data name="NewCampaignMsg" xml:space="preserve">
+    	<value>Would you like to subscribe to this campaign? You will start receiving notifications of special events in the area.</value>
+  	</data>
+	<data name="YouHaveSubscribedTo" xml:space="preserve">
+    	<value>You have subscribed to</value>
+  	</data>
+	<data name="UnsubscribeCampaign" xml:space="preserve">
+    	<value>Unsubscribe Campaign</value>
+  	</data>
+	<data name="UnsubscribeCampaignMsg" xml:space="preserve">
+    	<value>Would you like to unsubscribe to this campaign? You will stop receiving notifications from this campaign.</value>
+  	</data>
+	<data name="YouHaveUnsubscribedFrom" xml:space="preserve">
+    	<value>You have unsubscribed from</value>
   	</data>
 </root>

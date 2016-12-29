@@ -15,10 +15,19 @@ namespace Trace {
 		/// <returns>The current user location.</returns>
 		public static async Task<Position> GetCurrentUserLocation() {
 			Position location;
+			var locator = CrossGeolocator.Current;
+			var prevAccuracy = locator.DesiredAccuracy;
+			locator.DesiredAccuracy = Geolocator.LOCATOR_GOOD_ACCURACY;
+
 			try {
-				location = await CrossGeolocator.Current.GetPositionAsync(GET_LOCATION_TIMEOUT);
+				location = await locator.GetPositionAsync(GET_LOCATION_TIMEOUT);
 			}
-			catch(GeolocationException) { return new Position { Longitude = 0, Latitude = 0 }; }
+			catch(GeolocationException) {
+				locator.DesiredAccuracy = prevAccuracy;
+				return new Position { Longitude = 0, Latitude = 0 };
+			}
+
+			locator.DesiredAccuracy = prevAccuracy;
 			return location;
 		}
 

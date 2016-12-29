@@ -30,6 +30,7 @@ namespace Trace {
 			database.CreateTable<Trajectory>();
 			database.CreateTable<Challenge>();
 			database.CreateTable<Checkpoint>();
+			database.CreateTable<Campaign>();
 			database.CreateTable<KPI>();
 		}
 
@@ -205,6 +206,7 @@ namespace Trace {
 				database.DropTable<Challenge>();
 				database.DropTable<Checkpoint>();
 				database.DropTable<Trajectory>();
+				database.DropTable<Campaign>();
 				database.DropTable<KPI>();
 				//DependencyService.Get<DeviceKeychainInterface>().SaveCredentials("username", "password");
 				DependencyService.Get<DeviceKeychainInterface>().DeleteAllCredentials();

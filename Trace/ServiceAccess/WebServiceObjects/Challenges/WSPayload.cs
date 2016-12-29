@@ -27,5 +27,13 @@
 		public string name;
 		public string email;
 		public string picture;
+
+		// Campaign information
+		public string website;
+		public long start;
+		public long end;
+		public string description;
+		public string image;
+
 	}
 }

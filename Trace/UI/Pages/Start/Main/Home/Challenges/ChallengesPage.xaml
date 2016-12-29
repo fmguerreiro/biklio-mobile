@@ -13,36 +13,36 @@
 				x:Key="arrayToimageConverter" />
 		</ResourceDictionary>
 	</ContentPage.Resources>
-	<ListView
-		x:Name="ChallengeListView"
-		ItemsSource="{Binding Challenges}"
-		ItemSelected="OnSelection"
-		IsPullToRefreshEnabled="true"
-		Refreshing="OnRefresh">
-		<ListView.Header>
-			<StackLayout
-				Spacing="0">
-				<Label
-					Text="{Binding Summary}"
-					FontAttributes="Bold"
-					XAlign="Center" />
-				<Label
-					x:Name="PullUpHintLabel"
-					Text="{language:Translate PullUpToUpdate}"
-					XAlign="Center"
-					FontSize="Small" />
-			</StackLayout>
-		</ListView.Header>
-		<ListView.ItemTemplate>
-			<DataTemplate>
-				<ImageCell
-					Text="{Binding Description}"
-					Detail="{Binding Condition, StringFormat={language:Translate BikeCondition}"
-					ImageSource="{Binding ThisCheckpoint.LogoImageFilePath, Converter={StaticResource arrayToimageConverter}}">
-				</ImageCell>
-			</DataTemplate>
-		</ListView.ItemTemplate>
-	</ListView>
 	<ContentPage.Content>
+		<ListView
+			x:Name="ChallengeListView"
+			ItemsSource="{Binding Challenges}"
+			ItemSelected="OnSelection"
+			IsPullToRefreshEnabled="true"
+			Refreshing="OnRefresh">
+			<ListView.Header>
+				<StackLayout
+					Spacing="0">
+					<Label
+						Text="{Binding Summary}"
+						FontAttributes="Bold"
+						XAlign="Center" />
+					<Label
+						x:Name="PullUpHintLabel"
+						Text="{language:Translate PullUpToUpdate}"
+						XAlign="Center"
+						FontSize="Small" />
+				</StackLayout>
+			</ListView.Header>
+			<ListView.ItemTemplate>
+				<DataTemplate>
+					<ImageCell
+						Text="{Binding Description}"
+						Detail="{Binding Condition, StringFormat={language:Translate BikeCondition}"
+						ImageSource="{Binding ThisCheckpoint.LogoImageFilePath, Converter={StaticResource arrayToimageConverter}}">
+					</ImageCell>
+				</DataTemplate>
+			</ListView.ItemTemplate>
+		</ListView>
 	</ContentPage.Content>
 </ContentPage>

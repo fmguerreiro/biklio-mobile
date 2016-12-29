@@ -294,13 +294,15 @@
     <BundleResource Include="Resources\logo_58x58.png" />
     <BundleResource Include="Resources\hicycle.png" />
     <BundleResource Include="Resources\icon.png" />
-    <BundleResource Include="Resources\photo_circle_mask.bk.png" />
     <BundleResource Include="Resources\reward.png" />
     <BundleResource Include="Resources\icon\icon29px.png" />
     <BundleResource Include="Resources\icon\icon58px.png" />
     <BundleResource Include="Resources\icon\icon87px.png" />
-    <BundleResource Include="Resources\reward.png.bk.png" />
     <BundleResource Include="Resources\reward_white.png" />
+    <BundleResource Include="Resources\bootstrap_social.png" />
+    <BundleResource Include="Resources\campaign.png" />
+    <BundleResource Include="Resources\new_campaign.png" />
+    <BundleResource Include="Resources\subscribed_campaigns.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
   <Import Project="..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" />

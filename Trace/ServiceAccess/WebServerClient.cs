@@ -104,8 +104,8 @@ namespace Trace {
 				new KeyValuePair<string, string>("version", version.ToString())
 			});
 			Debug.WriteLine("FetchChallenges() - request: " + query.ReadAsStringAsync().Result);
-			JObject output = await GetAsyncFormURL(WebServerConstants.FETCH_CHALLENGES_ENDPOINT, query);
-			Debug.WriteLine("FetchChallenges() - response: " + output.ToString());
+			JObject output = await GetAsyncFormURL(WebServerConstants.GET_CHALLENGES, query);
+			Debug.WriteLine("FetchChallenges() - response: " + output);
 			WSResult result = output.ToObject<WSResult>();
 			if(!string.IsNullOrWhiteSpace(result.token)) User.Instance.IDToken = result.token;
 			return result;
@@ -188,6 +188,73 @@ namespace Trace {
 					SQLiteDB.Instance.DeleteItem<KPI>(kpi.Id);
 				}
 			}
+		}
+
+
+		/// <summary>
+		/// Gets the nearest campaign from the user position.
+		/// Message request content is of type: 'application/x-www-form-urlencoded'.
+		/// Response if of type JSON in format ... TODO .
+		/// </summary>
+		/// <returns>The nearest campaign.</returns>
+		public async Task<WSResult> GetNearestCampaign() {
+			//DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", User.Instance.SessionToken ?? User.Instance.IDToken);
+			var position = await GeoUtils.GetCurrentUserLocation();
+
+			var query = new FormUrlEncodedContent(new[] {
+				new KeyValuePair<string, string>("latitude", position.Latitude.ToString().Replace(',','.')),
+				new KeyValuePair<string, string>("longitude", position.Longitude.ToString().Replace(',','.')),
+			});
+			Debug.WriteLine("GetNearestCampaign() - request: " + query.ReadAsStringAsync().Result);
+
+			JObject output = await GetAsyncFormURL(WebServerConstants.GET_CLOSEST_CAMPAIGN, query);
+			Debug.WriteLine("GetNearestCampaign() - response: " + output);
+			WSResult result = output.ToObject<WSResult>();
+			return result;
+		}
+
+
+		/// <summary>
+		/// Subscribes to the campaign with the specified "campaignId".
+		/// Message request content is a POST of type: 'application/x-www-form-urlencoded'.
+		/// Response if of type JSON.
+		/// </summary>
+		/// <returns>The campaign.</returns>
+		/// <param name="campaignId">Campaign identifier.</param>
+		public async Task<WSResult> SubscribeCampaign(long campaignId) {
+			DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", User.Instance.SessionToken ?? User.Instance.IDToken);
+
+			var query = new FormUrlEncodedContent(new[] {
+				new KeyValuePair<string, string>("campaign", campaignId.ToString())
+			});
+			Debug.WriteLine("SubscribeCampaign() - request: " + query.ReadAsStringAsync().Result);
+
+			JObject output = await PostAsyncFormURL(WebServerConstants.SUBSCRIBE_CAMPAIGN, query);
+			Debug.WriteLine("SubscribeCampaign() - response: " + output);
+			WSResult result = output.ToObject<WSResult>();
+			return result;
+		}
+
+
+		/// <summary>
+		/// Unsubscribes from the campaign with the specified "campaignId".
+		/// Message request content is a POST of type: 'application/x-www-form-urlencoded'.
+		/// Response if of type JSON.
+		/// </summary>
+		/// <returns>The campaign.</returns>
+		/// <param name="campaignId">Campaign identifier.</param>
+		public async Task<WSResult> UnsubscribeCampaign(long campaignId) {
+			DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", User.Instance.SessionToken ?? User.Instance.IDToken);
+
+			var query = new FormUrlEncodedContent(new[] {
+				new KeyValuePair<string, string>("campaign", campaignId.ToString())
+			});
+			Debug.WriteLine("UnsubscribeCampaign() - request: " + query.ReadAsStringAsync().Result);
+
+			JObject output = await PostAsyncFormURL(WebServerConstants.UNSUBSCRIBE_CAMPAIGN, query);
+			Debug.WriteLine("UnsubscribeCampaign() - response: " + output);
+			WSResult result = output.ToObject<WSResult>();
+			return result;
 		}
 	}
 }

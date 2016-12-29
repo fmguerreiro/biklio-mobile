@@ -14,12 +14,18 @@
 
 		public static readonly string REGISTER_ENDPOINT = ENDPOINT + "/tracker/register";
 
-		public static readonly string FETCH_CHALLENGES_ENDPOINT = ENDPOINT + "/shops/challenges?";
+		public static readonly string GET_CHALLENGES = ENDPOINT + "/shops/challenges?";
 
 		public static readonly string SUBMIT_TRAJECTORY_SUMMARY = ENDPOINT + "/routes/s";
 
 		public static readonly string SUBMIT_TRAJECTORY = ENDPOINT + "/routes/s/track/trace?session=";
 
 		public static readonly string SUBMIT_KPI = ENDPOINT + "/kpi/s";
+
+		public static readonly string GET_CLOSEST_CAMPAIGN = ENDPOINT + "/campaign/near?";
+
+		public static readonly string SUBSCRIBE_CAMPAIGN = ENDPOINT + "/campaign/subscribe";
+
+		public static readonly string UNSUBSCRIBE_CAMPAIGN = ENDPOINT + "/campaign/unsubscribe";
 	}
 }

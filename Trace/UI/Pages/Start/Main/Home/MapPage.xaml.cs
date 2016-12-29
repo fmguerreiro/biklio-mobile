@@ -29,6 +29,7 @@ namespace Trace {
 			initializeChallengePins();
 			Locator.Start().DoNotAwait();
 			currentActivity = new CurrentActivity();
+			ActivityLabel.BindingContext = currentActivity;
 			DependencyService.Get<IMotionActivityManager>().InitMotionActivity();
 			DependencyService.Get<IMotionActivityManager>().StartMotionUpdates((activity) => {
 				currentActivity.ActivityType = activity;
@@ -106,7 +107,7 @@ namespace Trace {
 				var calories = await Task.Run(() => trajectory.CalculateCalories());
 				CaloriesLabel.BindingContext = new TotalCalories { Calories = calories };
 
-				AvgSpeedLabel.BindingContext = trajectory.AvgSpeed;
+				AvgSpeedLabel.BindingContext = trajectory;
 
 				displayGrid((Button) send);
 			}
@@ -119,7 +120,7 @@ namespace Trace {
 				// Show Activity text after Map and before Stop button and remove Results grid.
 				ActivityLabel.IsVisible = true;
 				ResultsGrid.IsVisible = false;
-				ActivityLabel.BindingContext = currentActivity;
+				//ActivityLabel.BindingContext = currentActivity;
 				// Reset in order to clean list of accumulated activities and counters.
 				DependencyService.Get<IMotionActivityManager>().Reset();
 			}
@@ -130,7 +131,8 @@ namespace Trace {
 		private void displayGrid(Button trackButton) {
 			trackButton.Text = Language.Track;
 			ActivityLabel.IsVisible = false;
-			MainActivityLabel.Text = DependencyService.Get<IMotionActivityManager>().GetMostCommonActivity().ToString();
+			MainActivityLabel.Text = string.Format(Language.MainActivityLabel,
+												   DependencyService.Get<IMotionActivityManager>().GetMostCommonActivity().ToLocalizedString());
 			Debug.WriteLine("Trajectory # of points: " + CustomMap.RouteCoordinates.Count);
 			// Refresh the map to display the trajectory.
 			MyStack.Children.RemoveAt(0);

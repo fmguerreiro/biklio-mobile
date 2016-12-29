@@ -23,7 +23,7 @@ namespace Trace.iOS {
 			var account = accounts.FirstOrDefault();
 			//if(account != null) { var _ = SQLiteDB.Instance; _.DropAllTables(); AccountStore.Create().Delete(account, OAuthConfigurationManager.KeystoreService); }
 
-			if(null == null) {
+			if(account == null) {
 				if(!isShown) {
 					isShown = true;
 

@@ -35,7 +35,7 @@
 			MapType="Street" />
 		<Label
 			x:Name="ActivityLabel"
-			Text="{Binding ActivityType, StringFormat={language:Translate CurrentActivityLabel}}"
+			Text="{Binding LocalizedActivity}"
 			HorizontalTextAlignment="Center"
 			IsVisible="true"
 			BackgroundColor="#24C121"
@@ -51,7 +51,7 @@
 			BackgroundColor="#24C121">
 			<Label
 				x:Name="MainActivityLabel"
-				Text="{Binding ActivityType, StringFormat={language:Translate MainActivityLabel}}"
+				Text="{Binding LocalizedActivity, StringFormat={language:Translate MainActivityLabel}}"
 				Grid.Row="0"
 				Grid.Column="1"
 				Grid.ColumnSpan="3"
@@ -83,7 +83,7 @@
 				XAlign="Center" />
 			<Label
 				x:Name="AvgSpeedLabel"
-				Text="{Binding TimeSpentCycling, StringFormat={language:Translate AvgSpeedLabel}}"
+				Text="{Binding AvgSpeed, StringFormat={language:Translate AvgSpeedLabel}}"
 				Grid.Row="2"
 				Grid.Column="3"
 				Grid.ColumnSpan="2"

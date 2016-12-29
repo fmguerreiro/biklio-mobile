@@ -15,7 +15,7 @@ namespace Trace {
 
 		public DrawPlotPage() {
 			var plot = new PlotView() {
-				Model = buildPieModel(),
+				Model = buildDoughnutModel(),
 				Scale = 0.8
 			};
 			Content = plot;
@@ -49,8 +49,9 @@ namespace Trace {
 			yAxis.MajorGridlineStyle = LineStyle.Solid;
 			yAxis.MajorGridlineColor = OxyColors.PowderBlue;
 			yAxis.MajorGridlineThickness = 1.5;
-			yAxis.MinorGridlineColor = OxyColors.Gray;
-			yAxis.MinorGridlineStyle = LineStyle.LongDash;
+
+			yAxis.MinorGridlineStyle = LineStyle.Solid;
+			yAxis.MinorGridlineThickness = 0.5;
 
 			model.Axes.Add(xAxis);
 			model.Axes.Add(yAxis);
@@ -90,19 +91,19 @@ namespace Trace {
 		/// <summary>
 		/// Examples for building charts.
 		/// </summary>
-		public static PlotModel buildPieModel() {
-			var model = new PlotModel { Title = "World population by continent" };
+		public static PlotModel buildDoughnutModel() {
+			var model = new PlotModel { Title = Language.DistancePerActivity };
 			var ps = new PieSeries {
 				StrokeThickness = 2.0,
-				InsideLabelPosition = 0.8,
+				InsideLabelPosition = 0.5,
 				AngleSpan = 360,
-				StartAngle = 0
+				StartAngle = 0,
+				InnerDiameter = 0.4 // comment this line for pie-model instead of doughnut
 			};
-			ps.Slices.Add(new PieSlice("Africa", 1030) { IsExploded = true });
-			ps.Slices.Add(new PieSlice("Americas", 929) { IsExploded = true });
-			ps.Slices.Add(new PieSlice("Asia", 4157));
-			ps.Slices.Add(new PieSlice("Europe", 739) { IsExploded = true });
-			ps.Slices.Add(new PieSlice("Oceania", 35) { IsExploded = true });
+			ps.Slices.Add(new PieSlice(Language.Walking, 1030) { IsExploded = true });
+			ps.Slices.Add(new PieSlice(Language.Running, 4157) { IsExploded = true });
+			ps.Slices.Add(new PieSlice(Language.Cycling, 429));
+			ps.Slices.Add(new PieSlice(Language.Driving, 739) { IsExploded = true });
 			model.Series.Add(ps);
 			return model;
 		}

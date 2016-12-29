@@ -9,7 +9,7 @@ namespace Trace {
 
 		private const int LOCATOR_TIMEOUT = 1000000;
 
-		private const int LOCATOR_GOOD_ACCURACY = 50;
+		public const int LOCATOR_GOOD_ACCURACY = 50;
 		private const int MOTION_ONLY_ACCURACY = 1;
 
 		private static IGeolocator locator;

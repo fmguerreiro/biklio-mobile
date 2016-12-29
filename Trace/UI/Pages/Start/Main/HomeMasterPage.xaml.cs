@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Trace.Localization;
 using Xamarin.Forms;
 
@@ -30,6 +29,11 @@ namespace Trace {
 				Title = Language.MyRoutes,
 				IconSource = "my_routes.png",
 				TargetType = typeof(MyTrajectoriesPage)
+			});
+			masterPageItems.Add(new MasterPageItem {
+				Title = Language.JoinACampaign,
+				IconSource = "campaign.png",
+				TargetType = typeof(CampaignsMainPage)
 			});
 			masterPageItems.Add(new MasterPageItem {
 				Title = Language.Settings,

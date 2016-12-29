@@ -121,7 +121,7 @@ namespace Trace {
 	}
 
 	class TrajectoryVM {
-		public List<Trajectory> Trajectories { get; set; }
+		public IList<Trajectory> Trajectories { get; set; }
 		public string Summary {
 			get {
 				if(Trajectories.Count == 0) {

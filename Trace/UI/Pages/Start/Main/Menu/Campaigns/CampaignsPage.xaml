@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage
+	xmlns="http://xamarin.com/schemas/2014/forms"
+	xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+	xmlns:language="clr-namespace:Trace.Localization;assembly=Trace"
+	x:Class="Trace.CampaignsPage"
+	Title="{language:Translate Campaigns}">
+	<ContentPage.Resources>
+	</ContentPage.Resources>
+	<ContentPage.Content>
+		<ListView
+			RowHeight="150"
+			x:Name="listView"
+			ItemSelected="onCampaignClicked">
+			<ListView.ItemTemplate>
+				<DataTemplate>
+					<ViewCell>
+						<RelativeLayout>
+							<Label
+								x:Name="nameLabel"
+								Text="{Binding Name}"
+								TextColor="Black"
+								BackgroundColor="White"
+								HorizontalOptions="StartAndExpand"
+								HorizontalTextAlignment="Start"
+								RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToParent, Property=X, Factor=0, Constant=5}"
+								RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}" />
+							<Image
+								x:Name="campaignImage"
+								Source="{Binding ImageURL}"
+								Aspect="AspectFill"
+								RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToView, ElementName=nameLabel, Property=Y, Factor=1, Constant=20}"
+								RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1, Constant=0}"
+								RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=0.5, Constant=0}" />
+							<Label
+								Text="{Binding Description}"
+								TextColor="Black"
+								HeightRequest="50"
+								FontSize="14"
+								RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToView, ElementName=campaignImage, Property=Y, Factor=1, Constant=70}"
+								RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToParent, Property=X, Factor=0, Constant=5}" />
+						</RelativeLayout>
+					</ViewCell>
+				</DataTemplate>
+			</ListView.ItemTemplate>
+		</ListView>
+	</ContentPage.Content>
+</ContentPage>

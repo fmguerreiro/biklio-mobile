@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
 using SQLite;
@@ -99,6 +100,14 @@ namespace Trace {
 		public Dictionary<long, Checkpoint> Checkpoints {
 			get { return checkpoints ?? new Dictionary<long, Checkpoint>(); }
 			set { checkpoints = value ?? new Dictionary<long, Checkpoint>(); }
+		}
+
+
+		ObservableCollection<Campaign> subscribedCampaigns;
+		[Ignore]
+		public ObservableCollection<Campaign> SubscribedCampaigns {
+			get { return subscribedCampaigns ?? new ObservableCollection<Campaign>(); }
+			set { subscribedCampaigns = value ?? new ObservableCollection<Campaign>(); }
 		}
 
 

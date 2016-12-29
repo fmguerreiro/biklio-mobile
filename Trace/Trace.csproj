@@ -78,6 +78,9 @@
     <EmbeddedResource Include="Localization\Language.es.resx" />
     <EmbeddedResource Include="Localization\Language.fr.resx" />
     <EmbeddedResource Include="Localization\Language.pt.resx" />
+    <EmbeddedResource Include="UI\Pages\Start\Main\Menu\Campaigns\CampaignsPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App.xaml.cs">
@@ -104,7 +107,6 @@
     <Compile Include="ServiceAccess\WebServerConstants.cs" />
     <Compile Include="Security\CredentialsHandling\DeviceKeychainInterface.cs" />
     <Compile Include="Security\CredentialsHandling\AccountInterface.cs" />
-    <Compile Include="ServiceAccess\WebServiceObjects\WSUser.cs" />
     <Compile Include="ServiceAccess\HTTPClientBase.cs" />
     <Compile Include="Business\MotionActivity\CurrentActivity.cs" />
     <Compile Include="Data\ISQLite.cs" />
@@ -118,18 +120,16 @@
     <Compile Include="Security\OAuth\OAuthConfig.cs" />
     <Compile Include="Security\OAuth\Facebook\FacebookOAuthConfig.cs" />
     <Compile Include="Security\OAuth\Google\GoogleOAuthConfig.cs" />
-    <Compile Include="ServiceAccess\WebServiceObjects\SubmitRoute\WSAttributes.cs" />
-    <Compile Include="ServiceAccess\WebServiceObjects\GetChallenges\WSChallenge.cs" />
-    <Compile Include="ServiceAccess\WebServiceObjects\GetChallenges\WSCondition.cs" />
-    <Compile Include="ServiceAccess\WebServiceObjects\GetChallenges\WSContacts.cs" />
-    <Compile Include="ServiceAccess\WebServiceObjects\GetChallenges\WSDetails.cs" />
-    <Compile Include="ServiceAccess\WebServiceObjects\GetChallenges\WSFacilities.cs" />
-    <Compile Include="ServiceAccess\WebServiceObjects\GetChallenges\WSPayload.cs" />
-    <Compile Include="ServiceAccess\WebServiceObjects\SubmitRoute\WSPoint.cs" />
-    <Compile Include="ServiceAccess\WebServiceObjects\GetChallenges\WSResult.cs" />
-    <Compile Include="ServiceAccess\WebServiceObjects\GetChallenges\WSShop.cs" />
-    <Compile Include="ServiceAccess\WebServiceObjects\SubmitRoute\WSTrackSummary.cs" />
-    <Compile Include="ServiceAccess\WebServiceObjects\SubmitRoute\WSTrajectory.cs" />
+    <Compile Include="ServiceAccess\WebServiceObjects\Routes\WSAttributes.cs" />
+    <Compile Include="ServiceAccess\WebServiceObjects\Challenges\WSChallenge.cs" />
+    <Compile Include="ServiceAccess\WebServiceObjects\Challenges\WSCondition.cs" />
+    <Compile Include="ServiceAccess\WebServiceObjects\Challenges\WSContacts.cs" />
+    <Compile Include="ServiceAccess\WebServiceObjects\Challenges\WSDetails.cs" />
+    <Compile Include="ServiceAccess\WebServiceObjects\Challenges\WSFacilities.cs" />
+    <Compile Include="ServiceAccess\WebServiceObjects\Routes\WSPoint.cs" />
+    <Compile Include="ServiceAccess\WebServiceObjects\Challenges\WSShop.cs" />
+    <Compile Include="ServiceAccess\WebServiceObjects\Routes\WSTrackSummary.cs" />
+    <Compile Include="ServiceAccess\WebServiceObjects\Routes\WSTrajectory.cs" />
     <Compile Include="Business\TrajectoryPoint.cs" />
     <Compile Include="UI\SourceConverters\ImageToRouteCheckConverter.cs" />
     <Compile Include="Business\MotionActivity\RewardEligibility\RewardEligibilityManager.cs" />
@@ -174,7 +174,6 @@
       <DependentUpon>CheckpointDetailsPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Security\OAuth\OAuthUser.cs" />
-    <Compile Include="ServiceAccess\WebServiceObjects\WSFederatedToken.cs" />
     <Compile Include="Security\OAuth\Facebook\FacebookOAuthUIPage.xaml.cs">
       <DependentUpon>FacebookOAuthUIPage.xaml</DependentUpon>
     </Compile>
@@ -206,13 +205,24 @@
     <Compile Include="Utils\TimeUtil.cs" />
     <Compile Include="ServiceAccess\Notifications\INotificationMessage.cs" />
     <Compile Include="Business\KPI.cs" />
-    <Compile Include="ServiceAccess\WebServiceObjects\SubmitKPIs\WSKPIs.cs" />
-    <Compile Include="ServiceAccess\WebServiceObjects\SubmitKPIs\WSModalitiesDuration.cs" />
-    <Compile Include="ServiceAccess\WebServiceObjects\SubmitKPIs\WSCyclingEvent.cs" />
-    <Compile Include="ServiceAccess\WebServiceObjects\SubmitKPIs\WSLoginEvent.cs" />
-    <Compile Include="ServiceAccess\WebServiceObjects\SubmitKPIs\WSClaimedRewardEvent.cs" />
-    <Compile Include="ServiceAccess\WebServiceObjects\SubmitKPIs\WSChallengeConditionCompletedEvent.cs" />
-    <Compile Include="ServiceAccess\WebServiceObjects\SubmitKPIs\WSCheckInEvent.cs" />
+    <Compile Include="ServiceAccess\WebServiceObjects\KPIs\WSKPIs.cs" />
+    <Compile Include="ServiceAccess\WebServiceObjects\KPIs\WSModalitiesDuration.cs" />
+    <Compile Include="ServiceAccess\WebServiceObjects\KPIs\WSCyclingEvent.cs" />
+    <Compile Include="ServiceAccess\WebServiceObjects\KPIs\WSLoginEvent.cs" />
+    <Compile Include="ServiceAccess\WebServiceObjects\KPIs\WSClaimedRewardEvent.cs" />
+    <Compile Include="ServiceAccess\WebServiceObjects\KPIs\WSChallengeConditionCompletedEvent.cs" />
+    <Compile Include="ServiceAccess\WebServiceObjects\KPIs\WSCheckInEvent.cs" />
+    <Compile Include="Business\Campaign.cs" />
+    <Compile Include="ServiceAccess\WebServiceObjects\WSResult.cs" />
+    <Compile Include="ServiceAccess\WebServiceObjects\WSPayload.cs" />
+    <Compile Include="ServiceAccess\WebServiceObjects\UserSession\WSUser.cs" />
+    <Compile Include="ServiceAccess\WebServiceObjects\OAuth\WSFederatedToken.cs" />
+    <Compile Include="ServiceAccess\WebServiceObjects\Campaigns\WSBounds.cs" />
+    <Compile Include="ServiceAccess\WebServiceObjects\Campaigns\WSCoordinate.cs" />
+    <Compile Include="UI\Pages\Start\Main\Menu\Campaigns\CampaignsPage.xaml.cs">
+      <DependentUpon>CampaignsPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Pages\Start\Main\Menu\Campaigns\CampaignsMainPage.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Business\" />
@@ -229,8 +239,8 @@
     <Folder Include="UI\SourceConverters\" />
     <Folder Include="Security\OAuth\Facebook\" />
     <Folder Include="Security\OAuth\Google\" />
-    <Folder Include="ServiceAccess\WebServiceObjects\SubmitRoute\" />
-    <Folder Include="ServiceAccess\WebServiceObjects\GetChallenges\" />
+    <Folder Include="ServiceAccess\WebServiceObjects\Routes\" />
+    <Folder Include="ServiceAccess\WebServiceObjects\Challenges\" />
     <Folder Include="Business\MotionActivity\RewardEligibility\" />
     <Folder Include="UI\Controls\" />
     <Folder Include="UI\Pages\" />
@@ -247,7 +257,11 @@
     <Folder Include="Localization\" />
     <Folder Include="Utils\" />
     <Folder Include="ServiceAccess\Notifications\" />
-    <Folder Include="ServiceAccess\WebServiceObjects\SubmitKPIs\" />
+    <Folder Include="ServiceAccess\WebServiceObjects\KPIs\" />
+    <Folder Include="ServiceAccess\WebServiceObjects\UserSession\" />
+    <Folder Include="ServiceAccess\WebServiceObjects\OAuth\" />
+    <Folder Include="ServiceAccess\WebServiceObjects\Campaigns\" />
+    <Folder Include="UI\Pages\Start\Main\Menu\Campaigns\" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Microsoft.Threading.Tasks">
@@ -328,6 +342,7 @@
     <Reference Include="Zlib.Portable">
       <HintPath>..\packages\Zlib.Portable.Signed.1.11.0\lib\portable-net4+sl5+wp8+win8+wpa81+MonoTouch+MonoAndroid\Zlib.Portable.dll</HintPath>
     </Reference>
+    <Reference Include="System.ComponentModel.DataAnnotations" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

@@ -110,6 +110,9 @@
 	<data name="MyRoutes" xml:space="preserve">
         <value>Trajectos</value>
   	</data>
+	<data name="JoinACampaign" xml:space="preserve">
+        <value>Campanhas</value>
+  	</data>
 	<data name="Settings" xml:space="preserve">
         <value>Definições</value>
   	</data>
@@ -123,22 +126,28 @@
         <value>Parar</value>
   	</data>
 	<data name="CurrentActivityLabel" xml:space="preserve">
-        <value>Actividade: {0}</value>
+        <value>Actividade:
+{0}</value>
   	</data>
 	<data name="MainActivityLabel" xml:space="preserve">
-        <value>Actividade Principal: {0}</value>
+        <value>Actividade Principal:
+{0}</value>
   	</data>
 	<data name="DistanceLabel" xml:space="preserve">
-        <value>Distância: {0} m</value>
+        <value>Distância:
+{0} m</value>
   	</data>
 	<data name="DurationLabel" xml:space="preserve">
-        <value>Duração: {0} s</value>
+        <value>Duração:
+{0}</value>
   	</data>
 	<data name="CaloriesLabel" xml:space="preserve">
-        <value>Calorias: {0} kcal</value>
+        <value>Calorias:
+{0} kcal</value>
   	</data>
 	<data name="AvgSpeedLabel" xml:space="preserve">
-    	<value>Vel. Média: {0} m/s</value>
+    	<value>Vel. Média:
+{0} m/s</value>
   	</data>
 	<data name="Challenges" xml:space="preserve">
         <value>Desafios</value>
@@ -173,6 +182,9 @@
 	<data name="ShopDescription" xml:space="preserve">
         <value>Descrição: {0}</value>
   	</data>
+	<data name="Unknown" xml:space="preserve">
+    	<value>Indefinido</value>
+  	</data>
 	<data name="Walking" xml:space="preserve">
         <value>Andar</value>
   	</data>
@@ -180,10 +192,13 @@
         <value>Correr</value>
   	</data>
 	<data name="Cycling" xml:space="preserve">
-        <value>Andar de bicicleta</value>
+        <value>Bicicleta</value>
   	</data>
 	<data name="Driving" xml:space="preserve">
         <value>Conduzir</value>
+  	</data>
+	<data name="Stationary" xml:space="preserve">
+    	<value>Parado</value>
   	</data>
 	<data name="RoutesTracked" xml:space="preserve">
         <value>Trajetos feitos</value>
@@ -331,5 +346,32 @@
   	</data>
 	<data name="RewardsUnlockedMessage" xml:space="preserve">
     	<value>"Tem {0} recompensas."</value>
+  	</data>
+	<data name="Campaigns" xml:space="preserve">
+    	<value>Campanhas</value>
+  	</data>
+	<data name="NewCampaigns" xml:space="preserve">
+    	<value>Novas</value>
+  	</data>
+	<data name="CurrentCampaigns" xml:space="preserve">
+    	<value>Aderidas</value>
+  	</data>
+	<data name="NewCampaign" xml:space="preserve">
+    	<value>Nova Campanha</value>
+  	</data>
+	<data name="NewCampaignMsg" xml:space="preserve">
+    	<value>Quer aderir a esta campanha? Vai começar a receber notificações de eventos e promoções especiais nesta zona.</value>
+  	</data>
+	<data name="YouHaveRegisteredWith" xml:space="preserve">
+    	<value>Aderiu à campanha</value>
+  	</data>
+	<data name="UnsubscribeCampaign" xml:space="preserve">
+    	<value>Cancelar adesão</value>
+  	</data>
+	<data name="UnsubscribeCampaignMsg" xml:space="preserve">
+    	<value>Quer cancelar a sua adesão a esta campanha? Vai parar de receber notificações de eventos e promoções desta campanha.</value>
+  	</data>
+	<data name="YouHaveUnsubscribedFrom" xml:space="preserve">
+    	<value>Cancelou a sua adesão com</value>
   	</data>
 </root>

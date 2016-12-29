@@ -11,7 +11,7 @@ namespace Trace {
 		public RewardsPage() {
 			InitializeComponent();
 
-			IEnumerable<Challenge> rewards = SQLiteDB.Instance.GetRewards();
+			IList<Challenge> rewards = SQLiteDB.Instance.GetRewards().ToList();
 			BindingContext = new ChallengeVM { Challenges = rewards };
 		}
 

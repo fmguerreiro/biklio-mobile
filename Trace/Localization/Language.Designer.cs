@@ -233,6 +233,12 @@ namespace Trace.Localization {
             }
         }
         
+        public static string JoinACampaign {
+            get {
+                return ResourceManager.GetString("JoinACampaign", resourceCulture);
+            }
+        }
+        
         public static string Settings {
             get {
                 return ResourceManager.GetString("Settings", resourceCulture);
@@ -359,6 +365,12 @@ namespace Trace.Localization {
             }
         }
         
+        public static string Unknown {
+            get {
+                return ResourceManager.GetString("Unknown", resourceCulture);
+            }
+        }
+        
         public static string Walking {
             get {
                 return ResourceManager.GetString("Walking", resourceCulture);
@@ -380,6 +392,12 @@ namespace Trace.Localization {
         public static string Driving {
             get {
                 return ResourceManager.GetString("Driving", resourceCulture);
+            }
+        }
+        
+        public static string Stationary {
+            get {
+                return ResourceManager.GetString("Stationary", resourceCulture);
             }
         }
         
@@ -668,6 +686,60 @@ namespace Trace.Localization {
         public static string RewardsUnlockedMessage {
             get {
                 return ResourceManager.GetString("RewardsUnlockedMessage", resourceCulture);
+            }
+        }
+        
+        public static string Campaigns {
+            get {
+                return ResourceManager.GetString("Campaigns", resourceCulture);
+            }
+        }
+        
+        public static string NewCampaigns {
+            get {
+                return ResourceManager.GetString("NewCampaigns", resourceCulture);
+            }
+        }
+        
+        public static string CurrentCampaigns {
+            get {
+                return ResourceManager.GetString("CurrentCampaigns", resourceCulture);
+            }
+        }
+        
+        public static string NewCampaign {
+            get {
+                return ResourceManager.GetString("NewCampaign", resourceCulture);
+            }
+        }
+        
+        public static string NewCampaignMsg {
+            get {
+                return ResourceManager.GetString("NewCampaignMsg", resourceCulture);
+            }
+        }
+        
+        public static string YouHaveSubscribedTo {
+            get {
+                return ResourceManager.GetString("YouHaveSubscribedTo", resourceCulture);
+            }
+        }
+        
+        public static string UnsubscribeCampaign {
+            get {
+                return ResourceManager.GetString("UnsubscribeCampaign", resourceCulture);
+            }
+        }
+        
+        public static string UnsubscribeCampaignMsg {
+            get {
+                return ResourceManager.GetString("UnsubscribeCampaignMsg", resourceCulture);
+            }
+        }
+        
+        public static string YouHaveUnsubscribedFrom {
+            get {
+                return ResourceManager.GetString("YouHaveUnsubscribedFrom", resourceCulture);
             }
         }
     }

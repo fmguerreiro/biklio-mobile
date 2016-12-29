@@ -21,7 +21,6 @@ namespace Trace {
 			this.mapPage = mapPage;
 			// Show the challenges saved on the device.
 			BindingContext = new ChallengeVM { Challenges = User.Instance.Challenges };
-			//Task.Run(() => BindingContext = new ChallengeVM { Challenges = User.Instance.Challenges });
 		}
 
 
