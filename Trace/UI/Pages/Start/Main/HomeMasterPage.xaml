@@ -39,7 +39,7 @@
 				x:Name="listView"
 				SeparatorColor="#24C121"
 				VerticalOptions="FillAndExpand"
-				SeparatorVisibility="Default">
+				SeparatorVisibility="None">
 				<ListView.ItemTemplate>
 					<DataTemplate>
 						<ImageCell

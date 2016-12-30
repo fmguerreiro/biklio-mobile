@@ -359,6 +359,9 @@
 	<data name="NewCampaign" xml:space="preserve">
     	<value>Nova Campanha</value>
   	</data>
+	<data name="FetchNewCampaign" xml:space="preserve">
+    	<value>Procurar Campanha Local</value>
+  	</data>
 	<data name="NewCampaignMsg" xml:space="preserve">
     	<value>Quer aderir a esta campanha? Vai começar a receber notificações de eventos e promoções especiais nesta zona.</value>
   	</data>
@@ -373,5 +376,14 @@
   	</data>
 	<data name="YouHaveUnsubscribedFrom" xml:space="preserve">
     	<value>Cancelou a sua adesão com</value>
+  	</data>
+	<data name="Subscribe" xml:space="preserve">
+    	<value>Aderir</value>
+  	</data>
+	<data name="Cancel" xml:space="preserve">
+    	<value>Cancelar</value>
+  	</data>
+	<data name="AlreadySubscribedError" xml:space="preserve">
+    	<value>Já aderiu à campanha local.</value>
   	</data>
 </root>

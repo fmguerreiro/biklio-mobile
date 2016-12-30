@@ -103,11 +103,11 @@ namespace Trace {
 		}
 
 
-		ObservableCollection<Campaign> subscribedCampaigns;
+		IList<Campaign> subscribedCampaigns;
 		[Ignore]
-		public ObservableCollection<Campaign> SubscribedCampaigns {
-			get { return subscribedCampaigns ?? new ObservableCollection<Campaign>(); }
-			set { subscribedCampaigns = value ?? new ObservableCollection<Campaign>(); }
+		public IList<Campaign> SubscribedCampaigns {
+			get { return subscribedCampaigns ?? new List<Campaign>(); }
+			set { subscribedCampaigns = value ?? new List<Campaign>(); }
 		}
 
 

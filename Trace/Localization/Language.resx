@@ -361,6 +361,9 @@
 	<data name="NewCampaign" xml:space="preserve">
     	<value>New Campaign</value>
   	</data>
+	<data name="FetchNewCampaign" xml:space="preserve">
+    	<value>Search Local Campaign</value>
+  	</data>
 	<data name="NewCampaignMsg" xml:space="preserve">
     	<value>Would you like to subscribe to this campaign? You will start receiving notifications of special events in the area.</value>
   	</data>
@@ -375,5 +378,14 @@
   	</data>
 	<data name="YouHaveUnsubscribedFrom" xml:space="preserve">
     	<value>You have unsubscribed from</value>
+  	</data>
+	<data name="Subscribe" xml:space="preserve">
+    	<value>Subscribe</value>
+  	</data>
+	<data name="Cancel" xml:space="preserve">
+    	<value>Cancel</value>
+  	</data>
+	<data name="AlreadySubscribedError" xml:space="preserve">
+    	<value>You are already subscribed to the local campaign.</value>
   	</data>
 </root>

@@ -18,6 +18,7 @@
 			x:Name="ChallengeListView"
 			ItemsSource="{Binding Challenges}"
 			ItemSelected="OnSelection"
+			SeparatorVisibility="None"
 			IsPullToRefreshEnabled="true"
 			Refreshing="OnRefresh">
 			<ListView.Header>

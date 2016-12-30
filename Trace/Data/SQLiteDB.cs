@@ -47,6 +47,7 @@ namespace Trace {
 				User.Instance.Checkpoints = GetItems<Checkpoint>().ToDictionary(key => key.GId, val => val);
 				User.Instance.Challenges = GetItems<Challenge>().ToList();
 				User.Instance.Trajectories = GetItems<Trajectory>().ToList();
+				User.Instance.SubscribedCampaigns = GetItems<Campaign>().ToList();
 				User.Instance.KPIs = GetItems<KPI>().ToList();
 			}
 			else {
@@ -161,7 +162,7 @@ namespace Trace {
 		/// <param name="id">id of object to delete</param>
 		public int DeleteItem<T>(long id) where T : DatabaseEntityBase, new() {
 			lock(locker) {
-				var deletedId = database.Delete<T>(new T() { Id = id });
+				var deletedId = database.Delete<T>(id);
 				Debug.WriteLine("DeleteItem(): id->" + deletedId);
 				return deletedId;
 			}
@@ -183,7 +184,7 @@ namespace Trace {
 
 		/// <summary>
 		/// Deletes all current user items to free space on device.
-		/// This includes challenges, trajectories and checkpoints.
+		/// This includes challenges, trajectories, checkpoints and campaigns.
 		/// </summary>
 		public void DeleteAllUserItems() {
 			database.BeginTransaction();
@@ -193,6 +194,8 @@ namespace Trace {
 			DeleteItems<Trajectory>(trajectories);
 			var checkpoints = GetItems<Checkpoint>().Select((Checkpoint i) => i.Id).ToArray();
 			DeleteItems<Checkpoint>(checkpoints);
+			var campaigns = GetItems<Campaign>().Select((Campaign i) => i.Id).ToArray();
+			DeleteItems<Campaign>(campaigns);
 			database.Commit();
 		}
 

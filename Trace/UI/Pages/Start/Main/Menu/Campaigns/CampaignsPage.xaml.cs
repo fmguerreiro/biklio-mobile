@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.Linq;
 using System.Threading.Tasks;
 using Trace.Localization;
 using Xamarin.Forms;
@@ -18,64 +19,87 @@ namespace Trace {
 
 		public ObservableCollection<Campaign> campaigns { get; set; }
 
-		public CampaignsPage(ObservableCollection<Campaign> collection) {
+		public CampaignsPage() {
 			InitializeComponent();
-			listView.ItemsSource = campaigns = collection;
+			listView.ItemsSource = campaigns = new ObservableCollection<Campaign>(User.Instance.SubscribedCampaigns);
 		}
 
 
-		public void UpdateCampaignList(Campaign campaign) {
-			Device.BeginInvokeOnMainThread(() => {
-				campaigns.Add(campaign);
-			});
-		}
-
-
-		async void onCampaignClicked(object sender, SelectedItemChangedEventArgs e) {
+		async void removeCampaignOnClick(object sender, SelectedItemChangedEventArgs e) {
 			var campaign = e.SelectedItem as Campaign;
 			listView.SelectedItem = null;
 
-			bool isNewCampaignPage = !campaigns.Equals(User.Instance.SubscribedCampaigns);
-
-			bool isAffirmative = false;
 			// Show UI dialog asking if the user wants to (un)subscribe the campaign.
-			if(isNewCampaignPage) {
-				isAffirmative = await DisplayAlert(Language.NewCampaign, Language.NewCampaignMsg, Language.Yes, Language.No);
-			}
-			else {
-				isAffirmative = await DisplayAlert(Language.UnsubscribeCampaign, Language.UnsubscribeCampaignMsg, Language.Yes, Language.No);
-			}
+			bool isAffirmative = await DisplayAlert(Language.UnsubscribeCampaign, Language.UnsubscribeCampaignMsg, Language.Yes, Language.No);
 
 			// Send request to webserver.
 			if(isAffirmative) {
 				var webserverClient = new WebServerClient();
 
-				WSResult result = null;
-				if(isNewCampaignPage) {
-					result = await webserverClient.SubscribeCampaign(campaign.GId);
-					if(result.success) {
-						await DisplayAlert(Language.Result, Language.YouHaveSubscribedTo + " " + campaign.Name + ".", Language.Ok);
-						// Delete from new list and insert into subscribed list.
-						campaigns.Remove(campaign);
-						campaign.UserId = User.Instance.Id;
-						User.Instance.SubscribedCampaigns.Add(campaign);
-						SQLiteDB.Instance.SaveItem(campaign);
-						return;
-					}
+				WSResult result = await webserverClient.UnsubscribeCampaign(campaign.GId);
+				if(result.success) {
+					await DisplayAlert(Language.Result, Language.YouHaveUnsubscribedFrom + " " + campaign.Name + ".", Language.Ok);
+					campaigns.Remove(campaign);
+					User.Instance.SubscribedCampaigns.Remove(campaign);
+					SQLiteDB.Instance.DeleteItem<Campaign>(campaign.Id);
 				}
 				else {
-					result = await webserverClient.UnsubscribeCampaign(campaign.GId);
-					if(result.success) {
-						await DisplayAlert(Language.Result, Language.YouHaveUnsubscribedFrom + " " + campaign.Name + ".", Language.Ok);
-						// Delete from new list and insert into subscribed list.
-						campaigns.Remove(campaign);
-						SQLiteDB.Instance.DeleteItem<Campaign>(campaign.Id);
-						return;
-					}
+					await DisplayAlert(Language.Error, result.error, Language.Ok);
+				}
+			}
+		}
+
+
+		async void fetchNewCampaignOnClick(object sender, EventArgs e) {
+			var webserverClient = new WebServerClient();
+			var result = await webserverClient.GetNearestCampaign();
+			if(result.success) {
+				var payload = result.payload;
+				Campaign newCampaign = createCampaign(payload);
+
+				// Check to see if the user already has this campaign before displaying.
+				var subbedCampaign = User.Instance.SubscribedCampaigns.FirstOrDefault((c) => c.GId == newCampaign.GId);
+				if(subbedCampaign != null) {
+					await DisplayAlert(subbedCampaign.Name, Language.AlreadySubscribedError, Language.Ok);
+					return;
 				}
 
-				await DisplayAlert(Language.Error, result.error, Language.Ok);
+				// TODO popup with img: https://github.com/rotorgames/Rg.Plugins.Popup
+				var wantsToSubscribe = await DisplayAlert(newCampaign.Name, newCampaign.Description + "\n" + Language.NewCampaignMsg, Language.Subscribe, Language.Cancel);
+				if(wantsToSubscribe) {
+					// Let WS know that user wants to subscribe.
+					result = await webserverClient.SubscribeCampaign(newCampaign.GId);
+					if(result.success) {
+						await DisplayAlert(Language.Result, Language.YouHaveSubscribedTo + " " + newCampaign.Name + ".", Language.Ok);
+						newCampaign.UserId = User.Instance.Id;
+						campaigns.Add(newCampaign);
+						User.Instance.SubscribedCampaigns.Add(newCampaign);
+						SQLiteDB.Instance.SaveItem(newCampaign);
+					}
+					else {
+						await DisplayAlert(Language.Error, result.error, Language.Ok);
+					}
+				}
 			}
+		}
+
+
+
+		Campaign createCampaign(WSPayload payload) {
+			return new Campaign {
+				GId = Convert.ToInt64(payload.id),
+				Name = payload.name,
+				IsSubscribed = false,
+				Website = payload.website,
+				Start = payload.start,
+				End = payload.end,
+				Description = payload.description,
+				ImageURL = payload.image,
+				//NElongitude = (float) payload.bounds.northeast.longitude, TODO execution hangs here and never returns
+				//NElatitude = (float) payload.bounds.northeast.latitude,
+				//SWlongitude = (float) payload.bounds.southwest.longitude,
+				//SWlatitude = (float) payload.bounds.southwest.latitude
+			};
 		}
 	}
 }

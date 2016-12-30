@@ -15,6 +15,7 @@
 	<ListView
 		ItemsSource="{Binding Trajectories}"
 		Header="{Binding Summary}"
+		SeparatorVisibility="None"
 		ItemSelected="OnSelection">
 		<ListView.HeaderTemplate>
 			<DataTemplate>

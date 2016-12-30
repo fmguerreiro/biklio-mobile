@@ -32,8 +32,8 @@ namespace Trace {
 			});
 			masterPageItems.Add(new MasterPageItem {
 				Title = Language.JoinACampaign,
-				IconSource = "campaign.png",
-				TargetType = typeof(CampaignsMainPage)
+				IconSource = "subscribed_campaigns.png",
+				TargetType = typeof(CampaignsPage)
 			});
 			masterPageItems.Add(new MasterPageItem {
 				Title = Language.Settings,

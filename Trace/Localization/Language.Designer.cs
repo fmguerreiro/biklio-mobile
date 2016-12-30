@@ -713,6 +713,12 @@ namespace Trace.Localization {
             }
         }
         
+        public static string FetchNewCampaign {
+            get {
+                return ResourceManager.GetString("FetchNewCampaign", resourceCulture);
+            }
+        }
+        
         public static string NewCampaignMsg {
             get {
                 return ResourceManager.GetString("NewCampaignMsg", resourceCulture);
@@ -740,6 +746,24 @@ namespace Trace.Localization {
         public static string YouHaveUnsubscribedFrom {
             get {
                 return ResourceManager.GetString("YouHaveUnsubscribedFrom", resourceCulture);
+            }
+        }
+        
+        public static string Subscribe {
+            get {
+                return ResourceManager.GetString("Subscribe", resourceCulture);
+            }
+        }
+        
+        public static string Cancel {
+            get {
+                return ResourceManager.GetString("Cancel", resourceCulture);
+            }
+        }
+        
+        public static string AlreadySubscribedError {
+            get {
+                return ResourceManager.GetString("AlreadySubscribedError", resourceCulture);
             }
         }
     }

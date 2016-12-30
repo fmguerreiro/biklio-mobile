@@ -28,27 +28,4 @@ namespace Trace {
 		public float SWlongitude { get; set; }
 		public float SWlatitude { get; set; }
 	}
-
-
-	/// <summary>
-	/// The Campaign Visual Model is used to bind the lists of campaigns for display in the Campaigns Page.
-	/// </summary>
-	class CampaignVM {
-		public IList<Campaign> NewCampaigns { get; set; }
-		public IList<Campaign> RegisteredCampaigns { get; set; }
-
-		// TODO strings are for challenges, replace.
-		public string Summary {
-			get {
-				int count = NewCampaigns.Count + RegisteredCampaigns.Count;
-				if(count == 0) {
-					return Language.NoChallengesFound;
-				}
-				if(count != 1)
-					return Language.ThereAre + " " + count + " " + Language.ChallengesNear;
-				else
-					return Language.OneChallengeFound;
-			}
-		}
-	}
 }

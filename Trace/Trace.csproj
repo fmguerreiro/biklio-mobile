@@ -222,7 +222,6 @@
     <Compile Include="UI\Pages\Start\Main\Menu\Campaigns\CampaignsPage.xaml.cs">
       <DependentUpon>CampaignsPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UI\Pages\Start\Main\Menu\Campaigns\CampaignsMainPage.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Business\" />
