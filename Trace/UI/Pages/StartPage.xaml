@@ -26,11 +26,13 @@
 				Text="{language:Translate Register}"
 				BackgroundColor="#24C121"
 				TextColor="White"
+				BorderRadius="0"
 				Clicked="OnRegister" />
 			<Button
 				Text="{language:Translate SignIn}"
 				BackgroundColor="#24C121"
 				TextColor="White"
+				BorderRadius="0"
 				Clicked="OnLogin" />
 		</StackLayout>
 	</ContentPage.Content>

@@ -33,8 +33,8 @@ namespace Trace {
 		public string Image { get { return ThisCheckpoint?.LogoURL ?? "default_shop.png"; } }
 
 		public override string ToString() {
-			return string.Format("[Challenge Id->{0} UserId->{1} CheckpointId->{2} Reward->{3} Checkpoint->{4} Distance->{5}]",
-								 Id, UserId, CheckpointId, Reward, CheckpointName, NeededCyclingDistance);
+			return string.Format("[Challenge GId->{0} UserId->{1} CheckpointId->{2} Reward->{3} Checkpoint->{4} Distance->{5}]",
+								 GId, UserId, CheckpointId, Reward, CheckpointName, NeededCyclingDistance);
 		}
 	}
 

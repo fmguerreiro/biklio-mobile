@@ -78,25 +78,26 @@ namespace Trace.Droid {
 			if(e.PropertyName.Equals("VisibleRegion") && !isDrawn) {
 				map?.Clear();
 
-				foreach(CustomPin pin in customPins) {
-					var marker = new MarkerOptions();
-					marker.SetPosition(new LatLng(pin.Pin.Position.Latitude, pin.Pin.Position.Longitude));
-					marker.SetTitle(pin.Pin.Label);
-					marker.SetSnippet(pin.Pin.Address);
-					if(pin.Checkpoint.LogoImageFilePath != null) {
-						string imagePath = DependencyService.Get<IFileSystem>().GetFilePath(pin.Checkpoint.LogoImageFilePath);
-						marker.SetIcon(BitmapDescriptorFactory.FromPath(imagePath));
-					}
-					else {
-						marker.SetIcon(BitmapDescriptorFactory.FromFile("default_shop.png"));
-					}
-					try {
-						map.AddMarker(marker);
-					}
-					catch(Java.Lang.NullPointerException npE) {
-						System.Diagnostics.Debug.WriteLine("Error drawing pin: " + npE.Message);
-					}
-				}
+				// TODO draw pins, currently nasty bug here
+				//foreach(CustomPin pin in customPins) {
+				//	var marker = new MarkerOptions();
+				//	marker.SetPosition(new LatLng(pin.Pin.Position.Latitude, pin.Pin.Position.Longitude));
+				//	marker.SetTitle(pin.Pin.Label);
+				//	marker.SetSnippet(pin.Pin.Address);
+				//	if(pin.Checkpoint.LogoImageFilePath != null) {
+				//		string imagePath = DependencyService.Get<IFileSystem>().GetFilePath(pin.Checkpoint.LogoImageFilePath);
+				//		marker.SetIcon(BitmapDescriptorFactory.FromPath(imagePath));
+				//	}
+				//	else {
+				//		marker.SetIcon(BitmapDescriptorFactory.FromFile("default_shop.png"));
+				//	}
+				//	try {
+				//		map?.AddMarker(marker);
+				//	}
+				//	catch(Java.Lang.NullPointerException npE) {
+				//		System.Diagnostics.Debug.WriteLine("Error drawing pin: " + npE.Message);
+				//	}
+				//}
 				isDrawn = true;
 			}
 		}

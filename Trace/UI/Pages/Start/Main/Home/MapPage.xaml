@@ -6,8 +6,7 @@
 	xmlns:language="clr-namespace:Trace.Localization;assembly=Trace"
 	x:Class="Trace.MapPage"
 	x:Name="TRACEMapPage"
-	Title="{language:Translate Map}"
-	Icon="maps_icon.png">
+	Title="{language:Translate Map}">
 	<ContentPage.Resources>
 		<ResourceDictionary>
 			<Style

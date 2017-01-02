@@ -58,6 +58,7 @@
 				Text="{language:Translate SignIn}"
 				BackgroundColor="#24C121"
 				TextColor="White"
+				BorderRadius="0"
 				Clicked="OnLogin" />
 			<StackLayout
 				HeightRequest="1"
@@ -69,11 +70,13 @@
 					Text="{language:Translate LoginWithGoogle}"
 					TextColor="White"
 					BackgroundColor="#DD4B39"
+					BorderRadius="0"
 					Clicked="OnGoogleLogin" />
 				<Button
 					TextColor="White"
 					BackgroundColor="#3B5998"
 					Text="{language:Translate LoginWithFacebook}"
+					BorderRadius="0"
 					Clicked="OnFacebookLogin" />
 			</StackLayout>
 		</StackLayout>

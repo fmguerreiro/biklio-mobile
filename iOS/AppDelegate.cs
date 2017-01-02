@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using FFImageLoading.Forms.Touch;
 using Firebase.CloudMessaging;
 using Foundation;
 using Google.Core;
@@ -23,6 +24,9 @@ namespace Trace.iOS {
 #endif
 
 			LoadApplication(new App());
+
+			// Library for faster image processing.
+			CachedImageRenderer.Init();
 
 			// Stats and plot lib initialization.
 			OxyPlot.Xamarin.Forms.Platform.iOS.PlotViewRenderer.Init();

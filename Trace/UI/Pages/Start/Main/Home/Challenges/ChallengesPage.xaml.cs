@@ -5,6 +5,9 @@ using Xamarin.Forms;
 using System.Linq;
 using System;
 using Trace.Localization;
+using Xamarin.Forms.Xaml;
+using FFImageLoading.Forms;
+using FFImageLoading;
 
 namespace Trace {
 
@@ -18,6 +21,7 @@ namespace Trace {
 
 		public ChallengesPage(MapPage mapPage) {
 			InitializeComponent();
+			if(Device.OS == TargetPlatform.iOS) { Icon = "trophy.png"; }
 			this.mapPage = mapPage;
 			// Show the challenges saved on the device.
 			BindingContext = new ChallengeVM { Challenges = User.Instance.Challenges };
@@ -64,15 +68,18 @@ namespace Trace {
 			var checkpoints = new Dictionary<long, Checkpoint>();
 			loadCheckpoints(result, checkpoints);
 
+			deleteInvalidatedCheckpoints(result, checkpoints);
+
 			// Load challenge information into list for display.
 			var challenges = new List<Challenge>();
 			loadChallenges(result, checkpoints, challenges);
+
+			deleteInvalidatedChallenges(result, challenges);
 
 			// Update or create the received challenges and checkpoints.
 			IEnumerable<Checkpoint> checkpointList = checkpoints.Values;
 			SQLiteDB.Instance.SaveItems(checkpointList);
 			SQLiteDB.Instance.SaveItems(challenges);
-			deleteInvalidatedItems(result);
 
 			// Update the in-memory challenge list for display.
 			User.Instance.Checkpoints = SQLiteDB.Instance.GetItems<Checkpoint>().ToDictionary(key => key.GId, val => val);
@@ -81,7 +88,9 @@ namespace Trace {
 			// Now that all changes are safely stored, update the device's snapshot version 
 			// to indicate it is in sync with the WebServer version.
 			User.Instance.WSSnapshotVersion = result.payload.version;
-			SQLiteDB.Instance.SaveItem(User.Instance);
+			SQLiteDB.Instance.SaveUser(User.Instance);
+
+			Task.Run(() => fetchPinImages(User.Instance.Challenges)).DoNotAwait();
 
 			Task.Run(() => checkForRewards()).DoNotAwait();
 
@@ -95,13 +104,12 @@ namespace Trace {
 
 		void loadChallenges(WSResult result, Dictionary<long, Checkpoint> checkpoints, List<Challenge> challenges) {
 			foreach(WSChallenge challenge in result.payload.challenges) {
-				// First look for this challenge's checkpoint.
+				// Only create the challenge if it has a valid checkpoint.
 				Checkpoint checkpoint = null;
-				if(checkpoints.ContainsKey(challenge.shopId))
+				if(checkpoints.ContainsKey(challenge.shopId)) {
 					checkpoint = checkpoints[challenge.shopId];
-				else { checkpoint = new Checkpoint(); }
-				// Then create the object and add it to the list for displaying later.
-				challenges.Add(createChallenge(challenge, checkpoint));
+					challenges.Add(createChallenge(challenge, checkpoint));
+				}
 			}
 		}
 
@@ -116,7 +124,7 @@ namespace Trace {
 				CheckpointName = checkpoint.Name,
 				CreatedAt = challenge.createdAt,
 				ExpiresAt = challenge.expiresAt,
-				NeededCyclingDistance = (int) challenge.conditions.distance * 1000
+				NeededCyclingDistance = (int) challenge.conditions.distance
 			};
 		}
 
@@ -125,13 +133,13 @@ namespace Trace {
 			foreach(WSShop checkpoint in result.payload.shops) {
 				Checkpoint newCheckpoint = createCheckpoint(checkpoint);
 				// Check if logo is already downloaded into filesystem.
-				if(DependencyService.Get<IFileSystem>().Exists(newCheckpoint.GId.ToString())) {
-					newCheckpoint.LogoImageFilePath = newCheckpoint.GId.ToString();
-				}
-				// If it isn't, download it in the background.
-				else if(newCheckpoint.LogoURL != null) {
-					Task.Run(() => newCheckpoint.FetchImageAsync(newCheckpoint.LogoURL)).DoNotAwait();
-				}
+				//if(DependencyService.Get<IFileSystem>().Exists(newCheckpoint.GId.ToString())) {
+				//	newCheckpoint.LogoImageFilePath = newCheckpoint.GId.ToString();
+				//}
+				//// If it isn't, download it in the background.
+				//else if(newCheckpoint.LogoURL != null) {
+				//	Task.Run(() => newCheckpoint.FetchImageAsync(newCheckpoint.LogoURL)).DoNotAwait();
+				//}
 				checkpoints.Add(checkpoint.id, newCheckpoint);
 			}
 			User.Instance.Checkpoints = checkpoints;
@@ -153,6 +161,7 @@ namespace Trace {
 				TwitterAddress = checkpoint.contacts.twitter,
 				Longitude = checkpoint.longitude,
 				Latitude = checkpoint.latitude,
+				MapImageURL = checkpoint.mapURL,
 				//BikeFacilities = checkpoint.facilities.ToString(), // todo facilities is a jArray
 				Description = checkpoint.details.description
 			};
@@ -160,21 +169,32 @@ namespace Trace {
 		}
 
 
-		void deleteInvalidatedItems(WSResult result) {
-			// Delete invalidated challenges (i.e., ids in 'canceledChallenges' payload field).
-			long[] canceledChallengeIds = result.payload.canceledChallenges;
-			if(canceledChallengeIds.Length > 0) {
-				SQLiteDB.Instance.DeleteItems<Challenge>(canceledChallengeIds);
-			}
-
-			// Delete invalidated checkpoints (i.e., ids in 'canceled' payload field) and their images.
+		/// <summary>
+		/// Delete invalidated checkpoints (i.e., ids in 'canceled' payload field) and their images.
+		/// </summary>
+		/// <param name="result">Result.</param>
+		void deleteInvalidatedCheckpoints(WSResult result, Dictionary<long, Checkpoint> checkpointsDict) {
 			long[] canceledCheckpointsIds = result.payload.canceled;
 			if(canceledCheckpointsIds.Length > 0) {
 				SQLiteDB.Instance.DeleteItems<Checkpoint>(canceledCheckpointsIds);
 			}
 			foreach(long id in canceledCheckpointsIds) {
 				DependencyService.Get<IFileSystem>().DeleteImage(id.ToString());
+				checkpointsDict.Remove(id);
 			}
+		}
+
+
+		/// <summary>
+		/// Delete invalidated challenges (i.e., ids in 'canceledChallenges' payload field).
+		/// </summary>
+		/// <param name="result">Result.</param>
+		void deleteInvalidatedChallenges(WSResult result, List<Challenge> challengeList) {
+			long[] canceledChallengeIds = result.payload.canceledChallenges;
+			if(canceledChallengeIds.Length > 0) {
+				SQLiteDB.Instance.DeleteItems<Challenge>(canceledChallengeIds);
+			}
+			challengeList.RemoveAll(x => canceledChallengeIds.Contains(x.GId));
 		}
 
 
@@ -194,6 +214,22 @@ namespace Trace {
 				User.Instance.PrevLatitude = currPos.Latitude;
 			}
 		}
+
+
+		/// <summary>
+		/// Fetch all the images for the map pin in the background.
+		/// </summary>
+		/// <param name="challenges">Challenges.</param>
+		private void fetchPinImages(List<Challenge> challenges) {
+			Debug.WriteLine("STARTING fetchPinImages()");
+			foreach(Challenge c in challenges) {
+				var url = c.ThisCheckpoint.LogoURL;
+				if(string.IsNullOrEmpty(c.ThisCheckpoint.PinLogoPath) && !url.Equals("default_shop.png")) {
+					Task.Run(() => c.ThisCheckpoint.FetchImageAsync(url)).DoNotAwait();
+				}
+			}
+		}
+
 
 
 		/// <summary>

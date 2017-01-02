@@ -17,7 +17,7 @@ namespace Trace {
 			});
 			masterPageItems.Add(new MasterPageItem {
 				Title = Language.Rewards,
-				IconSource = "reward_white.png",
+				IconSource = "rewards.png",
 				TargetType = typeof(RewardsPage)
 			});
 			masterPageItems.Add(new MasterPageItem {

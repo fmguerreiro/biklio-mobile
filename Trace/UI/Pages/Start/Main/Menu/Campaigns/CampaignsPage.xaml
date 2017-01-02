@@ -3,6 +3,7 @@
 	xmlns="http://xamarin.com/schemas/2014/forms"
 	xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
 	xmlns:language="clr-namespace:Trace.Localization;assembly=Trace"
+	xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
 	x:Class="Trace.CampaignsPage"
 	Title="{language:Translate Campaigns}">
 	<ContentPage.Resources>
@@ -34,13 +35,15 @@
 									HorizontalTextAlignment="Start"
 									RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToParent, Property=X, Factor=0, Constant=5}"
 									RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}" />
-								<Image
+								<ffimageloading:CachedImage
 									x:Name="campaignImage"
 									Source="{Binding ImageURL}"
 									Aspect="AspectFill"
 									RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToView, ElementName=nameLabel, Property=Y, Factor=1, Constant=20}"
 									RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1, Constant=0}"
-									RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=0.5, Constant=0}" />
+									RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=0.5, Constant=0}"
+									DownsampleToViewSize="true">
+								</ffimageloading:CachedImage>
 								<Label
 									Text="{Binding Description}"
 									TextColor="Black"

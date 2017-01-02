@@ -2,8 +2,11 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
+using System.Threading.Tasks;
 using CoreGraphics;
 using CoreLocation;
+using FFImageLoading;
+using FFImageLoading.Forms;
 using Foundation;
 using MapKit;
 using Mono;
@@ -68,6 +71,7 @@ namespace Trace.iOS {
 		}
 
 		/// <summary>
+		/// Called when the annotation gets into view.
 		/// Changes the display of the annotation/pin from the system default.
 		/// In our case, it replaces it with the checkpoint/shop icon.
 		/// </summary>
@@ -92,15 +96,15 @@ namespace Trace.iOS {
 
 			// Load checkpoint image from URL if it exists, else use the default image.
 			UIImage image = null;
-			if(customPin.Checkpoint.LogoImageFilePath != null) {
-				byte[] imageBytes = DependencyService.Get<IFileSystem>().LoadImage(customPin.Checkpoint.LogoImageFilePath);
+			if(!string.IsNullOrEmpty(customPin.Checkpoint.PinLogoPath)) {
+				byte[] imageBytes = DependencyService.Get<IFileSystem>().LoadImage(customPin.Checkpoint.PinLogoPath);
 				image = UIImage.LoadFromData(NSData.FromArray(imageBytes));
 			}
 			else
-				image = UIImage.FromFile("default_shop.png");
-			var maxWidth = 20f;
-			var maxHeight = maxWidth;
-			image = maxResizeImage(image, maxWidth, maxHeight);
+				image = UIImage.FromFile("default_shop_20px.png");
+			//var maxWidth = 20f;
+			//var maxHeight = maxWidth;
+			//image = maxResizeImage(image, maxWidth, maxHeight);
 			if(annotationView == null) {
 				annotationView = new MKAnnotationView(annotation, customPin.Id);
 				annotationView.Image = image;

@@ -4,17 +4,12 @@
 	xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
 	xmlns:locals="clr-namespace:Trace;assembly=Trace"
 	xmlns:language="clr-namespace:Trace.Localization;assembly=Trace"
+	xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
 	x:Class="Trace.ChallengesPage"
-	Title="{language:Translate Challenges}"
-	Icon="trophy.png">
-	<ContentPage.Resources>
-		<ResourceDictionary>
-			<locals:ByteArrayToChallengeImageConverter
-				x:Key="arrayToimageConverter" />
-		</ResourceDictionary>
-	</ContentPage.Resources>
+	Title="{language:Translate Challenges}">
 	<ContentPage.Content>
 		<ListView
+			CachingStrategy="RecycleElement"
 			x:Name="ChallengeListView"
 			ItemsSource="{Binding Challenges}"
 			ItemSelected="OnSelection"
@@ -37,11 +32,58 @@
 			</ListView.Header>
 			<ListView.ItemTemplate>
 				<DataTemplate>
-					<ImageCell
-						Text="{Binding Description}"
-						Detail="{Binding Condition, StringFormat={language:Translate BikeCondition}"
-						ImageSource="{Binding ThisCheckpoint.LogoImageFilePath, Converter={StaticResource arrayToimageConverter}}">
-					</ImageCell>
+					<ViewCell>
+						<Grid>
+							<Grid.RowDefinitions
+								RowSpacing="1"
+								ColumnSpacing="1">
+								<RowDefinition
+									Height="*" />
+								<RowDefinition
+									Height="*" />
+							</Grid.RowDefinitions>
+							<Grid.ColumnDefinitions>
+								<ColumnDefinition
+									Width="*" />
+								<ColumnDefinition
+									Width="*" />
+								<ColumnDefinition
+									Width="*" />
+								<ColumnDefinition
+									Width="*" />
+								<ColumnDefinition
+									Width="*" />
+							</Grid.ColumnDefinitions>
+							<ffimageloading:CachedImage
+								Source="{Binding ThisCheckpoint.LogoURL}"
+								DownsampleToViewSize="true"
+								Aspect="Fill"
+								Grid.Row="0"
+								Grid.Column="0"
+								Grid.RowSpan="2">
+							</ffimageloading:CachedImage>
+							<Label
+								Text="{Binding ThisCheckpoint.Name}"
+								FontAttributes="Bold"
+								Grid.Row="0"
+								Grid.Column="1"
+								Grid.ColumnSpan="4" />
+							<Label
+								Text="{Binding NeededCyclingDistance, StringFormat={language:Translate BikeCondition}"
+								FontSize="14"
+								Grid.Row="1"
+								Grid.Column="1"
+								Grid.ColumnSpan="4" />
+							<ffimageloading:CachedImage
+								Source="{Binding ThisCheckpoint.MapImageURL}"
+								DownsampleToViewSize="true"
+								Aspect="AspectFill"
+								Grid.Row="0"
+								Grid.Column="5"
+								Grid.RowSpan="2">
+							</ffimageloading:CachedImage>
+						</Grid>
+					</ViewCell>
 				</DataTemplate>
 			</ListView.ItemTemplate>
 		</ListView>

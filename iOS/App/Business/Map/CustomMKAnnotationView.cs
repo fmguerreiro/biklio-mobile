@@ -7,7 +7,6 @@ namespace Trace.iOS {
 	/// </summary>
 	public class CustomMKAnnotationView : MKAnnotationView {
 		public string Id { get; set; }
-		public string ImageFilePath { get; set; }
 		public Checkpoint Checkpoint { get; set; }
 
 		public CustomMKAnnotationView(IMKAnnotation annotation, string id)

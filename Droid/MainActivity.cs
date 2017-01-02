@@ -1,6 +1,7 @@
 ﻿using Android.App;
 using Android.Content.PM;
 using Android.OS;
+using FFImageLoading.Forms.Droid;
 
 namespace Trace.Droid {
 	[Activity(Label = "Trace.Droid", Icon = "@drawable/icon", Theme = "@style/MyTheme", MainLauncher = true, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]
@@ -12,6 +13,9 @@ namespace Trace.Droid {
 			base.OnCreate(bundle);
 
 			global::Xamarin.Forms.Forms.Init(this, bundle);
+
+			// Library for faster image processing.
+			CachedImageRenderer.Init();
 
 			// Chart and graph visualize tool init.
 			OxyPlot.Xamarin.Forms.Platform.Android.PlotViewRenderer.Init();

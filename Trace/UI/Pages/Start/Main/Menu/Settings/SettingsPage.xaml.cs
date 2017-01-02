@@ -13,21 +13,21 @@ namespace Trace {
 
 		// TODO: need to perform input validation
 		void OnSettingChanged(object sender, EventArgs e) {
-			SQLiteDB.Instance.SaveItem(User.Instance);
+			SQLiteDB.Instance.SaveUser(User.Instance);
 		}
 
 		void OnGenderChanged(object sender, EventArgs e) {
 			var picker = (BindablePicker) sender;
 			string item = picker.Items[picker.SelectedIndex];
 			User.Instance.Gender = EnumUtil.ParseEnum<SelectedGender>(item);
-			SQLiteDB.Instance.SaveItem(User.Instance);
+			SQLiteDB.Instance.SaveUser(User.Instance);
 		}
 
 		void OnLanguageChanged(object sender, EventArgs e) {
 			var picker = (BindablePicker) sender;
 			string item = picker.Items[picker.SelectedIndex];
 			User.Instance.UserLanguage = EnumUtil.ParseEnum<SelectedLanguage>(item);
-			SQLiteDB.Instance.SaveItem(User.Instance);
+			SQLiteDB.Instance.SaveUser(User.Instance);
 			// TODO: change text UI for the new language.
 		}
 

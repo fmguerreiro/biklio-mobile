@@ -13,18 +13,14 @@ namespace Trace {
 		public long OwnerId { get; set; }
 
 		private string logoURL;
-		public string LogoURL {
-			get {
-				return logoURL;
-			}
-			set {
-				logoURL = value ?? logoURL;
-			}
-		}
+		public string LogoURL { get { return logoURL ?? "default_shop.png"; } set { logoURL = value ?? logoURL; } }
 
-		// The image is read-only to other contexts. It should only be updated by the FetchImageAsync function.
-		// However, it needs a 'set' to be inserted into SQLite.
-		public string LogoImageFilePath { get; set; }
+		// The stored logo image filepath for map pin image display.
+		private string pinLogoPath;
+		public string PinLogoPath { get { return pinLogoPath; } set { pinLogoPath = value; } }
+
+		private string mapImageURL;
+		public string MapImageURL { get { return mapImageURL ?? "location_unknown.png"; } set { mapImageURL = value ?? mapImageURL; } }
 
 		public string PhoneNumber { get; set; }
 		public string WebsiteAddress { get; set; }
@@ -54,12 +50,14 @@ namespace Trace {
 			Debug.WriteLine("Downloading checkpoint img: " + url);
 			byte[] res = await new HTTPClientBase().DownloadImageAsync(url);
 			if(res != null) {
+				// Resize image to 20x20 pixels to save space.
+				res = DependencyService.Get<IImageResizer>().ResizeImage(res, 20, 20);
 				// Store bytes as img in file system.
-				var filePath = this.GId.ToString();
+				var filePath = GId.ToString();
 				DependencyService.Get<IFileSystem>().SaveImage(filePath, res);
 				// Updates filepath property in SQLite.
-				LogoImageFilePath = filePath;
-				SQLiteDB.Instance.SaveItem<Checkpoint>(this);
+				PinLogoPath = filePath;
+				SQLiteDB.Instance.SaveItem(this);
 				Debug.WriteLine("Img: " + url + " downloaded.");
 				return;
 			}
@@ -68,8 +66,8 @@ namespace Trace {
 
 
 		public override string ToString() {
-			return string.Format("[Checkpoint Id->{0} UserId->{1} Name->{2} LogoImageFilePath->{3} Longitude->{4} Latitude->{5}]",
-					 			 Id, UserId, Name, LogoImageFilePath, Longitude, Latitude);
+			return string.Format("[Checkpoint GId->{0} UserId->{1} Name->{2} LogoURL->{3} Longitude->{4} Latitude->{5}]",
+					 			 GId, UserId, Name, LogoURL, Longitude, Latitude);
 		}
 	}
 }

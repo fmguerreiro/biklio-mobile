@@ -27,6 +27,6 @@ using Xamarin.Forms.Xaml;
 //[assembly: AssemblyDelaySign(false)]
 //[assembly: AssemblyKeyFile("")]
 
-[assembly: XamlCompilation(XamlCompilationOptions.Compile)]
+//[assembly: XamlCompilation(XamlCompilationOptions.Compile)]
 
 [assembly: NeutralResourcesLanguage("en")]

@@ -214,6 +214,24 @@
     <Reference Include="Firebase.CloudMessaging">
       <HintPath>..\packages\Xamarin.Firebase.iOS.CloudMessaging.1.2.1\lib\Xamarin.iOS10\Firebase.CloudMessaging.dll</HintPath>
     </Reference>
+    <Reference Include="WebP.Touch">
+      <HintPath>..\packages\WebP.Touch.1.0.2\lib\Xamarin.iOS10\WebP.Touch.dll</HintPath>
+    </Reference>
+    <Reference Include="FFImageLoading">
+      <HintPath>..\packages\Xamarin.FFImageLoading.2.2.5\lib\Xamarin.iOS10\FFImageLoading.dll</HintPath>
+    </Reference>
+    <Reference Include="FFImageLoading.Platform">
+      <HintPath>..\packages\Xamarin.FFImageLoading.2.2.5\lib\Xamarin.iOS10\FFImageLoading.Platform.dll</HintPath>
+    </Reference>
+    <Reference Include="FFImageLoading.Forms">
+      <HintPath>..\packages\Xamarin.FFImageLoading.Forms.2.2.5\lib\Xamarin.iOS10\FFImageLoading.Forms.dll</HintPath>
+    </Reference>
+    <Reference Include="FFImageLoading.Forms.Touch">
+      <HintPath>..\packages\Xamarin.FFImageLoading.Forms.2.2.5\lib\Xamarin.iOS10\FFImageLoading.Forms.Touch.dll</HintPath>
+    </Reference>
+    <Reference Include="FFImageLoading.Transformations">
+      <HintPath>..\packages\Xamarin.FFImageLoading.Transformations.2.2.5\lib\Xamarin.iOS10\FFImageLoading.Transformations.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Trace\Trace.csproj">
@@ -241,6 +259,7 @@
     <Folder Include="Properties\" />
     <Folder Include="Localization\" />
     <Folder Include="App\ServiceAccess\" />
+    <Folder Include="App\Utils\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
@@ -266,43 +285,33 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Localization\Localize.cs" />
     <Compile Include="App\NotificationMessage.cs" />
+    <Compile Include="App\Utils\ImageResizer.cs" />
   </ItemGroup>
   <ItemGroup>
-    <BundleResource Include="Resources\logo.png" />
-    <BundleResource Include="Resources\trophy.png" />
+    <BundleResource Include="GoogleService-Info.plist" />
+    <BundleResource Include="Resources\campaign.png" />
     <BundleResource Include="Resources\cross_error.png" />
-    <BundleResource Include="Resources\default_shop.png" />
-    <BundleResource Include="Resources\green_check.png" />
-    <BundleResource Include="Resources\refresh_icon.png" />
-    <BundleResource Include="Resources\maps_icon.png" />
-    <BundleResource Include="Resources\home.png" />
-    <BundleResource Include="Resources\logout.png" />
-    <BundleResource Include="Resources\my_routes.png" />
-    <BundleResource Include="Resources\rewards.png" />
-    <BundleResource Include="Resources\settings.png" />
     <BundleResource Include="Resources\cycling.png" />
     <BundleResource Include="Resources\dashboard.png" />
+    <BundleResource Include="Resources\default_shop.png" />
     <BundleResource Include="Resources\driving.png" />
+    <BundleResource Include="Resources\green_check.png" />
+    <BundleResource Include="Resources\home.png" />
+    <BundleResource Include="Resources\logout.png" />
+    <BundleResource Include="Resources\maps_icon.png" />
     <BundleResource Include="Resources\menu.png" />
-    <BundleResource Include="Resources\running.png" />
-    <BundleResource Include="Resources\walking.png" />
-    <BundleResource Include="Resources\facebook_login_button.png" />
-    <BundleResource Include="Resources\google_login_button.png" />
-    <BundleResource Include="Resources\photo_circle_mask.png" />
-    <BundleResource Include="Resources\twitter_login_button.png" />
-    <BundleResource Include="GoogleService-Info.plist" />
-    <BundleResource Include="Resources\logo_58x58.png" />
-    <BundleResource Include="Resources\hicycle.png" />
-    <BundleResource Include="Resources\icon.png" />
-    <BundleResource Include="Resources\reward.png" />
-    <BundleResource Include="Resources\icon\icon29px.png" />
-    <BundleResource Include="Resources\icon\icon58px.png" />
-    <BundleResource Include="Resources\icon\icon87px.png" />
-    <BundleResource Include="Resources\reward_white.png" />
-    <BundleResource Include="Resources\bootstrap_social.png" />
-    <BundleResource Include="Resources\campaign.png" />
+    <BundleResource Include="Resources\my_routes.png" />
     <BundleResource Include="Resources\new_campaign.png" />
+    <BundleResource Include="Resources\reward.png" />
+    <BundleResource Include="Resources\rewards.png" />
+    <BundleResource Include="Resources\running.png" />
+    <BundleResource Include="Resources\settings.png" />
     <BundleResource Include="Resources\subscribed_campaigns.png" />
+    <BundleResource Include="Resources\trophy.png" />
+    <BundleResource Include="Resources\walking.png" />
+    <BundleResource Include="Resources\menu_background.png" />
+    <BundleResource Include="Resources\location_unknown.png" />
+    <BundleResource Include="Resources\default_shop_20px.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
   <Import Project="..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" />

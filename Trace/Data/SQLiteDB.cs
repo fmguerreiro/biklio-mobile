@@ -25,7 +25,7 @@ namespace Trace {
 		/// </summary>
 		private SQLiteDB() {
 			database = DependencyService.Get<ISQLite>().GetConnection();
-			//NuclearOption();
+			NuclearOption();
 			database.CreateTable<User>();
 			database.CreateTable<Trajectory>();
 			database.CreateTable<Challenge>();
@@ -52,7 +52,7 @@ namespace Trace {
 			}
 			else {
 				User.Instance = new User { Username = username };
-				User.Instance.Id = SaveItem(User.Instance);
+				User.Instance.Id = SaveUser(User.Instance);
 			}
 			Debug.WriteLine("Signing in with user: " + User.Instance);
 		}
@@ -68,6 +68,23 @@ namespace Trace {
 				return (from i in database.Table<User>()
 						where i.Username.Equals(username)
 						select i).FirstOrDefault();
+			}
+		}
+
+
+		/// <summary>
+		/// Stores the user or updates her information.
+		/// </summary>
+		/// <returns>The user DB id.</returns>
+		/// <param name="user">User.</param>
+		public int SaveUser(User user) {
+			lock(locker) {
+				if(user.Id != 0) {
+					return database.Update(user);
+				}
+				else {
+					return database.Insert(user);
+				}
 			}
 		}
 
@@ -123,18 +140,26 @@ namespace Trace {
 		/// <typeparam name="T">Type of entity</typeparam>
 		/// <param name="item">Item to save or update</param>
 		/// <returns>ID of item</returns>
-		public long SaveItem<T>(T item) where T : DatabaseEntityBase {
+		public long SaveItem<T>(T item) where T : UserItemBase, new() {
 			lock(locker) {
 				if(item.Id != 0) {
 					database.Update(item);
 					Debug.WriteLine("SaveItem(Update):\n" + item);
-					return item.Id;
 				}
-				//string getLastInsertedId = @"select last_insert_rowid()";
-				//long lastId = database.ExecuteScalar<long>(getLastInsertedId);
-				//Debug.WriteLine("SaveItem(LastId): " + lastId);
-				database.Insert(item);
-				Debug.WriteLine("SaveItem(Insert):\n" + item);
+				else {
+					// Check if the item is already stored in the database.
+					var storedItem = (from i in database.Table<T>()
+									  where i.GId == item.GId
+									  select i).FirstOrDefault();
+					if(storedItem != null) {
+						item.Id = storedItem.Id;
+						database.Update(item);
+					}
+					else {
+						database.Insert(item);
+						Debug.WriteLine("SaveItem(Insert):\n" + item);
+					}
+				}
 				return item.Id;
 			}
 		}
@@ -145,7 +170,7 @@ namespace Trace {
 		/// </summary>
 		/// <typeparam name="T">Type of entity to save</typeparam>
 		/// <param name="items">List of items</param>
-		public void SaveItems<T>(IEnumerable<T> items) where T : DatabaseEntityBase {
+		public void SaveItems<T>(IEnumerable<T> items) where T : UserItemBase, new() {
 			database.BeginTransaction();
 			foreach(T item in items) {
 				SaveItem(item);
@@ -205,14 +230,13 @@ namespace Trace {
 		/// </summary>
 		public void NuclearOption() {
 			lock(locker) {
-				database.DropTable<User>();
+				//database.DropTable<User>();
 				database.DropTable<Challenge>();
 				database.DropTable<Checkpoint>();
 				database.DropTable<Trajectory>();
 				database.DropTable<Campaign>();
 				database.DropTable<KPI>();
-				//DependencyService.Get<DeviceKeychainInterface>().SaveCredentials("username", "password");
-				DependencyService.Get<DeviceKeychainInterface>().DeleteAllCredentials();
+				//DependencyService.Get<DeviceKeychainInterface>().DeleteAllCredentials();
 			}
 		}
 	}

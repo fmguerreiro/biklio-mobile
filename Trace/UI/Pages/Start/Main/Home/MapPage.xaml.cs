@@ -24,6 +24,7 @@ namespace Trace {
 
 		public MapPage() {
 			InitializeComponent();
+			if(Device.OS == TargetPlatform.iOS) { Icon = "maps_icon.png"; }
 			Locator = new Geolocator(CustomMap);
 			//Task.Run(() => Locator.Start());
 			initializeChallengePins();
@@ -38,17 +39,6 @@ namespace Trace {
 				// TODO use activity confidence as well
 				RewardEligibilityManager.Instance.Input(activity);
 			});
-			// create start tracking button
-			//var normalFab = new FloatingActionButton();
-			//normalFab.Source = "default_shop.png";
-			//normalFab.Size = FabSize.Normal;
-			//MyStack.Children.Add(
-			//	normalFab
-			////xConstraint: Constraint.RelativeToParent((parent) => { return (parent.Width - normalFab.Width) - 16; }),
-			////yConstraint: Constraint.RelativeToParent((parent) => { return (parent.Height - normalFab.Height) - 16; })
-			//);
-
-			//normalFab.SizeChanged += (sender, args) => { MyStack.ForceLayout(); };
 		}
 
 
@@ -254,7 +244,7 @@ namespace Trace {
 							Type = PinType.Place,
 							Position = new Position(c.ThisCheckpoint.Latitude, c.ThisCheckpoint.Longitude),
 							Label = c.Description,
-							Address = c.NeededCyclingDistance.ToString()
+							Address = c.NeededCyclingDistance.ToString() // TODO
 						},
 						Id = "",
 						Checkpoint = c.ThisCheckpoint,

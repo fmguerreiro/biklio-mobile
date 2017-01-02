@@ -94,7 +94,7 @@ namespace Trace {
 				User.Instance.Email = result.payload.email;
 				User.Instance.PictureURL = result.payload.picture;
 				User.Instance.SessionToken = result.payload.token;
-				SQLiteDB.Instance.SaveItem(User.Instance);
+				SQLiteDB.Instance.SaveUser(User.Instance);
 			}
 			return result.success;
 		}

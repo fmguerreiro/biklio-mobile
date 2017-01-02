@@ -29,7 +29,7 @@ namespace Trace {
 			WSResult result = await Task.Run(() => client.Register(username, password, email));
 
 			if(result.success) {
-				SQLiteDB.Instance.SaveItem<User>(User.Instance = new User {
+				SQLiteDB.Instance.SaveUser(User.Instance = new User {
 					Username = username,
 					Email = email,
 					// TODO verify if its needed -> AuthToken = result.token

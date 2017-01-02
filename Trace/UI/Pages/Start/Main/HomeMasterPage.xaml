@@ -3,10 +3,13 @@
 	xmlns="http://xamarin.com/schemas/2014/forms"
 	xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
 	xmlns:language="clr-namespace:Trace.Localization;assembly=Trace"
+	xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
+	xmlns:fftransformations="clr-namespace:FFImageLoading.Transformations;assembly=FFImageLoading.Transformations"
 	Padding="0,40,0,0"
 	x:Class="Trace.HomeMasterPage"
 	Title="{language:Translate Menu}"
-	Icon="menu.png">
+	Icon="menu.png"
+	BackgroundImage="menu_background.png">
 	<ContentPage.Content>
 		<StackLayout
 			VerticalOptions="FillAndExpand">
@@ -14,24 +17,25 @@
 				Orientation="Horizontal"
 				Grid.ColumnSpan="2">
 				<Grid>
-					<Image
+					<ffimageloading:CachedImage
 						Source="{Binding PictureURL}"
 						WidthRequest="48"
-						HeightRequest="48" />
-					<Image
-						Source="photo_circle_mask"
-						WidthRequest="48"
-						HeightRequest="48" />
+						HeightRequest="48">
+						<ffimageloading:CachedImage.Transformations>
+							<fftransformations:CircleTransformation />
+						</ffimageloading:CachedImage.Transformations>
+					</ffimageloading:CachedImage>
 				</Grid>
 				<StackLayout
 					Orientation="Vertical">
 					<Label
 						Text="{Binding Name}"
-						TextColor="#4BB166" />
+						Font="Bold"
+						TextColor="White" />
 					<Label
 						Text="{Binding Email}"
 						FontSize="Small"
-						TextColor="Gray" />
+						TextColor="White" />
 				</StackLayout>
 			</StackLayout>
 			<ListView
@@ -42,10 +46,22 @@
 				SeparatorVisibility="None">
 				<ListView.ItemTemplate>
 					<DataTemplate>
-						<ImageCell
-							Text="{Binding Title}"
-							TextColor="White"
-							ImageSource="{Binding IconSource}" />
+						<ViewCell>
+							<StackLayout
+								Padding="15, 5, 15, 5"
+								Orientation="Horizontal">
+								<ffimageloading:CachedImage
+									Source="{Binding IconSource}"
+									WidthRequest="24"
+									HeightRequest="24"
+									DownsampleToViewSize="true">
+								</ffimageloading:CachedImage>
+								<Label
+									Text="{Binding Title}"
+									TextColor="White"
+									VerticalOptions="Center" />
+							</StackLayout>
+						</ViewCell>
 					</DataTemplate>
 				</ListView.ItemTemplate>
 			</ListView>

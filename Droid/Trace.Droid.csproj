@@ -16,7 +16,7 @@
     <MonoAndroidResourcePrefix>Resources</MonoAndroidResourcePrefix>
     <MonoAndroidAssetsPrefix>Assets</MonoAndroidAssetsPrefix>
     <AndroidUseLatestPlatformSdk>false</AndroidUseLatestPlatformSdk>
-    <JavaMaximumHeapSize>1G</JavaMaximumHeapSize>
+    <JavaMaximumHeapSize>2G</JavaMaximumHeapSize>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -27,19 +27,21 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <AndroidLinkMode>None</AndroidLinkMode>
-    <JavaMaximumHeapSize>1G</JavaMaximumHeapSize>
+    <JavaMaximumHeapSize>2G</JavaMaximumHeapSize>
     <EmbedAssembliesIntoApk>true</EmbedAssembliesIntoApk>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>pdbonly</DebugType>
+    <DebugSymbols>false</DebugSymbols>
+    <DebugType></DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release</OutputPath>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <AndroidManagedSymbols>true</AndroidManagedSymbols>
     <AndroidUseSharedRuntime>false</AndroidUseSharedRuntime>
-    <JavaMaximumHeapSize>1G</JavaMaximumHeapSize>
+    <JavaMaximumHeapSize>2G</JavaMaximumHeapSize>
+    <AndroidLinkMode>Full</AndroidLinkMode>
+    <AndroidHttpClientHandlerType></AndroidHttpClientHandlerType>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -191,6 +193,21 @@
     <Reference Include="Xamarin.GooglePlayServices.Auth">
       <HintPath>..\packages\Xamarin.GooglePlayServices.Auth.29.0.0.1\lib\MonoAndroid41\Xamarin.GooglePlayServices.Auth.dll</HintPath>
     </Reference>
+    <Reference Include="FFImageLoading">
+      <HintPath>..\packages\Xamarin.FFImageLoading.2.2.5\lib\MonoAndroid10\FFImageLoading.dll</HintPath>
+    </Reference>
+    <Reference Include="FFImageLoading.Platform">
+      <HintPath>..\packages\Xamarin.FFImageLoading.2.2.5\lib\MonoAndroid10\FFImageLoading.Platform.dll</HintPath>
+    </Reference>
+    <Reference Include="FFImageLoading.Forms">
+      <HintPath>..\packages\Xamarin.FFImageLoading.Forms.2.2.5\lib\MonoAndroid10\FFImageLoading.Forms.dll</HintPath>
+    </Reference>
+    <Reference Include="FFImageLoading.Forms.Droid">
+      <HintPath>..\packages\Xamarin.FFImageLoading.Forms.2.2.5\lib\MonoAndroid10\FFImageLoading.Forms.Droid.dll</HintPath>
+    </Reference>
+    <Reference Include="FFImageLoading.Transformations">
+      <HintPath>..\packages\Xamarin.FFImageLoading.Transformations.2.2.5\lib\MonoAndroid10\FFImageLoading.Transformations.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Trace\Trace.csproj">
@@ -212,15 +229,13 @@
     <Compile Include="UI\GoogleOAuthPageRenderer.cs" />
     <Compile Include="Resources\Resource.designer.cs" />
     <Compile Include="Localization\Localize.cs" />
+    <Compile Include="App\Utils\ImageResizer.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />
     <None Include="Properties\AndroidManifest.xml" />
     <None Include="Assets\AboutAssets.txt" />
     <None Include="packages.config" />
-    <None Include="Resources\drawable\icon\icon29px.png" />
-    <None Include="Resources\drawable\icon\icon58px.png" />
-    <None Include="Resources\drawable\icon\icon87px.png" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\layout\Tabbar.axml" />
@@ -229,34 +244,29 @@
     <AndroidResource Include="Resources\drawable-hdpi\icon.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\icon.png" />
     <AndroidResource Include="Resources\drawable-xxhdpi\icon.png" />
+    <AndroidResource Include="Resources\drawable\campaign.png" />
     <AndroidResource Include="Resources\drawable\cross_error.png" />
     <AndroidResource Include="Resources\drawable\cycling.png" />
     <AndroidResource Include="Resources\drawable\dashboard.png" />
     <AndroidResource Include="Resources\drawable\default_shop.png" />
     <AndroidResource Include="Resources\drawable\driving.png" />
-    <AndroidResource Include="Resources\drawable\facebook_login_button.png" />
-    <AndroidResource Include="Resources\drawable\google_login_button.png" />
     <AndroidResource Include="Resources\drawable\green_check.png" />
-    <AndroidResource Include="Resources\drawable\hicycle.png" />
     <AndroidResource Include="Resources\drawable\home.png" />
-    <AndroidResource Include="Resources\drawable\icon.png" />
-    <AndroidResource Include="Resources\drawable\logo.png" />
-    <AndroidResource Include="Resources\drawable\logo_58x58.png" />
     <AndroidResource Include="Resources\drawable\logout.png" />
-    <AndroidResource Include="Resources\drawable\maps_icon.png" />
     <AndroidResource Include="Resources\drawable\menu.png" />
     <AndroidResource Include="Resources\drawable\my_routes.png" />
-    <AndroidResource Include="Resources\drawable\photo_circle_mask.png" />
-    <AndroidResource Include="Resources\drawable\refresh_icon.png" />
+    <AndroidResource Include="Resources\drawable\new_campaign.png" />
     <AndroidResource Include="Resources\drawable\reward.png" />
-    <AndroidResource Include="Resources\drawable\reward_white.png" />
     <AndroidResource Include="Resources\drawable\rewards.png" />
     <AndroidResource Include="Resources\drawable\running.png" />
     <AndroidResource Include="Resources\drawable\settings.png" />
-    <AndroidResource Include="Resources\drawable\trophy.png" />
-    <AndroidResource Include="Resources\drawable\twitter_login_button.png" />
+    <AndroidResource Include="Resources\drawable\subscribed_campaigns.png" />
     <AndroidResource Include="Resources\drawable\walking.png" />
-    <AndroidResource Include="Resources\drawable\bootstrap_social.png" />
+    <AndroidResource Include="Resources\layout\TabLayout.axml" />
+    <AndroidResource Include="Resources\drawable\default_shop_20px.png" />
+    <AndroidResource Include="Resources\drawable\location_unknown.png" />
+    <AndroidResource Include="Resources\drawable\maps_icon.png" />
+    <AndroidResource Include="Resources\drawable\trophy.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App\" />
@@ -268,6 +278,7 @@
     <Folder Include="App\Business\MotionActivity\" />
     <Folder Include="Resources\drawable\" />
     <Folder Include="Localization\" />
+    <Folder Include="App\Utils\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <Import Project="..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" />

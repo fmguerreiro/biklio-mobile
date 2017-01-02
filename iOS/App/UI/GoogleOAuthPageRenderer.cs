@@ -68,7 +68,7 @@ namespace Trace.iOS {
 					User.Instance.Name = fullname;
 					User.Instance.Email = email;
 					User.Instance.PictureURL = pictureURL;
-					SQLiteDB.Instance.SaveItem(User.Instance);
+					SQLiteDB.Instance.SaveUser(User.Instance);
 					SQLiteDB.Instance.InstantiateUser(User.Instance.Username);
 
 					SignInPage.SuccessfulOAuthLoginAction.Invoke();

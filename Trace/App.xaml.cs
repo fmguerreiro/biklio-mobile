@@ -1,11 +1,13 @@
-﻿using System.Reflection;
-using Plugin.Connectivity;
+﻿using Plugin.Connectivity;
 using Xamarin.Forms;
 using Trace.Localization;
 using System.Diagnostics;
 using System.Threading.Tasks;
+using Xamarin.Forms.Xaml;
 
+[assembly: XamlCompilation(XamlCompilationOptions.Compile)]
 namespace Trace {
+
 	public partial class App : Application {
 
 		public static string AppName { get { return "Trace"; } }
