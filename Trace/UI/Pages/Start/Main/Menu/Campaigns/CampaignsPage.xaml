@@ -20,7 +20,6 @@
 				Grid.Row="0"
 				RowHeight="150"
 				x:Name="listView"
-				SeparatorVisibility="None"
 				ItemSelected="removeCampaignOnClick">
 				<ListView.ItemTemplate>
 					<DataTemplate>

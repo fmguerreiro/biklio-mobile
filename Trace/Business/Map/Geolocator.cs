@@ -15,7 +15,7 @@ namespace Trace {
 		private static IGeolocator locator;
 
 		public static bool IsTrackingInProgress { get; set; }
-		private readonly TraceMap Map;
+		private static TraceMap Map;
 
 		public double MaxSpeed;
 		public double AvgSpeed;
@@ -45,13 +45,13 @@ namespace Trace {
 
 			// Get first position
 			var position = await locator.GetPositionAsync(timeoutMilliseconds: LOCATOR_TIMEOUT);
-			UpdateMap(position);
+			updateMap(position);
 
 			// Listen to position changes and update map
 			await locator.StartListeningAsync(minTime: 5000, minDistance: 15, includeHeading: false, settings: locationSettings);
 			locator.PositionChanged += (sender, e) => {
 				if(IsTrackingInProgress) {
-					UpdateMap(e.Position);
+					updateMap(e.Position);
 					if(e.Position.Speed > MaxSpeed) MaxSpeed = e.Position.Speed;
 					AvgSpeed += e.Position.Speed;
 					Map.RouteCoordinates.Add(e.Position);
@@ -60,10 +60,16 @@ namespace Trace {
 		}
 
 
-		private void UpdateMap(Plugin.Geolocator.Abstractions.Position position) {
+		private void updateMap(Plugin.Geolocator.Abstractions.Position position) {
 			Map.MoveToRegion(
 				MapSpan.FromCenterAndRadius(
 					new Xamarin.Forms.Maps.Position(position.Latitude, position.Longitude), Distance.FromKilometers(1)));
+		}
+
+
+		public static void UpdateMap(Xamarin.Forms.Maps.Position position) {
+			Map.MoveToRegion(
+				MapSpan.FromCenterAndRadius(position, Distance.FromKilometers(2)));
 		}
 
 

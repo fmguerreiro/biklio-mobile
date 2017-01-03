@@ -108,7 +108,7 @@
         <value>Estatísticas</value>
   	</data>
 	<data name="MyRoutes" xml:space="preserve">
-        <value>Trajectos</value>
+        <value>Trajetos</value>
   	</data>
 	<data name="JoinACampaign" xml:space="preserve">
         <value>Campanhas</value>
@@ -157,6 +157,9 @@
   	</data>
 	<data name="BikeCondition" xml:space="preserve">
         <value>Ande {0} km de bicicleta</value>
+  	</data>
+	<data name="CycleToShop" xml:space="preserve">
+        <value>Pedale até à loja</value>
   	</data>
 	<data name="ErrorFetchingChallenges" xml:space="preserve">
         <value>Erro ao tentar obter desafios do servidor.</value>
@@ -385,5 +388,20 @@
   	</data>
 	<data name="AlreadySubscribedError" xml:space="preserve">
     	<value>Já aderiu à campanha local.</value>
+  	</data>
+	<data name="NoRewardsYet" xml:space="preserve">
+    	<value>Ainda não tens Recompensas disponíveis.</value>
+  	</data>
+	<data name="OneRewardEarned" xml:space="preserve">
+    	<value>Podes obter uma Recompensa.</value>
+  	</data>
+	<data name="ClaimReward" xml:space="preserve">
+    	<value>Recompensa</value>
+  	</data>
+	<data name="Address" xml:space="preserve">
+    	<value>Endereço</value>
+  	</data>
+	<data name="General" xml:space="preserve">
+    	<value>Geral</value>
   	</data>
 </root>

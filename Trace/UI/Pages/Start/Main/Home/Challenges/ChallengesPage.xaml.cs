@@ -58,9 +58,9 @@ namespace Trace {
 			if(!result.success) {
 				Device.BeginInvokeOnMainThread(() => {
 					DisplayAlert(Language.ErrorFetchingChallenges, result.error, Language.Ok);
+					ChallengeListView.IsRefreshing = false;
+					PullUpHintLabel.IsVisible = false;
 				});
-				ChallengeListView.IsRefreshing = false;
-				PullUpHintLabel.IsVisible = false;
 				return;
 			}
 
@@ -108,7 +108,9 @@ namespace Trace {
 				Checkpoint checkpoint = null;
 				if(checkpoints.ContainsKey(challenge.shopId)) {
 					checkpoint = checkpoints[challenge.shopId];
-					challenges.Add(createChallenge(challenge, checkpoint));
+					var newChallenge = createChallenge(challenge, checkpoint);
+					checkpoint.Challenges.Add(newChallenge);
+					challenges.Add(newChallenge);
 				}
 			}
 		}
@@ -152,10 +154,12 @@ namespace Trace {
 				UserId = User.Instance.Id,
 				OwnerId = checkpoint.ownerId,
 				Name = checkpoint.name,
+				Type = checkpoint.details.type.description,
 				Address = checkpoint.contacts.address,
 				LogoURL = checkpoint.logoURL,
 				AvailableHours = checkpoint.details.openTime + " - " + checkpoint.details.closeTime,
 				PhoneNumber = checkpoint.contacts.phone,
+				Email = checkpoint.contacts.email,
 				WebsiteAddress = checkpoint.contacts.website,
 				FacebookAddress = checkpoint.contacts.facebook,
 				TwitterAddress = checkpoint.contacts.twitter,

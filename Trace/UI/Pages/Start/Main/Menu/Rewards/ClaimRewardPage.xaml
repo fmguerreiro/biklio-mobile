@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage
+	xmlns="http://xamarin.com/schemas/2014/forms"
+	xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+	xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
+	xmlns:language="clr-namespace:Trace.Localization;assembly=Trace"
+	x:Class="Trace.ClaimRewardPage"
+	Title="{language:Translate ClaimReward}">
+	<ContentPage.Content>
+		<StackLayout>
+			<ffimageloading:CachedImage
+				Source="{Binding ThisCheckpoint.LogoURL}"
+				HeightRequest="50"
+				WidthRequest="50"
+				HorizontalOptions="Center"
+				DownsampleToViewSize="true"
+				Aspect="AspectFill">
+			</ffimageloading:CachedImage>
+			<Label
+				Text="{Binding Name}"
+				HorizontalOptions="Center"
+				FontAttributes="Bold">
+			</Label>
+			<Label
+				Text="{Binding Condition}"
+				HorizontalOptions="Center"
+				Margin="50">
+			</Label>
+			<Button
+				BackgroundColor="#ffd500"
+				TextColor="White"
+				HorizontalOptions="CenterAndExpand"
+				BorderRadius="0"
+				Text="{language:Translate ClaimReward}">
+			</Button>
+		</StackLayout>
+	</ContentPage.Content>
+</ContentPage>

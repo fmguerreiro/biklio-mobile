@@ -156,7 +156,10 @@
     	<value>Pull up to update.</value>
   	</data>
 	<data name="BikeCondition" xml:space="preserve">
-    	<value>Bike for {0} km</value>
+    	<value>Cycle for {0} km</value>
+  	</data>
+	<data name="CycleToShop" xml:space="preserve">
+    	<value>Cycle to Shop</value>
   	</data>
 	<data name="ErrorFetchingChallenges" xml:space="preserve">
     	<value>Error fetching challenges from server</value>
@@ -387,5 +390,20 @@
   	</data>
 	<data name="AlreadySubscribedError" xml:space="preserve">
     	<value>You are already subscribed to the local campaign.</value>
+  	</data>
+	<data name="NoRewardsYet" xml:space="preserve">
+    	<value>You have no rewards to claim yet.</value>
+  	</data>
+	<data name="OneRewardEarned" xml:space="preserve">
+    	<value>You can claim one Reward.</value>
+  	</data>
+	<data name="ClaimReward" xml:space="preserve">
+    	<value>Claim Reward</value>
+  	</data>
+	<data name="Address" xml:space="preserve">
+    	<value>Address</value>
+  	</data>
+	<data name="General" xml:space="preserve">
+    	<value>General</value>
   	</data>
 </root>

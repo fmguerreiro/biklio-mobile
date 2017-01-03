@@ -317,6 +317,12 @@ namespace Trace.Localization {
             }
         }
         
+        public static string CycleToShop {
+            get {
+                return ResourceManager.GetString("CycleToShop", resourceCulture);
+            }
+        }
+        
         public static string ErrorFetchingChallenges {
             get {
                 return ResourceManager.GetString("ErrorFetchingChallenges", resourceCulture);
@@ -764,6 +770,36 @@ namespace Trace.Localization {
         public static string AlreadySubscribedError {
             get {
                 return ResourceManager.GetString("AlreadySubscribedError", resourceCulture);
+            }
+        }
+        
+        public static string NoRewardsYet {
+            get {
+                return ResourceManager.GetString("NoRewardsYet", resourceCulture);
+            }
+        }
+        
+        public static string OneRewardEarned {
+            get {
+                return ResourceManager.GetString("OneRewardEarned", resourceCulture);
+            }
+        }
+        
+        public static string ClaimReward {
+            get {
+                return ResourceManager.GetString("ClaimReward", resourceCulture);
+            }
+        }
+        
+        public static string Address {
+            get {
+                return ResourceManager.GetString("Address", resourceCulture);
+            }
+        }
+        
+        public static string General {
+            get {
+                return ResourceManager.GetString("General", resourceCulture);
             }
         }
     }

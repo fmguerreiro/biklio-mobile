@@ -12,8 +12,8 @@
 			CachingStrategy="RecycleElement"
 			x:Name="ChallengeListView"
 			ItemsSource="{Binding Challenges}"
+			RowHeight="60"
 			ItemSelected="OnSelection"
-			SeparatorVisibility="None"
 			IsPullToRefreshEnabled="true"
 			Refreshing="OnRefresh">
 			<ListView.Header>
@@ -21,6 +21,7 @@
 					Spacing="0">
 					<Label
 						Text="{Binding Summary}"
+						LineBreakMode="NoWrap"
 						FontAttributes="Bold"
 						XAlign="Center" />
 					<Label
@@ -64,12 +65,14 @@
 							</ffimageloading:CachedImage>
 							<Label
 								Text="{Binding ThisCheckpoint.Name}"
+								LineBreakMode="NoWrap"
 								FontAttributes="Bold"
 								Grid.Row="0"
 								Grid.Column="1"
 								Grid.ColumnSpan="4" />
 							<Label
-								Text="{Binding NeededCyclingDistance, StringFormat={language:Translate BikeCondition}"
+								Text="{Binding Condition}"
+								LineBreakMode="NoWrap"
 								FontSize="14"
 								Grid.Row="1"
 								Grid.Column="1"
@@ -79,8 +82,9 @@
 								DownsampleToViewSize="true"
 								Aspect="AspectFill"
 								Grid.Row="0"
-								Grid.Column="5"
-								Grid.RowSpan="2">
+								Grid.Column="4"
+								Grid.RowSpan="2"
+								Grid.ColumnSpan="2">
 							</ffimageloading:CachedImage>
 						</Grid>
 					</ViewCell>

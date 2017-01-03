@@ -3,41 +3,165 @@
 	xmlns="http://xamarin.com/schemas/2014/forms"
 	xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
 	xmlns:language="clr-namespace:Trace.Localization;assembly=Trace"
+	xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
 	x:Class="Trace.CheckpointDetailsPage"
 	Title="{language:Translate CheckpointDetails}">
-	<ContentPage.Padding>
-		<OnPlatform
-			x:TypeArguments="Thickness"
-			iOS="20, 40, 20, 20"
-			Android="20, 20, 20, 20"
-			WinPhone="20, 20, 20, 20" />
-	</ContentPage.Padding>
 	<ContentPage.Content>
-		<StackLayout>
-			<Label
-				Text="{Binding Name}"
-				XAlign="Center" />
-			<Label
-				Text="{Binding AvailableHours, StringFormat={language:Translate ShopOpenBetween}}"
-				FontSize="Small" />
-			<Label
-				Text="{Binding Address, StringFormat={language:Translate ShopAddress}}"
-				FontSize="Small" />
-			<Label
-				Text="{Binding PhoneNumber, StringFormat={language:Translate ShopPhoneNumber}}"
-				FontSize="Small" />
-			<Label
-				Text="{Binding WebsiteAddress, StringFormat={language:Translate ShopWebsite}}"
-				FontSize="Small" />
-			<Label
-				Text="{Binding FacebookAddress, StringFormat='Facebook: {0}'}"
-				FontSize="Small" />
-			<Label
-				Text="{Binding TwitterAddress, StringFormat='Twitter: {0}'}"
-				FontSize="Small" />
-			<Label
-				Text="{Binding Description, StringFormat={language:Translate ShopDescription}}"
-				FontSize="Small" />
-		</StackLayout>
+		<TableView
+			Intent="Data"
+			HasUnevenRows="true">
+			<TableRoot>
+				<TableSection
+					Title="{language:Translate General}">
+					<ViewCell>
+						<Grid
+							Margin="5">
+							<Grid.RowDefinitions>
+								<RowDefinition
+									Height="0.5*" />
+								<RowDefinition
+									Height="*" />
+								<RowDefinition
+									Height="*" />
+								<RowDefinition
+									Height="*" />
+								<RowDefinition
+									Height="*" />
+								<RowDefinition
+									Height="*" />
+							</Grid.RowDefinitions>
+							<Grid.ColumnDefinitions>
+								<ColumnDefinition
+									Width="*" />
+								<ColumnDefinition
+									Width="*" />
+								<ColumnDefinition
+									Width="*" />
+								<ColumnDefinition
+									Width="*" />
+								<ColumnDefinition
+									Width="*" />
+								<ColumnDefinition
+									Width="*" />
+								<ColumnDefinition
+									Width="*" />
+								<ColumnDefinition
+									Width="*" />
+								<ColumnDefinition
+									Width="*" />
+								<ColumnDefinition
+									Width="*" />
+							</Grid.ColumnDefinitions>
+							<ffimageloading:CachedImage
+								Source="{Binding LogoURL}"
+								DownsampleToViewSize="true"
+								Aspect="AspectFit"
+								Grid.Row="1"
+								Grid.Column="0"
+								Grid.RowSpan="3"
+								Grid.ColumnSpan="3">
+							</ffimageloading:CachedImage>
+							<Label
+								Text="{Binding Name}"
+								LineBreakMode="NoWrap"
+								FontAttributes="Bold"
+								Grid.Row="1"
+								Grid.Column="3"
+								Grid.ColumnSpan="8" />
+							<Label
+								Text="{Binding Type}"
+								LineBreakMode="NoWrap"
+								FontSize="Small"
+								TextColor="Silver"
+								Grid.Row="2"
+								Grid.Column="3"
+								Grid.ColumnSpan="8" />
+							<Label
+								Text="{Binding AvailableHours, StringFormat={language:Translate ShopOpenBetween}}"
+								LineBreakMode="NoWrap"
+								FontSize="Small"
+								Grid.Row="4"
+								Grid.Column="0"
+								Grid.ColumnSpan="8" />
+							<Label
+								Text="{Binding PhoneNumber, StringFormat={language:Translate ShopPhoneNumber}}"
+								LineBreakMode="NoWrap"
+								FontSize="Small"
+								Grid.Row="5"
+								Grid.Column="0"
+								Grid.ColumnSpan="8" />
+							<Label
+								Text="{Binding WebsiteAddress, StringFormat={language:Translate ShopWebsite}}"
+								LineBreakMode="NoWrap"
+								FontSize="Small"
+								Grid.Row="6"
+								Grid.Column="0"
+								Grid.ColumnSpan="8" />
+						</Grid>
+					</ViewCell>
+				</TableSection>
+				<TableSection
+					Title="{language:Translate Address}">
+					<ViewCell
+						Height="210"
+						Tapped="AddressOnTap">
+						<StackLayout
+							Margin="5">
+							<Label
+								Text="{Binding Address}"
+								FontSize="12"
+								LineBreakMode="NoWrap" />
+							<ffimageloading:CachedImage
+								Source="{Binding MapImageURL}"
+								DownsampleToViewSize="true"
+								HorizontalOptions="FillAndExpand"
+								VerticalOptions="FillAndExpand"
+								Aspect="AspectFill">
+							</ffimageloading:CachedImage>
+						</StackLayout>
+					</ViewCell>
+				</TableSection>
+				<TableSection
+					Title="{language:Translate Details}">
+					<ViewCell
+						Height="95">
+						<StackLayout
+							Margin="5">
+							<Label
+								Text="{Binding Email, StringFormat='Email: {0}'}"
+								LineBreakMode="NoWrap"
+								FontSize="Small" />
+							<Label
+								Text="{Binding FacebookAddress, StringFormat='Facebook: {0}'}"
+								LineBreakMode="NoWrap"
+								FontSize="Small" />
+							<Label
+								Text="{Binding TwitterAddress, StringFormat='Twitter: {0}'}"
+								LineBreakMode="NoWrap"
+								FontSize="Small" />
+							<Label
+								Text="{Binding Description, StringFormat={language:Translate ShopDescription}}"
+								FontSize="Small" />
+						</StackLayout>
+					</ViewCell>
+				</TableSection>
+				<TableSection
+					Title="{language:Translate Challenges}">
+					<ViewCell>
+						<ListView
+							ItemsSource="{Binding Challenges}">
+							<ListView.ItemTemplate>
+								<DataTemplate>
+									<TextCell
+										Text="{Binding Condition}"
+										Detail="{Binding Reward}">
+									</TextCell>
+								</DataTemplate>
+							</ListView.ItemTemplate>
+						</ListView>
+					</ViewCell>
+				</TableSection>
+			</TableRoot>
+		</TableView>
 	</ContentPage.Content>
 </ContentPage>

@@ -12,21 +12,20 @@ namespace Trace {
 			InitializeComponent();
 
 			IList<Challenge> rewards = SQLiteDB.Instance.GetRewards().ToList();
-			BindingContext = new ChallengeVM { Challenges = rewards };
+			var testReward = User.Instance.Challenges.FirstOrDefault();
+			rewards.Add(testReward);
+			BindingContext = new RewardVM { Rewards = rewards };
 		}
 
 		/// <summary>
-		/// Show the detailed page of the challenge's checkpoint on click.
+		/// Show the claim reward page.
 		/// </summary>
 		/// <param name="sender">Sender.</param>
 		/// <param name="e">The challenge in the listview that was clicked.</param>
 		void OnSelection(object sender, SelectedItemChangedEventArgs e) {
-			Checkpoint checkpoint = ((Challenge) e.SelectedItem).ThisCheckpoint;
-			if(checkpoint != null) {
-				Navigation.PushAsync(new CheckpointDetailsPage(checkpoint));
-			}
-			else {
-				DisplayAlert("Error", "That challenge does not have an associated checkpoint. Probably a DB consistency issue, please report", "Ok");
+			var challenge = ((Challenge) e.SelectedItem);
+			if(challenge != null) {
+				Navigation.PushAsync(new ClaimRewardPage(challenge));
 			}
 		}
 	}

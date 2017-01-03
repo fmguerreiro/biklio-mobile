@@ -40,9 +40,6 @@
     <EmbeddedResource Include="UI\Pages\Start\Main\HomeMasterPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\Pages\Start\Main\Menu\RewardsPage.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </EmbeddedResource>
     <EmbeddedResource Include="UI\Pages\Start\Main\Menu\MyTrajectories\TrajectoryDetailsPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
@@ -79,6 +76,12 @@
     <EmbeddedResource Include="Localization\Language.fr.resx" />
     <EmbeddedResource Include="Localization\Language.pt.resx" />
     <EmbeddedResource Include="UI\Pages\Start\Main\Menu\Campaigns\CampaignsPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\Pages\Start\Main\Menu\Rewards\RewardsPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\Pages\Start\Main\Menu\Rewards\ClaimRewardPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
   </ItemGroup>
@@ -150,9 +153,6 @@
     </Compile>
     <Compile Include="UI\Pages\Start\Main\MainPage.cs" />
     <Compile Include="UI\Pages\Start\Main\MasterPageItem.cs" />
-    <Compile Include="UI\Pages\Start\Main\Menu\RewardsPage.xaml.cs">
-      <DependentUpon>RewardsPage.xaml</DependentUpon>
-    </Compile>
     <Compile Include="UI\Pages\Start\Main\Menu\MyTrajectories\TrajectoryDetailsPage.xaml.cs">
       <DependentUpon>TrajectoryDetailsPage.xaml</DependentUpon>
     </Compile>
@@ -223,6 +223,13 @@
       <DependentUpon>CampaignsPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Utils\IImageResizer.cs" />
+    <Compile Include="UI\Pages\Start\Main\Menu\Rewards\RewardsPage.xaml.cs">
+      <DependentUpon>RewardsPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Pages\Start\Main\Menu\Rewards\ClaimRewardPage.xaml.cs">
+      <DependentUpon>ClaimRewardPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ServiceAccess\WebServiceObjects\Challenges\WSType.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Business\" />
@@ -262,6 +269,7 @@
     <Folder Include="ServiceAccess\WebServiceObjects\OAuth\" />
     <Folder Include="ServiceAccess\WebServiceObjects\Campaigns\" />
     <Folder Include="UI\Pages\Start\Main\Menu\Campaigns\" />
+    <Folder Include="UI\Pages\Start\Main\Menu\Rewards\" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Microsoft.Threading.Tasks">

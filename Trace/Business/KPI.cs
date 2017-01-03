@@ -43,7 +43,7 @@ namespace Trace {
 		/// <summary>
 		/// Serializes the KPI and stores it in SQLite.
 		/// Called when OnSleep() happens or when a more recent KPI is created. 
-		/// When a user switches to another the app, store information before it is lost. 
+		/// When a user switches to another app, store information before it is lost. 
 		/// Apps have at least 5 seconds to run before they are removed for memory.
 		/// </summary>
 		public void StoreKPI() {

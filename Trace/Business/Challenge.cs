@@ -31,6 +31,14 @@ namespace Trace {
 		public string Description { get { return Reward + " " + Language.At + " " + CheckpointName; } }
 		[Ignore]
 		public string Image { get { return ThisCheckpoint?.LogoURL ?? "default_shop.png"; } }
+		[Ignore]
+		public string Condition {
+			get {
+				if(NeededCyclingDistance == 0)
+					return Language.CycleToShop;
+				else return string.Format(Language.BikeCondition, NeededCyclingDistance);
+			}
+		}
 
 		public override string ToString() {
 			return string.Format("[Challenge GId->{0} UserId->{1} CheckpointId->{2} Reward->{3} Checkpoint->{4} Distance->{5}]",
@@ -39,7 +47,8 @@ namespace Trace {
 	}
 
 	/// <summary>
-	/// The Challenge Visual Model is used to bind a list of challenges for display in the Challenge Page and Reward Page.
+	/// The Challenge and Reward Visual Models are used to bind 
+	/// a list of challenges for display in the Challenge Page and Reward Page.
 	/// </summary>
 	class ChallengeVM {
 		public IList<Challenge> Challenges { get; set; }
@@ -53,6 +62,22 @@ namespace Trace {
 					return Language.ThereAre + " " + count + " " + Language.ChallengesNear;
 				else
 					return Language.OneChallengeFound;
+			}
+		}
+	}
+
+	class RewardVM {
+		public IList<Challenge> Rewards { get; set; }
+		public string Summary {
+			get {
+				int count = Rewards.Count;
+				if(count == 0) {
+					return Language.NoRewardsYet;
+				}
+				if(count != 1)
+					return Language.YouHave + " " + count + " " + Language.RewardsEarned;
+				else
+					return Language.OneRewardEarned;
 			}
 		}
 	}

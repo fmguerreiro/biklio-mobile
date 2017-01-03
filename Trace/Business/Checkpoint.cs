@@ -5,12 +5,17 @@ using SQLite;
 using Xamarin.Forms;
 
 namespace Trace {
+	/// <summary>
+	/// A Checkpoint represents a shop/company participant in the TRACE project.
+	/// </summary>
 	public class Checkpoint : UserItemBase {
 
 		public string Name { get; set; }
 		public string Address { get; set; }
 		public string AvailableHours { get; set; }
 		public long OwnerId { get; set; }
+		// Describes the type of checkpoint it is, e.g., Restaurant, Shop, Gym, etc.
+		public string Type { get; set; }
 
 		private string logoURL;
 		public string LogoURL { get { return logoURL ?? "default_shop.png"; } set { logoURL = value ?? logoURL; } }
@@ -22,6 +27,7 @@ namespace Trace {
 		private string mapImageURL;
 		public string MapImageURL { get { return mapImageURL ?? "location_unknown.png"; } set { mapImageURL = value ?? mapImageURL; } }
 
+		public string Email { get; set; }
 		public string PhoneNumber { get; set; }
 		public string WebsiteAddress { get; set; }
 		public string FacebookAddress { get; set; }
@@ -32,7 +38,7 @@ namespace Trace {
 		List<Challenge> challenges;
 		[Ignore]
 		public List<Challenge> Challenges {
-			get { return challenges ?? new List<Challenge>(); }
+			get { if(challenges == null) { challenges = new List<Challenge>(); } return challenges; }
 			set { challenges = value ?? new List<Challenge>(); }
 		}
 

@@ -70,7 +70,7 @@ namespace Trace {
 		List<Trajectory> trajectories;
 		[Ignore]
 		public List<Trajectory> Trajectories {
-			get { return trajectories ?? new List<Trajectory>(); }
+			get { if(trajectories == null) { trajectories = new List<Trajectory>(); } return trajectories; }
 			set { trajectories = value ?? new List<Trajectory>(); }
 		}
 
@@ -78,15 +78,16 @@ namespace Trace {
 		List<Challenge> challenges;
 		[Ignore]
 		public List<Challenge> Challenges {
-			get { return challenges ?? new List<Challenge>(); }
+			get { if(challenges == null) { challenges = new List<Challenge>(); } return challenges; }
 			set {
 				if(value != null) {
 					challenges = value;
 					// Update the reference of each challenge to its checkpoint and vice-versa.
 					foreach(Challenge challenge in challenges) {
 						if(checkpoints.ContainsKey(challenge.CheckpointId)) {
-							challenge.ThisCheckpoint = checkpoints[challenge.CheckpointId];
-							challenge.ThisCheckpoint.Challenges.Add(challenge);
+							var checkpoint = checkpoints[challenge.CheckpointId];
+							challenge.ThisCheckpoint = checkpoint;
+							checkpoint.Challenges.Add(challenge);
 						}
 					}
 				}
@@ -98,7 +99,7 @@ namespace Trace {
 		Dictionary<long, Checkpoint> checkpoints;
 		[Ignore]
 		public Dictionary<long, Checkpoint> Checkpoints {
-			get { return checkpoints ?? new Dictionary<long, Checkpoint>(); }
+			get { if(checkpoints == null) { checkpoints = new Dictionary<long, Checkpoint>(); } return checkpoints; }
 			set { checkpoints = value ?? new Dictionary<long, Checkpoint>(); }
 		}
 
@@ -106,7 +107,7 @@ namespace Trace {
 		IList<Campaign> subscribedCampaigns;
 		[Ignore]
 		public IList<Campaign> SubscribedCampaigns {
-			get { return subscribedCampaigns ?? new List<Campaign>(); }
+			get { if(subscribedCampaigns == null) { subscribedCampaigns = new List<Campaign>(); } return subscribedCampaigns; }
 			set { subscribedCampaigns = value ?? new List<Campaign>(); }
 		}
 
@@ -114,12 +115,7 @@ namespace Trace {
 		List<KPI> kpis;
 		[Ignore]
 		public List<KPI> KPIs {
-			get {
-				if(kpis == null) {
-					kpis = new List<KPI>();
-				}
-				return kpis;
-			}
+			get { if(kpis == null) { kpis = new List<KPI>(); } return kpis; }
 			set { kpis = value ?? new List<KPI>(); }
 		}
 

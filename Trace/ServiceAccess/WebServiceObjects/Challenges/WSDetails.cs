@@ -12,8 +12,8 @@
 
 		public string photoURL { get; set; }
 
-		// todo type -- id, description 
+		public WSType type { get; set; }
 
-		// todo facilities -- list of { id, description } 
+		public WSFacilities[] facilities { get; set; }
 	}
 }
