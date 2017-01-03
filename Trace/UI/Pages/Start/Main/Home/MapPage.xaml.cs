@@ -25,12 +25,15 @@ namespace Trace {
 		public MapPage() {
 			InitializeComponent();
 			if(Device.OS == TargetPlatform.iOS) { Icon = "maps_icon.png"; }
-			Locator = new Geolocator(CustomMap);
-			//Task.Run(() => Locator.Start());
+
+			Locator = new Geolocator(map);
+
 			initializeChallengePins();
+
 			Locator.Start().DoNotAwait();
+
 			currentActivity = new CurrentActivity();
-			ActivityLabel.BindingContext = currentActivity;
+			currentActivityLabel.BindingContext = currentActivity;
 			DependencyService.Get<IMotionActivityManager>().InitMotionActivity();
 			DependencyService.Get<IMotionActivityManager>().StartMotionUpdates((activity) => {
 				currentActivity.ActivityType = activity;
@@ -39,6 +42,21 @@ namespace Trace {
 				// TODO use activity confidence as well
 				RewardEligibilityManager.Instance.Input(activity);
 			});
+
+			// Add tap event handlers to the images on top of the circle buttons (otherwise, if users click on the img nothing happens)
+			var trackButtonGR = new TapGestureRecognizer();
+			trackButtonGR.Tapped += (sender, e) => OnStartTracking(null, null);
+			trackButtonImage.GestureRecognizers.Add(trackButtonGR);
+
+			var locateButtonGR = new TapGestureRecognizer();
+			locateButtonGR.Tapped += (sender, e) => OnLocateUser(null, null);
+			locateImage.GestureRecognizers.Add(locateButtonGR);
+		}
+
+
+		async void OnLocateUser(object send, EventArgs eventArgs) {
+			var pos = await GeoUtils.GetCurrentUserLocation();
+			Geolocator.UpdateMap(new Position(latitude: pos.Latitude, longitude: pos.Longitude));
 		}
 
 
@@ -75,7 +93,7 @@ namespace Trace {
 				if(distanceInMeters > MIN_SIZE_TRAJECTORY) {
 					// Calculate Motion activities along the trajectory.
 					IList<ActivityEvent> activityEvents = DependencyService.Get<IMotionActivityManager>().ActivityEvents;
-					trajectory.Points = await Task.Run(() => AssociatePointsWithActivity(activityEvents, CustomMap.RouteCoordinates));
+					trajectory.Points = await Task.Run(() => AssociatePointsWithActivity(activityEvents, map.RouteCoordinates));
 					trajectory.PointsJSON = JsonConvert.SerializeObject(trajectory.Points);
 
 					// Save created trajectory.
@@ -99,18 +117,21 @@ namespace Trace {
 
 				AvgSpeedLabel.BindingContext = trajectory;
 
-				displayGrid((Button) send);
+				trackButtonImage.Source = "map_icons/play_arrow.png";
+
+				displayResultsGrid();
 			}
 
 			// On Track Button pressed
 			else {
-				((Button) send).Text = Language.Stop;
-				CustomMap.RouteCoordinates.Clear();
+				//((Button) send).Text = Language.Stop;
+				trackButtonImage.Source = "map_icons/stop.png";
+				map.RouteCoordinates.Clear();
 				StartTrackingTime = DateTime.Now;
 				// Show Activity text after Map and before Stop button and remove Results grid.
-				ActivityLabel.IsVisible = true;
-				ResultsGrid.IsVisible = false;
-				//ActivityLabel.BindingContext = currentActivity;
+				currentActivityLabel.IsVisible = true;
+				resultsGrid.IsVisible = false;
+				//currentActivityLabel.BindingContext = currentActivity;
 				// Reset in order to clean list of accumulated activities and counters.
 				DependencyService.Get<IMotionActivityManager>().Reset();
 			}
@@ -118,24 +139,23 @@ namespace Trace {
 		}
 
 
-		private void displayGrid(Button trackButton) {
-			trackButton.Text = Language.Track;
-			ActivityLabel.IsVisible = false;
+		private void displayResultsGrid() {
+			currentActivityLabel.IsVisible = false;
 			MainActivityLabel.Text = string.Format(Language.MainActivityLabel,
 												   DependencyService.Get<IMotionActivityManager>().GetMostCommonActivity().ToLocalizedString());
-			Debug.WriteLine("Trajectory # of points: " + CustomMap.RouteCoordinates.Count);
+			Debug.WriteLine("Trajectory # of points: " + map.RouteCoordinates.Count);
 			// Refresh the map to display the trajectory.
-			MyStack.Children.RemoveAt(0);
-			MyStack.Children.Insert(0, CustomMap);
+			mapLayout.Children.Remove(map);
+			mapLayout.Children.Insert(0, map);
 
 			// Make the results grid visible to the user.
-			ResultsGrid.IsVisible = true;
+			resultsGrid.IsVisible = true;
 		}
 
 
 		private double calculateRouteDistance() {
 			double distanceInMeters = 0;
-			var coordinates = CustomMap.RouteCoordinates.GetEnumerator();
+			var coordinates = map.RouteCoordinates.GetEnumerator();
 			coordinates.MoveNext();
 			var pos1 = coordinates.Current;
 			while(coordinates.MoveNext()) {
@@ -162,7 +182,7 @@ namespace Trace {
 				UserId = User.Instance.Id,
 				StartTime = StartTrackingTime.DatetimeToEpochSeconds(),
 				EndTime = StopTrackingTime.DatetimeToEpochSeconds(),
-				AvgSpeed = (float) (Locator.AvgSpeed / CustomMap.RouteCoordinates.Count),
+				AvgSpeed = (float) (Locator.AvgSpeed / map.RouteCoordinates.Count),
 				MaxSpeed = (float) Locator.MaxSpeed,
 				TotalDistanceMeters = (long) distanceInMeters,
 				MostCommonActivity = DependencyService.Get<IMotionActivityManager>().GetMostCommonActivity().ToString(),
@@ -170,8 +190,8 @@ namespace Trace {
 				TimeSpentRunning = DependencyService.Get<IMotionActivityManager>().RunningDuration,
 				TimeSpentCycling = DependencyService.Get<IMotionActivityManager>().CyclingDuration,
 				TimeSpentDriving = DependencyService.Get<IMotionActivityManager>().DrivingDuration
-				//Points = CustomMap.RouteCoordinates
-				//PointsJSON = JsonConvert.SerializeObject(CustomMap.RouteCoordinates)
+				//Points = map.RouteCoordinates
+				//PointsJSON = JsonConvert.SerializeObject(map.RouteCoordinates)
 			};
 		}
 
@@ -251,10 +271,10 @@ namespace Trace {
 						ImageURL = c.ThisCheckpoint.LogoURL
 					};
 					pins.Add(pin);
-					CustomMap.Pins.Add(pin.Pin);
+					map.Pins.Add(pin.Pin);
 				}
 			}
-			CustomMap.CustomPins = pins;
+			map.CustomPins = pins;
 		}
 
 
@@ -263,11 +283,11 @@ namespace Trace {
 		/// Occurs when the challenge list is updated.
 		/// </summary>
 		public void UpdatePins() {
-			CustomMap.Pins.Clear();
+			map.Pins.Clear();
 			initializeChallengePins();
 			// Refresh the map to force renderer to run OnElementChanged() and display the new pins.
-			MyStack.Children.RemoveAt(0);
-			MyStack.Children.Insert(0, CustomMap);
+			mapLayout.Children.Remove(map);
+			mapLayout.Children.Insert(0, map);
 		}
 	}
 }

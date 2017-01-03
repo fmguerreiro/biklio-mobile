@@ -5,9 +5,6 @@ using Xamarin.Forms;
 using System.Linq;
 using System;
 using Trace.Localization;
-using Xamarin.Forms.Xaml;
-using FFImageLoading.Forms;
-using FFImageLoading;
 
 namespace Trace {
 
@@ -235,7 +232,6 @@ namespace Trace {
 		}
 
 
-
 		/// <summary>
 		/// Check if the user has met the conditions for any received challenge.
 		/// </summary>
@@ -248,11 +244,12 @@ namespace Trace {
 					var end = c.ExpiresAt;
 					if(TimeUtil.IsWithinPeriod(now, start, end)) {
 						// Check if distance cycled meets the criteria.
-						if(c.NeededCyclingDistance <= RewardEligibilityManager.CycledDistanceBetween(start, end)) {
+						var cycledDistance = RewardEligibilityManager.CycledDistanceBetween(start, end);
+						if(cycledDistance >= c.NeededCyclingDistance) {
 							c.IsComplete = true;
 							c.CompletedAt = now;
 							rewardCounter++;
-							// Record challenge completed event. TODO calculate claimedAt ...
+							// Record challenge completed event. TODO KPI calculate claimedAt ...
 							User.Instance.GetCurrentKPI().AddChallengeConditionCompletedEvent(c.GId,
 																							  TimeUtil.CurrentEpochTimeSeconds(),
 																							  0);

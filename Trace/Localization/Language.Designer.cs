@@ -71,6 +71,12 @@ namespace Trace.Localization {
             }
         }
         
+        public static string DontHaveAccount {
+            get {
+                return ResourceManager.GetString("DontHaveAccount", resourceCulture);
+            }
+        }
+        
         public static string Start {
             get {
                 return ResourceManager.GetString("Start", resourceCulture);

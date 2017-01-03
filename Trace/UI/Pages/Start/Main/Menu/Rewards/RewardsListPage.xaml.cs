@@ -7,8 +7,8 @@ namespace Trace {
 	/// <summary>
 	/// The rewards page shows the list of completed challenges.
 	/// </summary>
-	public partial class RewardsPage : ContentPage {
-		public RewardsPage() {
+	public partial class RewardsListPage : ContentPage {
+		public RewardsListPage() {
 			InitializeComponent();
 
 			IList<Challenge> rewards = SQLiteDB.Instance.GetRewards().ToList();

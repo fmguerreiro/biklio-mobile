@@ -18,11 +18,9 @@
 							Margin="5">
 							<Grid.RowDefinitions>
 								<RowDefinition
-									Height="0.5*" />
+									Height="30" />
 								<RowDefinition
-									Height="*" />
-								<RowDefinition
-									Height="*" />
+									Height="30" />
 								<RowDefinition
 									Height="*" />
 								<RowDefinition
@@ -32,23 +30,7 @@
 							</Grid.RowDefinitions>
 							<Grid.ColumnDefinitions>
 								<ColumnDefinition
-									Width="*" />
-								<ColumnDefinition
-									Width="*" />
-								<ColumnDefinition
-									Width="*" />
-								<ColumnDefinition
-									Width="*" />
-								<ColumnDefinition
-									Width="*" />
-								<ColumnDefinition
-									Width="*" />
-								<ColumnDefinition
-									Width="*" />
-								<ColumnDefinition
-									Width="*" />
-								<ColumnDefinition
-									Width="*" />
+									Width="60" />
 								<ColumnDefinition
 									Width="*" />
 							</Grid.ColumnDefinitions>
@@ -56,47 +38,45 @@
 								Source="{Binding LogoURL}"
 								DownsampleToViewSize="true"
 								Aspect="AspectFit"
-								Grid.Row="1"
+								Grid.Row="0"
 								Grid.Column="0"
-								Grid.RowSpan="3"
-								Grid.ColumnSpan="3">
+								Grid.RowSpan="2">
 							</ffimageloading:CachedImage>
 							<Label
 								Text="{Binding Name}"
+								VerticalTextAlignment="End"
 								LineBreakMode="NoWrap"
 								FontAttributes="Bold"
-								Grid.Row="1"
-								Grid.Column="3"
-								Grid.ColumnSpan="8" />
+								Grid.Row="0"
+								Grid.Column="1" />
 							<Label
 								Text="{Binding Type}"
 								LineBreakMode="NoWrap"
 								FontSize="Small"
-								TextColor="Silver"
-								Grid.Row="2"
-								Grid.Column="3"
-								Grid.ColumnSpan="8" />
+								TextColor="Gray"
+								Grid.Row="1"
+								Grid.Column="1" />
 							<Label
 								Text="{Binding AvailableHours, StringFormat={language:Translate ShopOpenBetween}}"
 								LineBreakMode="NoWrap"
 								FontSize="Small"
-								Grid.Row="4"
+								Grid.Row="2"
 								Grid.Column="0"
-								Grid.ColumnSpan="8" />
+								Grid.ColumnSpan="2" />
 							<Label
 								Text="{Binding PhoneNumber, StringFormat={language:Translate ShopPhoneNumber}}"
 								LineBreakMode="NoWrap"
 								FontSize="Small"
-								Grid.Row="5"
+								Grid.Row="3"
 								Grid.Column="0"
-								Grid.ColumnSpan="8" />
+								Grid.ColumnSpan="2" />
 							<Label
 								Text="{Binding WebsiteAddress, StringFormat={language:Translate ShopWebsite}}"
 								LineBreakMode="NoWrap"
 								FontSize="Small"
-								Grid.Row="6"
+								Grid.Row="4"
 								Grid.Column="0"
-								Grid.ColumnSpan="8" />
+								Grid.ColumnSpan="2" />
 						</Grid>
 					</ViewCell>
 				</TableSection>

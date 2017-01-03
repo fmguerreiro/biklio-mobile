@@ -26,7 +26,8 @@ namespace Trace {
 
 			InitializeComponent();
 
-			MainPage = new NavigationPage(new StartPage());
+			// First page of the application.
+			MainPage = new NavigationPage(new SignInPage());
 		}
 
 		protected override void OnStart() {

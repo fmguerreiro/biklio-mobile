@@ -40,6 +40,12 @@
 				</Entry.Behaviors>
 			</Entry>
 			<Grid>
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition
+						Width="*" />
+					<ColumnDefinition
+						Width="80" />
+				</Grid.ColumnDefinitions>
 				<Label
 					Text="{language:Translate RememberMe}"
 					XAlign="Start"
@@ -78,6 +84,17 @@
 					Text="{language:Translate LoginWithFacebook}"
 					BorderRadius="0"
 					Clicked="OnFacebookLogin" />
+				<Label
+					Text="{language:Translate DontHaveAccount}"
+					HorizontalOptions="Center"
+					FontSize="Small"
+					Margin="8" />
+				<Button
+					TextColor="White"
+					BackgroundColor="#FFD500"
+					Text="{language:Translate Register}"
+					BorderRadius="0"
+					Clicked="OnRegister" />
 			</StackLayout>
 		</StackLayout>
 	</ContentPage.Content>

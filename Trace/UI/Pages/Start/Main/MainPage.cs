@@ -24,7 +24,7 @@ namespace Trace {
 			var item = e.SelectedItem as MasterPageItem;
 			if(item != null) {
 				// If 'logout' was clicked.
-				if(item.TargetType.Equals(typeof(StartPage))) {
+				if(item.TargetType.Equals(typeof(SignInPage))) {
 					await logout(item);
 				}
 				// Else load another page from the menu.
@@ -39,11 +39,7 @@ namespace Trace {
 		async Task logout(MasterPageItem item) {
 			bool isLogout = await DisplayAlert(Language.Logout, Language.AreYouSure, Language.Yes, Language.No);
 			if(isLogout) {
-				User.Instance = null;
-				RewardEligibilityManager.Instance = null;
-				LoginManager.IsLoginVerified = LoginManager.IsOfflineLoggedIn = false;
-				await CrossGeolocator.Current.StopListeningAsync();
-				DependencyService.Get<IMotionActivityManager>().StopMotionUpdates();
+				await LoginManager.PrepareLogout();
 				Application.Current.MainPage = new NavigationPage((Page) Activator.CreateInstance(item.TargetType));
 			}
 		}

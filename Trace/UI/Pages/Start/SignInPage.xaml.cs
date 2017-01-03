@@ -98,6 +98,11 @@ namespace Trace {
 		}
 
 
+		void OnRegister(object sender, EventArgs e) {
+			Navigation.PushAsync(new RegistrationPage());
+		}
+
+
 		/// <summary>
 		/// If the OAuthLogin is successful, finish the login by sending the token to Web Server.
 		/// </summary>
@@ -140,7 +145,8 @@ namespace Trace {
 			get {
 				return new Action(async () => {
 					await Task.Delay(1000);
-					var navigation = new NavigationPage(new StartPage());
+					await LoginManager.PrepareLogout();
+					var navigation = new NavigationPage(new SignInPage());
 					Application.Current.MainPage = navigation;
 					await navigation.DisplayAlert(Language.Error, Language.OAuthError, Language.Ok);
 					//NavPage.PopModalAsync();

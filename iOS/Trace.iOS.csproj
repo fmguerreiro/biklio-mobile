@@ -321,6 +321,9 @@
     <BundleResource Include="Resources\number_icons\number_7.png" />
     <BundleResource Include="Resources\number_icons\number_8.png" />
     <BundleResource Include="Resources\number_icons\number_9.png" />
+    <BundleResource Include="Resources\map_icons\locate.png" />
+    <BundleResource Include="Resources\map_icons\play_arrow.png" />
+    <BundleResource Include="Resources\map_icons\stop.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
   <Import Project="..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" />

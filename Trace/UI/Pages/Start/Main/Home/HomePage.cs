@@ -19,7 +19,7 @@ namespace Trace {
 			Children.Add(mapPage);
 
 			var giftMenuButton = new ToolbarItem(Language.Rewards, "reward.png", () => {
-				Navigation.PushAsync(new RewardsPage());
+				Navigation.PushAsync(new RewardsListPage());
 			});
 			ToolbarItems.Add(giftMenuButton);
 
@@ -38,7 +38,7 @@ namespace Trace {
 		}
 
 		void OnMyRewardsClicked() {
-			Navigation.PushAsync(new RewardsPage());
+			Navigation.PushAsync(new RewardsListPage());
 		}
 
 		void OnDashboardClicked() {

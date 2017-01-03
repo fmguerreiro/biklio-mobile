@@ -18,7 +18,7 @@ namespace Trace {
 			masterPageItems.Add(new MasterPageItem {
 				Title = Language.Rewards,
 				IconSource = "rewards.png",
-				TargetType = typeof(RewardsPage)
+				TargetType = typeof(RewardsListPage)
 			});
 			masterPageItems.Add(new MasterPageItem {
 				Title = Language.Dashboard,
@@ -43,7 +43,7 @@ namespace Trace {
 			masterPageItems.Add(new MasterPageItem {
 				Title = Language.Logout,
 				IconSource = "logout.png",
-				TargetType = typeof(StartPage)
+				TargetType = typeof(SignInPage)
 			});
 			listView.ItemsSource = masterPageItems;
 

@@ -5,32 +5,13 @@
 	xmlns:locals="clr-namespace:Trace;assembly=Trace"
 	xmlns:language="clr-namespace:Trace.Localization;assembly=Trace"
 	xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
-	x:Class="Trace.ChallengesPage"
-	Title="{language:Translate Challenges}">
+	x:Class="Trace.RewardsListPage"
+	Title="{language:Translate Rewards}">
 	<ContentPage.Content>
 		<ListView
+			ItemsSource="{Binding Rewards}"
 			CachingStrategy="RecycleElement"
-			x:Name="ChallengeListView"
-			ItemsSource="{Binding Challenges}"
-			RowHeight="60"
-			ItemSelected="OnSelection"
-			IsPullToRefreshEnabled="true"
-			Refreshing="OnRefresh">
-			<ListView.Header>
-				<StackLayout
-					Spacing="0">
-					<Label
-						Text="{Binding Summary}"
-						LineBreakMode="NoWrap"
-						FontAttributes="Bold"
-						XAlign="Center" />
-					<Label
-						x:Name="PullUpHintLabel"
-						Text="{language:Translate PullUpToUpdate}"
-						XAlign="Center"
-						FontSize="Small" />
-				</StackLayout>
-			</ListView.Header>
+			ItemSelected="OnSelection">
 			<ListView.ItemTemplate>
 				<DataTemplate>
 					<ViewCell>
@@ -45,43 +26,36 @@
 							</Grid.RowDefinitions>
 							<Grid.ColumnDefinitions>
 								<ColumnDefinition
-									Width="60" />
+									Width="20" />
 								<ColumnDefinition
-									Width="2*" />
+									Width="20" />
 								<ColumnDefinition
 									Width="*" />
 							</Grid.ColumnDefinitions>
 							<ffimageloading:CachedImage
-								Source="{Binding ThisCheckpoint.LogoURL}"
 								Margin="3"
+								Source="{Binding ThisCheckpoint.LogoURL}"
 								DownsampleToViewSize="true"
 								Aspect="Fill"
 								Grid.Row="0"
 								Grid.Column="0"
-								Grid.RowSpan="2">
+								Grid.RowSpan="2"
+								Grid.ColumnSpan="2">
 							</ffimageloading:CachedImage>
 							<Label
 								Text="{Binding ThisCheckpoint.Name}"
 								LineBreakMode="NoWrap"
 								FontAttributes="Bold"
-								VerticalTextAlignment="End"
 								Grid.Row="0"
-								Grid.Column="1" />
+								Grid.Column="2"
+								Grid.ColumnSpan="3" />
 							<Label
-								Text="{Binding Condition}"
+								Text="{Binding Reward}"
 								LineBreakMode="NoWrap"
 								FontSize="14"
 								Grid.Row="1"
-								Grid.Column="1" />
-							<ffimageloading:CachedImage
-								Source="{Binding ThisCheckpoint.MapImageURL}"
-								Margin="3"
-								DownsampleToViewSize="true"
-								Aspect="AspectFill"
-								Grid.Row="0"
 								Grid.Column="2"
-								Grid.RowSpan="2">
-							</ffimageloading:CachedImage>
+								Grid.ColumnSpan="3" />
 						</Grid>
 					</ViewCell>
 				</DataTemplate>

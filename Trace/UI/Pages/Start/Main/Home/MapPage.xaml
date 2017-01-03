@@ -4,6 +4,7 @@
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 	xmlns:locals="clr-namespace:Trace;assembly=Trace"
 	xmlns:language="clr-namespace:Trace.Localization;assembly=Trace"
+	xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
 	x:Class="Trace.MapPage"
 	x:Name="TRACEMapPage"
 	Title="{language:Translate Map}">
@@ -21,33 +22,99 @@
 			</Style>
 		</ResourceDictionary>
 	</ContentPage.Resources>
-	<StackLayout
-		x:Name="MyStack"
-		HorizontalOptions="FillAndExpand"
-		Orientation="Vertical"
-		Spacing="0">
+	<Grid
+		x:Name="mapLayout">
+		<Grid.RowDefinitions
+			RowSpacing="1"
+			ColumnSpacing="1">
+			<RowDefinition
+				Height="20" />
+			<RowDefinition
+				Height="60" />
+			<RowDefinition
+				Height="80" />
+			<RowDefinition
+				Height="*" />
+			<RowDefinition
+				Height="120" />
+		</Grid.RowDefinitions>
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition
+				Width="*" />
+			<ColumnDefinition
+				Width="80" />
+		</Grid.ColumnDefinitions>
 		<locals:TraceMap
-			x:Name="CustomMap"
+			x:Name="map"
 			WidthRequest="320"
 			HeightRequest="200"
+			HorizontalOptions="FillAndExpand"
 			IsShowingUser="true"
-			MapType="Street" />
+			MapType="Street"
+			Grid.Row="0"
+			Grid.Column="0"
+			Grid.RowSpan="5"
+			Grid.ColumnSpan="2" />
 		<Label
-			x:Name="ActivityLabel"
+			x:Name="currentActivityLabel"
 			Text="{Binding LocalizedActivity}"
 			HorizontalTextAlignment="Center"
+			Margin="0"
 			IsVisible="true"
 			BackgroundColor="#24C121"
+			Grid.Row="0"
+			Grid.Column="0"
+			Grid.ColumnSpan="2"
 			TextColor="White"
 			VerticalTextAlignment="Center">
 		</Label>
 		<Label.BindingContext>
 			<locals:CurrentActivity />
 		</Label.BindingContext>
+		<Button
+			Clicked="OnLocateUser"
+			BackgroundColor="#4BB166"
+			HeightRequest="40"
+			WidthRequest="40"
+			BorderRadius="20"
+			VerticalOptions="Center"
+			HorizontalOptions="Center"
+			Grid.Row="1"
+			Grid.Column="1" />
+		<ffimageloading:CachedImage
+			x:Name="locateImage"
+			Source="map_icons/locate.png"
+			HorizontalOptions="Center"
+			VerticalOptions="Center"
+			Grid.Row="1"
+			Grid.Column="1">
+		</ffimageloading:CachedImage>
+		<Button
+			Clicked="OnStartTracking"
+			BackgroundColor="#FFD500"
+			HeightRequest="45"
+			WidthRequest="45"
+			BorderRadius="23"
+			VerticalOptions="Center"
+			HorizontalOptions="Center"
+			Grid.Row="2"
+			Grid.Column="1" />
+		<ffimageloading:CachedImage
+			x:Name="trackButtonImage"
+			Source="map_icons/play_arrow.png"
+			HorizontalOptions="Center"
+			VerticalOptions="Center"
+			Grid.Row="2"
+			Grid.Column="1">
+		</ffimageloading:CachedImage>
 		<Grid
-			x:Name="ResultsGrid"
+			x:Name="resultsGrid"
 			IsVisible="false"
-			BackgroundColor="#24C121">
+			Margin="5"
+			BackgroundColor="#24C121"
+			Grid.Row="4"
+			Grid.Column="0"
+			Grid.ColumnSpan="2">
 			<Label
 				x:Name="MainActivityLabel"
 				Text="{Binding LocalizedActivity, StringFormat={language:Translate MainActivityLabel}}"
@@ -93,12 +160,5 @@
 				Grid.Column="4"
 				Text=" " />
 		</Grid>
-		<Button
-			Text="Track"
-			Clicked="OnStartTracking"
-			HorizontalOptions="FillAndExpand"
-			BackgroundColor="#4BB166"
-			TextColor="White"
-			BorderRadius="0" />
-	</StackLayout>
+	</Grid>
 </ContentPage>

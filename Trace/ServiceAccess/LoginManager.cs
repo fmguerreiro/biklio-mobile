@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Threading.Tasks;
 using Plugin.Connectivity;
 using Plugin.Connectivity.Abstractions;
+using Plugin.Geolocator;
 using Trace.Localization;
 using Xamarin.Forms;
 
@@ -50,8 +51,8 @@ namespace Trace {
 							Device.BeginInvokeOnMainThread(async () => {
 								await Application.Current.MainPage.DisplayAlert(Language.Error, Language.OnlineLoginError, Language.Ok);
 								DependencyService.Get<DeviceKeychainInterface>().DeleteCredentials(User.Instance.Username);
-								IsOfflineLoggedIn = false;
-								Application.Current.MainPage = new NavigationPage(new StartPage());
+								await PrepareLogout();
+								Application.Current.MainPage = new NavigationPage(new SignInPage());
 							});
 							return;
 						}
@@ -97,6 +98,15 @@ namespace Trace {
 				SQLiteDB.Instance.SaveUser(User.Instance);
 			}
 			return result.success;
+		}
+
+
+		public async static Task PrepareLogout() {
+			User.Instance = null;
+			RewardEligibilityManager.Instance = null;
+			LoginManager.IsLoginVerified = LoginManager.IsOfflineLoggedIn = false;
+			await CrossGeolocator.Current.StopListeningAsync();
+			DependencyService.Get<IMotionActivityManager>().StopMotionUpdates();
 		}
 	}
 }

@@ -64,7 +64,7 @@
 			</Entry>
 			<Button
 				Text="{language:Translate Register}"
-				BackgroundColor="#24C121"
+				BackgroundColor="#FFD500"
 				TextColor="White"
 				BorderRadius="0"
 				Clicked="OnRegister" />
