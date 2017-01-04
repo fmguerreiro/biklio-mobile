@@ -14,6 +14,7 @@ namespace Trace.Droid {
 
 			global::Xamarin.Forms.Forms.Init(this, bundle);
 
+
 			// Library for faster image processing.
 			CachedImageRenderer.Init();
 

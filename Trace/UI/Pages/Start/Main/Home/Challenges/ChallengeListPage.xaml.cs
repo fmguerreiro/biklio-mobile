@@ -11,12 +11,12 @@ namespace Trace {
 	/// <summary>
 	/// Page that displays the list of incomplete challenges.
 	/// </summary>
-	public partial class ChallengesPage : ContentPage {
+	public partial class ChallengeListPage : ContentPage {
 
 		// Reference to the map page in order to update pins when challenges are updated.
 		MapPage mapPage;
 
-		public ChallengesPage(MapPage mapPage) {
+		public ChallengeListPage(MapPage mapPage) {
 			InitializeComponent();
 			if(Device.OS == TargetPlatform.iOS) { Icon = "trophy.png"; }
 			this.mapPage = mapPage;

@@ -257,6 +257,12 @@ namespace Trace.Localization {
             }
         }
         
+        public static string Tutorial {
+            get {
+                return ResourceManager.GetString("Tutorial", resourceCulture);
+            }
+        }
+        
         public static string Track {
             get {
                 return ResourceManager.GetString("Track", resourceCulture);
@@ -806,6 +812,54 @@ namespace Trace.Localization {
         public static string General {
             get {
                 return ResourceManager.GetString("General", resourceCulture);
+            }
+        }
+        
+        public static string TutorialDescription1 {
+            get {
+                return ResourceManager.GetString("TutorialDescription1", resourceCulture);
+            }
+        }
+        
+        public static string TutorialTitle2 {
+            get {
+                return ResourceManager.GetString("TutorialTitle2", resourceCulture);
+            }
+        }
+        
+        public static string TutorialDescription2 {
+            get {
+                return ResourceManager.GetString("TutorialDescription2", resourceCulture);
+            }
+        }
+        
+        public static string TutorialTitle3 {
+            get {
+                return ResourceManager.GetString("TutorialTitle3", resourceCulture);
+            }
+        }
+        
+        public static string TutorialDescription3 {
+            get {
+                return ResourceManager.GetString("TutorialDescription3", resourceCulture);
+            }
+        }
+        
+        public static string TutorialTitle4 {
+            get {
+                return ResourceManager.GetString("TutorialTitle4", resourceCulture);
+            }
+        }
+        
+        public static string TutorialDescription4 {
+            get {
+                return ResourceManager.GetString("TutorialDescription4", resourceCulture);
+            }
+        }
+        
+        public static string GotIt {
+            get {
+                return ResourceManager.GetString("GotIt", resourceCulture);
             }
         }
     }

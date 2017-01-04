@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Trace.Localization;
@@ -28,7 +29,7 @@ namespace Trace {
 
 			Locator = new Geolocator(map);
 
-			initializeChallengePins();
+			initializeCheckpointPins();
 
 			Locator.Start().DoNotAwait();
 
@@ -255,24 +256,24 @@ namespace Trace {
 		}
 
 
-		private void initializeChallengePins() {
+		private void initializeCheckpointPins() {
 			var pins = new List<CustomPin>();
-			foreach(Challenge c in User.Instance.Challenges) {
-				if(c.ThisCheckpoint != null) {
-					var pin = new CustomPin {
-						Pin = new Pin {
-							Type = PinType.Place,
-							Position = new Position(c.ThisCheckpoint.Latitude, c.ThisCheckpoint.Longitude),
-							Label = c.Description,
-							Address = c.NeededCyclingDistance.ToString() // TODO
-						},
-						Id = "",
-						Checkpoint = c.ThisCheckpoint,
-						ImageURL = c.ThisCheckpoint.LogoURL
-					};
-					pins.Add(pin);
-					map.Pins.Add(pin.Pin);
-				}
+			foreach(Checkpoint c in User.Instance.Checkpoints.Values) {
+				var firstChallenge = c.Challenges.FirstOrDefault();
+				var pin = new CustomPin {
+					Pin = new Pin {
+						Type = PinType.Place,
+						Position = new Position(c.Latitude, c.Longitude),
+						Label = c.Name,
+						Address = firstChallenge?.Reward
+					},
+					Id = "",
+					Checkpoint = c,
+					ImageURL = c.LogoURL
+				};
+				pins.Add(pin);
+				map.Pins.Add(pin.Pin);
+
 			}
 			map.CustomPins = pins;
 		}
@@ -284,7 +285,7 @@ namespace Trace {
 		/// </summary>
 		public void UpdatePins() {
 			map.Pins.Clear();
-			initializeChallengePins();
+			initializeCheckpointPins();
 			// Refresh the map to force renderer to run OnElementChanged() and display the new pins.
 			mapLayout.Children.Remove(map);
 			mapLayout.Children.Insert(0, map);

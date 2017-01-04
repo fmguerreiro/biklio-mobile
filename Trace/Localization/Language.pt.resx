@@ -122,6 +122,9 @@
 	<data name="Map" xml:space="preserve">
         <value>Mapa</value>
   	</data>
+	<data name="Tutorial" xml:space="preserve">
+    	<value>Tutorial</value>
+  	</data>
 	<data name="Track" xml:space="preserve">
         <value>Começar</value>
   	</data>
@@ -406,5 +409,29 @@
   	</data>
 	<data name="General" xml:space="preserve">
     	<value>Geral</value>
+  	</data>
+	<data name="TutorialDescription1" xml:space="preserve">
+    	<value>O Biklio foi feito com o objectivo de motivar as pessoas a adotar meios de transporte mais sustentáveis.</value>
+  	</data>
+	<data name="TutorialTitle2" xml:space="preserve">
+    	<value>Pedala para ganhar recompensas nas lojas</value>
+  	</data>
+	<data name="TutorialDescription2" xml:space="preserve">
+    	<value>Começas logo a ganhar! O Biklio consegue ver automaticamente se estás a pedalar. Para algumas lojas, isso é mais do que suficiente!</value>
+  	</data>
+	<data name="TutorialTitle3" xml:space="preserve">
+    	<value>Regista os teus trajetos para mais recompensas</value>
+  	</data>
+	<data name="TutorialDescription3" xml:space="preserve">
+    	<value>Algumas lojas requerem que pedales por alguns kilometros antes de ganhares a recompensa. Carrega no botão para registares a tua trajetória.</value>
+  	</data>
+	<data name="TutorialTitle4" xml:space="preserve">
+    	<value>Obtém a tua recompensa</value>
+  	</data>
+	<data name="TutorialDescription4" xml:space="preserve">
+    	<value>Viaja até à loja para receberes a tua merecida recompensa. A única coisa que tens que fazer é mostrar esta aplicação.</value>
+  	</data>
+	<data name="GotIt" xml:space="preserve">
+    	<value>Entendi</value>
   	</data>
 </root>

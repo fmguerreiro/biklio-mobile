@@ -14,27 +14,19 @@ namespace Trace {
 
 			// Add tabs to the page.
 			var mapPage = new MapPage();
-			var challengesPage = new ChallengesPage(mapPage);
+			var challengesPage = new ChallengeListPage(mapPage);
 			Children.Add(challengesPage);
 			Children.Add(mapPage);
 
-			var giftMenuButton = new ToolbarItem(Language.Rewards, "reward.png", () => {
-				Navigation.PushAsync(new RewardsListPage());
+			var giftToolbarButton = new ToolbarItem(Language.Rewards, "reward.png", async () => {
+				await Navigation.PushAsync(new RewardsListPage());
 			});
-			ToolbarItems.Add(giftMenuButton);
+			ToolbarItems.Add(giftToolbarButton);
 
-			// Add a Menu button to the page header to navigate the app.
-			//ToolbarItems.Add(new ToolbarItem(MENU, "", async () => {
-			//	var action = await DisplayActionSheet(MENU, CANCEL, null, MY_REWARDS, DASHBOARD, MY_ROUTES, SETTINGS, LOGOUT);
-			//	switch(action) {
-			//		case MY_REWARDS: OnMyRewardsClicked(); return;
-			//		case DASHBOARD: OnDashboardClicked(); return;
-			//		case MY_ROUTES: OnMyRoutesClicked(); return;
-			//		case SETTINGS: OnSettingsClicked(); return;
-			//		case LOGOUT: await OnLogoutClicked(); return;
-			//		default: return;
-			//	}
-			//}));
+			var tutorialToolbarButton = new ToolbarItem(Language.Tutorial, "tutorial.png", async () => {
+				await Navigation.PushModalAsync(new TutorialPage());
+			});
+			ToolbarItems.Add(tutorialToolbarButton);
 		}
 
 		void OnMyRewardsClicked() {

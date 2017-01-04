@@ -122,6 +122,9 @@
 	<data name="Map" xml:space="preserve">
     	<value>Map</value>
   	</data>
+	<data name="Tutorial" xml:space="preserve">
+    	<value>Tutorial</value>
+  	</data>
 	<data name="Track" xml:space="preserve">
     	<value>Track</value>
   	</data>
@@ -408,5 +411,29 @@
   	</data>
 	<data name="General" xml:space="preserve">
     	<value>General</value>
+  	</data>
+	<data name="TutorialDescription1" xml:space="preserve">
+    	<value>Biklio was designed to connect shops that want to reward citizens who adopt greener methods of transportation.</value>
+  	</data>
+	<data name="TutorialTitle2" xml:space="preserve">
+    	<value>Cycle to get rewards in shops</value>
+  	</data>
+	<data name="TutorialDescription2" xml:space="preserve">
+    	<value>You're already winning! Biklio can automatically tell if you are cycling. For some shops, that's more than enough!</value>
+  	</data>
+	<data name="TutorialTitle3" xml:space="preserve">
+    	<value>Tracking for rewards</value>
+  	</data>
+	<data name="TutorialDescription3" xml:space="preserve">
+    	<value>Some shops, however, require you to cycle for a few kilometers before getting that reward. Click the tracking button to earn it!</value>
+  	</data>
+	<data name="TutorialTitle4" xml:space="preserve">
+    	<value>Claim your rewards</value>
+  	</data>
+	<data name="TutorialDescription4" xml:space="preserve">
+    	<value>Travel to the shop and claim your well deserved reward. All you need to do is show them this App.</value>
+  	</data>
+	<data name="GotIt" xml:space="preserve">
+    	<value>Got it</value>
   	</data>
 </root>

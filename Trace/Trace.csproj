@@ -28,9 +28,6 @@
   </PropertyGroup>
   <ItemGroup>
     <EmbeddedResource Include="App.xaml" />
-    <EmbeddedResource Include="UI\Pages\Start\SignInPage.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </EmbeddedResource>
     <EmbeddedResource Include="UI\Pages\Start\RegistrationPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
@@ -46,10 +43,7 @@
     <EmbeddedResource Include="UI\Pages\Start\Main\Menu\Settings\SettingsPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\Pages\Start\Main\Home\MapPage.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Include="UI\Pages\Start\Main\Home\Challenges\ChallengesPage.xaml">
+    <EmbeddedResource Include="UI\Pages\Start\Main\Home\Challenges\ChallengeListPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\Pages\Start\Main\Home\Challenges\CheckpointDetailsPage.xaml">
@@ -79,6 +73,15 @@
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\Pages\Start\Main\Menu\Rewards\ClaimRewardPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\Pages\SignInPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\Pages\Start\Main\Home\Map\MapPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\Pages\Start\Main\Home\Tutorial\TutorialPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
   </ItemGroup>
@@ -136,9 +139,6 @@
     <Compile Include="Business\MotionActivity\RewardEligibility\RewardEligibilityStateMachine.cs" />
     <Compile Include="Business\MotionActivity\RewardEligibility\Timer.cs" />
     <Compile Include="UI\Controls\BindablePicker.cs" />
-    <Compile Include="UI\Pages\Start\SignInPage.xaml.cs">
-      <DependentUpon>SignInPage.xaml</DependentUpon>
-    </Compile>
     <Compile Include="UI\Pages\Start\RegistrationPage.xaml.cs">
       <DependentUpon>RegistrationPage.xaml</DependentUpon>
     </Compile>
@@ -158,11 +158,8 @@
     </Compile>
     <Compile Include="UI\Pages\Start\Main\Menu\Settings\SettingsPageModel.cs" />
     <Compile Include="UI\Pages\Start\Main\Home\HomePage.cs" />
-    <Compile Include="UI\Pages\Start\Main\Home\MapPage.xaml.cs">
-      <DependentUpon>MapPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="UI\Pages\Start\Main\Home\Challenges\ChallengesPage.xaml.cs">
-      <DependentUpon>ChallengesPage.xaml</DependentUpon>
+    <Compile Include="UI\Pages\Start\Main\Home\Challenges\ChallengeListPage.xaml.cs">
+      <DependentUpon>ChallengeListPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="UI\Pages\Start\Main\Home\Challenges\CheckpointDetailsPage.xaml.cs">
       <DependentUpon>CheckpointDetailsPage.xaml</DependentUpon>
@@ -224,6 +221,16 @@
       <DependentUpon>ClaimRewardPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="ServiceAccess\WebServiceObjects\Challenges\WSType.cs" />
+    <Compile Include="UI\Pages\SignInPage.xaml.cs">
+      <DependentUpon>SignInPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Pages\Start\Main\Home\Map\MapPage.xaml.cs">
+      <DependentUpon>MapPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Pages\Start\Main\Home\Tutorial\TutorialPage.xaml.cs">
+      <DependentUpon>TutorialPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Pages\Start\Main\Home\Tutorial\TutorialDataModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Business\" />
@@ -264,6 +271,8 @@
     <Folder Include="ServiceAccess\WebServiceObjects\Campaigns\" />
     <Folder Include="UI\Pages\Start\Main\Menu\Campaigns\" />
     <Folder Include="UI\Pages\Start\Main\Menu\Rewards\" />
+    <Folder Include="UI\Pages\Start\Main\Home\Map\" />
+    <Folder Include="UI\Pages\Start\Main\Home\Tutorial\" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Microsoft.Threading.Tasks">
@@ -356,6 +365,9 @@
     </Reference>
     <Reference Include="FFImageLoading.Transformations">
       <HintPath>..\packages\Xamarin.FFImageLoading.Transformations.2.2.5\lib\portable-net45+win8+wpa81+wp8\FFImageLoading.Transformations.dll</HintPath>
+    </Reference>
+    <Reference Include="Xamarin.Forms.CarouselView">
+      <HintPath>..\packages\Xamarin.Forms.CarouselView.2.3.0-pre2\lib\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Xamarin.Forms.CarouselView.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
