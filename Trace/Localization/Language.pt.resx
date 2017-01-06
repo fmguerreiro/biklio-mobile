@@ -155,6 +155,9 @@
     	<value>Vel. Média:
 {0} m/s</value>
   	</data>
+	<data name="GetPositionError" xml:space="preserve">
+    	<value>Não foi possível obter a tua localização. Estás dentro ou próximo de um edifício?</value>
+  	</data>
 	<data name="Challenges" xml:space="preserve">
         <value>Desafios</value>
   	</data>
@@ -433,5 +436,8 @@
   	</data>
 	<data name="GotIt" xml:space="preserve">
     	<value>Entendi</value>
+  	</data>
+	<data name="Privacy" xml:space="preserve">
+    	<value>Privacidade</value>
   	</data>
 </root>

@@ -1,9 +1,9 @@
 ﻿using Plugin.Connectivity;
 using Xamarin.Forms;
 using Trace.Localization;
+using Xamarin.Forms.Xaml;
 using System.Diagnostics;
 using System.Threading.Tasks;
-using Xamarin.Forms.Xaml;
 
 [assembly: XamlCompilation(XamlCompilationOptions.Compile)]
 namespace Trace {
@@ -11,6 +11,8 @@ namespace Trace {
 	public partial class App : Application {
 
 		public static string AppName { get { return "Trace"; } }
+
+		public static string DEBUG_ActivityLog = "";
 
 		public App() {
 			// Localize the display language.
@@ -30,25 +32,51 @@ namespace Trace {
 			MainPage = new NavigationPage(new SignInPage());
 		}
 
+
+		/// <summary>
+		/// Handle when your app starts
+		/// </summary>
 		protected override void OnStart() {
-			// Handle when your app starts
 			CrossConnectivity.Current.ConnectivityChanged += LoginManager.OnConnectivityChanged;
 		}
 
+
+		/// <summary>
+		/// Handle when your app enters background. Runs for about 5 seconds.
+		/// </summary>
 		protected override void OnSleep() {
-			// Handle when your app enters background. Runs for about 5 seconds.
 			CrossConnectivity.Current.ConnectivityChanged -= LoginManager.OnConnectivityChanged;
-			Geolocator.LowerAccuracy();
+			Geolocator.TryLowerAccuracy();
+
+			// Start background music loop to keep app from suspending on iOS.
+			if(LoginManager.IsOfflineLoggedIn && !Geolocator.IsTrackingInProgress) {
+				Device.BeginInvokeOnMainThread(() => {
+					DependencyService.Get<ISoundPlayer>().ActivateAudioSession();
+					DependencyService.Get<ISoundPlayer>().PlaySound(null);
+					Debug.WriteLine("StartAudioSession(): " + DependencyService.Get<ISoundPlayer>().IsPlaying());
+				});
+			}
 
 			// Serialize and store KPIs obtained.
 			User.Instance.GetCurrentKPI().StoreKPI();
 		}
 
+
+		/// <summary>
+		/// Handle when your app resumes.
+		/// </summary>
 		protected override void OnResume() {
-			// Handle when your app resumes
 			CrossConnectivity.Current.ConnectivityChanged += LoginManager.OnConnectivityChanged;
 			Geolocator.ImproveAccuracy();
 			//await Task.Delay(1000);
+			Debug.WriteLine("beforeDeactivateSound->" + DependencyService.Get<ISoundPlayer>().IsPlaying());
+			if(LoginManager.IsOfflineLoggedIn) {
+				DependencyService.Get<ISoundPlayer>().StopSound();
+				DependencyService.Get<ISoundPlayer>().DeactivateAudioSession();
+			}
+			Debug.WriteLine("afterDeactivateSound->" + DependencyService.Get<ISoundPlayer>().IsPlaying());
+			if(!Geolocator.IsTrackingInProgress)
+				Task.Run(() => Geolocator.Stop());
 		}
 	}
 }

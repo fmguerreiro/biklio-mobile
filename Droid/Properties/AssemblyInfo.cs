@@ -22,6 +22,10 @@ using Xamarin.Forms.Xaml;
 // The form "{Major}.{Minor}.*" will automatically update the build and revision,
 // and "{Major}.{Minor}.{Build}.*" will update just the revision.
 
+[assembly: UsesFeature("android.hardware.location", Required = false)]
+[assembly: UsesFeature("android.hardware.location.gps", Required = false)]
+[assembly: UsesFeature("android.hardware.location.network", Required = false)]
+
 [assembly: AssemblyVersion("1.0.0")]
 
 // The following attributes are used to specify the signing key for the assembly, 

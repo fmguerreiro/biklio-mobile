@@ -2,6 +2,7 @@
 using Android.Content.PM;
 using Android.OS;
 using FFImageLoading.Forms.Droid;
+using Plugin.Permissions;
 
 namespace Trace.Droid {
 	[Activity(Label = "Trace.Droid", Icon = "@drawable/icon", Theme = "@style/MyTheme", MainLauncher = true, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]
@@ -25,6 +26,11 @@ namespace Trace.Droid {
 			Xamarin.FormsMaps.Init(this, bundle);
 
 			LoadApplication(new App());
+		}
+
+
+		public override void OnRequestPermissionsResult(int requestCode, string[] permissions, Permission[] grantResults) {
+			PermissionsImplementation.Current.OnRequestPermissionsResult(requestCode, permissions, grantResults);
 		}
 	}
 }

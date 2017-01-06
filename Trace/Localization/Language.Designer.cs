@@ -311,6 +311,12 @@ namespace Trace.Localization {
             }
         }
         
+        public static string GetPositionError {
+            get {
+                return ResourceManager.GetString("GetPositionError", resourceCulture);
+            }
+        }
+        
         public static string Challenges {
             get {
                 return ResourceManager.GetString("Challenges", resourceCulture);
@@ -860,6 +866,36 @@ namespace Trace.Localization {
         public static string GotIt {
             get {
                 return ResourceManager.GetString("GotIt", resourceCulture);
+            }
+        }
+        
+        public static string Privacy {
+            get {
+                return ResourceManager.GetString("Privacy", resourceCulture);
+            }
+        }
+        
+        public static string PrivacyPolicyPart1 {
+            get {
+                return ResourceManager.GetString("PrivacyPolicyPart1", resourceCulture);
+            }
+        }
+        
+        public static string PrivacyPolicyPart2 {
+            get {
+                return ResourceManager.GetString("PrivacyPolicyPart2", resourceCulture);
+            }
+        }
+        
+        public static string PrivacyPolicyPart3 {
+            get {
+                return ResourceManager.GetString("PrivacyPolicyPart3", resourceCulture);
+            }
+        }
+        
+        public static string PrivacyPolicyPart4 {
+            get {
+                return ResourceManager.GetString("PrivacyPolicyPart4", resourceCulture);
             }
         }
     }

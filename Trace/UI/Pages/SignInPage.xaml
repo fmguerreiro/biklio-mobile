@@ -94,6 +94,9 @@
 					BackgroundColor="#FFD500"
 					Text="{language:Translate Register}"
 					BorderRadius="0"
+					HeightRequest="30"
+					HorizontalOptions="Center"
+					WidthRequest="150"
 					Clicked="OnRegister" />
 			</StackLayout>
 		</StackLayout>

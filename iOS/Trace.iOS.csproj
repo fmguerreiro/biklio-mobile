@@ -44,12 +44,13 @@
     <MtouchUseRefCounting>true</MtouchUseRefCounting>
     <MtouchFloat32>true</MtouchFloat32>
     <CodesignEntitlements>Entitlements.plist</CodesignEntitlements>
-    <MtouchLink>SdkOnly</MtouchLink>
+    <MtouchLink>None</MtouchLink>
     <MtouchArch>ARMv7, ARM64</MtouchArch>
     <MtouchHttpClientHandler>HttpClientHandler</MtouchHttpClientHandler>
     <MtouchTlsProvider>Default</MtouchTlsProvider>
     <PlatformTarget>x86</PlatformTarget>
     <CodesignProvision>b7669ec1-09e3-4559-ae9e-463ef4a24da1</CodesignProvision>
+    <MtouchUseLlvm>true</MtouchUseLlvm>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhoneSimulator' ">
     <DebugType>pdbonly</DebugType>
@@ -275,7 +276,7 @@
   <ItemGroup>
     <Compile Include="Main.cs" />
     <Compile Include="AppDelegate.cs" />
-    <Compile Include="App\Security\StoreCredentials.cs" />
+    <Compile Include="App\Security\KeyChain.cs" />
     <Compile Include="App\Data\SQLite.cs" />
     <Compile Include="App\Business\Map\TraceMapRenderer.cs" />
     <Compile Include="App\Business\MotionActivity\MotionActivityManager.cs" />
@@ -289,50 +290,56 @@
     <Compile Include="Localization\Localize.cs" />
     <Compile Include="App\NotificationMessage.cs" />
     <Compile Include="App\Utils\ImageResizer.cs" />
+    <Compile Include="App\Utils\SoundPlayer.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="GoogleService-Info.plist" />
-    <BundleResource Include="Resources\campaign.png" />
-    <BundleResource Include="Resources\cross_error.png" />
-    <BundleResource Include="Resources\cycling.png" />
-    <BundleResource Include="Resources\dashboard.png" />
-    <BundleResource Include="Resources\default_shop.png" />
-    <BundleResource Include="Resources\driving.png" />
-    <BundleResource Include="Resources\green_check.png" />
-    <BundleResource Include="Resources\home.png" />
-    <BundleResource Include="Resources\logout.png" />
-    <BundleResource Include="Resources\maps_icon.png" />
-    <BundleResource Include="Resources\menu.png" />
-    <BundleResource Include="Resources\my_routes.png" />
-    <BundleResource Include="Resources\new_campaign.png" />
-    <BundleResource Include="Resources\reward.png" />
-    <BundleResource Include="Resources\rewards.png" />
-    <BundleResource Include="Resources\running.png" />
-    <BundleResource Include="Resources\settings.png" />
-    <BundleResource Include="Resources\subscribed_campaigns.png" />
-    <BundleResource Include="Resources\trophy.png" />
-    <BundleResource Include="Resources\walking.png" />
-    <BundleResource Include="Resources\menu_background.png" />
-    <BundleResource Include="Resources\location_unknown.png" />
-    <BundleResource Include="Resources\default_shop_20px.png" />
-    <BundleResource Include="Resources\number_icons\number_1.png" />
-    <BundleResource Include="Resources\number_icons\number_2.png" />
-    <BundleResource Include="Resources\number_icons\number_3.png" />
-    <BundleResource Include="Resources\number_icons\number_4.png" />
-    <BundleResource Include="Resources\number_icons\number_5.png" />
-    <BundleResource Include="Resources\number_icons\number_6.png" />
-    <BundleResource Include="Resources\number_icons\number_7.png" />
-    <BundleResource Include="Resources\number_icons\number_8.png" />
-    <BundleResource Include="Resources\number_icons\number_9.png" />
-    <BundleResource Include="Resources\map_icons\locate.png" />
-    <BundleResource Include="Resources\map_icons\play_arrow.png" />
-    <BundleResource Include="Resources\map_icons\stop.png" />
-    <BundleResource Include="Resources\tutorial.png" />
-    <BundleResource Include="Resources\number_icons\.DS_Store" />
-    <BundleResource Include="Resources\tutorial\tutorial_part2.png" />
-    <BundleResource Include="Resources\tutorial\tutorial_part3.png" />
-    <BundleResource Include="Resources\tutorial\tutorial_part4.png" />
-    <BundleResource Include="Resources\tutorial\tutorial_part1.png" />
+    <BundleResource Include="Resources\images\logo.png" />
+    <BundleResource Include="Resources\images\activity_modes\cycling.png" />
+    <BundleResource Include="Resources\images\activity_modes\driving.png" />
+    <BundleResource Include="Resources\images\activity_modes\running.png" />
+    <BundleResource Include="Resources\images\activity_modes\walking.png" />
+    <BundleResource Include="Resources\images\challenge_list\default_shop.png" />
+    <BundleResource Include="Resources\images\challenge_list\default_shop_20px.png" />
+    <BundleResource Include="Resources\images\challenge_list\location_unknown.png" />
+    <BundleResource Include="Resources\images\challenge_list\trophy.png" />
+    <BundleResource Include="Resources\images\home\.DS_Store" />
+    <BundleResource Include="Resources\images\home\dashboard.png" />
+    <BundleResource Include="Resources\images\home\home.png" />
+    <BundleResource Include="Resources\images\home\logout.png" />
+    <BundleResource Include="Resources\images\home\menu.png" />
+    <BundleResource Include="Resources\images\home\menu_background.png" />
+    <BundleResource Include="Resources\images\home\my_routes.png" />
+    <BundleResource Include="Resources\images\home\reward.png" />
+    <BundleResource Include="Resources\images\home\rewards.png" />
+    <BundleResource Include="Resources\images\home\settings.png" />
+    <BundleResource Include="Resources\images\home\subscribed_campaigns.png" />
+    <BundleResource Include="Resources\images\home\tutorial.png" />
+    <BundleResource Include="Resources\images\map\locate.png" />
+    <BundleResource Include="Resources\images\map\maps_icon.png" />
+    <BundleResource Include="Resources\images\map\play_arrow.png" />
+    <BundleResource Include="Resources\images\map\stop.png" />
+    <BundleResource Include="Resources\images\mytrajectories_list\cross_error.png" />
+    <BundleResource Include="Resources\images\mytrajectories_list\green_check.png" />
+    <BundleResource Include="Resources\images\number_icons\.DS_Store" />
+    <BundleResource Include="Resources\images\number_icons\number_1.png" />
+    <BundleResource Include="Resources\images\number_icons\number_2.png" />
+    <BundleResource Include="Resources\images\number_icons\number_3.png" />
+    <BundleResource Include="Resources\images\number_icons\number_4.png" />
+    <BundleResource Include="Resources\images\number_icons\number_5.png" />
+    <BundleResource Include="Resources\images\number_icons\number_6.png" />
+    <BundleResource Include="Resources\images\number_icons\number_7.png" />
+    <BundleResource Include="Resources\images\number_icons\number_8.png" />
+    <BundleResource Include="Resources\images\number_icons\number_9.png" />
+    <BundleResource Include="Resources\images\tutorial\.DS_Store" />
+    <BundleResource Include="Resources\images\tutorial\tutorial_part1.png" />
+    <BundleResource Include="Resources\images\tutorial\tutorial_part2.png" />
+    <BundleResource Include="Resources\images\tutorial\tutorial_part3.png" />
+    <BundleResource Include="Resources\images\tutorial\tutorial_part4.png" />
+    <BundleResource Include="Resources\sounds\bike_bell.wav" />
+    <BundleResource Include="Resources\sounds\bike_no_pedaling.aiff" />
+    <BundleResource Include="Resources\sounds\silence.wav" />
+    <BundleResource Include="Resources\sounds\clapping.wav" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
   <Import Project="..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" />

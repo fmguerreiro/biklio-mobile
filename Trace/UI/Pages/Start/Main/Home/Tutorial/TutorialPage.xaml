@@ -31,7 +31,7 @@
 							Margin="10"
 							HorizontalOptions="Center"
 							VerticalOptions="End"
-							FontSize="14"
+							FontSize="16"
 							TextColor="White">
 						</Label>
 						<ffimageloading:CachedImage
@@ -64,7 +64,7 @@
 									Width="*" />
 							</Grid.ColumnDefinitions>
 							<Button
-								Text="{language:Translate PrivacyPolicy}"
+								Text="{language:Translate Privacy}"
 								FontSize="12"
 								Margin="5"
 								Clicked="onPrivacyPolicyClicked"

@@ -34,6 +34,8 @@ namespace Trace {
 
 		async Task logout(MasterPageItem item) {
 			bool isLogout = await DisplayAlert(Language.Logout, Language.AreYouSure, Language.Yes, Language.No);
+			await DisplayAlert("Activity Results", App.DEBUG_ActivityLog, "Ok");
+			App.DEBUG_ActivityLog = "";
 			if(isLogout) {
 				await LoginManager.PrepareLogout();
 				Application.Current.MainPage = new NavigationPage((Page) Activator.CreateInstance(item.TargetType));

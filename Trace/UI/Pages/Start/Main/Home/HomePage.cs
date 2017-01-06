@@ -18,43 +18,43 @@ namespace Trace {
 			Children.Add(challengesPage);
 			Children.Add(mapPage);
 
-			var giftToolbarButton = new ToolbarItem(Language.Rewards, "reward.png", async () => {
+			var giftToolbarButton = new ToolbarItem(Language.Rewards, "images/home/reward.png", async () => {
 				await Navigation.PushAsync(new RewardsListPage());
 			});
 			ToolbarItems.Add(giftToolbarButton);
 
-			var tutorialToolbarButton = new ToolbarItem(Language.Tutorial, "tutorial.png", async () => {
+			var tutorialToolbarButton = new ToolbarItem(Language.Tutorial, "images/home/tutorial.png", async () => {
 				await Navigation.PushModalAsync(new TutorialPage());
 			});
 			ToolbarItems.Add(tutorialToolbarButton);
 		}
 
-		void OnMyRewardsClicked() {
-			Navigation.PushAsync(new RewardsListPage());
-		}
+		//void OnMyRewardsClicked() {
+		//	Navigation.PushAsync(new RewardsListPage());
+		//}
 
-		void OnDashboardClicked() {
-			Navigation.PushAsync(new DashboardPage());
-		}
+		//void OnDashboardClicked() {
+		//	Navigation.PushAsync(new DashboardPage());
+		//}
 
-		void OnMyRoutesClicked() {
-			Navigation.PushAsync(new MyTrajectoriesPage());
-		}
+		//void OnMyRoutesClicked() {
+		//	Navigation.PushAsync(new MyTrajectoriesPage());
+		//}
 
-		void OnSettingsClicked() {
-			Navigation.PushAsync(new SettingsPage());
-		}
+		//void OnSettingsClicked() {
+		//	Navigation.PushAsync(new SettingsPage());
+		//}
 
-		async Task OnLogoutClicked() {
-			bool isLogout = await DisplayAlert(Language.Logout, Language.AreYouSure, Language.Yes, Language.No);
-			if(isLogout) {
-				User.Instance = null;
-				RewardEligibilityManager.Instance = null;
-				await CrossGeolocator.Current.StopListeningAsync();
-				DependencyService.Get<IMotionActivityManager>().StopMotionUpdates();
-				await Navigation.PopToRootAsync();
-			}
-		}
+		//async Task OnLogoutClicked() {
+		//	bool isLogout = await DisplayAlert(Language.Logout, Language.AreYouSure, Language.Yes, Language.No);
+		//	if(isLogout) {
+		//		User.Instance = null;
+		//		RewardEligibilityManager.Instance = null;
+		//		await CrossGeolocator.Current.StopListeningAsync();
+		//		DependencyService.Get<IMotionActivityManager>().StopMotionUpdates();
+		//		await Navigation.PopToRootAsync();
+		//	}
+		//}
 
 	}
 }

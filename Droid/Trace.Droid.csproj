@@ -21,7 +21,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
+    <Optimize>true</Optimize>
     <OutputPath>bin\Debug</OutputPath>
     <DefineConstants>DEBUG;</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
@@ -222,7 +222,7 @@
     <Compile Include="MainActivity.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="MainApplication.cs" />
-    <Compile Include="App\Security\StoreCredentials.cs" />
+    <Compile Include="App\Security\KeyStore.cs" />
     <Compile Include="App\Data\SQLite.cs" />
     <Compile Include="App\Business\Map\TraceMapRenderer.cs" />
     <Compile Include="App\Business\MotionActivity\MotionActivityManager.cs" />

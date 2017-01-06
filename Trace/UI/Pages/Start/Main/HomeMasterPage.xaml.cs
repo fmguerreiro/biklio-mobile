@@ -12,37 +12,37 @@ namespace Trace {
 			var masterPageItems = new List<MasterPageItem>();
 			masterPageItems.Add(new MasterPageItem {
 				Title = Language.Home,
-				IconSource = "home.png",
+				IconSource = "images/home/home.png",
 				TargetType = typeof(HomePage)
 			});
 			masterPageItems.Add(new MasterPageItem {
 				Title = Language.Rewards,
-				IconSource = "rewards.png",
+				IconSource = "images/home/rewards.png",
 				TargetType = typeof(RewardsListPage)
 			});
 			masterPageItems.Add(new MasterPageItem {
 				Title = Language.Dashboard,
-				IconSource = "dashboard.png",
+				IconSource = "images/home/dashboard.png",
 				TargetType = typeof(DashboardPage)
 			});
 			masterPageItems.Add(new MasterPageItem {
 				Title = Language.MyRoutes,
-				IconSource = "my_routes.png",
+				IconSource = "images/home/my_routes.png",
 				TargetType = typeof(MyTrajectoriesPage)
 			});
 			masterPageItems.Add(new MasterPageItem {
 				Title = Language.JoinACampaign,
-				IconSource = "subscribed_campaigns.png",
+				IconSource = "images/home/subscribed_campaigns.png",
 				TargetType = typeof(CampaignsPage)
 			});
 			masterPageItems.Add(new MasterPageItem {
 				Title = Language.Settings,
-				IconSource = "settings.png",
+				IconSource = "images/home/settings.png",
 				TargetType = typeof(SettingsPage)
 			});
 			masterPageItems.Add(new MasterPageItem {
 				Title = Language.Logout,
-				IconSource = "logout.png",
+				IconSource = "images/home/logout.png",
 				TargetType = typeof(SignInPage)
 			});
 			listView.ItemsSource = masterPageItems;

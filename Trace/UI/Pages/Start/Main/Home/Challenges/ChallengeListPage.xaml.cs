@@ -18,7 +18,7 @@ namespace Trace {
 
 		public ChallengeListPage(MapPage mapPage) {
 			InitializeComponent();
-			if(Device.OS == TargetPlatform.iOS) { Icon = "trophy.png"; }
+			if(Device.OS == TargetPlatform.iOS) { Icon = "images/challenge_list/trophy.png"; }
 			this.mapPage = mapPage;
 			// Show the challenges saved on the device.
 			BindingContext = new ChallengeVM { Challenges = User.Instance.Challenges };
@@ -225,7 +225,7 @@ namespace Trace {
 			Debug.WriteLine("STARTING fetchPinImages()");
 			foreach(Challenge c in challenges) {
 				var url = c.ThisCheckpoint.LogoURL;
-				if(string.IsNullOrEmpty(c.ThisCheckpoint.PinLogoPath) && !url.Equals("default_shop.png")) {
+				if(string.IsNullOrEmpty(c.ThisCheckpoint.PinLogoPath) && !url.Equals("images/challenge_list/default_shop.png")) {
 					Task.Run(() => c.ThisCheckpoint.FetchImageAsync(url)).DoNotAwait();
 				}
 			}

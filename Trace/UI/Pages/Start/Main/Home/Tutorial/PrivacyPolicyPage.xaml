@@ -1,0 +1,61 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage
+	xmlns="http://xamarin.com/schemas/2014/forms"
+	xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+	xmlns:language="clr-namespace:Trace.Localization;assembly=Trace"
+	xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
+	xmlns:cv="clr-namespace:Xamarin.Forms;assembly=Xamarin.Forms.CarouselView"
+	x:Class="Trace.PrivacyPolicyPage">
+	<ContentPage.Content>
+		<StackLayout>
+			<BoxView
+				HeightRequest="40">
+			</BoxView>
+			<ffimageloading:CachedImage
+				Source="images/logo.png"
+				HorizontalOptions="Center"
+				VerticalOptions="End"
+				DownsampleHeight="120"
+				DownsampleToViewSize="true"
+				Aspect="AspectFit">
+			</ffimageloading:CachedImage>
+			<Label
+				Text="{language:Translate PrivacyPolicy}"
+				HorizontalOptions="Center"
+				VerticalOptions="Start"
+				FontAttributes="Bold"
+				FontSize="18"
+				TextColor="#4BB166" />
+			<cv:CarouselView
+				x:Name="policyCarouselView"
+				Margin="8"
+				VerticalOptions="FillAndExpand">
+				<cv:CarouselView.ItemTemplate>
+					<DataTemplate>
+						<StackLayout>
+							<Label
+								Text="{Binding Text}"
+								FontSize="14"
+								VerticalOptions="CenterAndExpand" />
+							<Label
+								Text="{Binding Indicator}"
+								HorizontalOptions="Center"
+								VerticalOptions="End" />
+						</StackLayout>
+					</DataTemplate>
+				</cv:CarouselView.ItemTemplate>
+			</cv:CarouselView>
+			<Button
+				Text="Ok"
+				Clicked="onConfirmation"
+				BackgroundColor="#347B47"
+				TextColor="White"
+				HorizontalOptions="Center"
+				HeightRequest="30"
+				WidthRequest="120"
+				BorderRadius="0"
+				Margin="15"
+				VerticalOptions="End" />
+		</StackLayout>
+	</ContentPage.Content>
+</ContentPage>

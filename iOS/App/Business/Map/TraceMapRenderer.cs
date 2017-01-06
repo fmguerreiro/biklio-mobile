@@ -101,7 +101,7 @@ namespace Trace.iOS {
 				image = UIImage.LoadFromData(NSData.FromArray(imageBytes));
 			}
 			else
-				image = UIImage.FromFile("default_shop_20px.png");
+				image = UIImage.FromFile("images/challenge_list/default_shop_20px.png");
 			//var maxWidth = 20f;
 			//var maxHeight = maxWidth;
 			//image = maxResizeImage(image, maxWidth, maxHeight);
@@ -128,7 +128,7 @@ namespace Trace.iOS {
 			if(customView.Id == "") {
 				customPinView.Frame = new CGRect(0, 0, 200, 84);
 				var image = new UIImageView(new CGRect(0, 0, 200, 84));
-				image.Image = UIImage.FromFile("default_shop.png");
+				image.Image = UIImage.FromFile("images/challenge_list/default_shop.png");
 				customPinView.AddSubview(image);
 				customPinView.Center = new CGPoint(0, -(e.View.Frame.Height + 75));
 				e.View.AddSubview(customPinView);

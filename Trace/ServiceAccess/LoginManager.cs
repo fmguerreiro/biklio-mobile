@@ -78,8 +78,8 @@ namespace Trace {
 				else
 					DependencyService.Get<DeviceKeychainInterface>().DeleteCredentials(User.Instance.Username);
 
-				// TODO check if on login there is new information that should be updated.
-
+				User.Instance.SessionToken = result.payload.token;
+				SQLiteDB.Instance.SaveUser(User.Instance);
 			}
 			return result.success;
 		}

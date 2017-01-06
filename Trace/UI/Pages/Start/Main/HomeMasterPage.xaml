@@ -8,8 +8,8 @@
 	Padding="0,40,0,0"
 	x:Class="Trace.HomeMasterPage"
 	Title="{language:Translate Menu}"
-	Icon="menu.png"
-	BackgroundImage="menu_background.png">
+	Icon="images/home/menu.png"
+	BackgroundImage="images/home/menu_background.png">
 	<ContentPage.Content>
 		<StackLayout
 			VerticalOptions="FillAndExpand">

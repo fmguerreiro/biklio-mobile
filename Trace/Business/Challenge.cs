@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using SQLite;
 using Trace.Localization;
 
@@ -30,7 +29,7 @@ namespace Trace {
 		[Ignore]
 		public string Description { get { return Reward + " " + Language.At + " " + CheckpointName; } }
 		[Ignore]
-		public string Image { get { return ThisCheckpoint?.LogoURL ?? "default_shop.png"; } }
+		public string Image { get { return ThisCheckpoint?.LogoURL ?? "images/challenge_list/default_shop.png"; } }
 		[Ignore]
 		public string Condition {
 			get {

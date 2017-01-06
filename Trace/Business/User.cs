@@ -63,6 +63,12 @@ namespace Trace {
 		public int SearchRadius { get; set; } = 100; // kilometers
 
 
+		public string BackgroundIneligibleSoundSetting = "bike_bell.wav";
+		public string BycicleEligibleSoundSetting = "bike_no_pedaling.aiff";
+		public string CongratulatorySoundSetting = "bike_bell.wav";
+		public string NoLongerEligibleSoundSetting = "clapping.wav";
+
+
 		// TODO delete. user language is taken from phone settings
 		public SelectedLanguage UserLanguage { get; set; } = SelectedLanguage.English;
 

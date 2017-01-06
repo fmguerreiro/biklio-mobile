@@ -21,7 +21,7 @@ namespace Trace.iOS {
 			// Retrieve any stored account information
 			var accounts = AccountStore.Create().FindAccountsForService(OAuthConfigurationManager.KeystoreService);
 			var account = accounts.FirstOrDefault();
-			//if(account != null) { var _ = SQLiteDB.Instance; _.DropAllTables(); AccountStore.Create().Delete(account, OAuthConfigurationManager.KeystoreService); }
+			//if(account != null) { var _ = SQLiteDB.Instance; AccountStore.Create().Delete(account, OAuthConfigurationManager.KeystoreService); account = AccountStore.Create().FindAccountsForService(OAuthConfigurationManager.KeystoreService).FirstOrDefault(); }
 
 			if(account == null) {
 				if(!isShown) {
@@ -81,6 +81,7 @@ namespace Trace.iOS {
 					User.Instance.IDToken = authToken;
 					SQLiteDB.Instance.SaveUser(User.Instance);
 					SQLiteDB.Instance.InstantiateUser(User.Instance.Username);
+
 					// If the user is logged in navigate to the Home page.
 					// Otherwise allow another login attempt.
 					SignInPage.SuccessfulOAuthLoginAction.Invoke();

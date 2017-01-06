@@ -19,29 +19,39 @@ namespace Trace {
 		private const long MIN_SIZE_TRAJECTORY = 250; // meters
 		private Geolocator Locator;
 		private CurrentActivity currentActivity;
+		// This prevents the user from issuing several tracking requests before the previous has completed.
+		private bool isProcessing = false;
 
 		private DateTime StartTrackingTime;
 		private DateTime StopTrackingTime;
 
 		public MapPage() {
 			InitializeComponent();
-			if(Device.OS == TargetPlatform.iOS) { Icon = "maps_icon.png"; }
+			if(Device.OS == TargetPlatform.iOS) { Icon = "images/map/maps_icon.png"; }
 
+			// Center map on user position.
 			Locator = new Geolocator(map);
+			//Task.Run(async () => {
+			//	var userLocation = await GeoUtils.GetCurrentUserLocation();
+			//	Locator.UpdateMap(userLocation);
+			//});
 
 			initializeCheckpointPins();
 
-			Locator.Start().DoNotAwait();
+			//Locator.Start().DoNotAwait();
 
 			currentActivity = new CurrentActivity();
 			currentActivityLabel.BindingContext = currentActivity;
+
+			// Send input to state machine 
 			DependencyService.Get<IMotionActivityManager>().InitMotionActivity();
 			DependencyService.Get<IMotionActivityManager>().StartMotionUpdates((activity) => {
-				currentActivity.ActivityType = activity;
-				//activityLogResult += DateTime.Now + ": " + activity + "\n";
-				// Send input to state machine 
-				// TODO use activity confidence as well
-				RewardEligibilityManager.Instance.Input(activity);
+				if(activity != ActivityType.Unknown) {
+					currentActivity.ActivityType = activity;
+					App.DEBUG_ActivityLog += DateTime.Now + ": " + activity + "\n";
+					// TODO use activity confidence as well
+					RewardEligibilityManager.Instance.Input(activity);
+				}
 			});
 
 			// Add tap event handlers to the images on top of the circle buttons (otherwise, if users click on the img nothing happens)
@@ -65,7 +75,8 @@ namespace Trace {
 		async void OnStartTracking(object send, EventArgs eventArgs) {
 
 			// On Stop Button pressed
-			if(Geolocator.IsTrackingInProgress) {
+			if(Geolocator.IsTrackingInProgress && !isProcessing) {
+				isProcessing = true;
 				// Calculate stats and show the results to the user.
 				StopTrackingTime = DateTime.Now;
 				DependencyService.Get<IMotionActivityManager>().StopMotionUpdates();
@@ -118,25 +129,32 @@ namespace Trace {
 
 				AvgSpeedLabel.BindingContext = trajectory;
 
-				trackButtonImage.Source = "map_icons/play_arrow.png";
+				trackButtonImage.Source = "images/map/play_arrow.png";
 
 				displayResultsGrid();
+
+				await Geolocator.Stop();
 			}
 
 			// On Track Button pressed
-			else {
-				//((Button) send).Text = Language.Stop;
-				trackButtonImage.Source = "map_icons/stop.png";
+			else if(!isProcessing) {
+				isProcessing = true;
+				await Locator.Start();
+
+				trackButtonImage.Source = "images/map/stop.png";
 				map.RouteCoordinates.Clear();
 				StartTrackingTime = DateTime.Now;
-				// Show Activity text after Map and before Stop button and remove Results grid.
+
+				// Show Activity text again and remove Results grid.
 				currentActivityLabel.IsVisible = true;
 				resultsGrid.IsVisible = false;
-				//currentActivityLabel.BindingContext = currentActivity;
+
 				// Reset in order to clean list of accumulated activities and counters.
 				DependencyService.Get<IMotionActivityManager>().Reset();
 			}
+
 			Geolocator.IsTrackingInProgress = !Geolocator.IsTrackingInProgress;
+			isProcessing = false;
 		}
 
 

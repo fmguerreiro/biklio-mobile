@@ -155,6 +155,9 @@
     	<value>Avg Speed:
 {0} m/s</value>
   	</data>
+	<data name="GetPositionError" xml:space="preserve">
+    	<value>Unable to get your position. Are you indoors perhaps?</value>
+  	</data>
 	<data name="Challenges" xml:space="preserve">
     	<value>Challenges</value>
   	</data>
@@ -435,5 +438,27 @@
   	</data>
 	<data name="GotIt" xml:space="preserve">
     	<value>Got it</value>
+  	</data>
+	<data name="Privacy" xml:space="preserve">
+    	<value>Privacy</value>
+  	</data>
+	<data name="PrivacyPolicyPart1" xml:space="preserve">
+    	<value>Biklio is a cycling reward programme provided by Inesc-ID.
+Inesc-ID is the party responsible for processing your personal data in accordance with the General Data Protection Regulation.
+Your data is made anonymous and used to gain a better understanding of common movement patterns, which can be useful for urban planning purposes.</value>
+  	</data>
+	<data name="PrivacyPolicyPart2" xml:space="preserve">
+    	<value>This application collects the following information:
+- Location data, which is used to analyze common travel patterns in cities;
+- Motion activity, which is used to determine tendencies in transportation modes over time;
+- Statistical information, which is used to analyze the impact of Biklio on shop owners. 
+  This includes the number of cycling events, time spent on each transportation mode, number of rewards claimed, etc.</value>
+  	</data>
+	<data name="PrivacyPolicyPart3" xml:space="preserve">
+    	<value>You can revoke your consent to provide this information at any time after agreeing to this policy by going to the 'Settings' Page in the application.
+Once revoked, identifiable data such as email and name is removed within a few hours.</value>
+  	</data>
+	<data name="PrivacyPolicyPart4" xml:space="preserve">
+    	<value>The rest is TODO, I have no idea what I'm doing.</value>
   	</data>
 </root>

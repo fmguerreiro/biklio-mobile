@@ -84,6 +84,9 @@
     <EmbeddedResource Include="UI\Pages\Start\Main\Home\Tutorial\TutorialPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
+    <EmbeddedResource Include="UI\Pages\Start\Main\Home\Tutorial\PrivacyPolicyPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App.xaml.cs">
@@ -94,13 +97,9 @@
     <Compile Include="ServiceAccess\WebServerClient.cs" />
     <Compile Include="Business\Trajectory.cs" />
     <Compile Include="Business\User.cs" />
-    <Compile Include="Business\MotionActivity\ActivityType.cs" />
-    <Compile Include="Business\MotionActivity\IMotionActivityManager.cs" />
-    <Compile Include="Business\MotionActivity\ActivityEvent.cs" />
     <Compile Include="Business\Challenge.cs" />
     <Compile Include="Business\Checkpoint.cs" />
     <Compile Include="Business\Map\TraceMap.cs" />
-    <Compile Include="Business\Map\Geolocator.cs" />
     <Compile Include="Security\InputValidation\EmailValidator.cs" />
     <Compile Include="Security\InputValidation\NumberValidator.cs" />
     <Compile Include="Security\InputValidation\MaxLengthValidator.cs" />
@@ -111,13 +110,12 @@
     <Compile Include="Security\CredentialsHandling\DeviceKeychainInterface.cs" />
     <Compile Include="Security\CredentialsHandling\AccountInterface.cs" />
     <Compile Include="ServiceAccess\HTTPClientBase.cs" />
-    <Compile Include="Business\MotionActivity\CurrentActivity.cs" />
     <Compile Include="Data\ISQLite.cs" />
     <Compile Include="Data\DatabaseEntityBase.cs" />
     <Compile Include="Data\UserItemBase.cs" />
     <Compile Include="Security\OAuth\IOAuth.cs" />
     <Compile Include="Business\Map\CustomPin.cs" />
-    <Compile Include="UI\SourceConverters\ByteArrayToChallengeImageConverter.cs" />
+    <Compile Include="UI\CustomConverters\ByteArrayToChallengeImageConverter.cs" />
     <Compile Include="Data\IFileSystem.cs" />
     <Compile Include="Security\OAuth\OAuthConfigurationManager.cs" />
     <Compile Include="Security\OAuth\OAuthConfig.cs" />
@@ -134,11 +132,8 @@
     <Compile Include="ServiceAccess\WebServiceObjects\Routes\WSTrackSummary.cs" />
     <Compile Include="ServiceAccess\WebServiceObjects\Routes\WSTrajectory.cs" />
     <Compile Include="Business\TrajectoryPoint.cs" />
-    <Compile Include="UI\SourceConverters\ImageToRouteCheckConverter.cs" />
-    <Compile Include="Business\MotionActivity\RewardEligibility\RewardEligibilityManager.cs" />
-    <Compile Include="Business\MotionActivity\RewardEligibility\RewardEligibilityStateMachine.cs" />
-    <Compile Include="Business\MotionActivity\RewardEligibility\Timer.cs" />
-    <Compile Include="UI\Controls\BindablePicker.cs" />
+    <Compile Include="UI\CustomConverters\ImageToRouteCheckConverter.cs" />
+    <Compile Include="UI\CustomControls\BindablePicker.cs" />
     <Compile Include="UI\Pages\Start\RegistrationPage.xaml.cs">
       <DependentUpon>RegistrationPage.xaml</DependentUpon>
     </Compile>
@@ -191,7 +186,6 @@
     <Compile Include="Localization\Translate.cs" />
     <Compile Include="UI\Pages\Start\Main\Menu\Settings\SettingsEnums.cs" />
     <Compile Include="Utils\EnumUtil.cs" />
-    <Compile Include="Utils\GeoUtils.cs" />
     <Compile Include="Utils\TaskExtensions.cs" />
     <Compile Include="Utils\TimeUtil.cs" />
     <Compile Include="ServiceAccess\Notifications\INotificationMessage.cs" />
@@ -231,26 +225,38 @@
       <DependentUpon>TutorialPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="UI\Pages\Start\Main\Home\Tutorial\TutorialDataModel.cs" />
+    <Compile Include="UI\Pages\Start\Main\Home\Tutorial\PrivacyPolicyPage.xaml.cs">
+      <DependentUpon>PrivacyPolicyPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Pages\Start\Main\Home\Tutorial\PrivacyPolicyDataModel.cs" />
+    <Compile Include="Utils\MotionActivity\ActivityEvent.cs" />
+    <Compile Include="Utils\MotionActivity\ActivityType.cs" />
+    <Compile Include="Utils\MotionActivity\CurrentActivity.cs" />
+    <Compile Include="Utils\MotionActivity\IMotionActivityManager.cs" />
+    <Compile Include="Utils\MotionActivity\RewardEligibility\RewardEligibilityManager.cs" />
+    <Compile Include="Utils\MotionActivity\RewardEligibility\RewardEligibilityStateMachine.cs" />
+    <Compile Include="Utils\MotionActivity\RewardEligibility\Timer.cs" />
+    <Compile Include="Utils\Geolocation\GeoUtils.cs" />
+    <Compile Include="Utils\Geolocation\Geolocator.cs" />
+    <Compile Include="Utils\ISoundPlayer.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Business\" />
     <Folder Include="ServiceAccess\" />
     <Folder Include="Data\" />
     <Folder Include="UI\" />
-    <Folder Include="Business\MotionActivity\" />
     <Folder Include="Business\Map\" />
     <Folder Include="Security\" />
     <Folder Include="Security\InputValidation\" />
     <Folder Include="Security\CredentialsHandling\" />
     <Folder Include="ServiceAccess\WebServiceObjects\" />
     <Folder Include="Security\OAuth\" />
-    <Folder Include="UI\SourceConverters\" />
+    <Folder Include="UI\CustomConverters\" />
     <Folder Include="Security\OAuth\Facebook\" />
     <Folder Include="Security\OAuth\Google\" />
     <Folder Include="ServiceAccess\WebServiceObjects\Routes\" />
     <Folder Include="ServiceAccess\WebServiceObjects\Challenges\" />
-    <Folder Include="Business\MotionActivity\RewardEligibility\" />
-    <Folder Include="UI\Controls\" />
+    <Folder Include="UI\CustomControls\" />
     <Folder Include="UI\Pages\" />
     <Folder Include="UI\Pages\Start\" />
     <Folder Include="UI\Pages\Start\Main\" />
@@ -273,6 +279,8 @@
     <Folder Include="UI\Pages\Start\Main\Menu\Rewards\" />
     <Folder Include="UI\Pages\Start\Main\Home\Map\" />
     <Folder Include="UI\Pages\Start\Main\Home\Tutorial\" />
+    <Folder Include="Utils\MotionActivity\" />
+    <Folder Include="Utils\Geolocation\" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Microsoft.Threading.Tasks">

@@ -83,7 +83,7 @@
 			Grid.Column="1" />
 		<ffimageloading:CachedImage
 			x:Name="locateImage"
-			Source="map_icons/locate.png"
+			Source="images/map/locate.png"
 			HorizontalOptions="Center"
 			VerticalOptions="Center"
 			Grid.Row="1"
@@ -101,7 +101,7 @@
 			Grid.Column="1" />
 		<ffimageloading:CachedImage
 			x:Name="trackButtonImage"
-			Source="map_icons/play_arrow.png"
+			Source="images/map/play_arrow.png"
 			HorizontalOptions="Center"
 			VerticalOptions="Center"
 			Grid.Row="2"
