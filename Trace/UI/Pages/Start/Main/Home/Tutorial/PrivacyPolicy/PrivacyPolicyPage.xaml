@@ -7,25 +7,27 @@
 	xmlns:cv="clr-namespace:Xamarin.Forms;assembly=Xamarin.Forms.CarouselView"
 	x:Class="Trace.PrivacyPolicyPage">
 	<ContentPage.Content>
-		<StackLayout>
+		<StackLayout
+			BackgroundColor="#439F5C">
 			<BoxView
 				HeightRequest="40">
 			</BoxView>
 			<ffimageloading:CachedImage
-				Source="images/logo.png"
+				Source="images/privacy_policy/logo_name.png"
 				HorizontalOptions="Center"
 				VerticalOptions="End"
+				HeightRequest="120"
 				DownsampleHeight="120"
 				DownsampleToViewSize="true"
 				Aspect="AspectFit">
 			</ffimageloading:CachedImage>
 			<Label
 				Text="{language:Translate PrivacyPolicy}"
+				TextColor="White"
 				HorizontalOptions="Center"
 				VerticalOptions="Start"
 				FontAttributes="Bold"
-				FontSize="18"
-				TextColor="#4BB166" />
+				FontSize="18" />
 			<cv:CarouselView
 				x:Name="policyCarouselView"
 				Margin="8"
@@ -35,10 +37,12 @@
 						<StackLayout>
 							<Label
 								Text="{Binding Text}"
+								TextColor="White"
 								FontSize="14"
 								VerticalOptions="CenterAndExpand" />
 							<Label
 								Text="{Binding Indicator}"
+								TextColor="White"
 								HorizontalOptions="Center"
 								VerticalOptions="End" />
 						</StackLayout>

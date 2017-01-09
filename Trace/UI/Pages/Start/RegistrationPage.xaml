@@ -67,7 +67,13 @@
 				BackgroundColor="#FFD500"
 				TextColor="White"
 				BorderRadius="0"
-				Clicked="OnRegister" />
+				Clicked="onRegister" />
+			<Button
+				Text="{language:Translate Cancel}"
+				BackgroundColor="#FFD500"
+				TextColor="White"
+				BorderRadius="0"
+				Clicked="onCancel" />
 		</StackLayout>
 	</ContentPage.Content>
 </ContentPage>

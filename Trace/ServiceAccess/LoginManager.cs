@@ -12,7 +12,6 @@ namespace Trace {
 
 		public static bool IsOfflineLoggedIn { get; set; }
 		public static bool IsLoginVerified { get; set; }
-		public static bool IsRememberMe { get; set; }
 
 		public static async Task TryLogin(bool isCredentialsLogin) {
 			IsOfflineLoggedIn = true;
@@ -50,7 +49,6 @@ namespace Trace {
 							// If user credentials were wrong, send the user to sign in screen and show error message.
 							Device.BeginInvokeOnMainThread(async () => {
 								await Application.Current.MainPage.DisplayAlert(Language.Error, Language.OnlineLoginError, Language.Ok);
-								DependencyService.Get<DeviceKeychainInterface>().DeleteCredentials(User.Instance.Username);
 								await PrepareLogout();
 								Application.Current.MainPage = new NavigationPage(new SignInPage());
 							});
@@ -73,10 +71,7 @@ namespace Trace {
 			WSResult result = await Task.Run(() => client.LoginWithCredentials(User.Instance.Username, User.Instance.Password));
 
 			if(result.success) {
-				if(IsRememberMe)
-					DependencyService.Get<DeviceKeychainInterface>().SaveCredentials(User.Instance.Username, User.Instance.Password);
-				else
-					DependencyService.Get<DeviceKeychainInterface>().DeleteCredentials(User.Instance.Username);
+				DependencyService.Get<DeviceKeychainInterface>().SaveCredentials(User.Instance.Username, User.Instance.Password);
 
 				User.Instance.SessionToken = result.payload.token;
 				SQLiteDB.Instance.SaveUser(User.Instance);
@@ -91,9 +86,9 @@ namespace Trace {
 			WSResult result = await Task.Run(() => client.LoginWithToken(User.Instance.IDToken));
 
 			if(result.success) {
-				User.Instance.Name = result.payload.name;
+				//User.Instance.Name = result.payload.name;
 				User.Instance.Email = result.payload.email;
-				User.Instance.PictureURL = result.payload.picture;
+				//User.Instance.PictureURL = result.payload.picture;
 				User.Instance.SessionToken = result.payload.token;
 				SQLiteDB.Instance.SaveUser(User.Instance);
 			}

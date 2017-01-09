@@ -43,6 +43,7 @@ namespace Trace {
 		public void InstantiateUser(string username) {
 			var user = GetUser(username);
 			if(user != null) {
+				Debug.WriteLine($"InstantiateUser() - found user {user.Username} with token:{user.IDToken}");
 				User.Instance = user;
 				User.Instance.Checkpoints = GetItems<Checkpoint>().ToDictionary(key => key.GId, val => val);
 				User.Instance.Challenges = GetItems<Challenge>().ToList();
@@ -51,10 +52,11 @@ namespace Trace {
 				User.Instance.KPIs = GetItems<KPI>().ToList();
 			}
 			else {
+				Debug.WriteLine($"InstantiateUser() - no user {user.Username} found. Creating new user.");
 				User.Instance = new User { Username = username };
 				User.Instance.Id = SaveUser(User.Instance);
 			}
-			Debug.WriteLine("Signing in with user: " + User.Instance);
+			Debug.WriteLine("InstantiateUser() done. Signing in with user: " + User.Instance);
 		}
 
 
@@ -80,9 +82,11 @@ namespace Trace {
 		public int SaveUser(User user) {
 			lock(locker) {
 				if(user.Id != 0) {
+					Debug.WriteLine("Updating user: " + user.Username);
 					return database.Update(user);
 				}
 				else {
+					Debug.WriteLine($"Inserting new user: {user.Username} with token:{user.IDToken}");
 					return database.Insert(user);
 				}
 			}

@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using System.Linq;
+using System.Threading.Tasks;
 using Foundation;
 using Google.SignIn;
 using Newtonsoft.Json.Linq;
@@ -52,7 +53,6 @@ namespace Trace.iOS {
 							img = pictureURL,
 							public_email = email,
 							app_id = gUser.Authentication.ClientId,
-							description = gUser.Authentication.Description
 							// ***REMOVED***
 						})
 					});
@@ -68,6 +68,9 @@ namespace Trace.iOS {
 					User.Instance.Name = fullname;
 					User.Instance.Email = email;
 					User.Instance.PictureURL = pictureURL;
+
+					Debug.WriteLine("google token is: " + idToken);
+					Debug.WriteLine("user token is  : " + User.Instance.IDToken);
 					SQLiteDB.Instance.SaveUser(User.Instance);
 					SQLiteDB.Instance.InstantiateUser(User.Instance.Username);
 

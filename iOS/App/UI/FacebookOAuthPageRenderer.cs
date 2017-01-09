@@ -38,7 +38,8 @@ namespace Trace.iOS {
 					auth.Completed += OnAuthenticationCompleted;
 
 					// Display the UI
-					PresentViewController(auth.GetUI(), true, null);
+					var ui = auth.GetUI();
+					PresentViewController(ui, true, null);
 				}
 			}
 			else {

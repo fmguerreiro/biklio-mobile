@@ -52,7 +52,7 @@ namespace Trace {
 			if(LoginManager.IsOfflineLoggedIn && !Geolocator.IsTrackingInProgress) {
 				Device.BeginInvokeOnMainThread(() => {
 					DependencyService.Get<ISoundPlayer>().ActivateAudioSession();
-					DependencyService.Get<ISoundPlayer>().PlaySound(null);
+					DependencyService.Get<ISoundPlayer>().PlaySound(null); // null -> play previous track
 					Debug.WriteLine("StartAudioSession(): " + DependencyService.Get<ISoundPlayer>().IsPlaying());
 				});
 			}

@@ -4,8 +4,10 @@
 	xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
 	xmlns:local="clr-namespace:Trace;assembly=Trace"
 	xmlns:language="clr-namespace:Trace.Localization;assembly=Trace"
+	xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
 	x:Class="Trace.SignInPage"
-	Title="{language:Translate SignIn}">
+	Title="{language:Translate SignIn}"
+	BackgroundColor="#439F5C">
 	<ContentPage.Padding>
 		<OnPlatform
 			x:TypeArguments="Thickness"
@@ -17,12 +19,17 @@
 		<StackLayout
 			VerticalOptions="FillAndExpand"
 			HorizontalOptions="FillAndExpand"
-			Orientation="Vertical"
-			Spacing="15">
+			Orientation="Vertical">
+			<ffimageloading:CachedImage
+				Source="images/logo_name.png"
+				HeightRequest="120"
+				DownsampleHeight="120"
+				HorizontalOptions="Center"
+				VerticalOptions="Center" />
 			<Entry
 				x:Name="usernameText"
 				Placeholder="{language:Translate Username}"
-				Completed="OnUsernameInput">
+				Completed="onUsernameInput">
 				<Entry.Behaviors>
 					<local:UsernameValidator />
 					<local:MaxLengthValidator
@@ -39,66 +46,81 @@
 						MaxLength="20" />
 				</Entry.Behaviors>
 			</Entry>
+			<Button
+				Text="{language:Translate SignIn}"
+				BackgroundColor="#2C693D"
+				TextColor="White"
+				BorderWidth="1"
+				BorderColor="White"
+				BorderRadius="0"
+				Clicked="onLogin" />
+			<StackLayout
+				Padding="0"
+				VerticalOptions="Center"
+				HorizontalOptions="Center">
+				<Label
+					x:Name="registerLabel"
+					Text="{language:Translate DontHaveAccount}"
+					TextColor="White"
+					FontSize="Small"
+					Margin="3" />
+				<BoxView
+					BackgroundColor="White"
+					HeightRequest="1"
+					Margin="0,-8,0,0" />
+			</StackLayout>
+			<BoxView
+				HeightRequest="1"
+				BackgroundColor="White"
+				HorizontalOptions="FillAndExpand">
+			</BoxView>
 			<Grid>
 				<Grid.ColumnDefinitions>
 					<ColumnDefinition
 						Width="*" />
 					<ColumnDefinition
-						Width="80" />
+						Width="*" />
 				</Grid.ColumnDefinitions>
-				<Label
-					Text="{language:Translate RememberMe}"
-					XAlign="Start"
-					YAlign="Center"
-					FontSize="Small"
-					Grid.Row="0"
-					Grid.Column="0" />
-				<Switch
-					IsToggled="true"
-					HorizontalOptions="End"
-					Toggled="OnRememberMe"
-					Grid.Row="0"
-					Grid.Column="1" />
-			</Grid>
-			<Button
-				Text="{language:Translate SignIn}"
-				BackgroundColor="#24C121"
-				TextColor="White"
-				BorderRadius="0"
-				Clicked="OnLogin" />
-			<StackLayout
-				HeightRequest="1"
-				BackgroundColor="Black"
-				HorizontalOptions="FillAndExpand">
-			</StackLayout>
-			<StackLayout>
 				<Button
 					Text="{language:Translate LoginWithGoogle}"
+					Grid.Column="0"
 					TextColor="White"
+					BorderWidth="1"
 					BackgroundColor="#DD4B39"
+					BorderColor="White"
 					BorderRadius="0"
-					Clicked="OnGoogleLogin" />
+					Clicked="onGoogleLogin" />
 				<Button
-					TextColor="White"
-					BackgroundColor="#3B5998"
 					Text="{language:Translate LoginWithFacebook}"
-					BorderRadius="0"
-					Clicked="OnFacebookLogin" />
-				<Label
-					Text="{language:Translate DontHaveAccount}"
-					HorizontalOptions="Center"
-					FontSize="Small"
-					Margin="8" />
-				<Button
+					Grid.Column="1"
 					TextColor="White"
-					BackgroundColor="#FFD500"
-					Text="{language:Translate Register}"
+					BorderWidth="1"
+					BackgroundColor="#3B5998"
+					BorderColor="White"
 					BorderRadius="0"
-					HeightRequest="30"
-					HorizontalOptions="Center"
-					WidthRequest="150"
-					Clicked="OnRegister" />
-			</StackLayout>
+					Clicked="onFacebookLogin" />
+			</Grid>
+			<Grid>
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition
+						Width="60" />
+					<ColumnDefinition
+						Width="*" />
+				</Grid.ColumnDefinitions>
+				<Switch
+					x:Name="tosSwitch"
+					IsToggled="false"
+					HorizontalOptions="Start"
+					Toggled="onAgreeToToS"
+					Grid.Column="0" />
+				<Label
+					x:Name="tosWarningLabel"
+					Text="{language:Translate IAgreeToToS}"
+					FontSize="Small"
+					TextColor="White"
+					Grid.Column="1">
+				</Label>
+			</Grid>
 		</StackLayout>
 	</ContentPage.Content>
 </ContentPage>

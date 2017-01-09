@@ -14,7 +14,7 @@ namespace Trace {
 			InitializeComponent();
 		}
 
-		async void OnRegister(object sender, EventArgs e) {
+		async void onRegister(object sender, EventArgs e) {
 			var username = usernameText.Text;
 			var email = emailText.Text;
 			var password = passwordText.Text;
@@ -36,10 +36,15 @@ namespace Trace {
 				});
 				DependencyService.Get<DeviceKeychainInterface>().SaveCredentials(username, password);
 				await DisplayAlert(Language.Result, Language.RegistrationSuccessful, Language.Ok);
-				await Navigation.PushAsync(new SignInPage());
+				await Navigation.PopModalAsync();
 			}
 			else
 				await DisplayAlert(Language.Result, result.error, Language.Ok);
+		}
+
+		async void onCancel(object sender, EventArgs e) {
+			//usernameText.Text = emailText.Text = passwordText.Text = confirmPasswordText.Text = "";
+			await Navigation.PopModalAsync();
 		}
 	}
 }

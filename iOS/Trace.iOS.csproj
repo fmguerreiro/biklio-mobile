@@ -264,6 +264,7 @@
     <Folder Include="Localization\" />
     <Folder Include="App\ServiceAccess\" />
     <Folder Include="App\Utils\" />
+    <Folder Include="App\UI\CustomEffects\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
@@ -291,6 +292,7 @@
     <Compile Include="App\NotificationMessage.cs" />
     <Compile Include="App\Utils\ImageResizer.cs" />
     <Compile Include="App\Utils\SoundPlayer.cs" />
+    <Compile Include="App\UI\CustomEffects\UnderlineEffect.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="GoogleService-Info.plist" />
@@ -340,6 +342,9 @@
     <BundleResource Include="Resources\sounds\bike_no_pedaling.aiff" />
     <BundleResource Include="Resources\sounds\silence.wav" />
     <BundleResource Include="Resources\sounds\clapping.wav" />
+    <BundleResource Include="Resources\images\privacy_policy\.DS_Store" />
+    <BundleResource Include="Resources\images\privacy_policy\logo_name.png" />
+    <BundleResource Include="Resources\images\logo_name.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
   <Import Project="..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" />

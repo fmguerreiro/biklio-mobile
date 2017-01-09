@@ -1,12 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using SQLite;
-using Xamarin.Auth;
 using Xamarin.Forms;
 using Trace.Localization;
-using System.Diagnostics;
 
 namespace Trace {
 	/// <summary>
@@ -14,34 +9,47 @@ namespace Trace {
 	/// </summary>
 	public partial class SignInPage : ContentPage {
 
-		private bool isRememberMe;
-		static INavigation NavPage;
-
+		private bool doesUserAgreeToS;
 
 		public SignInPage() {
 			InitializeComponent();
-			NavPage = Navigation;
-			isRememberMe = true;
-			// TODO this gets the first username available, but if there are multiple, it will still pick always the first, ideally, the last one used would show up first
-			usernameText.Text = DependencyService.Get<DeviceKeychainInterface>().Username;
+			string username = null;
+			usernameText.Text = username = DependencyService.Get<DeviceKeychainInterface>().Username;
 			passwordText.Text = DependencyService.Get<DeviceKeychainInterface>().GetPassword(usernameText.Text);
+			if(username != null) {
+				doesUserAgreeToS = true;
+				tosSwitch.IsToggled = true;
+			}
+
+			// Add tap event handlers to the labels so the user can click on them.
+			var registerGR = new TapGestureRecognizer();
+			registerGR.Tapped += onRegister;
+			registerLabel.GestureRecognizers.Add(registerGR);
+
+			var checkToSGR = new TapGestureRecognizer();
+			checkToSGR.Tapped += onCheckTos;
+			tosWarningLabel.GestureRecognizers.Add(checkToSGR);
 		}
 
-		void OnUsernameInput(object sender, EventArgs e) {
+
+		void onUsernameInput(object sender, EventArgs e) {
 			passwordText.Text = DependencyService.Get<DeviceKeychainInterface>().GetPassword(((Entry) sender).Text);
 		}
 
-		async void OnLogin(object sender, EventArgs e) {
+
+		async void onLogin(object sender, EventArgs e) {
 			var username = usernameText.Text;
 			var password = passwordText.Text;
+
+			if(!doesUserAgreeToS) {
+				await DisplayAlert(Language.Error, Language.ToSUncheckedError, Language.Ok);
+				return;
+			}
 
 			if(username == null || password == null) {
 				await DisplayAlert(Language.Error, Language.FillEveryField, Language.Ok);
 				return;
 			}
-
-			//var client = new WebServerClient();
-			//WSResult result = await Task.Run(() => client.LoginWithCredentials(username, password));
 
 			// Perform credentials validation against the local keystore/keychain.
 			bool doesUsernameExist = DependencyService.Get<DeviceKeychainInterface>().Exists(username);
@@ -56,17 +64,11 @@ namespace Trace {
 				}
 			}
 
-			//if(result.success) {
 			// Remember me => Store credentials in keychain.
-			LoginManager.IsRememberMe = isRememberMe;
-			if(isRememberMe)
-				DependencyService.Get<DeviceKeychainInterface>().SaveCredentials(username, password);
-			else
-				DependencyService.Get<DeviceKeychainInterface>().DeleteCredentials(username);
+			DependencyService.Get<DeviceKeychainInterface>().SaveCredentials(username, password);
 
 			// Fetch user information from the database.
 			SQLiteDB.Instance.InstantiateUser(username);
-			// TODO verify if authtoken is used besides fb and google login -> User.Instance.AuthToken = result.token;
 			//SQLiteDB.Instance.SaveItem(User.Instance);
 
 			// Used later for background login when user has internet connection.
@@ -77,29 +79,27 @@ namespace Trace {
 			// Record login event.
 			User.Instance.GetCurrentKPI().AddLoginEvent(TimeUtil.CurrentEpochTimeSeconds());
 
+			//await Task.Delay(1000);
 			Application.Current.MainPage = new MainPage();
-			//}
-			//else
-			//	await DisplayAlert("Error", result.error, "Ok");
 		}
 
 
-		void OnGoogleLogin(object sender, EventArgs e) {
-			// Use a custom renderer to display the Google auth UI
+		// Use a custom renderer to display the Google auth UI
+		void onGoogleLogin(object sender, EventArgs e) {
 			OAuthConfigurationManager.SetConfig(new GoogleOAuthConfig());
 			Navigation.PushAsync(new GoogleOAuthUIPage());
 		}
 
 
-		void OnFacebookLogin(object sender, EventArgs e) {
-			// Use a custom renderer to display the Facebook auth UI
+		// Use a custom renderer to display the Facebook auth UI
+		void onFacebookLogin(object sender, EventArgs e) {
 			OAuthConfigurationManager.SetConfig(new FacebookOAuthConfig());
 			Navigation.PushAsync(new FacebookOAuthUIPage());
 		}
 
 
-		void OnRegister(object sender, EventArgs e) {
-			Navigation.PushAsync(new RegistrationPage());
+		void onRegister(object sender, EventArgs e) {
+			Navigation.PushModalAsync(new RegistrationPage());
 		}
 
 
@@ -109,7 +109,6 @@ namespace Trace {
 		public static Action SuccessfulOAuthLoginAction {
 			get {
 				return new Action(async () => {
-					LoginManager.TryLogin(isCredentialsLogin: false).DoNotAwait();
 
 					// Leave OAuth provider page.
 					//NavPage.PopModalAsync();
@@ -127,10 +126,10 @@ namespace Trace {
 					// HACK Spent 4 hours trying to get this to work. I gave up. 
 					// If you remove this, the Android app crashes at this point. Seems to be an issue with Xamarin.Auth.GetUI().
 					await Task.Delay(1000);
-					Application.Current.MainPage = new MainPage();
-
 					// Record login event.
 					Device.BeginInvokeOnMainThread(() => {
+						Application.Current.MainPage = new MainPage();
+						LoginManager.TryLogin(isCredentialsLogin: false).DoNotAwait();
 						User.Instance.GetCurrentKPI().AddLoginEvent(TimeUtil.CurrentEpochTimeSeconds());
 					});
 				});
@@ -146,9 +145,8 @@ namespace Trace {
 				return new Action(async () => {
 					await Task.Delay(1000);
 					await LoginManager.PrepareLogout();
-					var navigation = new NavigationPage(new SignInPage());
-					Application.Current.MainPage = navigation;
-					await navigation.DisplayAlert(Language.Error, Language.OAuthError, Language.Ok);
+					await Application.Current.MainPage.DisplayAlert(Language.Error, Language.OAuthError, Language.Ok);
+					Application.Current.MainPage = new NavigationPage(new SignInPage());
 					//NavPage.PopModalAsync();
 					//NavPage.NavigationStack.First().DisplayAlert(Language.Error, Language.OAuthError, Language.Ok);
 				});
@@ -156,8 +154,15 @@ namespace Trace {
 		}
 
 
-		void OnRememberMe(object sender, EventArgs e) {
-			isRememberMe = !isRememberMe;
+		// TODO use ToS page instead of Privacy policy!!
+		void onCheckTos(object sender, EventArgs e) {
+			Navigation.PushModalAsync(new PrivacyPolicyPage());
 		}
+
+
+		void onAgreeToToS(object sender, EventArgs e) {
+			doesUserAgreeToS = !doesUserAgreeToS;
+		}
+
 	}
 }

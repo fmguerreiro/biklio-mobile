@@ -940,5 +940,17 @@ namespace Trace.Localization {
                 return ResourceManager.GetString("nRewardsClickToSeeWhat", resourceCulture);
             }
         }
+        
+        public static string IAgreeToToS {
+            get {
+                return ResourceManager.GetString("IAgreeToToS", resourceCulture);
+            }
+        }
+        
+        public static string ToSUncheckedError {
+            get {
+                return ResourceManager.GetString("ToSUncheckedError", resourceCulture);
+            }
+        }
     }
 }

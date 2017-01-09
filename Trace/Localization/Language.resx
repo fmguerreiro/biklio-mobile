@@ -30,7 +30,7 @@
     	<value>Login</value>
   	</data>
 	<data name="DontHaveAccount" xml:space="preserve">
-    	<value>Don't have an account?</value>
+    	<value>Need an account?</value>
   	</data>
 	<data name="Start" xml:space="preserve">
     	<value>Start</value>
@@ -72,10 +72,10 @@
     	<value>Remember me</value>
   	</data>
 	<data name="LoginWithGoogle" xml:space="preserve">
-    	<value>Login with Google</value>
+    	<value>Google login</value>
   	</data>
 	<data name="LoginWithFacebook" xml:space="preserve">
-    	<value>Login with Facebook</value>
+    	<value>Facebook login</value>
   	</data>
 	<data name="LocalIncorrectCredentialsWarning" xml:space="preserve">
     	<value>The username or password failed local verification. Want to attempt online verification?</value>
@@ -481,5 +481,11 @@ Once revoked, identifiable data such as email and name is removed within a few h
   	</data>
 	<data name="nRewardsClickToSeeWhat" xml:space="preserve">
     	<value>rewards. Tap the Reward icon to see what you got.</value>
+  	</data>
+	<data name="IAgreeToToS" xml:space="preserve">
+    	<value>I understand and agree to Biklio's terms of service.</value>
+  	</data>
+	<data name="ToSUncheckedError" xml:space="preserve">
+    	<value>To continue using Biklio, make sure you agree to the terms of service.</value>
   	</data>
 </root>

@@ -84,7 +84,7 @@
     <EmbeddedResource Include="UI\Pages\Start\Main\Home\Tutorial\TutorialPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\Pages\Start\Main\Home\Tutorial\PrivacyPolicyPage.xaml">
+    <EmbeddedResource Include="UI\Pages\Start\Main\Home\Tutorial\PrivacyPolicy\PrivacyPolicyPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
   </ItemGroup>
@@ -225,10 +225,6 @@
       <DependentUpon>TutorialPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="UI\Pages\Start\Main\Home\Tutorial\TutorialDataModel.cs" />
-    <Compile Include="UI\Pages\Start\Main\Home\Tutorial\PrivacyPolicyPage.xaml.cs">
-      <DependentUpon>PrivacyPolicyPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="UI\Pages\Start\Main\Home\Tutorial\PrivacyPolicyDataModel.cs" />
     <Compile Include="Utils\MotionActivity\ActivityEvent.cs" />
     <Compile Include="Utils\MotionActivity\ActivityType.cs" />
     <Compile Include="Utils\MotionActivity\CurrentActivity.cs" />
@@ -239,6 +235,11 @@
     <Compile Include="Utils\Geolocation\GeoUtils.cs" />
     <Compile Include="Utils\Geolocation\Geolocator.cs" />
     <Compile Include="Utils\ISoundPlayer.cs" />
+    <Compile Include="UI\Pages\Start\Main\Home\Tutorial\PrivacyPolicy\PrivacyPolicyDataModel.cs" />
+    <Compile Include="UI\Pages\Start\Main\Home\Tutorial\PrivacyPolicy\PrivacyPolicyPage.xaml.cs">
+      <DependentUpon>PrivacyPolicyPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\CustomEffects\UnderlineEffect.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Business\" />
@@ -281,6 +282,8 @@
     <Folder Include="UI\Pages\Start\Main\Home\Tutorial\" />
     <Folder Include="Utils\MotionActivity\" />
     <Folder Include="Utils\Geolocation\" />
+    <Folder Include="UI\Pages\Start\Main\Home\Tutorial\PrivacyPolicy\" />
+    <Folder Include="UI\CustomEffects\" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Microsoft.Threading.Tasks">
