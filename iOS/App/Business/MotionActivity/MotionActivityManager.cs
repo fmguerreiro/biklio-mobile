@@ -10,7 +10,6 @@ namespace Trace.iOS {
 
 	public class MotionActivityManager : IMotionActivityManager {
 
-
 		CMMotionActivityManager motionActivityMgr;
 
 
@@ -23,7 +22,7 @@ namespace Trace.iOS {
 		public override void StartMotionUpdates(Action<ActivityType> handler) {
 			motionActivityMgr.StartActivityUpdates(NSOperationQueue.MainQueue, ((activity) => {
 
-				// An CMMotionActivity can have several modes set to true. We prioritize bycicle events. 
+				// A CMMotionActivity can have several modes set to true. We prioritize bycicle events. 
 				if(activity.Cycling) {
 					handler(ActivityType.Cycling);
 				}

@@ -28,33 +28,5 @@ namespace Trace {
 			});
 			ToolbarItems.Add(tutorialToolbarButton);
 		}
-
-		//void OnMyRewardsClicked() {
-		//	Navigation.PushAsync(new RewardsListPage());
-		//}
-
-		//void OnDashboardClicked() {
-		//	Navigation.PushAsync(new DashboardPage());
-		//}
-
-		//void OnMyRoutesClicked() {
-		//	Navigation.PushAsync(new MyTrajectoriesPage());
-		//}
-
-		//void OnSettingsClicked() {
-		//	Navigation.PushAsync(new SettingsPage());
-		//}
-
-		//async Task OnLogoutClicked() {
-		//	bool isLogout = await DisplayAlert(Language.Logout, Language.AreYouSure, Language.Yes, Language.No);
-		//	if(isLogout) {
-		//		User.Instance = null;
-		//		RewardEligibilityManager.Instance = null;
-		//		await CrossGeolocator.Current.StopListeningAsync();
-		//		DependencyService.Get<IMotionActivityManager>().StopMotionUpdates();
-		//		await Navigation.PopToRootAsync();
-		//	}
-		//}
-
 	}
 }

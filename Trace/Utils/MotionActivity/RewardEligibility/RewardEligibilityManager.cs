@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Plugin.Geolocator.Abstractions;
+using Trace.Localization;
 using Xamarin.Forms;
 
 namespace Trace {
@@ -29,7 +30,7 @@ namespace Trace {
 		private const int VEHICULAR_TIMEOUT = 5 * 60 * 1000;
 
 		// Minimum distance between user and checkpoints for reward eligibility.
-		private readonly double CKPT_DISTANCE_THRESHOLD = 20;
+		private readonly double CKPT_DISTANCE_THRESHOLD = 120;
 		// Minimum time between verification attempts.
 		private readonly int CHECK_NEARBY_TIMEOUT = 90 * 1000;
 		private Timer checkNearbyCheckpointsTimer;
@@ -185,10 +186,11 @@ namespace Trace {
 
 		/// <summary>
 		/// When a user goes from 'cyclingEligible' to 'unknownEligible', i.e., stops cycling, 
-		/// check for shops nearby to see if she is eligible for rewards.
+		/// check for shops nearby with 'distance' condition to see if she is eligible for rewards.
 		/// </summary>
 		async Task checkNearbyCheckpoints() {
 			var now = TimeUtil.CurrentEpochTimeSeconds();
+			var nChallengesCompleted = 0;
 			// Compare the distance between the user and the checkpoints.
 			var userLocation = await GeoUtils.GetCurrentUserLocation();
 			foreach(var checkpoint in User.Instance.Checkpoints) {
@@ -209,14 +211,18 @@ namespace Trace {
 							if(challenge.NeededCyclingDistance <= CycledDistanceBetween(createdAt, expiresAt)) {
 								challenge.IsComplete = true;
 								challenge.CompletedAt = now;
+								SQLiteDB.Instance.SaveItem(challenge);
+								nChallengesCompleted++;
 								// Record event
-								User.Instance.GetCurrentKPI().AddCheckInEvent(TimeUtil.CurrentEpochTimeSeconds(),
-																			  challenge.CheckpointId);
+								User.Instance.GetCurrentKPI().AddCheckInEvent(now, challenge.CheckpointId);
 							}
 						}
 					}
 				}
 			}
+
+			sendRewardNotificationUser(nChallengesCompleted);
+
 			// Start a timer that waits a certain period before doing 'checkNearbyCheckpoints' again.
 			checkNearbyCheckpointsTimer = new Timer(new TimerCallback(
 													(obj) => { checkNearbyCheckpointsTask = null; }),
@@ -235,12 +241,47 @@ namespace Trace {
 		}
 
 
+
+		/// <summary>
+		/// Called when a user goes from 'cyclingIneligible' to 'cyclingEligible', i.e., 
+		/// has been cycling for at least 1.5 mins, 
+		/// check the list of challenges for those without 'distance' condition, i.e., the 'cycle to shop' challenges.
+		/// </summary>
+		void checkForRewards() {
+			var now = TimeUtil.CurrentEpochTimeSeconds();
+			var cycleToShopChallenges = User.Instance.Challenges.FindAll((x) => x.NeededCyclingDistance == 0);
+			var nChallengesCompleted = cycleToShopChallenges.Count;
+			foreach(var c in cycleToShopChallenges) {
+				c.IsComplete = true;
+				c.CompletedAt = now;
+				SQLiteDB.Instance.SaveItem(c);
+				// Record event
+				User.Instance.GetCurrentKPI().AddCheckInEvent(now, c.CheckpointId);
+			}
+
+			sendRewardNotificationUser(nChallengesCompleted);
+		}
+
+
+		static void sendRewardNotificationUser(int nChallengesCompleted) {
+			if(nChallengesCompleted > 0) {
+				DependencyService.Get<INotificationMessage>().Send(
+					 "checkForRewards",
+					 Language.RewardsEarned,
+					 Language.YouHaveEarned + " " + nChallengesCompleted + " " + Language.nRewardsClickToSeeWhat,
+					 nChallengesCompleted
+				);
+			}
+		}
+
+
 		/// <summary>
 		/// Timer callback. User is now eligible for rewards.
 		/// </summary>
 		void goToCyclingEligibleCallback(object state) {
 			resetCounters();
 			stateMachine.MoveNext(Command.Timeout);
+			Task.Run(() => checkForRewards()).DoNotAwait();
 			DependencyService.Get<ISoundPlayer>().PlaySound(User.Instance.BycicleEligibleSoundSetting);
 		}
 

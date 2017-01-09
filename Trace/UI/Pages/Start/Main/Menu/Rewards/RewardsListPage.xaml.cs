@@ -11,7 +11,10 @@ namespace Trace {
 		public RewardsListPage() {
 			InitializeComponent();
 
-			IList<Challenge> rewards = SQLiteDB.Instance.GetRewards().ToList();
+			//IList<Challenge> rewards = SQLiteDB.Instance.GetRewards().ToList();
+			IList<Challenge> rewards = User.Instance.Challenges.FindAll((x) => x.IsComplete == true);
+
+			// TODO remove!
 			var testReward = User.Instance.Challenges.FirstOrDefault();
 			rewards.Add(testReward);
 			BindingContext = new RewardVM { Rewards = rewards };

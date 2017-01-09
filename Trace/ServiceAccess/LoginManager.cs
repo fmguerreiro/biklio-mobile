@@ -107,6 +107,7 @@ namespace Trace {
 			LoginManager.IsLoginVerified = LoginManager.IsOfflineLoggedIn = false;
 			await CrossGeolocator.Current.StopListeningAsync();
 			DependencyService.Get<IMotionActivityManager>().StopMotionUpdates();
+			DependencyService.Get<DeviceKeychainInterface>().DeleteAllCredentials();
 		}
 	}
 }

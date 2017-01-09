@@ -90,7 +90,7 @@
     	<value>Logout</value>
   	</data>
 	<data name="AreYouSure" xml:space="preserve">
-    	<value>Are you sure?</value>
+    	<value>Are you sure? You will need to reinsert your credentials again on login.</value>
   	</data>
 	<data name="Yes" xml:space="preserve">
     	<value>Yes</value>
@@ -460,5 +460,26 @@ Once revoked, identifiable data such as email and name is removed within a few h
   	</data>
 	<data name="PrivacyPolicyPart4" xml:space="preserve">
     	<value>The rest is TODO, I have no idea what I'm doing.</value>
+  	</data>
+	<data name="Sound" xml:space="preserve">
+    	<value>Sound</value>
+  	</data>
+	<data name="IneligibleBackground" xml:space="preserve">
+    	<value>Ineligible background</value>
+  	</data>
+	<data name="EligibleBackground" xml:space="preserve">
+    	<value>Eligible background</value>
+  	</data>
+	<data name="IneligibleWarning" xml:space="preserve">
+    	<value>Ineligible warning</value>
+  	</data>
+	<data name="EligibleWarning" xml:space="preserve">
+    	<value>Eligible warning</value>
+  	</data>
+	<data name="YouHaveEarned" xml:space="preserve">
+    	<value>You have earned</value>
+  	</data>
+	<data name="nRewardsClickToSeeWhat" xml:space="preserve">
+    	<value>rewards. Tap the Reward icon to see what you got.</value>
   	</data>
 </root>

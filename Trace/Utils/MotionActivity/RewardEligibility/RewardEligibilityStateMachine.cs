@@ -61,6 +61,7 @@ namespace Trace {
 			State nextState = State.Ineligible;
 			transitions.TryGetValue(transition, out nextState);
 			Debug.WriteLine("StateMachine: nextState() -> " + nextState);
+			App.DEBUG_ActivityLog += "--------" + nextState + "--------\n";
 			return nextState;
 		}
 

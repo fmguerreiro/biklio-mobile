@@ -898,5 +898,47 @@ namespace Trace.Localization {
                 return ResourceManager.GetString("PrivacyPolicyPart4", resourceCulture);
             }
         }
+        
+        public static string Sound {
+            get {
+                return ResourceManager.GetString("Sound", resourceCulture);
+            }
+        }
+        
+        public static string IneligibleBackground {
+            get {
+                return ResourceManager.GetString("IneligibleBackground", resourceCulture);
+            }
+        }
+        
+        public static string EligibleBackground {
+            get {
+                return ResourceManager.GetString("EligibleBackground", resourceCulture);
+            }
+        }
+        
+        public static string IneligibleWarning {
+            get {
+                return ResourceManager.GetString("IneligibleWarning", resourceCulture);
+            }
+        }
+        
+        public static string EligibleWarning {
+            get {
+                return ResourceManager.GetString("EligibleWarning", resourceCulture);
+            }
+        }
+        
+        public static string YouHaveEarned {
+            get {
+                return ResourceManager.GetString("YouHaveEarned", resourceCulture);
+            }
+        }
+        
+        public static string nRewardsClickToSeeWhat {
+            get {
+                return ResourceManager.GetString("nRewardsClickToSeeWhat", resourceCulture);
+            }
+        }
     }
 }

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Plugin.Geolocator;
 using Trace.Localization;
 using Xamarin.Forms;
 
@@ -17,6 +16,7 @@ namespace Trace {
 		}
 
 		async void OnItemSelected(object sender, SelectedItemChangedEventArgs e) {
+			RewardEligibilityManager.Instance.Input(ActivityType.Cycling); // TODO remove!
 			var item = e.SelectedItem as MasterPageItem;
 			if(item != null) {
 				// If 'logout' was clicked.

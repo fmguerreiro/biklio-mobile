@@ -11,27 +11,56 @@ namespace Trace {
 			//list.Add($"New Spot {DateTime.Now.ToLocalTime()}");
 		}
 
-		// TODO: need to perform input validation
-		void OnSettingChanged(object sender, EventArgs e) {
+		// TODO: need to perform input validation -- need a settings model that gets the values first before storing them in user after validation
+		void onSettingChanged(object sender, EventArgs e) {
 			SQLiteDB.Instance.SaveUser(User.Instance);
 		}
 
-		void OnGenderChanged(object sender, EventArgs e) {
+		void onGenderChanged(object sender, EventArgs e) {
 			var picker = (BindablePicker) sender;
 			string item = picker.Items[picker.SelectedIndex];
 			User.Instance.Gender = EnumUtil.ParseEnum<SelectedGender>(item);
 			SQLiteDB.Instance.SaveUser(User.Instance);
 		}
 
-		void OnLanguageChanged(object sender, EventArgs e) {
+		// TODO: delete language setting -- taken automatically from phone settings
+		void onLanguageChanged(object sender, EventArgs e) {
 			var picker = (BindablePicker) sender;
 			string item = picker.Items[picker.SelectedIndex];
 			User.Instance.UserLanguage = EnumUtil.ParseEnum<SelectedLanguage>(item);
 			SQLiteDB.Instance.SaveUser(User.Instance);
-			// TODO: change text UI for the new language.
 		}
 
-		async void OnDeleteEverything(object sender, EventArgs args) {
+		void onIneligibleSoundChanged(object sender, EventArgs e) {
+			var picker = (BindablePicker) sender;
+			string item = picker.Items[picker.SelectedIndex];
+			Debug.WriteLine("onIneligibleSoundChanged(): " + item);
+			User.Instance.BackgroundIneligibleSoundSetting = item;
+			SQLiteDB.Instance.SaveUser(User.Instance);
+		}
+
+		void onEligibleSoundChanged(object sender, EventArgs e) {
+			var picker = (BindablePicker) sender;
+			string item = picker.Items[picker.SelectedIndex];
+			User.Instance.BycicleEligibleSoundSetting = item;
+			SQLiteDB.Instance.SaveUser(User.Instance);
+		}
+
+		void onCongratulatorySoundChanged(object sender, EventArgs e) {
+			var picker = (BindablePicker) sender;
+			string item = picker.Items[picker.SelectedIndex];
+			User.Instance.CongratulatorySoundSetting = item;
+			SQLiteDB.Instance.SaveUser(User.Instance);
+		}
+
+		void onNoLongerEligibleSoundChanged(object sender, EventArgs e) {
+			var picker = (BindablePicker) sender;
+			string item = picker.Items[picker.SelectedIndex];
+			User.Instance.NoLongerEligibleSoundSetting = item;
+			SQLiteDB.Instance.SaveUser(User.Instance);
+		}
+
+		async void onDeleteEverything(object sender, EventArgs args) {
 			var isDelete = await DisplayAlert(Language.Warning, Language.DeleteEverythingWarning, Language.Delete, Language.Back);
 			if(isDelete) {
 				Debug.WriteLine("DELETING ALL USER INFO");
@@ -43,22 +72,22 @@ namespace Trace {
 		}
 
 		// TODO OnLicensesClicked
-		async void OnLicensesClicked(object sender, EventArgs e) {
+		async void onLicensesClicked(object sender, EventArgs e) {
 			await DisplayAlert("Error", "Not yet implemented.", "Ok");
 		}
 
 		// TODO OnTermsOfServiceClicked
-		async void OnTermsOfServiceClicked(object sender, EventArgs e) {
+		async void onTermsOfServiceClicked(object sender, EventArgs e) {
 			await DisplayAlert("Error", "Not yet implemented.", "Ok");
 		}
 
-		// TODO OnPrivacyPolicyClicked
-		async void OnPrivacyPolicyClicked(object sender, EventArgs e) {
-			await DisplayAlert("Error", "Not yet implemented.", "Ok");
+
+		async void onPrivacyPolicyClicked(object sender, EventArgs e) {
+			await Navigation.PushModalAsync(new PrivacyPolicyPage());
 		}
 
 		// TODO OnAboutUsClicked
-		async void OnAboutUsClicked(object sender, EventArgs e) {
+		async void onAboutUsClicked(object sender, EventArgs e) {
 			await DisplayAlert("Error", "Not yet implemented.", "Ok");
 		}
 	}

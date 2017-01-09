@@ -84,6 +84,8 @@
 		<ffimageloading:CachedImage
 			x:Name="locateImage"
 			Source="images/map/locate.png"
+			WidthRequest="24"
+			DownsampleWidth="24"
 			HorizontalOptions="Center"
 			VerticalOptions="Center"
 			Grid.Row="1"
@@ -102,6 +104,8 @@
 		<ffimageloading:CachedImage
 			x:Name="trackButtonImage"
 			Source="images/map/play_arrow.png"
+			WidthRequest="24"
+			DownsampleWidth="24"
 			HorizontalOptions="Center"
 			VerticalOptions="Center"
 			Grid.Row="2"

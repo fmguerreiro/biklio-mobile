@@ -51,8 +51,16 @@ namespace Trace.iOS {
 
 		public void DeleteAllCredentials() {
 			foreach(var a in AccountStore.Create().FindAccountsForService(App.AppName)) {
-				Debug.WriteLine("DeleteAllCredentials(): " + a.Username);
+				Debug.WriteLine("DeleteAllCredentials() native-login: " + a.Username);
 				AccountStore.Create().Delete(a, App.AppName);
+			}
+			foreach(var a in AccountStore.Create().FindAccountsForService(new GoogleOAuthConfig().KeystoreService)) {
+				Debug.WriteLine("DeleteAllCredentials() google-login: " + a.Username);
+				AccountStore.Create().Delete(a, new GoogleOAuthConfig().KeystoreService);
+			}
+			foreach(var a in AccountStore.Create().FindAccountsForService(new FacebookOAuthConfig().KeystoreService)) {
+				Debug.WriteLine("DeleteAllCredentials() facebook-login: " + a.Username);
+				AccountStore.Create().Delete(a, new FacebookOAuthConfig().KeystoreService);
 			}
 		}
 
@@ -63,6 +71,19 @@ namespace Trace.iOS {
 					AccountStore.Create().Delete(a, App.AppName);
 				}
 			}
+			foreach(Account a in AccountStore.Create().FindAccountsForService(new GoogleOAuthConfig().KeystoreService)) {
+				if(a.Username.Equals(username)) {
+					AccountStore.Create().Delete(a, new GoogleOAuthConfig().KeystoreService);
+					return;
+				}
+			}
+			foreach(Account a in AccountStore.Create().FindAccountsForService(new FacebookOAuthConfig().KeystoreService)) {
+				if(a.Username.Equals(username)) {
+					AccountStore.Create().Delete(a, new FacebookOAuthConfig().KeystoreService);
+					return;
+				}
+			}
+
 		}
 	}
 }

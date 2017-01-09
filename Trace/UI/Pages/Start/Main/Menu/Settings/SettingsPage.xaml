@@ -38,7 +38,7 @@
 				<TableSection
 					Title="{language:Translate CaloriesCalculation}">
 					<EntryCell
-						Completed="OnSettingChanged"
+						Completed="onSettingChanged"
 						Label="{language:Translate Age}"
 						Text="{Binding User.Age, Mode=TwoWay}">
 					</EntryCell>
@@ -50,31 +50,122 @@
 								Text="{language:Translate Gender}" />
 							<local:BindablePicker
 								TranslationX="25"
-								SelectedIndexChanged="OnGenderChanged"
+								SelectedIndexChanged="onGenderChanged"
 								Title="{Binding User.Gender}"
 								SelectedValue="{Binding User.Gender, Mode=TwoWay}"
 								ItemsSource="{Binding Genders}" />
 						</StackLayout>
 					</ViewCell>
 					<EntryCell
-						Completed="OnSettingChanged"
 						Label="{language:Translate Height}"
+						Completed="onSettingChanged"
 						Text="{Binding User.Height, Mode=TwoWay}" />
 					<EntryCell
-						Completed="OnSettingChanged"
 						Label="{language:Translate Weight}"
+						Completed="onSettingChanged"
 						Text="{Binding User.Weight, Mode=TwoWay}" />
+				</TableSection>
+				<TableSection
+					Title="{language:Translate Sound}">
+					<ViewCell>
+						<Grid>
+							<Grid.ColumnDefinitions>
+								<ColumnDefinition
+									Width="10" />
+								<ColumnDefinition
+									Width="150" />
+								<ColumnDefinition
+									Width="*" />
+							</Grid.ColumnDefinitions>
+							<Label
+								Grid.Column="1"
+								Text="{language:Translate IneligibleBackground}"
+								LineBreakMode="TailTruncation" />
+							<local:BindablePicker
+								Grid.Column="2"
+								SelectedIndexChanged="onIneligibleSoundChanged"
+								Title="{Binding User.BackgroundIneligibleSoundSetting}"
+								SelectedValue="{Binding User.BackgroundIneligibleSoundSetting, Mode=TwoWay}"
+								ItemsSource="{Binding Sounds}" />
+						</Grid>
+					</ViewCell>
+					<ViewCell>
+						<Grid>
+							<Grid.ColumnDefinitions>
+								<ColumnDefinition
+									Width="10" />
+								<ColumnDefinition
+									Width="150" />
+								<ColumnDefinition
+									Width="*" />
+							</Grid.ColumnDefinitions>
+							<Label
+								Grid.Column="1"
+								Text="{language:Translate EligibleBackground}"
+								LineBreakMode="TailTruncation" />
+							<local:BindablePicker
+								Grid.Column="2"
+								SelectedIndexChanged="onEligibleSoundChanged"
+								Title="{Binding User.BycicleEligibleSoundSetting}"
+								SelectedValue="{Binding User.BycicleEligibleSoundSetting, Mode=TwoWay}"
+								ItemsSource="{Binding Sounds}" />
+						</Grid>
+					</ViewCell>
+					<ViewCell>
+						<Grid>
+							<Grid.ColumnDefinitions>
+								<ColumnDefinition
+									Width="10" />
+								<ColumnDefinition
+									Width="150" />
+								<ColumnDefinition
+									Width="*" />
+							</Grid.ColumnDefinitions>
+							<Label
+								Grid.Column="1"
+								Text="{language:Translate EligibleWarning}"
+								LineBreakMode="TailTruncation" />
+							<local:BindablePicker
+								Grid.Column="2"
+								SelectedIndexChanged="onCongratulatorySoundChanged"
+								Title="{Binding User.CongratulatorySoundSetting}"
+								SelectedValue="{Binding User.CongratulatorySoundSetting, Mode=TwoWay}"
+								ItemsSource="{Binding Sounds}" />
+						</Grid>
+					</ViewCell>
+					<ViewCell>
+						<Grid>
+							<Grid.ColumnDefinitions>
+								<ColumnDefinition
+									Width="10" />
+								<ColumnDefinition
+									Width="150" />
+								<ColumnDefinition
+									Width="*" />
+							</Grid.ColumnDefinitions>
+							<Label
+								Grid.Column="1"
+								Text="{language:Translate IneligibleWarning}"
+								LineBreakMode="TailTruncation" />
+							<local:BindablePicker
+								Grid.Column="2"
+								SelectedIndexChanged="onNoLongerEligibleSoundChanged"
+								Title="{Binding User.NoLongerEligibleSoundSetting}"
+								SelectedValue="{Binding User.NoLongerEligibleSoundSetting, Mode=TwoWay}"
+								ItemsSource="{Binding Sounds}" />
+						</Grid>
+					</ViewCell>
 				</TableSection>
 				<TableSection
 					Title="{language:Translate Challenges}">
 					<EntryCell
-						Completed="OnSettingChanged"
+						Completed="onSettingChanged"
 						Label="{language:Translate SearchRadius}"
 						Text="{Binding User.SearchRadius, Mode=TwoWay}" />
 					<EntryCell
-						Completed="OnSettingChanged"
+						Completed="onSettingChanged"
 						Label="Maximum"
-						Text="todo" />
+						Text="200" />
 				</TableSection>
 				<TableSection
 					Title="Language">
@@ -82,7 +173,7 @@
 						<local:BindablePicker
 							Title="{Binding User.UserLanguage}"
 							ItemsSource="{Binding Languages}"
-							SelectedIndexChanged="OnLanguageChanged"
+							SelectedIndexChanged="onLanguageChanged"
 							SelectedItem="{Binding User.UserLanguage, Mode=TwoWay}" />
 					</ViewCell>
 				</TableSection>
@@ -90,28 +181,28 @@
 					Title="{language:Translate Delete}">
 					<TextCell
 						Text="{language:Translate Challenges}"
-						Tapped="OnLicensesClicked" />
+						Tapped="onLicensesClicked" />
 					<TextCell
 						Text="{language:Translate Routes}"
-						Tapped="OnLicensesClicked" />
+						Tapped="onLicensesClicked" />
 					<TextCell
 						Text="{language:Translate Everything}"
-						Tapped="OnDeleteEverything" />
+						Tapped="onDeleteEverything" />
 				</TableSection>
 				<TableSection
 					Title="{language:Translate Information}">
 					<TextCell
 						Text="{language:Translate Licenses}"
-						Tapped="OnLicensesClicked" />
+						Tapped="onLicensesClicked" />
 					<TextCell
 						Text="{language:Translate ToS}"
-						Tapped="OnTermsOfServiceClicked" />
+						Tapped="onTermsOfServiceClicked" />
 					<TextCell
 						Text="{language:Translate PrivacyPolicy}"
-						Tapped="OnPrivacyPolicyClicked" />
+						Tapped="onPrivacyPolicyClicked" />
 					<TextCell
 						Text="{language:Translate AboutUs}"
-						Tapped="OnAboutUsClicked" />
+						Tapped="onAboutUsClicked" />
 				</TableSection>
 			</TableRoot>
 		</TableView>

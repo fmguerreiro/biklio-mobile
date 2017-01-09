@@ -90,7 +90,7 @@
         <value>Sair</value>
   	</data>
 	<data name="AreYouSure" xml:space="preserve">
-        <value>Tem a certeza?</value>
+        <value>Tem a certeza? Vai ter que reintroduzir as suas credenciais quando iniciar novamente a sessão.</value>
   	</data>
 	<data name="Yes" xml:space="preserve">
         <value>Sim</value>
@@ -439,5 +439,45 @@
   	</data>
 	<data name="Privacy" xml:space="preserve">
     	<value>Privacidade</value>
+  	</data>
+	<data name="PrivacyPolicyPart1" xml:space="preserve">
+    	<value>Biklio is a cycling reward programme provided by Inesc-ID.
+Inesc-ID is the party responsible for processing your personal data in accordance with the General Data Protection Regulation.
+Your data is made anonymous and used to gain a better understanding of common movement patterns, which can be useful for urban planning purposes.</value>
+  	</data>
+	<data name="PrivacyPolicyPart2" xml:space="preserve">
+    	<value>This application collects the following information:
+- Location data, which is used to analyze common travel patterns in cities;
+- Motion activity, which is used to determine tendencies in transportation modes over time;
+- Statistical information, which is used to analyze the impact of Biklio on shop owners. 
+  This includes the number of cycling events, time spent on each transportation mode, number of rewards claimed, etc.</value>
+  	</data>
+	<data name="PrivacyPolicyPart3" xml:space="preserve">
+    	<value>You can revoke your consent to provide this information at any time after agreeing to this policy by going to the 'Settings' Page in the application.
+Once revoked, identifiable data such as email and name is removed within a few hours.</value>
+  	</data>
+	<data name="PrivacyPolicyPart4" xml:space="preserve">
+    	<value>The rest is TODO, I have no idea what I'm doing.</value>
+  	</data>
+	<data name="Sound" xml:space="preserve">
+    	<value>Som</value>
+  	</data>
+	<data name="IneligibleBackground" xml:space="preserve">
+    	<value>Fundo - padrão</value>
+  	</data>
+	<data name="EligibleBackground" xml:space="preserve">
+    	<value>Fundo - eligível</value>
+  	</data>
+	<data name="IneligibleWarning" xml:space="preserve">
+    	<value>Aviso - ineligível</value>
+  	</data>
+	<data name="EligibleWarning" xml:space="preserve">
+    	<value>Aviso - eligível</value>
+  	</data>
+	<data name="YouHaveEarned" xml:space="preserve">
+    	<value>Ganhou</value>
+  	</data>
+	<data name="nRewardsClickToSeeWhat" xml:space="preserve">
+    	<value>recompensas. Carregue no ícone de Recompensas para ver o que ganhou.</value>
   	</data>
 </root>

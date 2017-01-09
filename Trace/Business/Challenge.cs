@@ -16,7 +16,7 @@ namespace Trace {
 		public long CreatedAt { get; set; }
 		public long ExpiresAt { get; set; }
 
-		[Indexed]
+		[Ignore]
 		public bool IsComplete { get; set; }
 		public long CompletedAt { get; set; }
 
