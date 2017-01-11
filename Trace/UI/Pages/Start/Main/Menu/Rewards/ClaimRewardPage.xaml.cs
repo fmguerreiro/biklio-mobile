@@ -8,9 +8,18 @@ namespace Trace {
 	/// </summary>
 	public partial class ClaimRewardPage : ContentPage {
 
+		private Challenge challenge;
+
+
 		public ClaimRewardPage(Challenge challenge) {
 			InitializeComponent();
-			BindingContext = challenge;
+			BindingContext = this.challenge = challenge;
+		}
+
+
+		void claimChallengeOnClick(object sender, System.EventArgs e) {
+			challenge.IsClaimed = true;
+			SQLiteDB.Instance.SaveItem(challenge);
 		}
 	}
 }

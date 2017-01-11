@@ -2,11 +2,12 @@
 
 	public static class WebServerConstants {
 
-		public static readonly string HOST = "146.193.41.50";
-
-		public static readonly int PORT = 8080;
-
-		public static readonly string ENDPOINT = "http://" + HOST + ":" + PORT + "/trace";
+		public static readonly string HOST = "trace.gsd.inesc-id.pt";
+		public static readonly int PORT = 8443;
+		public static readonly string ENDPOINT = "https://" + HOST + ":" + PORT + "/trace";
+		//public static readonly string HOST = "146.193.41.50";
+		//public static readonly int PORT = 8080;
+		//public static readonly string ENDPOINT = "http://" + HOST + ":" + PORT + "/trace";
 
 		public static readonly string LOGIN_ENDPOINT = ENDPOINT + "/auth/v2/login";
 

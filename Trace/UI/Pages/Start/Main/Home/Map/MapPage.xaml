@@ -61,11 +61,11 @@
 			HorizontalTextAlignment="Center"
 			Margin="0"
 			IsVisible="true"
-			BackgroundColor="#24C121"
+			BackgroundColor="{StaticResource SecondaryColor}"
 			Grid.Row="0"
 			Grid.Column="0"
 			Grid.ColumnSpan="2"
-			TextColor="White"
+			TextColor="{StaticResource SecondaryTextColor}"
 			VerticalTextAlignment="Center">
 		</Label>
 		<Label.BindingContext>
@@ -73,7 +73,7 @@
 		</Label.BindingContext>
 		<Button
 			Clicked="OnLocateUser"
-			BackgroundColor="#4BB166"
+			BackgroundColor="{StaticResource PrimaryColor}"
 			HeightRequest="40"
 			WidthRequest="40"
 			BorderRadius="20"
@@ -115,7 +115,7 @@
 			x:Name="resultsGrid"
 			IsVisible="false"
 			Margin="5"
-			BackgroundColor="#24C121"
+			BackgroundColor="{StaticResource SecondaryColor}"
 			Grid.Row="4"
 			Grid.Column="0"
 			Grid.ColumnSpan="2">

@@ -7,7 +7,7 @@
 	xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
 	x:Class="Trace.SignInPage"
 	Title="{language:Translate SignIn}"
-	BackgroundColor="#439F5C">
+	BackgroundColor="{StaticResource SecondaryColor}">
 	<ContentPage.Padding>
 		<OnPlatform
 			x:TypeArguments="Thickness"
@@ -48,10 +48,8 @@
 			</Entry>
 			<Button
 				Text="{language:Translate SignIn}"
-				BackgroundColor="#2C693D"
-				TextColor="White"
-				BorderWidth="1"
-				BorderColor="White"
+				BackgroundColor="{StaticResource PrimaryColor}"
+				TextColor="{StaticResource PrimaryTextColor}"
 				BorderRadius="0"
 				Clicked="onLogin" />
 			<StackLayout
@@ -61,17 +59,17 @@
 				<Label
 					x:Name="registerLabel"
 					Text="{language:Translate DontHaveAccount}"
-					TextColor="White"
+					TextColor="{StaticResource SecondaryTextColor}"
 					FontSize="Small"
 					Margin="3" />
 				<BoxView
-					BackgroundColor="White"
+					BackgroundColor="{StaticResource SecondaryTextColor}"
 					HeightRequest="1"
 					Margin="0,-8,0,0" />
 			</StackLayout>
 			<BoxView
 				HeightRequest="1"
-				BackgroundColor="White"
+				BackgroundColor="{StaticResource SecondaryTextColor}"
 				HorizontalOptions="FillAndExpand">
 			</BoxView>
 			<Grid>
@@ -85,18 +83,14 @@
 					Text="{language:Translate LoginWithGoogle}"
 					Grid.Column="0"
 					TextColor="White"
-					BorderWidth="1"
 					BackgroundColor="#DD4B39"
-					BorderColor="White"
 					BorderRadius="0"
 					Clicked="onGoogleLogin" />
 				<Button
 					Text="{language:Translate LoginWithFacebook}"
 					Grid.Column="1"
 					TextColor="White"
-					BorderWidth="1"
 					BackgroundColor="#3B5998"
-					BorderColor="White"
 					BorderRadius="0"
 					Clicked="onFacebookLogin" />
 			</Grid>
@@ -117,7 +111,7 @@
 					x:Name="tosWarningLabel"
 					Text="{language:Translate IAgreeToToS}"
 					FontSize="Small"
-					TextColor="White"
+					TextColor="{StaticResource SecondaryTextColor}"
 					Grid.Column="1">
 				</Label>
 			</Grid>

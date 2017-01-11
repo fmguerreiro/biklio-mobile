@@ -8,7 +8,7 @@
 	x:Class="Trace.PrivacyPolicyPage">
 	<ContentPage.Content>
 		<StackLayout
-			BackgroundColor="#439F5C">
+			BackgroundColor="{StaticResource SecondaryColor}">
 			<BoxView
 				HeightRequest="40">
 			</BoxView>
@@ -23,7 +23,7 @@
 			</ffimageloading:CachedImage>
 			<Label
 				Text="{language:Translate PrivacyPolicy}"
-				TextColor="White"
+				TextColor="{StaticResource SecondaryTextColor}"
 				HorizontalOptions="Center"
 				VerticalOptions="Start"
 				FontAttributes="Bold"
@@ -37,12 +37,12 @@
 						<StackLayout>
 							<Label
 								Text="{Binding Text}"
-								TextColor="White"
+								TextColor="{StaticResource SecondaryTextColor}"
 								FontSize="14"
 								VerticalOptions="CenterAndExpand" />
 							<Label
 								Text="{Binding Indicator}"
-								TextColor="White"
+								TextColor="{StaticResource SecondaryTextColor}"
 								HorizontalOptions="Center"
 								VerticalOptions="End" />
 						</StackLayout>
@@ -52,8 +52,8 @@
 			<Button
 				Text="Ok"
 				Clicked="onConfirmation"
-				BackgroundColor="#347B47"
-				TextColor="White"
+				BackgroundColor="{StaticResource PrimaryColor}"
+				TextColor="{StaticResource PrimaryTextColor}"
 				HorizontalOptions="Center"
 				HeightRequest="30"
 				WidthRequest="120"

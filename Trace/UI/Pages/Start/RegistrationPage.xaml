@@ -5,7 +5,8 @@
 	xmlns:local="clr-namespace:Trace;assembly=Trace"
 	xmlns:language="clr-namespace:Trace.Localization;assembly=Trace"
 	x:Class="Trace.RegistrationPage"
-	Title="{language:Translate Registration}">
+	Title="{language:Translate Registration}"
+	BackgroundColor="{StaticResource PrimaryColor}">
 	<ContentPage.Padding>
 		<OnPlatform
 			x:TypeArguments="Thickness"
@@ -21,9 +22,11 @@
 			Spacing="15">
 			<Label
 				Text="{language:Translate UsernameRegisterConditions}"
+				TextColor="{StaticResource PrimaryTextColor}"
 				FontSize="Micro" />
 			<Entry
 				x:Name="usernameText"
+				TextColor="{StaticResource PrimaryTextColor}"
 				Placeholder="{language:Translate Username}">
 				<Entry.Behaviors>
 					<local:UsernameValidator />
@@ -33,6 +36,7 @@
 			</Entry>
 			<Entry
 				x:Name="emailText"
+				TextColor="{StaticResource PrimaryTextColor}"
 				Placeholder="{language:Translate Email}">
 				<Entry.Behaviors>
 					<local:EmailValidator />
@@ -42,10 +46,12 @@
 			</Entry>
 			<Label
 				Text="{language:Translate PasswordRegisterConditions}"
+				TextColor="{StaticResource PrimaryTextColor}"
 				FontSize="Micro" />
 			<Entry
 				x:Name="passwordText"
 				Placeholder="{language:Translate Password}"
+				TextColor="{StaticResource PrimaryTextColor}"
 				IsPassword="true">
 				<Entry.Behaviors>
 					<local:PasswordValidator />
@@ -56,6 +62,7 @@
 			<Entry
 				x:Name="confirmPasswordText"
 				Placeholder="{language:Translate ConfirmPassword}"
+				TextColor="{StaticResource PrimaryTextColor}"
 				IsPassword="true">
 				<Entry.Behaviors>
 					<local:ConfirmPasswordValidator
@@ -64,14 +71,14 @@
 			</Entry>
 			<Button
 				Text="{language:Translate Register}"
-				BackgroundColor="#FFD500"
-				TextColor="White"
+				BackgroundColor="{StaticResource SecondaryColor}"
+				TextColor="{StaticResource SecondaryTextColor}"
 				BorderRadius="0"
 				Clicked="onRegister" />
 			<Button
 				Text="{language:Translate Cancel}"
-				BackgroundColor="#FFD500"
-				TextColor="White"
+				BackgroundColor="{StaticResource SecondaryColor}"
+				TextColor="{StaticResource SecondaryTextColor}"
 				BorderRadius="0"
 				Clicked="onCancel" />
 		</StackLayout>

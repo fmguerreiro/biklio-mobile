@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Linq;
 using System.Threading.Tasks;
 using Plugin.Connectivity;
 using Plugin.Connectivity.Abstractions;
@@ -34,23 +35,25 @@ namespace Trace {
 					// Check login info.
 					if(!IsLoginVerified && IsOfflineLoggedIn) {
 						Debug.WriteLine("LoginManager: Verifying login.");
-						bool result = false;
+						bool? result = false;
 						if((bool) isCrendentialsLogin)
 							result = await Task.Run(() => LoginWithCredentials());
 						else
 							result = await Task.Run(() => LoginWithToken());
 
-						if(result) {
+						if(result ?? false) {
 							IsLoginVerified = true;
 							// Upon successful login, send available KPIs to the server.
 							new WebServerClient().SendKPIs(User.Instance.GetFinishedKPIs()).DoNotAwait();
 						}
-						else {
+						else if(!result ?? false) {
 							// If user credentials were wrong, send the user to sign in screen and show error message.
 							Device.BeginInvokeOnMainThread(async () => {
 								await Application.Current.MainPage.DisplayAlert(Language.Error, Language.OnlineLoginError, Language.Ok);
 								await PrepareLogout();
-								Application.Current.MainPage = new NavigationPage(new SignInPage());
+								var signInPage = new NavigationPage(new SignInPage());
+								signInPage.BarBackgroundColor = (Color) App.Current.Resources["PrimaryColor"];
+								Application.Current.MainPage = signInPage;
 							});
 							return;
 						}
@@ -65,13 +68,13 @@ namespace Trace {
 		}
 
 
-		public static async Task<bool> LoginWithCredentials() {
+		public static async Task<bool?> LoginWithCredentials() {
 
 			var client = new WebServerClient();
 			WSResult result = await Task.Run(() => client.LoginWithCredentials(User.Instance.Username, User.Instance.Password));
 
 			if(result.success) {
-				DependencyService.Get<DeviceKeychainInterface>().SaveCredentials(User.Instance.Username, User.Instance.Password);
+				DependencyService.Get<ICredentialsStore>().SaveCredentials(User.Instance.Username, User.Instance.Password);
 
 				User.Instance.SessionToken = result.payload.token;
 				SQLiteDB.Instance.SaveUser(User.Instance);
@@ -80,7 +83,7 @@ namespace Trace {
 		}
 
 
-		public static async Task<bool> LoginWithToken() {
+		public static async Task<bool?> LoginWithToken() {
 
 			var client = new WebServerClient();
 			WSResult result = await Task.Run(() => client.LoginWithToken(User.Instance.IDToken));
@@ -92,6 +95,24 @@ namespace Trace {
 				User.Instance.SessionToken = result.payload.token;
 				SQLiteDB.Instance.SaveUser(User.Instance);
 			}
+			else {
+				// Google replaces its token once a day, so the webserver login will fail unless we ask for a new one.
+				if(OAuthConfigurationManager.Type.Equals("google")) {
+					try {
+						var mainPage = ((MainPage) Application.Current.MainPage).Detail as NavigationPage;
+						mainPage = mainPage ?? Application.Current.MainPage as NavigationPage;
+						//Debug.WriteLine($"LoginManager.LoginWithToken() changing main page from {Application.Current.MainPage} to {((MainPage) Application.Current.MainPage).Detail}");
+						if(mainPage != null) {
+							DependencyService.Get<ICredentialsStore>().DeleteCredentials(User.Instance.Username);
+							Device.BeginInvokeOnMainThread(async () => {
+								await mainPage.PushAsync(new GoogleOAuthUIPage());
+							});
+							return null;//await Task.Run(() => client.LoginWithToken(User.Instance.IDToken));
+						}
+					}
+					catch(Exception e) { Debug.WriteLine(e); }
+				}
+			}
 			return result.success;
 		}
 
@@ -102,7 +123,7 @@ namespace Trace {
 			LoginManager.IsLoginVerified = LoginManager.IsOfflineLoggedIn = false;
 			await CrossGeolocator.Current.StopListeningAsync();
 			DependencyService.Get<IMotionActivityManager>().StopMotionUpdates();
-			DependencyService.Get<DeviceKeychainInterface>().DeleteAllCredentials();
+			DependencyService.Get<ICredentialsStore>().DeleteAllCredentials();
 		}
 	}
 }

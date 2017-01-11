@@ -247,9 +247,13 @@
     <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\Contents.json" />
     <ImageAsset Include="Assets.xcassets\LaunchImage.launchimage\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\icon29px.png" />
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\icon58px.png" />
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\icon87px.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\ic_launcher_motion_29x.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\ic_launcher_motion_58x.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\ic_launcher_motion_87x.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\ic_launcher_motion_80x.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\ic_launcher_motion_120x.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\ic_launcher_motion_57x.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\ic_launcher_motion_114x.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
@@ -305,7 +309,6 @@
     <BundleResource Include="Resources\images\challenge_list\default_shop_20px.png" />
     <BundleResource Include="Resources\images\challenge_list\location_unknown.png" />
     <BundleResource Include="Resources\images\challenge_list\trophy.png" />
-    <BundleResource Include="Resources\images\home\.DS_Store" />
     <BundleResource Include="Resources\images\home\dashboard.png" />
     <BundleResource Include="Resources\images\home\home.png" />
     <BundleResource Include="Resources\images\home\logout.png" />
@@ -345,6 +348,9 @@
     <BundleResource Include="Resources\images\privacy_policy\.DS_Store" />
     <BundleResource Include="Resources\images\privacy_policy\logo_name.png" />
     <BundleResource Include="Resources\images\logo_name.png" />
+    <BundleResource Include="Resources\images\home\reward_glow.png" />
+    <BundleResource Include="Resources\images\splashscreen.png" />
+    <BundleResource Include="Resources\images\logo_slogan_splashscreen.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
   <Import Project="..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" />

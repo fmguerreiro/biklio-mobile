@@ -130,7 +130,7 @@ namespace Trace {
 					return Language.NoRoutesYet;
 				}
 				if(Trajectories.Count != 1)
-					return Language.YouHave + " " + Trajectories.Count + " " + Language.Routes;
+					return Language.YouHave + " " + Trajectories.Count + " " + Language.routes_;
 				else
 					return Language.OneRoute;
 			}

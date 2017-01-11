@@ -58,8 +58,9 @@ namespace Trace.iOS {
 				var request = new OAuth2Request("GET", new Uri(OAuthConfigurationManager.UserInfoUrl), null, e.Account);
 
 				var response = await request.GetResponseAsync();
-				Debug.WriteLine("OAuth response url: " + response.ToString());
+				Debug.WriteLine("OAuth response url: " + response);
 				if(response != null) {
+					SQLiteDB.Instance.InstantiateUser(User.Instance.Username);
 
 					// Deserialize the data and store it in the account store
 					// The users email address will be used to identify data in SQLite DB
@@ -81,7 +82,6 @@ namespace Trace.iOS {
 					// Finally, store the user.
 					User.Instance.IDToken = authToken;
 					SQLiteDB.Instance.SaveUser(User.Instance);
-					SQLiteDB.Instance.InstantiateUser(User.Instance.Username);
 
 					// If the user is logged in navigate to the Home page.
 					// Otherwise allow another login attempt.

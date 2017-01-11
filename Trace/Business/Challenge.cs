@@ -20,6 +20,19 @@ namespace Trace {
 		public bool IsComplete { get; set; }
 		public long CompletedAt { get; set; }
 
+		// Indicator showing if the user has completed the challenge. Repeatable challenges can never be fully claimed, i.e., finished.
+		private bool isClaimed;
+		public bool IsClaimed {
+			get { return isClaimed; }
+			set {
+				if(!IsRepeatable)
+					isClaimed = value;
+				ClaimedAt = TimeUtil.CurrentEpochTimeSeconds();
+			}
+		}
+		public long ClaimedAt { get; set; }
+		public bool IsRepeatable { get; set; }
+
 		public string CheckpointName { get; set; }
 		[Ignore]
 		public Checkpoint ThisCheckpoint { get; set; }

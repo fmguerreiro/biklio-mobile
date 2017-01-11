@@ -14,8 +14,8 @@ namespace Trace {
 		public SignInPage() {
 			InitializeComponent();
 			string username = null;
-			usernameText.Text = username = DependencyService.Get<DeviceKeychainInterface>().Username;
-			passwordText.Text = DependencyService.Get<DeviceKeychainInterface>().GetPassword(usernameText.Text);
+			usernameText.Text = username = DependencyService.Get<ICredentialsStore>().Username;
+			passwordText.Text = DependencyService.Get<ICredentialsStore>().GetPassword(usernameText.Text);
 			if(username != null) {
 				doesUserAgreeToS = true;
 				tosSwitch.IsToggled = true;
@@ -33,7 +33,7 @@ namespace Trace {
 
 
 		void onUsernameInput(object sender, EventArgs e) {
-			passwordText.Text = DependencyService.Get<DeviceKeychainInterface>().GetPassword(((Entry) sender).Text);
+			passwordText.Text = DependencyService.Get<ICredentialsStore>().GetPassword(((Entry) sender).Text);
 		}
 
 
@@ -52,8 +52,8 @@ namespace Trace {
 			}
 
 			// Perform credentials validation against the local keystore/keychain.
-			bool doesUsernameExist = DependencyService.Get<DeviceKeychainInterface>().Exists(username);
-			string storedPassword = DependencyService.Get<DeviceKeychainInterface>().GetPassword(username);
+			bool doesUsernameExist = DependencyService.Get<ICredentialsStore>().Exists(username);
+			string storedPassword = DependencyService.Get<ICredentialsStore>().GetPassword(username);
 			bool doesPasswordMatch = storedPassword != null && storedPassword.Equals(password);
 			if(!doesUsernameExist || !doesPasswordMatch) {
 				await DisplayAlert(Language.Warning, Language.LocalIncorrectCredentialsWarning, Language.Yes, Language.No);
@@ -65,7 +65,7 @@ namespace Trace {
 			}
 
 			// Remember me => Store credentials in keychain.
-			DependencyService.Get<DeviceKeychainInterface>().SaveCredentials(username, password);
+			DependencyService.Get<ICredentialsStore>().SaveCredentials(username, password);
 
 			// Fetch user information from the database.
 			SQLiteDB.Instance.InstantiateUser(username);
@@ -146,9 +146,10 @@ namespace Trace {
 					await Task.Delay(1000);
 					await LoginManager.PrepareLogout();
 					await Application.Current.MainPage.DisplayAlert(Language.Error, Language.OAuthError, Language.Ok);
-					Application.Current.MainPage = new NavigationPage(new SignInPage());
-					//NavPage.PopModalAsync();
-					//NavPage.NavigationStack.First().DisplayAlert(Language.Error, Language.OAuthError, Language.Ok);
+
+					var signInPage = new NavigationPage(new SignInPage());
+					signInPage.BarBackgroundColor = (Color) App.Current.Resources["PrimaryColor"];
+					Application.Current.MainPage = signInPage;
 				});
 			}
 		}

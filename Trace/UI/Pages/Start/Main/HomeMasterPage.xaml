@@ -9,7 +9,7 @@
 	x:Class="Trace.HomeMasterPage"
 	Title="{language:Translate Menu}"
 	Icon="images/home/menu.png"
-	BackgroundImage="images/home/menu_background.png">
+	BackgroundColor="{StaticResource SecondaryColor}">
 	<ContentPage.Content>
 		<StackLayout
 			VerticalOptions="FillAndExpand">
@@ -31,17 +31,16 @@
 					<Label
 						Text="{Binding Name}"
 						Font="Bold"
-						TextColor="White" />
+						TextColor="{StaticResource PrimaryTextColor}" />
 					<Label
 						Text="{Binding Email}"
 						FontSize="Small"
-						TextColor="White" />
+						TextColor="{StaticResource PrimaryTextColor}" />
 				</StackLayout>
 			</StackLayout>
 			<ListView
-				BackgroundColor="#4BB166"
+				BackgroundColor="{StaticResource PrimaryColor}"
 				x:Name="listView"
-				SeparatorColor="#24C121"
 				VerticalOptions="FillAndExpand"
 				SeparatorVisibility="None">
 				<ListView.ItemTemplate>
@@ -58,7 +57,7 @@
 								</ffimageloading:CachedImage>
 								<Label
 									Text="{Binding Title}"
-									TextColor="White"
+									TextColor="{StaticResource PrimaryTextColor}"
 									VerticalOptions="Center" />
 							</StackLayout>
 						</ViewCell>

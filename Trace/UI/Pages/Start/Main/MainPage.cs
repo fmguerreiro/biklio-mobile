@@ -8,15 +8,19 @@ namespace Trace {
 		HomeMasterPage masterPage;
 
 		public MainPage() {
-			masterPage = new HomeMasterPage();
-			Master = masterPage;
-			Detail = new NavigationPage(new HomePage());
 
+			masterPage = new HomeMasterPage();
 			masterPage.ListView.ItemSelected += OnItemSelected;
+			Master = masterPage;
+
+			var detailPage = new NavigationPage(new HomePage());
+			detailPage.BarBackgroundColor = (Color) App.Current.Resources["PrimaryColor"];
+			Detail = detailPage;
+
 		}
 
 		async void OnItemSelected(object sender, SelectedItemChangedEventArgs e) {
-			RewardEligibilityManager.Instance.Input(ActivityType.Cycling); // TODO remove!
+			RewardEligibilityManager.Instance.Input(ActivityType.Cycling); // TODO just for testing state machine -- remove!
 			var item = e.SelectedItem as MasterPageItem;
 			if(item != null) {
 				// If 'logout' was clicked.
@@ -25,7 +29,9 @@ namespace Trace {
 				}
 				// Else load another page from the menu.
 				else {
-					Detail = new NavigationPage((Page) Activator.CreateInstance(item.TargetType));
+					var nextPage = new NavigationPage((Page) Activator.CreateInstance(item.TargetType));
+					nextPage.BarBackgroundColor = (Color) App.Current.Resources["PrimaryColor"];
+					Detail = nextPage;
 					masterPage.ListView.SelectedItem = null;
 					IsPresented = false;
 				}
@@ -38,7 +44,9 @@ namespace Trace {
 			App.DEBUG_ActivityLog = "";
 			if(isLogout) {
 				await LoginManager.PrepareLogout();
-				Application.Current.MainPage = new NavigationPage((Page) Activator.CreateInstance(item.TargetType));
+				var nextPage = new NavigationPage((Page) Activator.CreateInstance(item.TargetType));
+				nextPage.BarBackgroundColor = (Color) App.Current.Resources["PrimaryColor"];
+				Application.Current.MainPage = nextPage;
 			}
 		}
 	}

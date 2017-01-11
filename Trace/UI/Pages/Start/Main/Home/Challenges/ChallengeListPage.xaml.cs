@@ -27,6 +27,7 @@ namespace Trace {
 
 		/// <summary>
 		/// On pull-to-refresh, fetch updates from the server and show when finished.
+		/// When finished, update the loading icon and remove the label.
 		/// </summary>
 		/// <param name="sender">The listview.</param>
 		/// <param name="e">E.</param>
@@ -46,6 +47,7 @@ namespace Trace {
 			// Get current position to fetch closest challenges
 			var position = await GeoUtils.GetCurrentUserLocation();
 
+			// If the user got too far from the previous position where he got the last set of challenges, reset Snapshot point.
 			await checkIfUserRequiresNewChallenges();
 
 			// Fetch challenges from Webserver
@@ -72,6 +74,7 @@ namespace Trace {
 			loadChallenges(result, checkpoints, challenges);
 
 			deleteInvalidatedChallenges(result, challenges);
+			checkClaimedChallenges(challenges);
 
 			// Update or create the received challenges and checkpoints.
 			IEnumerable<Checkpoint> checkpointList = checkpoints.Values;
@@ -91,9 +94,10 @@ namespace Trace {
 
 			Task.Run(() => checkForRewards()).DoNotAwait();
 
-			// Finally, display results.
+			// Finally, display available challenges.
+			var unclaimedChallenges = User.Instance.Challenges.FindAll((x) => !x.IsClaimed);
 			Device.BeginInvokeOnMainThread(() => {
-				BindingContext = new ChallengeVM { Challenges = User.Instance.Challenges };
+				BindingContext = new ChallengeVM { Challenges = unclaimedChallenges };
 				mapPage.UpdatePins();
 			});
 		}
@@ -123,7 +127,8 @@ namespace Trace {
 				CheckpointName = checkpoint.Name,
 				CreatedAt = challenge.createdAt,
 				ExpiresAt = challenge.expiresAt,
-				NeededCyclingDistance = (int) challenge.conditions.distance
+				NeededCyclingDistance = (int) challenge.conditions.distance,
+				IsRepeatable = challenge.repeatable
 			};
 		}
 
@@ -194,8 +199,27 @@ namespace Trace {
 			long[] canceledChallengeIds = result.payload.canceledChallenges;
 			if(canceledChallengeIds.Length > 0) {
 				SQLiteDB.Instance.DeleteItems<Challenge>(canceledChallengeIds);
+				challengeList.RemoveAll(x => canceledChallengeIds.Contains(x.GId));
 			}
-			challengeList.RemoveAll(x => canceledChallengeIds.Contains(x.GId));
+		}
+
+
+		/// <summary>
+		/// Checks for challenges the user has already claimed, 
+		/// so that they are not overwritten by the same challenges and reset.
+		/// </summary>
+		/// <param name="newChallenges">New challenge list.</param>
+		void checkClaimedChallenges(List<Challenge> newChallenges) {
+			var claimedChallenges = User.Instance.Challenges.FindAll((x) => x.IsClaimed);
+			if(claimedChallenges.Count > 0) {
+				var newChallengeHash = newChallenges.ToDictionary((x) => x.Id);
+				foreach(var claimed in claimedChallenges) {
+					var newChallenge = newChallengeHash[claimed.Id];
+					newChallenge.IsClaimed = true;
+					newChallenge.CompletedAt = claimed.CompletedAt;
+					newChallenge.ClaimedAt = claimed.ClaimedAt;
+				}
+			}
 		}
 
 

@@ -695,6 +695,12 @@ namespace Trace.Localization {
             }
         }
         
+        public static string routes_ {
+            get {
+                return ResourceManager.GetString("routes.", resourceCulture);
+            }
+        }
+        
         public static string OnlineLoginError {
             get {
                 return ResourceManager.GetString("OnlineLoginError", resourceCulture);
@@ -950,6 +956,12 @@ namespace Trace.Localization {
         public static string ToSUncheckedError {
             get {
                 return ResourceManager.GetString("ToSUncheckedError", resourceCulture);
+            }
+        }
+        
+        public static string PullUpToGetLocalCampaign {
+            get {
+                return ResourceManager.GetString("PullUpToGetLocalCampaign", resourceCulture);
             }
         }
     }

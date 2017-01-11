@@ -107,8 +107,8 @@
     <Compile Include="Security\InputValidation\ConfirmPasswordValidator.cs" />
     <Compile Include="Security\InputValidation\UsernameValidator.cs" />
     <Compile Include="ServiceAccess\WebServerConstants.cs" />
-    <Compile Include="Security\CredentialsHandling\DeviceKeychainInterface.cs" />
-    <Compile Include="Security\CredentialsHandling\AccountInterface.cs" />
+    <Compile Include="Security\CredentialsHandling\ICredentialsStore.cs" />
+    <Compile Include="Security\CredentialsHandling\IAccount.cs" />
     <Compile Include="ServiceAccess\HTTPClientBase.cs" />
     <Compile Include="Data\ISQLite.cs" />
     <Compile Include="Data\DatabaseEntityBase.cs" />

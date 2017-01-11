@@ -1,5 +1,4 @@
 ﻿using System.Threading.Tasks;
-using Plugin.Geolocator;
 using Trace.Localization;
 using Xamarin.Forms;
 
@@ -8,6 +7,9 @@ namespace Trace {
 
 		public HomePage() {
 			Title = Language.Home;
+			//BackgroundColor = (Color) App.Current.Resources["SecondaryColor"];
+			//BarBackgroundColor = (Color) App.Current.Resources["SecondaryColor"];
+			//BarTextColor = (Color) App.Current.Resources["SecondaryColor"];
 
 			// Remove 'Back' button to stop users from logging out accidently.
 			NavigationPage.SetHasBackButton(this, false);
@@ -15,6 +17,7 @@ namespace Trace {
 			// Add tabs to the page.
 			var mapPage = new MapPage();
 			var challengesPage = new ChallengeListPage(mapPage);
+
 			Children.Add(challengesPage);
 			Children.Add(mapPage);
 

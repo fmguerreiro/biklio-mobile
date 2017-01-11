@@ -27,10 +27,11 @@
 				Margin="50">
 			</Label>
 			<Button
-				BackgroundColor="#ffd500"
-				TextColor="White"
+				BackgroundColor="{StaticResource PrimaryColor}"
+				TextColor="{StaticResource PrimaryTextColor}"
 				HorizontalOptions="CenterAndExpand"
 				BorderRadius="0"
+				Clicked="claimChallengeOnClick"
 				Text="{language:Translate ClaimReward}">
 			</Button>
 		</StackLayout>

@@ -34,7 +34,7 @@ namespace Trace {
 					Email = email,
 					// TODO verify if its needed -> AuthToken = result.token
 				});
-				DependencyService.Get<DeviceKeychainInterface>().SaveCredentials(username, password);
+				DependencyService.Get<ICredentialsStore>().SaveCredentials(username, password);
 				await DisplayAlert(Language.Result, Language.RegistrationSuccessful, Language.Ok);
 				await Navigation.PopModalAsync();
 			}

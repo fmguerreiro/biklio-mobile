@@ -50,7 +50,21 @@ namespace Trace {
 		}
 
 
-		async void fetchNewCampaignOnClick(object sender, EventArgs e) {
+		/// <summary>
+		/// On pull-to-refresh, fetch the local campaign based on the user's current location.
+		/// When finished, update the loading icon and remove the label.
+		/// </summary>
+		/// <param name="sender">The listview.</param>
+		/// <param name="e">E.</param>
+		async void onRefresh(object sender, EventArgs e) {
+			var list = (ListView) sender;
+			await Task.Run(() => fetchNewCampaign());
+			list.IsRefreshing = false;
+			pullUpHintLabel.IsVisible = false;
+		}
+
+
+		async Task fetchNewCampaign() {
 			var webserverClient = new WebServerClient();
 			var result = await webserverClient.GetNearestCampaign();
 			if(result.success) {
@@ -64,22 +78,25 @@ namespace Trace {
 					return;
 				}
 
-				// TODO popup with img: https://github.com/rotorgames/Rg.Plugins.Popup
-				var wantsToSubscribe = await DisplayAlert(newCampaign.Name, newCampaign.Description + "\n" + Language.NewCampaignMsg, Language.Subscribe, Language.Cancel);
-				if(wantsToSubscribe) {
-					// Let WS know that user wants to subscribe.
-					result = await webserverClient.SubscribeCampaign(newCampaign.GId);
-					if(result.success) {
-						await DisplayAlert(Language.Result, Language.YouHaveSubscribedTo + " " + newCampaign.Name + ".", Language.Ok);
-						newCampaign.UserId = User.Instance.Id;
-						campaigns.Add(newCampaign);
-						User.Instance.SubscribedCampaigns.Add(newCampaign);
-						SQLiteDB.Instance.SaveItem(newCampaign);
+				// TODO popup with img instead of just alert: https://github.com/rotorgames/Rg.Plugins.Popup
+				bool wantsToSubscribe = false;
+				Device.BeginInvokeOnMainThread(async () => {
+					wantsToSubscribe = await DisplayAlert(newCampaign.Name, newCampaign.Description + "\n" + Language.NewCampaignMsg, Language.Subscribe, Language.Cancel);
+					if(wantsToSubscribe) {
+						// Let WS know that user wants to subscribe.
+						result = await webserverClient.SubscribeCampaign(newCampaign.GId);
+						if(result.success) {
+							await DisplayAlert(Language.Result, Language.YouHaveSubscribedTo + " " + newCampaign.Name + ".", Language.Ok);
+							newCampaign.UserId = User.Instance.Id;
+							campaigns.Add(newCampaign);
+							User.Instance.SubscribedCampaigns.Add(newCampaign);
+							SQLiteDB.Instance.SaveItem(newCampaign);
+						}
+						else {
+							await DisplayAlert(Language.Error, result.error, Language.Ok);
+						}
 					}
-					else {
-						await DisplayAlert(Language.Error, result.error, Language.Ok);
-					}
-				}
+				});
 			}
 		}
 

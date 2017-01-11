@@ -348,7 +348,7 @@
 	<data name="YouHave" xml:space="preserve">
     	<value>You have</value>
   	</data>
-	<data name="Routes" xml:space="preserve">
+	<data name="routes." xml:space="preserve">
     	<value>routes.</value>
   	</data>
 	<data name="OnlineLoginError" xml:space="preserve">
@@ -487,5 +487,8 @@ Once revoked, identifiable data such as email and name is removed within a few h
   	</data>
 	<data name="ToSUncheckedError" xml:space="preserve">
     	<value>To continue using Biklio, make sure you agree to the terms of service.</value>
+  	</data>
+	<data name="PullUpToGetLocalCampaign" xml:space="preserve">
+    	<value>Pull up to search for the local campaign.</value>
   	</data>
 </root>

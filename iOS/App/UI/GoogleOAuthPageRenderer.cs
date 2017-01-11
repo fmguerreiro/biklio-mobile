@@ -38,6 +38,7 @@ namespace Trace.iOS {
 				}
 
 				if(gUser != null) {
+					var googleId = gUser.UserID;
 					var accessToken = gUser.Authentication.AccessToken;
 					var idToken = gUser.Authentication.IdToken;
 					var fullname = gUser.Profile.Name;
@@ -58,8 +59,10 @@ namespace Trace.iOS {
 					});
 					Debug.WriteLine("Google OAuth token: " + jToken);
 
+					SQLiteDB.Instance.InstantiateUser(googleId);
+
 					// Store token in keychain for later offline login.
-					User.Instance.Username = gUser.UserID;
+					//User.Instance.Username = googleId;
 					var account = new Account(User.Instance.Username);
 					AccountStore.Create().Save(account, OAuthConfigurationManager.KeystoreService);
 
@@ -72,7 +75,6 @@ namespace Trace.iOS {
 					Debug.WriteLine("google token is: " + idToken);
 					Debug.WriteLine("user token is  : " + User.Instance.IDToken);
 					SQLiteDB.Instance.SaveUser(User.Instance);
-					SQLiteDB.Instance.InstantiateUser(User.Instance.Username);
 
 					SignInPage.SuccessfulOAuthLoginAction.Invoke();
 				}

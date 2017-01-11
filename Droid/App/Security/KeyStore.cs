@@ -5,7 +5,7 @@ using Xamarin.Forms;
 [assembly: Xamarin.Forms.Dependency(typeof(Trace.Droid.KeyStore))]
 namespace Trace.Droid {
 
-	public class KeyStore : DeviceKeychainInterface {
+	public class KeyStore : ICredentialsStore {
 
 		public string Username {
 			get {
