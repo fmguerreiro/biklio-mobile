@@ -67,6 +67,9 @@ namespace Trace.iOS {
 		}
 
 
+		/// <summary>
+		/// Required for the iOS google sign-in SDK.
+		/// </summary>
 		public override bool OpenUrl(UIApplication application, NSUrl url, string sourceApplication, NSObject annotation) {
 			return SignIn.SharedInstance.HandleUrl(url, sourceApplication, annotation);
 		}

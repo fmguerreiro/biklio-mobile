@@ -14,7 +14,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
+    <Optimize>true</Optimize>
     <OutputPath>bin\Debug</OutputPath>
     <DefineConstants>DEBUG;</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
@@ -99,7 +99,6 @@
     <Compile Include="Business\User.cs" />
     <Compile Include="Business\Challenge.cs" />
     <Compile Include="Business\Checkpoint.cs" />
-    <Compile Include="Business\Map\TraceMap.cs" />
     <Compile Include="Security\InputValidation\EmailValidator.cs" />
     <Compile Include="Security\InputValidation\NumberValidator.cs" />
     <Compile Include="Security\InputValidation\MaxLengthValidator.cs" />
@@ -114,7 +113,6 @@
     <Compile Include="Data\DatabaseEntityBase.cs" />
     <Compile Include="Data\UserItemBase.cs" />
     <Compile Include="Security\OAuth\IOAuth.cs" />
-    <Compile Include="Business\Map\CustomPin.cs" />
     <Compile Include="UI\CustomConverters\ByteArrayToChallengeImageConverter.cs" />
     <Compile Include="Data\IFileSystem.cs" />
     <Compile Include="Security\OAuth\OAuthConfigurationManager.cs" />
@@ -170,9 +168,6 @@
       <DependentUpon>DashboardPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="UI\Pages\Start\Main\Menu\Dashboard\DrawPlotPage.cs" />
-    <Compile Include="Business\Map\Bindings\TotalCalories.cs" />
-    <Compile Include="Business\Map\Bindings\TotalDistance.cs" />
-    <Compile Include="Business\Map\Bindings\TotalDuration.cs" />
     <Compile Include="UI\Pages\Start\Main\Menu\Dashboard\Units\TimePerActivity.cs" />
     <Compile Include="UI\Pages\Start\Main\Menu\Dashboard\Units\DistancePerActivity.cs" />
     <Compile Include="UI\Pages\Start\Main\Menu\Dashboard\Units\CaloriesPerActivity.cs" />
@@ -225,29 +220,33 @@
       <DependentUpon>TutorialPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="UI\Pages\Start\Main\Home\Tutorial\TutorialDataModel.cs" />
-    <Compile Include="Utils\MotionActivity\ActivityEvent.cs" />
-    <Compile Include="Utils\MotionActivity\ActivityType.cs" />
-    <Compile Include="Utils\MotionActivity\CurrentActivity.cs" />
-    <Compile Include="Utils\MotionActivity\IMotionActivityManager.cs" />
-    <Compile Include="Utils\MotionActivity\RewardEligibility\RewardEligibilityManager.cs" />
-    <Compile Include="Utils\MotionActivity\RewardEligibility\RewardEligibilityStateMachine.cs" />
-    <Compile Include="Utils\MotionActivity\RewardEligibility\Timer.cs" />
-    <Compile Include="Utils\Geolocation\GeoUtils.cs" />
-    <Compile Include="Utils\Geolocation\Geolocator.cs" />
-    <Compile Include="Utils\ISoundPlayer.cs" />
     <Compile Include="UI\Pages\Start\Main\Home\Tutorial\PrivacyPolicy\PrivacyPolicyDataModel.cs" />
     <Compile Include="UI\Pages\Start\Main\Home\Tutorial\PrivacyPolicy\PrivacyPolicyPage.xaml.cs">
       <DependentUpon>PrivacyPolicyPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="UI\CustomEffects\UnderlineEffect.cs" />
     <Compile Include="UI\Pages\Start\Main\Menu\Rewards\ClaimRewardModel.cs" />
+    <Compile Include="Application\MotionActivity\ActivityEvent.cs" />
+    <Compile Include="Application\MotionActivity\ActivityType.cs" />
+    <Compile Include="Application\MotionActivity\CurrentActivity.cs" />
+    <Compile Include="Application\MotionActivity\IMotionActivityManager.cs" />
+    <Compile Include="Application\MotionActivity\RewardEligibility\RewardEligibilityManager.cs" />
+    <Compile Include="Application\MotionActivity\RewardEligibility\RewardEligibilityStateMachine.cs" />
+    <Compile Include="Application\MotionActivity\RewardEligibility\Timer.cs" />
+    <Compile Include="Application\ISoundPlayer.cs" />
+    <Compile Include="Application\Geolocator.cs" />
+    <Compile Include="Utils\GeoUtils.cs" />
+    <Compile Include="Application\Map\Bindings\TotalCalories.cs" />
+    <Compile Include="Application\Map\Bindings\TotalDistance.cs" />
+    <Compile Include="Application\Map\Bindings\TotalDuration.cs" />
+    <Compile Include="Application\Map\CustomPin.cs" />
+    <Compile Include="Application\Map\TraceMap.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Business\" />
     <Folder Include="ServiceAccess\" />
     <Folder Include="Data\" />
     <Folder Include="UI\" />
-    <Folder Include="Business\Map\" />
     <Folder Include="Security\" />
     <Folder Include="Security\InputValidation\" />
     <Folder Include="Security\CredentialsHandling\" />
@@ -268,7 +267,6 @@
     <Folder Include="UI\Pages\Start\Main\Home\" />
     <Folder Include="UI\Pages\Start\Main\Home\Challenges\" />
     <Folder Include="UI\Pages\Start\Main\Menu\Dashboard\" />
-    <Folder Include="Business\Map\Bindings\" />
     <Folder Include="UI\Pages\Start\Main\Menu\Dashboard\Units\" />
     <Folder Include="Localization\" />
     <Folder Include="Utils\" />
@@ -281,10 +279,11 @@
     <Folder Include="UI\Pages\Start\Main\Menu\Rewards\" />
     <Folder Include="UI\Pages\Start\Main\Home\Map\" />
     <Folder Include="UI\Pages\Start\Main\Home\Tutorial\" />
-    <Folder Include="Utils\MotionActivity\" />
-    <Folder Include="Utils\Geolocation\" />
     <Folder Include="UI\Pages\Start\Main\Home\Tutorial\PrivacyPolicy\" />
     <Folder Include="UI\CustomEffects\" />
+    <Folder Include="Application\" />
+    <Folder Include="Application\MotionActivity\" />
+    <Folder Include="Application\Map\" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Microsoft.Threading.Tasks">
