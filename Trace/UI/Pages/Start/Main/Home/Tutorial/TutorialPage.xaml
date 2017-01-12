@@ -8,88 +8,104 @@
 	x:Class="Trace.TutorialPage"
 	Title="{language:Translate Tutorial}">
 	<ContentPage.Content>
-		<cv:CarouselView
-			ItemSelected="onTutorialPartChanged"
-			ItemsSource="{Binding Parts}">
-			<cv:CarouselView.ItemTemplate>
-				<DataTemplate>
-					<Grid
-						BackgroundColor="{Binding Color}">
-						<Grid.RowDefinitions>
-							<RowDefinition
-								Height="70" />
-							<RowDefinition
-								Height="*" />
-							<RowDefinition
-								Height="80" />
-							<RowDefinition
-								Height="40" />
-						</Grid.RowDefinitions>
-						<Label
-							Text="{Binding Title}"
-							Grid.Row="0"
-							Margin="10"
-							HorizontalOptions="Center"
-							VerticalOptions="End"
-							FontSize="16"
-							TextColor="White">
-						</Label>
-						<ffimageloading:CachedImage
-							Source="{Binding ImagePath}"
-							HorizontalOptions="FillAndExpand"
-							VerticalOptions="FillAndExpand"
-							DownsampleToViewSize="true"
-							Grid.Row="0"
-							Grid.RowSpan="4"
-							Aspect="AspectFit">
-						</ffimageloading:CachedImage>
-						<Label
-							Text="{Binding Description}"
-							TextColor="White"
-							Margin="5"
-							Grid.Row="2"
-							VerticalOptions="End"
-							FontSize="14">
-						</Label>
+		<Grid>
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition
+					Width="*" />
+				<ColumnDefinition
+					Width="*" />
+				<ColumnDefinition
+					Width="*" />
+			</Grid.ColumnDefinitions>
+			<Grid.RowDefinitions>
+				<RowDefinition
+					Height="*" />
+				<RowDefinition
+					Height="40" />
+			</Grid.RowDefinitions>
+			<cv:CarouselView
+				Grid.ColumnSpan="3"
+				Grid.RowSpan="2"
+				ItemSelected="onTutorialPartChanged"
+				ItemsSource="{Binding Parts}">
+				<cv:CarouselView.ItemTemplate>
+					<DataTemplate>
 						<Grid
-							Grid.Row="3"
-							BackgroundColor="#80000000"
-							Padding="12">
-							<Grid.ColumnDefinitions>
-								<ColumnDefinition
-									Width="*" />
-								<ColumnDefinition
-									Width="*" />
-								<ColumnDefinition
-									Width="*" />
-							</Grid.ColumnDefinitions>
-							<Button
-								Text="{language:Translate Privacy}"
-								FontSize="12"
-								Margin="5"
-								Clicked="onPrivacyPolicyClicked"
+							BackgroundColor="{Binding Color}">
+							<Grid.RowDefinitions>
+								<RowDefinition
+									Height="70" />
+								<RowDefinition
+									Height="*" />
+								<RowDefinition
+									Height="80" />
+								<RowDefinition
+									Height="40" />
+							</Grid.RowDefinitions>
+							<Label
+								Text="{Binding Title}"
+								Grid.Row="0"
+								Margin="10"
 								HorizontalOptions="Center"
+								VerticalOptions="End"
+								FontSize="16"
+								TextColor="White">
+							</Label>
+							<ffimageloading:CachedImage
+								Source="{Binding ImagePath}"
+								HorizontalOptions="FillAndExpand"
+								VerticalOptions="FillAndExpand"
+								DownsampleToViewSize="true"
+								Grid.Row="0"
+								Grid.RowSpan="4"
+								Aspect="AspectFit">
+							</ffimageloading:CachedImage>
+							<Label
+								Text="{Binding Description}"
 								TextColor="White"
-								Grid.Column="0">
-							</Button>
+								Margin="5"
+								Grid.Row="2"
+								VerticalOptions="End"
+								FontSize="14">
+							</Label>
 							<Label
 								TextColor="White"
 								Text="{Binding Indicator}"
 								HorizontalOptions="Center"
+								VerticalOptions="Center"
 								FontSize="16"
-								Grid.Column="1" />
-							<Button
-								Text="{language:Translate GotIt}"
-								Margin="5"
-								Clicked="onConfirmationClicked"
-								HorizontalOptions="Center"
-								TextColor="White"
-								Grid.Column="2">
-							</Button>
+								Grid.Row="3" />
 						</Grid>
-					</Grid>
-				</DataTemplate>
-			</cv:CarouselView.ItemTemplate>
-		</cv:CarouselView>
+					</DataTemplate>
+				</cv:CarouselView.ItemTemplate>
+			</cv:CarouselView>
+			<BoxView
+				Grid.Row="1"
+				Grid.ColumnSpan="3"
+				HorizontalOptions="Fill"
+				VerticalOptions="Fill"
+				BackgroundColor="#80000000" />
+			<Button
+				Text="{language:Translate Privacy}"
+				FontSize="12"
+				Margin="5"
+				Clicked="onPrivacyPolicyClicked"
+				VerticalOptions="Center"
+				HorizontalOptions="Center"
+				TextColor="White"
+				Grid.Row="1"
+				Grid.Column="0">
+			</Button>
+			<Button
+				Text="{language:Translate GotIt}"
+				Margin="5"
+				Clicked="onConfirmationClicked"
+				VerticalOptions="Center"
+				HorizontalOptions="Center"
+				TextColor="White"
+				Grid.Row="1"
+				Grid.Column="2">
+			</Button>
+		</Grid>
 	</ContentPage.Content>
 </ContentPage>

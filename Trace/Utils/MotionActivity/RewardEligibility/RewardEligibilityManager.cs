@@ -85,6 +85,15 @@ namespace Trace {
 			nextAction.Invoke();
 		}
 
+
+		/// <summary>
+		/// Exposes the state machine state to the rest of the application.
+		/// </summary>
+		/// <returns>The current state.</returns>
+		public State GetCurrentState() {
+			return stateMachine.CurrentState;
+		}
+
 		/// <summary>
 		/// Increments the counters depending on the activity.
 		/// Counters count SUCCESSIVE activities.
@@ -142,7 +151,7 @@ namespace Trace {
 				stateMachine.MoveNext(Command.NotCycling);
 
 				// User likely got off bike, give an audible congratulatory sound to let her know she is eligible.
-				DependencyService.Get<ISoundPlayer>().PlayShortSound(User.Instance.CongratulatorySoundSetting, 1);
+				DependencyService.Get<ISoundPlayer>().PlayShortSound(User.Instance.CongratulatorySoundSetting, 0);
 
 				// Start a long timer where the user is still eligible for rewards even when not using a bycicle.
 				// If the timer goes off (the user goes too long without using a bycicle), go back to 'ineligible'.
@@ -282,7 +291,12 @@ namespace Trace {
 			resetCounters();
 			stateMachine.MoveNext(Command.Timeout);
 			Task.Run(() => checkForRewards()).DoNotAwait();
-			DependencyService.Get<ISoundPlayer>().PlaySound(User.Instance.BycicleEligibleSoundSetting);
+			// Start different sound in background if needed.
+			var soundPlayer = DependencyService.Get<ISoundPlayer>();
+			if(soundPlayer.IsPlaying()) {
+				soundPlayer.StopSound();
+				soundPlayer.PlaySound(User.Instance.BycicleEligibleSoundSetting);
+			}
 		}
 
 

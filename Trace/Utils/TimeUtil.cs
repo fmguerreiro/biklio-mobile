@@ -32,10 +32,23 @@ namespace Trace {
 		}
 
 
+		public static string SecondsToHHMMSS(long seconds) {
+			string format = @"hh\:mm\:ss";
+			return TimeSpan.FromSeconds(seconds).ToString(format);
+		}
+
+
+		public static string SecondsToFullDate(long seconds) {
+			string format = @"dd\/MM\/yyyy HH:mm";
+			return TimeSpan.FromSeconds(seconds).ToString(format);
+		}
+
+		// TODO verify this
 		public static long RoundDownDay(long epochTimeS) {
 			// the 'Date' component has the time set to (00:00:00)
-			var dateInSeconds = DateTime.UtcNow - new DateTime(1970, 1, 1).Date;
-			return (long) dateInSeconds.TotalSeconds;
+			return EpochSecondsToDatetime(epochTimeS).Date.DatetimeToEpochSeconds();
+			//var dateInSeconds = DateTime.UtcNow - new DateTime(1970, 1, 1).Date;
+			//return (long) dateInSeconds.TotalSeconds;
 		}
 	}
 }

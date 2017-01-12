@@ -47,7 +47,7 @@
 								TextColor="Black"
 								HeightRequest="50"
 								FontSize="14"
-								RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToView, ElementName=campaignImage, Property=Y, Factor=1, Constant=70}"
+								RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToView, ElementName=campaignImage, Property=Y, Factor=1, Constant=75}"
 								RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToParent, Property=X, Factor=0, Constant=5}" />
 						</RelativeLayout>
 					</ViewCell>

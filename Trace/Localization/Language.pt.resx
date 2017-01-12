@@ -29,8 +29,11 @@
 	<data name="Login" xml:space="preserve">
         <value>Login</value>
   	</data>
+	<data name="Account" xml:space="preserve">
+    	<value>Conta</value>
+  	</data>
 	<data name="DontHaveAccount" xml:space="preserve">
-    	<value>Precisa de uma conta?</value>
+    	<value>Precisa de uma conta? &gt;&gt;</value>
   	</data>
 	<data name="Start" xml:space="preserve">
         <value>Início</value>
@@ -481,12 +484,27 @@ Once revoked, identifiable data such as email and name is removed within a few h
     	<value>recompensas. Carregue no ícone de Recompensas para ver o que ganhou.</value>
   	</data>
 	<data name="IAgreeToToS" xml:space="preserve">
-    	<value>Li e aceito os termos de serviço do Biklio.</value>
+    	<value>Li e aceito os termos de serviço do Biklio &gt;&gt;</value>
   	</data>
 	<data name="ToSUncheckedError" xml:space="preserve">
     	<value>Para continuar a usar o Biklio, verifique se concorda com os nossos termos e condições de serviço.</value>
   	</data>
 	<data name="PullUpToGetLocalCampaign" xml:space="preserve">
     	<value>Puxa para procurar pela campanha local.</value>
+  	</data>
+	<data name="YouEarn" xml:space="preserve">
+    	<value>Tens direito a:</value>
+  	</data>
+	<data name="RewardClaimedAt" xml:space="preserve">
+    	<value>Recompensa reinvidicada em: {0}</value>
+  	</data>
+	<data name="RewardEarnedAt" xml:space="preserve">
+    	<value>Desafio cumprido em: {0}</value>
+  	</data>
+	<data name="RewardAlreadyClaimedError" xml:space="preserve">
+    	<value>A tua recompensa já foi reivindicada.</value>
+  	</data>
+	<data name="TrajectoryNotUploadedError" xml:space="preserve">
+    	<value>Não foi possível enviar o trajeto para o servidor. Tente mais tarde.</value>
   	</data>
 </root>

@@ -1,4 +1,5 @@
 ﻿using System;
+using Trace.Localization;
 using Xamarin.Forms;
 
 namespace Trace {
@@ -14,7 +15,7 @@ namespace Trace {
 			InitializeComponent();
 			BindingContext = this.trajectory = trajectory;
 			UploadTrajectoryButton.IsVisible |= !trajectory.WasTrackSent;
-			// Redraw map with drawn trajectory.
+			// Redraw map with trajectory.
 			CustomMap.RouteCoordinates = trajectory.ToPosition();
 			Stack.Children.RemoveAt(1);
 			Stack.Children.Insert(1, CustomMap);
@@ -27,7 +28,7 @@ namespace Trace {
 				UploadTrajectoryButton.IsVisible = false;
 			}
 			else {
-				await DisplayAlert("Error", "Trajectory could not be uploaded to the server.", "Ok");
+				await DisplayAlert(Language.Error, Language.TrajectoryNotUploadedError, Language.Ok);
 				UploadTrajectoryButton.IsVisible = true;
 			}
 		}

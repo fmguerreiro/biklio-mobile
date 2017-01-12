@@ -25,7 +25,7 @@ namespace Trace {
 		/// </summary>
 		private SQLiteDB() {
 			database = DependencyService.Get<ISQLite>().GetConnection();
-			NuclearOption();
+			//NuclearOption();
 			database.CreateTable<User>();
 			database.CreateTable<Trajectory>();
 			database.CreateTable<Challenge>();
@@ -52,7 +52,7 @@ namespace Trace {
 				User.Instance.KPIs = GetItems<KPI>().ToList();
 			}
 			else {
-				Debug.WriteLine($"InstantiateUser() - no user {user.Username} found. Creating new user.");
+				Debug.WriteLine($"InstantiateUser() - no user {username} found. Creating new user.");
 				User.Instance = new User { Username = username };
 				User.Instance.Id = SaveUser(User.Instance);
 			}

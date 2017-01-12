@@ -1,4 +1,6 @@
-﻿using Xamarin.Forms;
+﻿using System.Diagnostics;
+using Trace.Localization;
+using Xamarin.Forms;
 
 namespace Trace {
 
@@ -13,13 +15,28 @@ namespace Trace {
 
 		public ClaimRewardPage(Challenge challenge) {
 			InitializeComponent();
-			BindingContext = this.challenge = challenge;
+			this.challenge = challenge;
+			BindingContext = new ClaimRewardModel { Challenge = challenge };
+			Debug.WriteLine($"ClaimRewardPage-> isRepeatable: {challenge.IsRepeatable}, isClaimed: {challenge.IsClaimed}");
+			// If the challenge has already claimed, do not show the claim button, show the grid.
+			if(challenge.IsClaimed) {
+				claimRewardButton.IsVisible = false;
+				claimRewardGrid.IsVisible = true;
+			}
 		}
 
 
-		void claimChallengeOnClick(object sender, System.EventArgs e) {
+		async void claimChallengeOnClick(object sender, System.EventArgs e) {
+			if(challenge.IsClaimed) {
+				await DisplayAlert(Language.Error, Language.RewardAlreadyClaimedError, Language.Ok);
+				return;
+			}
 			challenge.IsClaimed = true;
 			SQLiteDB.Instance.SaveItem(challenge);
+
+			// Remove button & display grid with timestamps.
+			claimRewardButton.IsVisible = false;
+			claimRewardGrid.IsVisible = true;
 		}
 	}
 }

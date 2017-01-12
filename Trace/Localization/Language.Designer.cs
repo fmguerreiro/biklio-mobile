@@ -71,6 +71,12 @@ namespace Trace.Localization {
             }
         }
         
+        public static string Account {
+            get {
+                return ResourceManager.GetString("Account", resourceCulture);
+            }
+        }
+        
         public static string DontHaveAccount {
             get {
                 return ResourceManager.GetString("DontHaveAccount", resourceCulture);
@@ -962,6 +968,36 @@ namespace Trace.Localization {
         public static string PullUpToGetLocalCampaign {
             get {
                 return ResourceManager.GetString("PullUpToGetLocalCampaign", resourceCulture);
+            }
+        }
+        
+        public static string YouEarn {
+            get {
+                return ResourceManager.GetString("YouEarn", resourceCulture);
+            }
+        }
+        
+        public static string RewardClaimedAt {
+            get {
+                return ResourceManager.GetString("RewardClaimedAt", resourceCulture);
+            }
+        }
+        
+        public static string RewardEarnedAt {
+            get {
+                return ResourceManager.GetString("RewardEarnedAt", resourceCulture);
+            }
+        }
+        
+        public static string RewardAlreadyClaimedError {
+            get {
+                return ResourceManager.GetString("RewardAlreadyClaimedError", resourceCulture);
+            }
+        }
+        
+        public static string TrajectoryNotUploadedError {
+            get {
+                return ResourceManager.GetString("TrajectoryNotUploadedError", resourceCulture);
             }
         }
     }

@@ -36,6 +36,13 @@
 			Intent="Settings">
 			<TableRoot>
 				<TableSection
+					Title="{language:Translate Account}">
+					<TextCell
+						Text="{language:Translate Logout}"
+						Tapped="onLogout">
+					</TextCell>
+				</TableSection>
+				<TableSection
 					Title="{language:Translate CaloriesCalculation}">
 					<EntryCell
 						Completed="onSettingChanged"

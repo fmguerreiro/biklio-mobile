@@ -31,10 +31,11 @@ namespace Trace {
 
 			// Center map on user position.
 			Locator = new Geolocator(map);
-			//Task.Run(async () => {
-			//	var userLocation = await GeoUtils.GetCurrentUserLocation();
-			//	Locator.UpdateMap(userLocation);
-			//});
+			Task.Run(async () => {
+				Geolocator.TryLowerAccuracy();
+				var userLocation = await GeoUtils.GetCurrentUserLocation();
+				Locator.UpdateMap(userLocation);
+			});
 
 			initializeCheckpointPins();
 
@@ -136,9 +137,12 @@ namespace Trace {
 				await Geolocator.Stop();
 			}
 
-			// On Track Button pressed
+			// On Start Button pressed
 			else if(!isProcessing) {
 				isProcessing = true;
+
+				// TODO show toast here.
+
 				await Locator.Start();
 
 				trackButtonImage.Source = "images/map/stop.png";

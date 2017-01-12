@@ -5,35 +5,112 @@
 	xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
 	xmlns:language="clr-namespace:Trace.Localization;assembly=Trace"
 	x:Class="Trace.ClaimRewardPage"
-	Title="{language:Translate ClaimReward}">
+	Title="{language:Translate ClaimReward}"
+	BackgroundColor="{StaticResource SecondaryColor}">
 	<ContentPage.Content>
-		<StackLayout>
-			<ffimageloading:CachedImage
-				Source="{Binding ThisCheckpoint.LogoURL}"
-				HeightRequest="50"
-				WidthRequest="50"
-				HorizontalOptions="Center"
-				DownsampleToViewSize="true"
-				Aspect="AspectFill">
-			</ffimageloading:CachedImage>
+		<Grid
+			Margin="5">
+			<Grid.RowDefinitions>
+				<RowDefinition
+					Height="80" />
+				<RowDefinition
+					Height="40" />
+				<RowDefinition
+					Height="40" />
+				<RowDefinition
+					Height="60" />
+				<RowDefinition
+					Height="60" />
+				<RowDefinition
+					Height="*" />
+			</Grid.RowDefinitions>
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition
+					Width="80" />
+				<ColumnDefinition
+					Width="*" />
+				<ColumnDefinition
+					Width="*" />
+			</Grid.ColumnDefinitions>
+			<Frame
+				Grid.Row="0"
+				Grid.Column="0"
+				Padding="3"
+				OutlineColor="{StaticResource PrimaryColor}">
+				<ffimageloading:CachedImage
+					Source="{Binding Challenge.ThisCheckpoint.LogoURL}"
+					DownsampleToViewSize="true"
+					Aspect="AspectFit">
+				</ffimageloading:CachedImage>
+			</Frame>
 			<Label
-				Text="{Binding Name}"
-				HorizontalOptions="Center"
-				FontAttributes="Bold">
+				Text="{Binding Challenge.ThisCheckpoint.Name}"
+				Grid.Row="0"
+				Grid.Column="1"
+				Grid.ColumnSpan="2"
+				VerticalOptions="Center"
+				HorizontalOptions="Start"
+				FontAttributes="Bold"
+				TextColor="{StaticResource SecondaryTextColor}">
 			</Label>
 			<Label
-				Text="{Binding Condition}"
+				Text="{language:Translate YouEarn}"
+				Grid.Row="1"
+				Grid.Column="0"
+				Grid.ColumnSpan="3"
+				FontAttributes="Bold"
+				TextColor="{StaticResource SecondaryTextColor}"
 				HorizontalOptions="Center"
-				Margin="50">
+				VerticalOptions="End">
+			</Label>
+			<Label
+				Text="{Binding Challenge.Description}"
+				Grid.Row="2"
+				Grid.Column="0"
+				Grid.ColumnSpan="3"
+				TextColor="{StaticResource SecondaryTextColor}"
+				HorizontalOptions="Center"
+				VerticalOptions="Start">
 			</Label>
 			<Button
+				x:Name="claimRewardButton"
+				Text="{language:Translate ClaimReward}"
 				BackgroundColor="{StaticResource PrimaryColor}"
+				Grid.Row="3"
+				Grid.Column="0"
+				Grid.RowSpan="2"
+				Grid.ColumnSpan="3"
+				Margin="15"
 				TextColor="{StaticResource PrimaryTextColor}"
-				HorizontalOptions="CenterAndExpand"
+				VerticalOptions="Start"
+				HorizontalOptions="Fill"
 				BorderRadius="0"
-				Clicked="claimChallengeOnClick"
-				Text="{language:Translate ClaimReward}">
+				Clicked="claimChallengeOnClick">
 			</Button>
-		</StackLayout>
+			<Grid
+				x:Name="claimRewardGrid"
+				IsVisible="false"
+				Grid.Row="3"
+				Grid.Column="0"
+				Grid.RowSpan="2"
+				Grid.ColumnSpan="3"
+				Margin="5"
+				BackgroundColor="{StaticResource PrimaryColor}">
+				<Label
+					Text="{Binding ClaimedAt, StringFormat={language:Translate RewardClaimedAt}}"
+					TextColor="{StaticResource PrimaryTextColor}"
+					Grid.Row="0"
+					VerticalOptions="Center"
+					HorizontalOptions="Center">
+				</Label>
+				<Label
+					Text="{Binding EarnedAt, StringFormat={language:Translate RewardEarnedAt}}"
+					TextColor="{StaticResource PrimaryTextColor}"
+					Grid.Row="1"
+					VerticalOptions="Center"
+					HorizontalOptions="Center">
+				</Label>
+			</Grid>
+		</Grid>
 	</ContentPage.Content>
 </ContentPage>

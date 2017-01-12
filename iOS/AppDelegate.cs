@@ -18,11 +18,6 @@ namespace Trace.iOS {
 			// Initialize map
 			Xamarin.FormsMaps.Init();
 
-			// Code for starting up the Xamarin Test Cloud Agent
-#if ENABLE_TEST_CLOUD
-			Xamarin.Calabash.Start();
-#endif
-
 			LoadApplication(new App());
 
 			// Library for faster image processing.

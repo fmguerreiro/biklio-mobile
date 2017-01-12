@@ -9,15 +9,12 @@ namespace Trace {
 	/// </summary>
 	public partial class SignInPage : ContentPage {
 
-		private bool doesUserAgreeToS;
-
 		public SignInPage() {
 			InitializeComponent();
 			string username = null;
 			usernameText.Text = username = DependencyService.Get<ICredentialsStore>().Username;
 			passwordText.Text = DependencyService.Get<ICredentialsStore>().GetPassword(usernameText.Text);
 			if(username != null) {
-				doesUserAgreeToS = true;
 				tosSwitch.IsToggled = true;
 			}
 
@@ -41,7 +38,7 @@ namespace Trace {
 			var username = usernameText.Text;
 			var password = passwordText.Text;
 
-			if(!doesUserAgreeToS) {
+			if(!tosSwitch.IsToggled) {
 				await DisplayAlert(Language.Error, Language.ToSUncheckedError, Language.Ok);
 				return;
 			}
@@ -85,16 +82,26 @@ namespace Trace {
 
 
 		// Use a custom renderer to display the Google auth UI
-		void onGoogleLogin(object sender, EventArgs e) {
+		async void onGoogleLogin(object sender, EventArgs e) {
+			if(!tosSwitch.IsToggled) {
+				await DisplayAlert(Language.Error, Language.ToSUncheckedError, Language.Ok);
+				return;
+			}
+
 			OAuthConfigurationManager.SetConfig(new GoogleOAuthConfig());
-			Navigation.PushAsync(new GoogleOAuthUIPage());
+			await Navigation.PushAsync(new GoogleOAuthUIPage());
 		}
 
 
 		// Use a custom renderer to display the Facebook auth UI
-		void onFacebookLogin(object sender, EventArgs e) {
+		async void onFacebookLogin(object sender, EventArgs e) {
+			if(!tosSwitch.IsToggled) {
+				await DisplayAlert(Language.Error, Language.ToSUncheckedError, Language.Ok);
+				return;
+			}
+
 			OAuthConfigurationManager.SetConfig(new FacebookOAuthConfig());
-			Navigation.PushAsync(new FacebookOAuthUIPage());
+			await Navigation.PushAsync(new FacebookOAuthUIPage());
 		}
 
 
@@ -149,6 +156,7 @@ namespace Trace {
 
 					var signInPage = new NavigationPage(new SignInPage());
 					signInPage.BarBackgroundColor = (Color) App.Current.Resources["PrimaryColor"];
+					signInPage.BarTextColor = (Color) App.Current.Resources["PrimaryTextColor"];
 					Application.Current.MainPage = signInPage;
 				});
 			}
@@ -162,7 +170,7 @@ namespace Trace {
 
 
 		void onAgreeToToS(object sender, EventArgs e) {
-			doesUserAgreeToS = !doesUserAgreeToS;
+			//doesUserAgreeToS = !doesUserAgreeToS;
 		}
 
 	}

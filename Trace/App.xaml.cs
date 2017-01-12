@@ -31,6 +31,7 @@ namespace Trace {
 			// First page of the application.
 			var firstPage = new NavigationPage(new SignInPage());
 			firstPage.BarBackgroundColor = (Color) App.Current.Resources["PrimaryColor"];
+			firstPage.BarTextColor = (Color) App.Current.Resources["PrimaryTextColor"];
 			MainPage = firstPage;
 		}
 
@@ -71,12 +72,11 @@ namespace Trace {
 			CrossConnectivity.Current.ConnectivityChanged += LoginManager.OnConnectivityChanged;
 			Geolocator.ImproveAccuracy();
 			//await Task.Delay(1000);
-			Debug.WriteLine("beforeDeactivateSound->" + DependencyService.Get<ISoundPlayer>().IsPlaying());
 			if(LoginManager.IsOfflineLoggedIn) {
 				DependencyService.Get<ISoundPlayer>().StopSound();
 				DependencyService.Get<ISoundPlayer>().DeactivateAudioSession();
 			}
-			Debug.WriteLine("afterDeactivateSound->" + DependencyService.Get<ISoundPlayer>().IsPlaying());
+			Debug.WriteLine("EndAudioSession(): " + !DependencyService.Get<ISoundPlayer>().IsPlaying());
 			if(!Geolocator.IsTrackingInProgress)
 				Task.Run(() => Geolocator.Stop());
 		}

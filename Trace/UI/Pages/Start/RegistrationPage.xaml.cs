@@ -32,7 +32,6 @@ namespace Trace {
 				SQLiteDB.Instance.SaveUser(User.Instance = new User {
 					Username = username,
 					Email = email,
-					// TODO verify if its needed -> AuthToken = result.token
 				});
 				DependencyService.Get<ICredentialsStore>().SaveCredentials(username, password);
 				await DisplayAlert(Language.Result, Language.RegistrationSuccessful, Language.Ok);

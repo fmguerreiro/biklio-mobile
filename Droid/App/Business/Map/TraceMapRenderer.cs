@@ -78,7 +78,7 @@ namespace Trace.Droid {
 			if(e.PropertyName.Equals("VisibleRegion") && !isDrawn) {
 				map?.Clear();
 
-				// TODO draw pins, currently nasty bug here
+				// TODO draw pins. this code draws pins that cover half the map atm.
 				//foreach(CustomPin pin in customPins) {
 				//	var marker = new MarkerOptions();
 				//	marker.SetPosition(new LatLng(pin.Pin.Position.Latitude, pin.Pin.Position.Longitude));

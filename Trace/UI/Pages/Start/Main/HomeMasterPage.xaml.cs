@@ -40,11 +40,7 @@ namespace Trace {
 				IconSource = "images/home/settings.png",
 				TargetType = typeof(SettingsPage)
 			});
-			masterPageItems.Add(new MasterPageItem {
-				Title = Language.Logout,
-				IconSource = "images/home/logout.png",
-				TargetType = typeof(SignInPage)
-			});
+
 			listView.ItemsSource = masterPageItems;
 
 			BindingContext = User.Instance;

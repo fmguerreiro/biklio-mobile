@@ -14,60 +14,63 @@
 				<TableSection
 					Title="{language:Translate RoutesTracked}">
 					<TextCell
-						Text="{Binding RoutesToday, StringFormat={language:Translate TodayStats}}"
-						Tapped="onTapped" />
+						Text="{Binding RoutesToday, StringFormat={language:Translate TodayStats}}" />
 					<TextCell
-						Text="{Binding RoutesWeek, StringFormat={language:Translate ThisWeekStats}}"
-						Tapped="onTapped" />
+						Text="{Binding RoutesWeek, StringFormat={language:Translate ThisWeekStats}}" />
 					<TextCell
-						Text="{Binding RoutesAllTime, StringFormat={language:Translate AllTimeStats}}"
-						Tapped="onTapped" />
+						Text="{Binding RoutesAllTime, StringFormat={language:Translate AllTimeStats}}" />
 				</TableSection>
 				<TableSection
 					Title="{language:Translate RewardsEarned}">
 					<TextCell
-						Text="{Binding RewardsToday, StringFormat={language:Translate TodayStats}}"
-						Tapped="onTapped" />
+						Text="{Binding RewardsToday, StringFormat={language:Translate TodayStats}}" />
 					<TextCell
-						Text="{Binding RewardsWeek, StringFormat={language:Translate ThisWeekStats}}"
-						Tapped="onTapped" />
+						Text="{Binding RewardsWeek, StringFormat={language:Translate ThisWeekStats}}" />
 					<TextCell
-						Text="{Binding RewardsAllTime, StringFormat={language:Translate AllTimeStats}}"
-						Tapped="onTapped" />
+						Text="{Binding RewardsAllTime, StringFormat={language:Translate AllTimeStats}}" />
 				</TableSection>
 				<TableSection
 					Title="{language:Translate DistanceTravelledMeters}">
 					<TextCell
+						ClassId="today"
 						Text="{Binding DistanceToday.Total, StringFormat={language:Translate TodayStats}}"
 						Tapped="onTappedDistance" />
 					<TextCell
+						ClassId="week"
 						Text="{Binding DistanceWeek.Total, StringFormat={language:Translate ThisWeekStats}}"
 						Tapped="onTappedDistance" />
 					<TextCell
+						ClassId="alltime"
 						Text="{Binding DistanceAllTime.Total, StringFormat={language:Translate AllTimeStats}}"
 						Tapped="onTappedDistance" />
 				</TableSection>
 				<TableSection
 					Title="{language:Translate TimeSpentHours}">
 					<TextCell
+						ClassId="today"
 						Text="{Binding TimeToday.Total, StringFormat={language:Translate TodayStats}}"
 						Tapped="onTappedTime" />
 					<TextCell
+						ClassId="week"
 						Text="{Binding TimeWeek.Total, StringFormat={language:Translate ThisWeekStats}}"
 						Tapped="onTappedTime" />
 					<TextCell
+						ClassId="alltime"
 						Text="{Binding TimeAllTime.Total, StringFormat={language:Translate AllTimeStats}}"
 						Tapped="onTappedTime" />
 				</TableSection>
 				<TableSection
 					Title="{language:Translate CaloriesBurnedKCals}">
 					<TextCell
+						ClassId="today"
 						Text="{Binding CaloriesToday.Total, StringFormat={language:Translate TodayStats}}"
 						Tapped="onTappedCalories" />
 					<TextCell
+						ClassId="week"
 						Text="{Binding CaloriesWeek.Total, StringFormat={language:Translate ThisWeekStats}}"
 						Tapped="onTappedCalories" />
 					<TextCell
+						ClassId="alltime"
 						Text="{Binding CaloriesAllTime.Total, StringFormat={language:Translate AllTimeStats}}"
 						Tapped="onTappedCalories" />
 				</TableSection>

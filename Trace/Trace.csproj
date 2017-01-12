@@ -240,6 +240,7 @@
       <DependentUpon>PrivacyPolicyPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="UI\CustomEffects\UnderlineEffect.cs" />
+    <Compile Include="UI\Pages\Start\Main\Menu\Rewards\ClaimRewardModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Business\" />
@@ -379,6 +380,9 @@
     </Reference>
     <Reference Include="FFImageLoading.Transformations">
       <HintPath>..\packages\Xamarin.FFImageLoading.Transformations.2.2.6\lib\portable-net45+win8+wpa81+wp8\FFImageLoading.Transformations.dll</HintPath>
+    </Reference>
+    <Reference Include="Splat">
+      <HintPath>..\packages\Splat.1.6.2\lib\Portable-net45+win+wpa81+wp80\Splat.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

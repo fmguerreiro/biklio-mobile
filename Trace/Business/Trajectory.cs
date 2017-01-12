@@ -65,10 +65,7 @@ namespace Trace {
 		}
 		[Ignore]
 		public string DisplayDuration {
-			get {
-				string format = @"hh\:mm\:ss";
-				return TimeSpan.FromSeconds(ElapsedTime()).ToString(format);
-			}
+			get { return TimeUtil.SecondsToHHMMSS(ElapsedTime()); }
 		}
 
 		// In milliseconds.

@@ -1,5 +1,4 @@
 ﻿using Xamarin.Forms;
-using OxyPlot.Xamarin.Forms;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -44,22 +43,64 @@ namespace Trace {
 			InitializeComponent();
 		}
 
-		async void onTapped(object sender, EventArgs e) {
-			await Navigation.PushAsync(new DrawPlotPage());
-		}
 
 		async void onTappedDistance(object sender, EventArgs e) {
-			await Navigation.PushAsync(new DrawPlotPage(DistanceAllTime, Language.DistancePerActivity));
+			var textCellTapped = ((TextCell) sender);
+			string title = Language.DistancePerActivity + " {0} s";
+			switch(textCellTapped.ClassId) {
+				case "today":
+					title = string.Format(title, string.Format(Language.TodayStats, DistanceToday.Total));
+					await Navigation.PushAsync(new DrawPlotPage(DistanceToday, title));
+					break;
+				case "week":
+					title = string.Format(title, string.Format(Language.ThisWeekStats, DistanceWeek.Total));
+					await Navigation.PushAsync(new DrawPlotPage(DistanceWeek, title));
+					break;
+				case "alltime":
+					title = string.Format(title, string.Format(Language.AllTimeStats, DistanceAllTime.Total));
+					await Navigation.PushAsync(new DrawPlotPage(DistanceAllTime, title));
+					break;
+			}
 		}
+
 
 		async void onTappedCalories(object sender, EventArgs e) {
-			await Navigation.PushAsync(new DrawPlotPage(CaloriesAllTime, Language.CaloriesPerActivity));
+			var textCellTapped = ((TextCell) sender);
+			string title = Language.CaloriesPerActivity + " {0} s";
+			switch(textCellTapped.ClassId) {
+				case "today":
+					title = string.Format(title, string.Format(Language.TodayStats, CaloriesToday.Total));
+					await Navigation.PushAsync(new DrawPlotPage(CaloriesToday, title));
+					break;
+				case "week":
+					title = string.Format(title, string.Format(Language.ThisWeekStats, CaloriesWeek.Total));
+					await Navigation.PushAsync(new DrawPlotPage(CaloriesWeek, title));
+					break;
+				case "alltime":
+					title = string.Format(title, string.Format(Language.AllTimeStats, CaloriesAllTime.Total));
+					await Navigation.PushAsync(new DrawPlotPage(CaloriesAllTime, title));
+					break;
+			}
 		}
 
+
 		async void onTappedTime(object sender, EventArgs e) {
-			// TODO just an example to test the graph, delete this
-			CaloriesAllTime.Cycling = 50; CaloriesAllTime.Driving = 20; caloriesAllTime.Running = 2; caloriesAllTime.Walking = 80;
-			await Navigation.PushAsync(new DrawPlotPage(CaloriesAllTime, Language.TimePerActivity));
+			var textCellTapped = ((TextCell) sender);
+			string title = Language.TimePerActivity + " {0} s";
+			switch(textCellTapped.ClassId) {
+				case "today":
+					title = string.Format(title, string.Format(Language.TodayStats, TimeToday.Total));
+					await Navigation.PushAsync(new DrawPlotPage(TimeToday, title));
+					break;
+				case "week":
+					title = string.Format(title, string.Format(Language.ThisWeekStats, TimeWeek.Total));
+					await Navigation.PushAsync(new DrawPlotPage(TimeWeek, title));
+					break;
+				case "alltime":
+					title = string.Format(title, string.Format(Language.AllTimeStats, TimeAllTime.Total));
+					await Navigation.PushAsync(new DrawPlotPage(TimeAllTime, title));
+					break;
+			}
 		}
 
 
@@ -91,23 +132,23 @@ namespace Trace {
 				var runDistance = t.CalculateRunningDistance();
 				var cycleDistance = t.CalculateCyclingDistance();
 				var driveDistance = t.CalculateDrivingDistance();
-				calculate(distanceAllTime, walkDistance, runDistance, cycleDistance, driveDistance);
-				if(TimeUtil.IsWithinPeriod(t.StartTime, aDayAgo, now)) calculate(distanceToday, walkDistance, runDistance, cycleDistance, driveDistance);
-				if(TimeUtil.IsWithinPeriod(t.StartTime, aWeekAgo, now)) calculate(distanceWeek, walkDistance, runDistance, cycleDistance, driveDistance);
+				accumulate(distanceAllTime, walkDistance, runDistance, cycleDistance, driveDistance);
+				if(TimeUtil.IsWithinPeriod(t.StartTime, aDayAgo, now)) accumulate(distanceToday, walkDistance, runDistance, cycleDistance, driveDistance);
+				if(TimeUtil.IsWithinPeriod(t.StartTime, aWeekAgo, now)) accumulate(distanceWeek, walkDistance, runDistance, cycleDistance, driveDistance);
 
 				// Calculate time per activity.
-				calculate(timeAllTime, t.TimeSpentWalking, t.TimeSpentRunning, t.TimeSpentCycling, t.TimeSpentDriving);
-				if(TimeUtil.IsWithinPeriod(t.StartTime, aDayAgo, now)) calculate(timeToday, t.TimeSpentWalking, t.TimeSpentRunning, t.TimeSpentCycling, t.TimeSpentDriving);
-				if(TimeUtil.IsWithinPeriod(t.StartTime, aWeekAgo, now)) calculate(timeWeek, t.TimeSpentWalking, t.TimeSpentRunning, t.TimeSpentCycling, t.TimeSpentDriving);
+				accumulate(timeAllTime, t.TimeSpentWalking, t.TimeSpentRunning, t.TimeSpentCycling, t.TimeSpentDriving);
+				if(TimeUtil.IsWithinPeriod(t.StartTime, aDayAgo, now)) accumulate(timeToday, t.TimeSpentWalking, t.TimeSpentRunning, t.TimeSpentCycling, t.TimeSpentDriving);
+				if(TimeUtil.IsWithinPeriod(t.StartTime, aWeekAgo, now)) accumulate(timeWeek, t.TimeSpentWalking, t.TimeSpentRunning, t.TimeSpentCycling, t.TimeSpentDriving);
 
 				// Calculate calories per activity.
 				var walkCal = t.CalculateWalkingCalories();
 				var runCal = t.CalculateRunningCalories();
 				var cycleCal = t.CalculateCyclingCalories();
 				var driveCal = t.CalculateDrivingCalories();
-				calculate(caloriesAllTime, walkCal, runCal, cycleCal, driveCal);
-				if(TimeUtil.IsWithinPeriod(t.StartTime, aDayAgo, now)) calculate(caloriesToday, walkCal, runCal, cycleCal, driveCal);
-				if(TimeUtil.IsWithinPeriod(t.StartTime, aWeekAgo, now)) calculate(caloriesWeek, walkCal, runCal, cycleCal, driveCal);
+				accumulate(caloriesAllTime, walkCal, runCal, cycleCal, driveCal);
+				if(TimeUtil.IsWithinPeriod(t.StartTime, aDayAgo, now)) accumulate(caloriesToday, walkCal, runCal, cycleCal, driveCal);
+				if(TimeUtil.IsWithinPeriod(t.StartTime, aWeekAgo, now)) accumulate(caloriesWeek, walkCal, runCal, cycleCal, driveCal);
 			}
 			Debug.WriteLine("DistanceAllTime.Total: " + DistanceAllTime.Total);
 			Debug.WriteLine("DistanceAllTime.WalkDistance: " + DistanceAllTime.Walking);
@@ -116,7 +157,7 @@ namespace Trace {
 		}
 
 
-		static void calculate(UnitPerActivity d, int walking, int running, int cycling, int driving) {
+		static void accumulate(UnitPerActivity d, int walking, int running, int cycling, int driving) {
 			d.Walking += walking;
 			d.Running += running;
 			d.Cycling += cycling;

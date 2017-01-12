@@ -136,7 +136,6 @@ namespace Trace.iOS {
 		}
 
 		// Called when clicking the 'information' button on the annotation/pin window.
-		// TODO navigate to the checkpoint details
 		void OnCalloutAccessoryControlTapped(object sender, MKMapViewAccessoryTappedEventArgs e) {
 			//var customView = e.View as CustomMKAnnotationView;
 			//Navigation. customView.Checkpoint

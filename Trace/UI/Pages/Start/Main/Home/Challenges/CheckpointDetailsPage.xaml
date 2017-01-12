@@ -94,8 +94,7 @@
 							<ffimageloading:CachedImage
 								Source="{Binding MapImageURL}"
 								DownsampleToViewSize="true"
-								HorizontalOptions="FillAndExpand"
-								VerticalOptions="FillAndExpand"
+								HeightRequest="180"
 								Aspect="AspectFill">
 							</ffimageloading:CachedImage>
 						</StackLayout>

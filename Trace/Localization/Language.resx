@@ -29,8 +29,11 @@
 	<data name="Login" xml:space="preserve">
     	<value>Login</value>
   	</data>
+	<data name="Account" xml:space="preserve">
+    	<value>Account</value>
+  	</data>
 	<data name="DontHaveAccount" xml:space="preserve">
-    	<value>Need an account?</value>
+    	<value>Need an account? &gt;&gt;</value>
   	</data>
 	<data name="Start" xml:space="preserve">
     	<value>Start</value>
@@ -87,7 +90,7 @@
     	<value>Failed to sign-in with the third-party provider.</value>
   	</data>
 	<data name="Logout" xml:space="preserve">
-    	<value>Logout</value>
+    	<value>Log out</value>
   	</data>
 	<data name="AreYouSure" xml:space="preserve">
     	<value>Are you sure? You will need to reinsert your credentials again on login.</value>
@@ -483,12 +486,27 @@ Once revoked, identifiable data such as email and name is removed within a few h
     	<value>rewards. Tap the Reward icon to see what you got.</value>
   	</data>
 	<data name="IAgreeToToS" xml:space="preserve">
-    	<value>I understand and agree to Biklio's terms of service.</value>
+    	<value>I understand and agree to Biklio's terms of service &gt;&gt;</value>
   	</data>
 	<data name="ToSUncheckedError" xml:space="preserve">
     	<value>To continue using Biklio, make sure you agree to the terms of service.</value>
   	</data>
 	<data name="PullUpToGetLocalCampaign" xml:space="preserve">
     	<value>Pull up to search for the local campaign.</value>
+  	</data>
+	<data name="YouEarn" xml:space="preserve">
+    	<value>You earn:</value>
+  	</data>
+	<data name="RewardClaimedAt" xml:space="preserve">
+    	<value>Reward claimed at: {0}</value>
+  	</data>
+	<data name="RewardEarnedAt" xml:space="preserve">
+    	<value>Reward earned at: {0}</value>
+  	</data>
+	<data name="RewardAlreadyClaimedError" xml:space="preserve">
+    	<value>Your reward has already been claimed.</value>
+  	</data>
+	<data name="TrajectoryNotUploadedError" xml:space="preserve">
+    	<value>Trajectory could not be uploaded to the server. Try again later.</value>
   	</data>
 </root>

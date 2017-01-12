@@ -60,7 +60,6 @@ namespace Trace.iOS {
 				var response = await request.GetResponseAsync();
 				Debug.WriteLine("OAuth response url: " + response);
 				if(response != null) {
-					SQLiteDB.Instance.InstantiateUser(User.Instance.Username);
 
 					// Deserialize the data and store it in the account store
 					// The users email address will be used to identify data in SQLite DB
@@ -69,7 +68,8 @@ namespace Trace.iOS {
 					OAuthUser user = JsonConvert.DeserializeObject<OAuthUser>(userJson);
 
 					// Store the credentials in keychain
-					User.Instance.Username = e.Account.Username = user.Id;
+					e.Account.Username = user.Id;
+					SQLiteDB.Instance.InstantiateUser(user.Id);
 					AccountStore.Create().Save(e.Account, OAuthConfigurationManager.KeystoreService);
 
 					// Check if the token was received.

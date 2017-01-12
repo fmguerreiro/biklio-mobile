@@ -74,11 +74,13 @@ namespace Trace {
 				// Check to see if the user already has this campaign before displaying.
 				var subbedCampaign = User.Instance.SubscribedCampaigns.FirstOrDefault((c) => c.GId == newCampaign.GId);
 				if(subbedCampaign != null) {
-					await DisplayAlert(subbedCampaign.Name, Language.AlreadySubscribedError, Language.Ok);
+					Device.BeginInvokeOnMainThread(async () => {
+						await DisplayAlert(subbedCampaign.Name, Language.AlreadySubscribedError, Language.Ok);
+					});
 					return;
 				}
 
-				// TODO popup with img instead of just alert: https://github.com/rotorgames/Rg.Plugins.Popup
+				// TODO low priority -> popup with img instead of just alert: https://github.com/rotorgames/Rg.Plugins.Popup
 				bool wantsToSubscribe = false;
 				Device.BeginInvokeOnMainThread(async () => {
 					wantsToSubscribe = await DisplayAlert(newCampaign.Name, newCampaign.Description + "\n" + Language.NewCampaignMsg, Language.Subscribe, Language.Cancel);

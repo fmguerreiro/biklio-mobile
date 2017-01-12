@@ -4,7 +4,6 @@ using System.IO;
 using AVFoundation;
 using Foundation;
 using Trace.iOS;
-using UIKit;
 using Xamarin.Forms;
 
 [assembly: Dependency(typeof(SoundPlayer))]
@@ -14,16 +13,16 @@ namespace Trace.iOS {
 	public class SoundPlayer : ISoundPlayer {
 
 		private static AVAudioPlayer player;
+		private static bool isActive;
 
-		private string prevSound = User.Instance?.BackgroundIneligibleSoundSetting ?? "silence.wav";
 		private float musicVolume = 0.5f;
 
 
 		public void PlaySound(string sound, int loops = -1) {
 
-			// Play previously used track if none is provided.
+			// Play background track if none is provided.
 			if(string.IsNullOrEmpty(sound))
-				sound = prevSound;
+				sound = getBackgroundSound();
 
 			// Any existing player?
 			if(player != null) {
@@ -61,13 +60,13 @@ namespace Trace.iOS {
 
 
 		public void PlayShortSound(string newSound, int loops = 0) {
-			var playAfter = string.Copy(this.prevSound);
 			PlaySound(newSound, loops);
 
-			// Restart the player using the previous sound in order to prevent app suspension.
+			// Restart the player using the appropriate background sound in order to prevent app suspension.
 			player.FinishedPlaying += (sender, e) => {
-				Debug.WriteLine("SetSound() - FinishedPlaying: prev->" + playAfter + " new->" + newSound);
-				PlaySound(playAfter);
+				if(isActive) {
+					PlaySound(null);
+				}
 			};
 		}
 
@@ -88,16 +87,28 @@ namespace Trace.iOS {
 			var session = AVAudioSession.SharedInstance();
 
 			// If session type is still the default one, change it to 'Playback' mode, which allows background audio.
-			Debug.WriteLine(session.Category);
 			if(session.Category.ToString().Equals("AVAudioSessionCategorySoloAmbient"))
 				session.SetCategory(AVAudioSessionCategory.Playback, AVAudioSessionCategoryOptions.MixWithOthers);
 			//AVAudioSession.Notifications.ObserveInterruption((sender, e) => { Debug.WriteLine("Audio Interruption: " + e.Notification); });
 			session.SetActive(true);
+			isActive = true;
 		}
+
 
 		public void DeactivateAudioSession() {
 			var session = AVAudioSession.SharedInstance();
 			session.SetActive(false);
+			isActive = false;
+		}
+
+
+		private string getBackgroundSound() {
+			switch(RewardEligibilityManager.Instance.GetCurrentState()) {
+				case State.CyclingEligible:
+					return User.Instance.BycicleEligibleSoundSetting;
+				default:
+					return User.Instance.BackgroundIneligibleSoundSetting;
+			}
 		}
 	}
 }

@@ -8,7 +8,8 @@ namespace Trace {
 
 	/// <summary>
 	/// The User class stores the user's information.
-	/// Implements the Singleton pattern.
+	/// This information includes personal information, as well as information 
+	/// obtained while using the device, i.e., the other business classes.
 	/// </summary>
 	public class User : DatabaseEntityBase {
 
@@ -44,8 +45,8 @@ namespace Trace {
 
 		// Position where the user last obtained challenges,
 		// when user gets too far from here, reset WSSnapshotVersion
-		public double PrevLongitude = 0.0;
-		public double PrevLatitude = 0.0;
+		public double PrevLongitude { get; set; }
+		public double PrevLatitude { get; set; }
 
 
 		// The webserver stores several snapshots of the challenge and checkpoint data.

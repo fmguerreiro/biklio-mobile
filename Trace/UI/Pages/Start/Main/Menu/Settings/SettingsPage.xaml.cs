@@ -11,6 +11,20 @@ namespace Trace {
 			//list.Add($"New Spot {DateTime.Now.ToLocalTime()}");
 		}
 
+		async void onLogout(object sender, EventArgs e) {
+			bool isLogout = await DisplayAlert(Language.Logout, Language.AreYouSure, Language.Yes, Language.No);
+			// TODO remove activity log on logout.
+			await DisplayAlert("Activity Results", App.DEBUG_ActivityLog, "Ok");
+			App.DEBUG_ActivityLog = "";
+			if(isLogout) {
+				await LoginManager.PrepareLogout();
+				var nextPage = new NavigationPage(new SignInPage());
+				nextPage.BarBackgroundColor = (Color) App.Current.Resources["PrimaryColor"];
+				nextPage.BarTextColor = (Color) App.Current.Resources["PrimaryTextColor"];
+				Application.Current.MainPage = nextPage;
+			}
+		}
+
 		// TODO: need to perform input validation -- need a settings model that gets the values first before storing them in user after validation
 		void onSettingChanged(object sender, EventArgs e) {
 			SQLiteDB.Instance.SaveUser(User.Instance);
