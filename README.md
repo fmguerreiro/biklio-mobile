@@ -7,19 +7,26 @@ The TRACE project (http://h2020-trace.eu) is an European initiative that aims to
 This app is primarily targeted towards Android (4.4 KitKat+) and iOS (8.0+) and developed using Xamarin.
 Xamarin (https://www.xamarin.com) is a framework that provides a unified, cross-platform API for programs written in C#.
 
-Features
---------
-
-- Be awesome
-- Make things faster
-
 Installation
 ------------
 
-Install $project by running:
+Getting the IDE:
+- If you are on Windows, check the official configuration details (https://developer.xamarin.com/guides/ios/getting_started/installation/windows/) for installing Visual Studio with the Xamarin add-ons. Note that you require a separate Mac machine (can be configured to be networked from your PC) to build and test the iOS version of the app.
+- If you are on Mac, install Xamarin Studio from https://www.xamarin.com/download.
 
-    install project
+You can now import the project from this repository and load it into your IDE.
 
+Platform configurations:
+- To compile for the Android version, open the Android SDK Manager and download the SDK platforms for Android 4.4.2 and up (API19+). In addition, download the latest Android SDK Tools, Android SDK Platform-tools and Android SDK Build-tools. 
+Details for Windows: https://developer.xamarin.com/guides/android/getting_started/installation/windows/ 
+- To run the iOS version of the app on the device (on the simulator you're good to go) you need to create a device provisioning profile. There are several steps required in order to do this. If you do not have an Apple developer program account, you can use a free provisioning profile to run the app on your device (steps shown here). Otherwise, follow the guide on the official guide to get set up (https://developer.xamarin.com/guides/ios/getting_started/installation/device_provisioning/).
+
+Project configurations:
+- On your IDE, right-click the 'Trace' library -> Options -> Build -> General and check 'Use MSBuild build engine', as well as selecting 'Current Profile: PCL 4.5 - Profile259'. Still in the library project options, switch to -> Build -> Compiler, and check 'Enable Optimizations' for both 'Configuration' panes 'Debug (Active)' and 'Release'.
+- Right-click the 'Trace.Droid' -> Options -> Compiler and check 'Enable optimizations' for both configurations again. Go to -> Build -> Android Application, and make sure the 'Minimum Android version' is set to 'Android 4.4' and the 'Target Android version' is set to 'Android 6.0'.
+- Right-click the 'Trace.iOS' -> Options -> Compiler and check 'Enable Optimizations' for both 'Configuration' panes 'Debug (Active)' and 'Release'. 
+Go to Build -> iOS Build. For 'Debug (Active)' configuration uncheck 'Strip native debugging symbols'. If you get an error compiling the project for iOS, uncheck 'Enable incremental builds'.
+Switch to 'iOS Bundle Signing' and for both configurations, make sure the signing identity and provisioning profile you created before are selected, do not use the 'automatic' or 'default' option. Also make sure that 'Custom Entitlements' has the 'Entitlements.plist' value.
 
 Project Structure
 --------
@@ -74,7 +81,6 @@ namespace Trace.Droid {
 }
 ```
 
-
 Architecture
 ----------
 
@@ -83,22 +89,21 @@ This app is structered into several layers.
 - Data layer: defines the data persistence of the application which includes file system access and sqlite storage.
 - Service Access layer: contains the client classes that access network resources, which is mainly the Trace webserver.
 - UI layer: stores pages and widgets of the application that the user will see. 
+- Application layer: has application specific login that is not reusable for other projects, such as the reward eligibility state machine, background sound player and the trajectory & shop map. 
 
-In addition ... utils - security, motion, 
+In addition there is a Security module that:
+- handles user input validation in page forms;
+- OAuth (Google & Facebook) provider information;
+- user credentials storage (username/password or id/token from OAuth providers) that uses native device keychain or keystore to encrypt and store them on the device.
 
-Localization ...
-
-Security ...
-
-...
-
+Finally, there is a Localization module that keeps classes that fetch the language from the phone, and individual Language.resx files (similar to XML) for each different language supported (Language.resx is the default English, Language.pt.resx for Portuguese, etc.).
 
 Implementation Details
 ----------
 
 UI with Xamarin.Forms:
 
-The UI is written using XAML and C#. Pages are written mainly using the MVC pattern ... 
+The UI is written using XAML and C#. Pages are written mainly using the MVC pattern ... TODO
 
 
 
