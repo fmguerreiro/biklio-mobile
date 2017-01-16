@@ -22,7 +22,7 @@ Details for Windows: https://developer.xamarin.com/guides/android/getting_starte
 - To run the iOS version of the app on the device (on the simulator you're good to go) you need to create a device provisioning profile. There are several steps required in order to do this. If you do not have an Apple developer program account, you can use a free provisioning profile to run the app on your device (steps shown here). Otherwise, follow the guide on the official guide to get set up (https://developer.xamarin.com/guides/ios/getting_started/installation/device_provisioning/).
 
 Project configurations:
-- On your IDE, right-click the 'Trace' library -> Options -> Build -> General and check 'Use MSBuild build engine', as well as selecting 'Current Profile: PCL 4.5 - Profile259'. Still in the library project options, switch to -> Build -> Compiler, and check 'Enable Optimizations' for both 'Configuration' panes 'Debug (Active)' and 'Release'.
+- On your IDE, right-click the 'Trace' library -> Options -> Build -> General and check 'Use MSBuild build engine', as well as selecting 'Current Profile: PCL 4.5 - Profile111'. Still in the library project options, switch to -> Build -> Compiler, and check 'Enable Optimizations' for both 'Configuration' panes 'Debug (Active)' and 'Release'.
 - Right-click the 'Trace.Droid' -> Options -> Compiler and check 'Enable optimizations' for both configurations again. Go to -> Build -> Android Application, and make sure the 'Minimum Android version' is set to 'Android 4.4' and the 'Target Android version' is set to 'Android 6.0'.
 - Right-click the 'Trace.iOS' -> Options -> Compiler and check 'Enable Optimizations' for both 'Configuration' panes 'Debug (Active)' and 'Release'. 
 Go to Build -> iOS Build. For 'Debug (Active)' configuration uncheck 'Strip native debugging symbols'. If you get an error compiling the project for iOS, uncheck 'Enable incremental builds'.
@@ -103,12 +103,12 @@ Implementation Details
 
 This section covers a few aspects that are specific to this project that help understand the code more clearly.
 
-## UI with Xamarin.Forms:
+### UI with Xamarin.Forms:
 
 The UI is composed of Pages using the Model, View, Controller (MVC) pattern.
 Each Page is composed of at least a XAML (an XML-based language) file (<page_name>.xaml) that specifies the design of the UI (View), and a C# "code-behind" file (<page_name>.xaml.cs) that defines the logic of the program when the page loads or when the user interacts with the Page (Controller). Optionally, there can be a Model class that logically structures the data that is used in the Page. This model must be linked to the View through a process called "Binding" (<view>.BindingContext = <model>) for the data to be displayed.
 
-## User eligibility:
+### User eligibility:
 
 The goal of this app is to reward users that use bicycles.
 Users are said to be eligible for rewards when the app detects cycling for more than a few minutes (1.5 minutes at the moment of writing). 
@@ -123,7 +123,7 @@ If the user stops cycling (a THRESHOLD number of non-cycling events occur), the 
 
 On the 'Unknown Cycling' state, if there is a detection of a THRESHOLD number of vehicular events, the user is penalized, going to the 'Vehicular' state, starting a much shorter timer (around 5 minutes) that brings the user back to 'Ineligible' unless the user goes back to 'Unknown Eligible' (with a THRESHOLD number of non-vehicular events). 
 
-## Motion detection in the background:
+### Motion detection in the background:
 
 The central feature for the app is that it can notify the user of rewards even when she is busy doing other things. 
 To do this, we need to have the app always running in the background.

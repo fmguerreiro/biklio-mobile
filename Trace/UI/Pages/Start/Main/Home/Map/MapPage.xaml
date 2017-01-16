@@ -128,7 +128,6 @@
 				Style="{StaticResource lightTheme}"
 				XAlign="Center" />
 			<Label
-				x:Name="totalDistanceLabel"
 				Text="{Binding Distance, StringFormat={language:Translate DistanceLabel}}"
 				Grid.Row="1"
 				Grid.Column="0"
@@ -136,7 +135,6 @@
 				Style="{StaticResource lightTheme}"
 				XAlign="Center" />
 			<Label
-				x:Name="durationLabel"
 				Text="{Binding Duration, StringFormat={language:Translate DurationLabel}}"
 				Grid.Row="1"
 				Grid.Column="3"
@@ -144,7 +142,6 @@
 				Style="{StaticResource lightTheme}"
 				XAlign="Center" />
 			<Label
-				x:Name="caloriesLabel"
 				Text="{Binding Calories, StringFormat={language:Translate CaloriesLabel}}"
 				Grid.Row="2"
 				Grid.Column="0"
@@ -152,7 +149,6 @@
 				Style="{StaticResource lightTheme}"
 				XAlign="Center" />
 			<Label
-				x:Name="avgSpeedLabel"
 				Text="{Binding AvgSpeed, StringFormat={language:Translate AvgSpeedLabel}}"
 				Grid.Row="2"
 				Grid.Column="3"

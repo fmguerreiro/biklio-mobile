@@ -13,7 +13,6 @@ namespace Trace {
 		private const int MOTION_ONLY_ACCURACY = 1;
 
 		private static IGeolocator locator;
-		private static bool IsListening;
 
 		public static bool IsTrackingInProgress { get; set; }
 		private static TraceMap Map;
@@ -38,10 +37,10 @@ namespace Trace {
 				await locator.StopListeningAsync();
 
 			locator.DesiredAccuracy = LOCATOR_GOOD_ACCURACY;
-			var locationSettings = new ListenerSettings() {
+			var locationSettings = new ListenerSettings {
 				AllowBackgroundUpdates = true,
 				PauseLocationUpdatesAutomatically = true,
-				//ListenForSignificantChanges = true
+				//ListenForSignificantChanges = true // TODO LISTENFORSIGNIFICANTCHANGES
 			};
 
 			// Get first position

@@ -527,4 +527,7 @@ If you disable this feature, Biklio will only warn you of your status when you o
 	<data name="Notice" xml:space="preserve">
     	<value>Aviso</value>
   	</data>
+	<data name="StartTracking" xml:space="preserve">
+    	<value>O Biklio está a gravar o teu trajeto.</value>
+  	</data>
 </root>

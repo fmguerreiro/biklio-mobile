@@ -1,8 +1,10 @@
-﻿using Android.App;
+﻿using Acr.UserDialogs;
+using Android.App;
 using Android.Content.PM;
 using Android.OS;
 using FFImageLoading.Forms.Droid;
 using Plugin.Permissions;
+using Xamarin.Forms;
 
 namespace Trace.Droid {
 	[Activity(Label = "Trace.Droid", Icon = "@drawable/icon", Theme = "@style/MyTheme", MainLauncher = true, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]
@@ -14,6 +16,9 @@ namespace Trace.Droid {
 			base.OnCreate(bundle);
 
 			global::Xamarin.Forms.Forms.Init(this, bundle);
+
+			// Library for Toast messages.
+			UserDialogs.Init(() => (Activity) Forms.Context);
 
 			// Library for faster image processing.
 			CachedImageRenderer.Init();

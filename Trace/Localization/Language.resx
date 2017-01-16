@@ -529,4 +529,7 @@ Note that if you disable this feature, Biklio will only warn you of your status 
 	<data name="Notice" xml:space="preserve">
     	<value>Notice</value>
   	</data>
+	<data name="StartTracking" xml:space="preserve">
+    	<value>Biklio is now tracking you.</value>
+  	</data>
 </root>

@@ -4,7 +4,9 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using Acr.UserDialogs;
 using Newtonsoft.Json;
+using Trace.Localization;
 using Xamarin.Forms;
 using Xamarin.Forms.Maps;
 
@@ -150,7 +152,10 @@ namespace Trace {
 			else if(!isProcessing) {
 				isProcessing = true;
 
-				// TODO show toast here.
+				var toastCfg = new ToastConfig(Language.StartTracking) {
+					Duration = new TimeSpan(0, 0, 2)
+				};
+				UserDialogs.Instance.Toast(toastCfg);
 
 				await Locator.Start();
 

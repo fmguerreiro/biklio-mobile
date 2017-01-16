@@ -1030,5 +1030,11 @@ namespace Trace.Localization {
                 return ResourceManager.GetString("Notice", resourceCulture);
             }
         }
+        
+        public static string StartTracking {
+            get {
+                return ResourceManager.GetString("StartTracking", resourceCulture);
+            }
+        }
     }
 }
