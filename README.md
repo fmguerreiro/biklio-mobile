@@ -103,24 +103,45 @@ Implementation Details
 
 This section covers a few aspects that are specific to this project that help understand the code more clearly.
 
-UI with Xamarin.Forms:
+## UI with Xamarin.Forms:
 
 The UI is composed of Pages using the Model, View, Controller (MVC) pattern.
 Each Page is composed of at least a XAML (an XML-based language) file (<page_name>.xaml) that specifies the design of the UI (View), and a C# "code-behind" file (<page_name>.xaml.cs) that defines the logic of the program when the page loads or when the user interacts with the Page (Controller). Optionally, there can be a Model class that logically structures the data that is used in the Page. This model must be linked to the View through a process called "Binding" (<view>.BindingContext = <model>) for the data to be displayed.
 
-User eligibility:
+## User eligibility:
 
-The goal of this app is to reward users that use bicycles ...
+The goal of this app is to reward users that use bicycles.
 Users are said to be eligible for rewards when the app detects cycling for more than a few minutes (1.5 minutes at the moment of writing). 
+
 To implement this, we use a small state machine with 5 states: 'Ineligible', 'Cycling Ineligible', 'Cycling Eligible', 'Unknown Eligible' and 'Vehicular'.
 
-...
+The start state is 'Ineligible'. After a THRESHOLD number of cycling events in a row (detected from the Motion Manager from the device), the state transitions to 'Cycling Ineligible'. If the user keeps cycling for a TIME_THRESHOLD, the state transitions to 'Cycling Eligible', otherwise, it goes back to 'Ineligible'.
 
+Once the state becomes 'Cycling Eligible', the user receives a notification and an audible warning, unlocking all the rewards that require cycling.
 
-Motion detection in the background using audio:
+If the user stops cycling (a THRESHOLD number of non-cycling events occur), the state transitions to 'Unknown Eligible' (meaning the user remains eligible for rewards), which stays there until the next day (refreshed when the user goes back to 'Cycling Eligible' after a THRESHOLD number of cycling events).
+
+On the 'Unknown Cycling' state, if there is a detection of a THRESHOLD number of vehicular events, the user is penalized, going to the 'Vehicular' state, starting a much shorter timer (around 5 minutes) that brings the user back to 'Ineligible' unless the user goes back to 'Unknown Eligible' (with a THRESHOLD number of non-vehicular events). 
+
+## Motion detection in the background:
 
 The central feature for the app is that it can notify the user of rewards even when she is busy doing other things. 
-...
+To do this, we need to have the app always running in the background.
+
+Android allows this easily enough with the 'Service' interface.
+
+In iOS however, this process is much more complicated.
+Apple only allows an app to do a specific set of actions in the background, namely:
+play or record audio, track user location, use VoIP, download updates and communicate with a bluetooth accessory.
+Our first option involved tracking the user location at all times. However, this makes the app consume ~10% battery/h (on iPhone 5s), which is unreasonable. 
+The app still allows the user to track their trajectories, which allows the app to run continuously. We still needed another option for when the app was not tracking the user.
+
+Other fitness apps like Runkeeper and Strava overcome this problem by instead relying on the audio category through the use of a 'personal trainer' voice that motivates the user while running. In addition, they also use the accessory category by communicating with a heartrate monitor.
+
+Our app uses the audio background option as well, letting the user know their eligibility state continuously.
+The user may choose at any time to silence or disable this audio option.
+If the user disables the audio, we lose the real-time notification ability.
+iPhone devices starting from version 5s carry a dedicated processor for motion updates called M7 (M8 and M10 in later devices) which continuosly records user activity. Any app can query this historical data either when the user re-opens the app or if we  register the app for region monitoring (more precise) or significant location changes (uses cell towers, less precise).
 
 
 Support
