@@ -13,9 +13,8 @@ namespace Trace {
 			//IList<Challenge> rewards = SQLiteDB.Instance.GetRewards().ToList();
 			IList<Challenge> rewards = User.Instance.Challenges.FindAll((x) => x.IsComplete && !x.IsClaimed);
 
-			// TODO just for testing claim rewards page -- remove!
-			var testReward = User.Instance.Challenges.FirstOrDefault();
-			rewards.Add(testReward);
+			//var testReward = User.Instance.Challenges.FirstOrDefault();
+			//rewards.Add(testReward);
 			BindingContext = new RewardVM { Rewards = rewards };
 		}
 

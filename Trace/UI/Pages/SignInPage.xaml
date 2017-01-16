@@ -103,7 +103,6 @@
 					x:Name="tosSwitch"
 					IsToggled="false"
 					HorizontalOptions="Start"
-					Toggled="onAgreeToToS"
 					Grid.Column="0" />
 				<Label
 					x:Name="tosWarningLabel"

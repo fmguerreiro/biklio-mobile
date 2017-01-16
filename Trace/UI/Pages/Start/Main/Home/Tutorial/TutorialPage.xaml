@@ -97,6 +97,8 @@
 				Grid.Column="0">
 			</Button>
 			<Button
+				x:Name="confirmationButton"
+				IsVisible="false"
 				Text="{language:Translate GotIt}"
 				Margin="5"
 				Clicked="onConfirmationClicked"

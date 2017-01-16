@@ -37,13 +37,6 @@ namespace Trace {
 			SQLiteDB.Instance.SaveUser(User.Instance);
 		}
 
-		// TODO: delete language setting -- taken automatically from phone settings
-		void onLanguageChanged(object sender, EventArgs e) {
-			var picker = (BindablePicker) sender;
-			string item = picker.Items[picker.SelectedIndex];
-			User.Instance.UserLanguage = EnumUtil.ParseEnum<SelectedLanguage>(item);
-			SQLiteDB.Instance.SaveUser(User.Instance);
-		}
 
 		void onIneligibleSoundChanged(object sender, EventArgs e) {
 			var picker = (BindablePicker) sender;
@@ -79,6 +72,9 @@ namespace Trace {
 			if(isDelete) {
 				Debug.WriteLine("DELETING ALL USER INFO");
 				SQLiteDB.Instance.DeleteAllUserItems();
+				User.Instance.WSSnapshotVersion = 0;
+				SQLiteDB.Instance.SaveUser(User.Instance);
+				User.Instance.SubscribedCampaigns = null;
 				User.Instance.Challenges = null;
 				User.Instance.Checkpoints = null;
 				User.Instance.Trajectories = null;

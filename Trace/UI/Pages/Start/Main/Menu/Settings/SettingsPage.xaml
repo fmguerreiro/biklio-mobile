@@ -175,16 +175,6 @@
 						Text="200" />
 				</TableSection>
 				<TableSection
-					Title="Language">
-					<ViewCell>
-						<local:BindablePicker
-							Title="{Binding User.UserLanguage}"
-							ItemsSource="{Binding Languages}"
-							SelectedIndexChanged="onLanguageChanged"
-							SelectedItem="{Binding User.UserLanguage, Mode=TwoWay}" />
-					</ViewCell>
-				</TableSection>
-				<TableSection
 					Title="{language:Translate Delete}">
 					<TextCell
 						Text="{language:Translate Challenges}"

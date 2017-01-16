@@ -7,16 +7,13 @@ namespace Trace {
 
 		public HomePage() {
 			Title = Language.Home;
-			//BackgroundColor = (Color) App.Current.Resources["SecondaryColor"];
-			//BarBackgroundColor = (Color) App.Current.Resources["SecondaryColor"];
-			//BarTextColor = (Color) App.Current.Resources["SecondaryColor"];
 
 			// Remove 'Back' button to stop users from logging out accidently.
 			NavigationPage.SetHasBackButton(this, false);
 
 			// Add tabs to the page.
 			var mapPage = new MapPage();
-			var challengesPage = new ChallengeListPage(mapPage);
+			var challengesPage = new CheckpointListPage(mapPage);
 
 			Children.Add(challengesPage);
 			Children.Add(mapPage);
@@ -30,6 +27,14 @@ namespace Trace {
 				await Navigation.PushModalAsync(new TutorialPage());
 			});
 			ToolbarItems.Add(tutorialToolbarButton);
+
+			// Show tutorial to user on first login.
+			if(User.Instance.IsFirstLogin) {
+				Device.BeginInvokeOnMainThread(async () => {
+					await Task.Delay(1000); // await this page to load first.
+					await Navigation.PushModalAsync(new TutorialPage());
+				});
+			}
 		}
 	}
 }

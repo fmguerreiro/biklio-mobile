@@ -36,6 +36,26 @@ namespace Trace.iOS {
 				if(a.Username.Equals(username))
 					return true;
 			}
+			foreach(var a in AccountStore.Create().FindAccountsForService(new GoogleOAuthConfig().KeystoreService)) {
+				if(a.Username.Equals(username))
+					return true;
+			}
+			foreach(var a in AccountStore.Create().FindAccountsForService(new FacebookOAuthConfig().KeystoreService)) {
+				if(a.Username.Equals(username))
+					return true;
+			}
+			return false;
+		}
+
+		public bool OAuthExists() {
+			foreach(var a in AccountStore.Create().FindAccountsForService(new GoogleOAuthConfig().KeystoreService)) {
+				if(a != null)
+					return true;
+			}
+			foreach(var a in AccountStore.Create().FindAccountsForService(new FacebookOAuthConfig().KeystoreService)) {
+				if(a != null)
+					return true;
+			}
 			return false;
 		}
 

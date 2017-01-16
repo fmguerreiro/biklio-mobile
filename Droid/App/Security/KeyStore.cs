@@ -1,8 +1,7 @@
-﻿using System;
-using Xamarin.Auth;
+﻿using Xamarin.Auth;
 using Xamarin.Forms;
 
-[assembly: Xamarin.Forms.Dependency(typeof(Trace.Droid.KeyStore))]
+[assembly: Dependency(typeof(Trace.Droid.KeyStore))]
 namespace Trace.Droid {
 
 	public class KeyStore : ICredentialsStore {
@@ -36,8 +35,30 @@ namespace Trace.Droid {
 				if(a.Username.Equals(username))
 					return true;
 			}
+			foreach(var a in AccountStore.Create(Forms.Context).FindAccountsForService(new GoogleOAuthConfig().KeystoreService)) {
+				if(a.Username.Equals(username))
+					return true;
+			}
+			foreach(var a in AccountStore.Create(Forms.Context).FindAccountsForService(new FacebookOAuthConfig().KeystoreService)) {
+				if(a.Username.Equals(username))
+					return true;
+			}
 			return false;
 		}
+
+
+		public bool OAuthExists() {
+			foreach(var a in AccountStore.Create(Forms.Context).FindAccountsForService(new GoogleOAuthConfig().KeystoreService)) {
+				if(a != null)
+					return true;
+			}
+			foreach(var a in AccountStore.Create(Forms.Context).FindAccountsForService(new FacebookOAuthConfig().KeystoreService)) {
+				if(a != null)
+					return true;
+			}
+			return false;
+		}
+
 
 		public void SaveCredentials(string username, string password) {
 			if(!string.IsNullOrWhiteSpace(username) && !string.IsNullOrWhiteSpace(password)) {

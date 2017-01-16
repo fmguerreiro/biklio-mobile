@@ -43,7 +43,7 @@
     <EmbeddedResource Include="UI\Pages\Start\Main\Menu\Settings\SettingsPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\Pages\Start\Main\Home\Challenges\ChallengeListPage.xaml">
+    <EmbeddedResource Include="UI\Pages\Start\Main\Home\Challenges\CheckpointListPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\Pages\Start\Main\Home\Challenges\CheckpointDetailsPage.xaml">
@@ -151,8 +151,8 @@
     </Compile>
     <Compile Include="UI\Pages\Start\Main\Menu\Settings\SettingsPageModel.cs" />
     <Compile Include="UI\Pages\Start\Main\Home\HomePage.cs" />
-    <Compile Include="UI\Pages\Start\Main\Home\Challenges\ChallengeListPage.xaml.cs">
-      <DependentUpon>ChallengeListPage.xaml</DependentUpon>
+    <Compile Include="UI\Pages\Start\Main\Home\Challenges\CheckpointListPage.xaml.cs">
+      <DependentUpon>CheckpointListPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="UI\Pages\Start\Main\Home\Challenges\CheckpointDetailsPage.xaml.cs">
       <DependentUpon>CheckpointDetailsPage.xaml</DependentUpon>
@@ -219,8 +219,8 @@
     <Compile Include="UI\Pages\Start\Main\Home\Tutorial\TutorialPage.xaml.cs">
       <DependentUpon>TutorialPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UI\Pages\Start\Main\Home\Tutorial\TutorialDataModel.cs" />
-    <Compile Include="UI\Pages\Start\Main\Home\Tutorial\PrivacyPolicy\PrivacyPolicyDataModel.cs" />
+    <Compile Include="UI\Pages\Start\Main\Home\Tutorial\TutorialModel.cs" />
+    <Compile Include="UI\Pages\Start\Main\Home\Tutorial\PrivacyPolicy\PrivacyPolicyModel.cs" />
     <Compile Include="UI\Pages\Start\Main\Home\Tutorial\PrivacyPolicy\PrivacyPolicyPage.xaml.cs">
       <DependentUpon>PrivacyPolicyPage.xaml</DependentUpon>
     </Compile>
@@ -236,11 +236,9 @@
     <Compile Include="Application\ISoundPlayer.cs" />
     <Compile Include="Application\Geolocator.cs" />
     <Compile Include="Utils\GeoUtils.cs" />
-    <Compile Include="Application\Map\Bindings\TotalCalories.cs" />
-    <Compile Include="Application\Map\Bindings\TotalDistance.cs" />
-    <Compile Include="Application\Map\Bindings\TotalDuration.cs" />
     <Compile Include="Application\Map\CustomPin.cs" />
     <Compile Include="Application\Map\TraceMap.cs" />
+    <Compile Include="UI\Pages\Start\Main\Home\Map\MapPageModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Business\" />

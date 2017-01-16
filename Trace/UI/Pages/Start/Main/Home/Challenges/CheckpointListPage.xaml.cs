@@ -5,23 +5,28 @@ using Xamarin.Forms;
 using System.Linq;
 using System;
 using Trace.Localization;
+using Plugin.Geolocator.Abstractions;
 
 namespace Trace {
 
 	/// <summary>
-	/// Page that displays the list of incomplete challenges.
+	/// Page that displays the list of checkpoints ordered by distance to User.
 	/// </summary>
-	public partial class ChallengeListPage : ContentPage {
+	public partial class CheckpointListPage : ContentPage {
 
 		// Reference to the map page in order to update pins when challenges are updated.
 		MapPage mapPage;
 
-		public ChallengeListPage(MapPage mapPage) {
+		public CheckpointListPage(MapPage mapPage) {
 			InitializeComponent();
 			if(Device.OS == TargetPlatform.iOS) { Icon = "images/challenge_list/trophy.png"; }
 			this.mapPage = mapPage;
-			// Show the challenges saved on the device.
-			BindingContext = new ChallengeVM { Challenges = User.Instance.Challenges };
+
+			// Show the checkpoints saved on the device.
+			Task.Run(() => {
+				var orderedCheckpointList = User.Instance.Checkpoints.Values.ToList().OrderBy((x) => x.DistanceToUser).ToList();
+				BindingContext = new CheckpointVM { Checkpoints = orderedCheckpointList };
+			});
 		}
 
 
@@ -33,7 +38,7 @@ namespace Trace {
 		/// <param name="e">E.</param>
 		async void OnRefresh(object sender, EventArgs e) {
 			var list = (ListView) sender;
-			await Task.Run(() => getChallenges());
+			await Task.Run(() => getCheckpoints());
 			list.IsRefreshing = false;
 			PullUpHintLabel.IsVisible = false;
 		}
@@ -43,37 +48,45 @@ namespace Trace {
 		/// Fetches the list of challenges and checkpoints 
 		/// from the webserver, stores them and displays it in the page when finished.
 		/// </summary>
-		private async Task getChallenges() {
+		private async Task getCheckpoints() {
 			// Get current position to fetch closest challenges
 			var position = await GeoUtils.GetCurrentUserLocation();
 
 			// If the user got too far from the previous position where he got the last set of challenges, reset Snapshot point.
-			await checkIfUserRequiresNewChallenges();
+			await checkIfUserRequiresNewCheckpoints();
 
-			// Fetch challenges from Webserver
+			// Fetch checkpoints from Webserver.
 			var client = new WebServerClient();
-			WSResult result = await Task.Run(() => client.FetchChallenges(position, User.Instance.SearchRadius, User.Instance.WSSnapshotVersion));
+			WSResult result = await Task.Run(() => client.FetchCheckpoints(position, User.Instance.SearchRadius, User.Instance.WSSnapshotVersion));
 
 			if(!result.success) {
+				// If the user is offline or WS is down, simply update distance to user for each checkpoint.
+				var newOrderedList = User.Instance.Checkpoints.Values.ToList();
+				foreach(Checkpoint c in newOrderedList) {
+					c.DistanceToUser = GeoUtils.DistanceBetweenPoints(c.Position, User.Instance.Position);
+				}
+				newOrderedList = newOrderedList.OrderBy((x) => x.DistanceToUser).ToList();
+
 				Device.BeginInvokeOnMainThread(() => {
-					DisplayAlert(Language.ErrorFetchingChallenges, result.error, Language.Ok);
-					ChallengeListView.IsRefreshing = false;
+					//DisplayAlert(Language.ErrorFetchingChallenges, result.error, Language.Ok);
+					checkpointListView.IsRefreshing = false;
 					PullUpHintLabel.IsVisible = false;
+					BindingContext = new CheckpointVM { Checkpoints = newOrderedList };
 				});
 				return;
 			}
 
-			// Load shop information into dictionary for fast lookup.
+			// Load checkpoint information into dictionary for fast lookup.
 			var checkpoints = new Dictionary<long, Checkpoint>();
 			loadCheckpoints(result, checkpoints);
 
-			deleteInvalidatedCheckpoints(result, checkpoints);
+			var deletedChallenges = deleteInvalidatedCheckpoints(result, checkpoints);
 
 			// Load challenge information into list for display.
 			var challenges = new List<Challenge>();
 			loadChallenges(result, checkpoints, challenges);
 
-			deleteInvalidatedChallenges(result, challenges);
+			deleteInvalidatedChallenges(deletedChallenges, challenges);
 			checkClaimedChallenges(challenges);
 
 			// Update or create the received challenges and checkpoints.
@@ -95,9 +108,10 @@ namespace Trace {
 			Task.Run(() => checkForRewards()).DoNotAwait();
 
 			// Finally, display available challenges.
-			var unclaimedChallenges = User.Instance.Challenges.FindAll((x) => !x.IsClaimed);
+			//var unclaimedChallenges = User.Instance.Challenges.FindAll((x) => !x.IsClaimed);
+			var orderedResult = User.Instance.Checkpoints.Values.OrderBy((x) => x.DistanceToUser).ToList();
 			Device.BeginInvokeOnMainThread(() => {
-				BindingContext = new ChallengeVM { Challenges = unclaimedChallenges };
+				BindingContext = new CheckpointVM { Checkpoints = orderedResult };
 				mapPage.UpdatePins();
 			});
 		}
@@ -167,6 +181,7 @@ namespace Trace {
 				TwitterAddress = checkpoint.contacts.twitter,
 				Longitude = checkpoint.longitude,
 				Latitude = checkpoint.latitude,
+				DistanceToUser = GeoUtils.DistanceBetweenPoints(User.Instance.Position, new Position { Longitude = checkpoint.longitude, Latitude = checkpoint.latitude }),
 				MapImageURL = checkpoint.mapURL,
 				//BikeFacilities = checkpoint.facilities.ToString(), // todo facilities is a jArray
 				Description = checkpoint.details.description
@@ -179,23 +194,47 @@ namespace Trace {
 		/// Delete invalidated checkpoints (i.e., ids in 'canceled' payload field) and their images.
 		/// </summary>
 		/// <param name="result">Result.</param>
-		void deleteInvalidatedCheckpoints(WSResult result, Dictionary<long, Checkpoint> checkpointsDict) {
+		long[] deleteInvalidatedCheckpoints(WSResult result, Dictionary<long, Checkpoint> checkpointsDict) {
 			long[] canceledCheckpointsIds = result.payload.canceled;
+			long[] canceledChallengesIds = result.payload.canceledChallenges;
+			var updatedCancelledChallenges = new HashSet<long>(canceledChallengesIds ?? new long[0]);
 			if(canceledCheckpointsIds.Length > 0) {
 				SQLiteDB.Instance.DeleteItems<Checkpoint>(canceledCheckpointsIds);
 			}
 			foreach(long id in canceledCheckpointsIds) {
 				DependencyService.Get<IFileSystem>().DeleteImage(id.ToString());
+				Checkpoint checkpoint = null;
+				// Check this checkpoint's challenges, and invalidade them as well.
+				User.Instance.Checkpoints.TryGetValue(id, out checkpoint);
+				if(checkpoint != null) {
+					var invalidatedChallenges = checkpoint.Challenges.Select(item => item.Id).ToList();
+					if(invalidatedChallenges != null)
+						updatedCancelledChallenges.UnionWith(invalidatedChallenges);
+				}
 				checkpointsDict.Remove(id);
 			}
+			return updatedCancelledChallenges.ToArray();
 		}
 
 
 		/// <summary>
 		/// Delete invalidated challenges (i.e., ids in 'canceledChallenges' payload field).
 		/// </summary>
+		/// <param name="canceledChallengeIds">Canceled challenge identifiers.</param>
+		/// <param name="challengeList">Challenge list.</param>
+		void deleteInvalidatedChallenges(long[] canceledChallengeIds, List<Challenge> challengeList) {
+			if(canceledChallengeIds.Length > 0) {
+				SQLiteDB.Instance.DeleteItems<Challenge>(canceledChallengeIds);
+				challengeList.RemoveAll(x => canceledChallengeIds.Contains(x.GId));
+			}
+		}
+
+
+		/// <summary>
+		/// Deletes straggling challenges that lost their checkpoint.
+		/// </summary>
 		/// <param name="result">Result.</param>
-		void deleteInvalidatedChallenges(WSResult result, List<Challenge> challengeList) {
+		void deleteChallengesWithInvalidCheckpoints(WSResult result, List<Challenge> challengeList) {
 			long[] canceledChallengeIds = result.payload.canceledChallenges;
 			if(canceledChallengeIds.Length > 0) {
 				SQLiteDB.Instance.DeleteItems<Challenge>(canceledChallengeIds);
@@ -227,8 +266,8 @@ namespace Trace {
 		/// Checks if user requires new challenges.
 		/// A user requires new challenges if he is a new area, far from the place he got the previous challenges.
 		/// </summary>
-		private async Task checkIfUserRequiresNewChallenges() {
-			var initPos = new Plugin.Geolocator.Abstractions.Position {
+		async Task checkIfUserRequiresNewCheckpoints() {
+			var initPos = new Position {
 				Longitude = User.Instance.PrevLongitude,
 				Latitude = User.Instance.PrevLatitude
 			};

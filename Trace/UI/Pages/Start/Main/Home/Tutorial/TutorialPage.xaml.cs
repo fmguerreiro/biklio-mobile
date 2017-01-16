@@ -16,7 +16,7 @@ namespace Trace {
 		public TutorialPage() {
 			InitializeComponent();
 
-			var tutorialDataModel = new TutorialDataModel {
+			var tutorialDataModel = new TutorialModel {
 				Parts = new List<TutorialPart> {
 					new TutorialPart {
 						ImagePath = "images/tutorial/tutorial_part1.png",
@@ -54,7 +54,7 @@ namespace Trace {
 		void onTutorialPartChanged(object sender, SelectedItemChangedEventArgs e) {
 			var selectedPart = (TutorialPart) e.SelectedItem;
 			if(selectedPart == lastPart) {
-				//confirmationButton.IsVisible = true;
+				confirmationButton.IsVisible = true;
 			}
 		}
 
@@ -63,6 +63,14 @@ namespace Trace {
 		}
 
 		async void onConfirmationClicked(object sender, EventArgs e) {
+			if(User.Instance.IsFirstLogin) {
+				// TODO actionsheet instead of alert
+				await DisplayAlert(Language.Notice, Language.BiklioAudioWarningMessage, Language.Ok);
+				await DisplayAlert(Language.Welcome, Language.BiklioWelcomeMessage, Language.GotIt);
+				User.Instance.IsFirstLogin = false;
+				SQLiteDB.Instance.SaveUser(User.Instance);
+			}
+
 			await Navigation.PopModalAsync();
 		}
 	}

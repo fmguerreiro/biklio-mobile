@@ -21,7 +21,5 @@ namespace Trace {
 		}
 
 		public string LocalizedActivity { get { return activityType.ToLocalizedString(); } }
-
-
 	}
 }

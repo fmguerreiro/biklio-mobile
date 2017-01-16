@@ -120,15 +120,15 @@
 			Grid.Column="0"
 			Grid.ColumnSpan="2">
 			<Label
-				x:Name="MainActivityLabel"
-				Text="{Binding LocalizedActivity, StringFormat={language:Translate MainActivityLabel}}"
+				x:Name="mainActivityLabel"
+				Text="{Binding MainActivity, StringFormat={language:Translate MainActivityLabel}}"
 				Grid.Row="0"
 				Grid.Column="1"
 				Grid.ColumnSpan="3"
 				Style="{StaticResource lightTheme}"
 				XAlign="Center" />
 			<Label
-				x:Name="TotalDistanceLabel"
+				x:Name="totalDistanceLabel"
 				Text="{Binding Distance, StringFormat={language:Translate DistanceLabel}}"
 				Grid.Row="1"
 				Grid.Column="0"
@@ -136,7 +136,7 @@
 				Style="{StaticResource lightTheme}"
 				XAlign="Center" />
 			<Label
-				x:Name="DurationLabel"
+				x:Name="durationLabel"
 				Text="{Binding Duration, StringFormat={language:Translate DurationLabel}}"
 				Grid.Row="1"
 				Grid.Column="3"
@@ -144,7 +144,7 @@
 				Style="{StaticResource lightTheme}"
 				XAlign="Center" />
 			<Label
-				x:Name="CaloriesLabel"
+				x:Name="caloriesLabel"
 				Text="{Binding Calories, StringFormat={language:Translate CaloriesLabel}}"
 				Grid.Row="2"
 				Grid.Column="0"
@@ -152,7 +152,7 @@
 				Style="{StaticResource lightTheme}"
 				XAlign="Center" />
 			<Label
-				x:Name="AvgSpeedLabel"
+				x:Name="avgSpeedLabel"
 				Text="{Binding AvgSpeed, StringFormat={language:Translate AvgSpeedLabel}}"
 				Grid.Row="2"
 				Grid.Column="3"

@@ -237,7 +237,7 @@
       <HintPath>..\packages\Xamarin.FFImageLoading.Transformations.2.2.6\lib\Xamarin.iOS10\FFImageLoading.Transformations.dll</HintPath>
     </Reference>
     <Reference Include="Splat">
-      <HintPath>..\packages\Splat.1.6.2\lib\Xamarin.iOS10\Splat.dll</HintPath>
+      <HintPath>..\packages\Splat.2.0.0\lib\Xamarin.iOS10\Splat.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -354,6 +354,7 @@
     <BundleResource Include="Resources\images\home\reward_glow.png" />
     <BundleResource Include="Resources\images\splashscreen.png" />
     <BundleResource Include="Resources\images\logo_slogan_splashscreen.png" />
+    <BundleResource Include="Resources\ic_launcher_motion_58x.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
   <Import Project="..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" />

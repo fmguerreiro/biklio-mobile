@@ -1,9 +1,10 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Xamarin.Forms;
 
 namespace Trace {
 	public class MainPage : MasterDetailPage {
-		HomeMasterPage masterPage;
+		readonly HomeMasterPage masterPage;
 
 		public MainPage() {
 
@@ -15,7 +16,6 @@ namespace Trace {
 			detailPage.BarBackgroundColor = (Color) App.Current.Resources["PrimaryColor"];
 			detailPage.BarTextColor = (Color) App.Current.Resources["PrimaryTextColor"];
 			Detail = detailPage;
-
 		}
 
 		void OnItemSelected(object sender, SelectedItemChangedEventArgs e) {

@@ -101,25 +101,36 @@ Finally, there is a Localization module that keeps classes that fetch the langua
 Implementation Details
 ----------
 
+This section covers a few aspects that are specific to this project that help understand the code more clearly.
+
 UI with Xamarin.Forms:
 
-The UI is written using XAML and C#. Pages are written mainly using the MVC pattern ... TODO
+The UI is composed of Pages using the Model, View, Controller (MVC) pattern.
+Each Page is composed of at least a XAML (an XML-based language) file (<page_name>.xaml) that specifies the design of the UI (View), and a C# "code-behind" file (<page_name>.xaml.cs) that defines the logic of the program when the page loads or when the user interacts with the Page (Controller). Optionally, there can be a Model class that logically structures the data that is used in the Page. This model must be linked to the View through a process called "Binding" (<view>.BindingContext = <model>) for the data to be displayed.
+
+User eligibility:
+
+The goal of this app is to reward users that use bicycles ...
+Users are said to be eligible for rewards when the app detects cycling for more than a few minutes (1.5 minutes at the moment of writing). 
+To implement this, we use a small state machine with 5 states: 'Ineligible', 'Cycling Ineligible', 'Cycling Eligible', 'Unknown Eligible' and 'Vehicular'.
+
+...
 
 
+Motion detection in the background using audio:
 
-Contribute
-----------
+The central feature for the app is that it can notify the user of rewards even when she is busy doing other things. 
+...
 
-- Issue Tracker: github.com/$project/$project/issues
-- Source Code: github.com/$project/$project
 
 Support
 -------
 
-If you are having issues, please let us know.
-We have a mailing list located at: project@google-groups.com
+If you are having issues, please let me know.
+You can reach me at gmail with: filipe.m.guerreiro
 
 License
 -------
 
-The project is licensed under the BSD license.
+The program is developed by INESC-ID and is part of the TRACE project, which is released under the Creative Commons license.
+See file LICENSE.md for full license details.

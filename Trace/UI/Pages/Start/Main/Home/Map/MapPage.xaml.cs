@@ -5,7 +5,6 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
-using Trace.Localization;
 using Xamarin.Forms;
 using Xamarin.Forms.Maps;
 
@@ -16,7 +15,6 @@ namespace Trace {
 	/// </summary>
 	public partial class MapPage : ContentPage {
 
-		private const long MIN_SIZE_TRAJECTORY = 250; // meters
 		private Geolocator Locator;
 		private CurrentActivity currentActivity;
 		// This prevents the user from issuing several tracking requests before the previous has completed.
@@ -24,21 +22,16 @@ namespace Trace {
 
 		private DateTime StartTrackingTime;
 		private DateTime StopTrackingTime;
+		private const long MIN_SIZE_TRAJECTORY = 250; // meters
 
 		public MapPage() {
 			InitializeComponent();
+			Debug.WriteLine("MapPage.Initialize()");
 			if(Device.OS == TargetPlatform.iOS) { Icon = "images/map/maps_icon.png"; }
-
-			// Center map on user position.
-			Locator = new Geolocator(map);
-			Task.Run(async () => {
-				Geolocator.TryLowerAccuracy();
-				var userLocation = await GeoUtils.GetCurrentUserLocation();
-				Locator.UpdateMap(userLocation);
-			});
 
 			initializeCheckpointPins();
 
+			Locator = new Geolocator(map);
 			//Locator.Start().DoNotAwait();
 
 			currentActivity = new CurrentActivity();
@@ -66,13 +59,27 @@ namespace Trace {
 		}
 
 
+		// Center map on user position when page displays.
+		protected override async void OnAppearing() {
+			base.OnAppearing();
+			Debug.WriteLine("MapPage.OnAppearing()");
+			Geolocator.TryLowerAccuracy();
+			var userLocation = await GeoUtils.GetCurrentUserLocation();
+			Locator.UpdateMap(userLocation);
+		}
+
+
 		async void OnLocateUser(object send, EventArgs eventArgs) {
 			var pos = await GeoUtils.GetCurrentUserLocation();
 			Geolocator.UpdateMap(new Position(latitude: pos.Latitude, longitude: pos.Longitude));
 		}
 
 
-		// TODO offload cpu-intensive work off the UI thread
+		/// <summary>
+		/// Called when user pressed the Track button.
+		/// When 'start' is pressed, turn on GPS tracking and start storing user points.
+		/// When 'stop' is pressed, process the trajectory (calculate distance, calories, etc.) and show trace on map.
+		/// </summary>
 		async void OnStartTracking(object send, EventArgs eventArgs) {
 
 			// On Stop Button pressed
@@ -121,18 +128,20 @@ namespace Trace {
 				Locator.AvgSpeed = 0;
 				Locator.MaxSpeed = 0;
 
-				TotalDistanceLabel.BindingContext = new TotalDistance { Distance = (long) distanceInMeters };
-				TotalDuration duration = calculateRouteTime();
-				DurationLabel.BindingContext = duration;
-
+				var mainActivity = DependencyService.Get<IMotionActivityManager>().GetMostCommonActivity().ToLocalizedString();
 				var calories = await Task.Run(() => trajectory.CalculateCalories());
-				CaloriesLabel.BindingContext = new TotalCalories { Calories = calories };
 
-				AvgSpeedLabel.BindingContext = trajectory;
+				var displayResultsModel = new MapPageModel {
+					MainActivity = mainActivity,
+					Distance = (int) distanceInMeters,
+					Duration = calculateRouteTime(),
+					Calories = calories,
+					AvgSpeed = trajectory.AvgSpeed
+				};
 
 				trackButtonImage.Source = "images/map/play_arrow.png";
 
-				displayResultsGrid();
+				displayResultsGrid(displayResultsModel);
 
 				await Geolocator.Stop();
 			}
@@ -162,16 +171,18 @@ namespace Trace {
 		}
 
 
-		private void displayResultsGrid() {
+		private void displayResultsGrid(MapPageModel bindingModel) {
 			currentActivityLabel.IsVisible = false;
-			MainActivityLabel.Text = string.Format(Language.MainActivityLabel,
-												   DependencyService.Get<IMotionActivityManager>().GetMostCommonActivity().ToLocalizedString());
+
 			Debug.WriteLine("Trajectory # of points: " + map.RouteCoordinates.Count);
 			// Refresh the map to display the trajectory.
 			mapLayout.Children.Remove(map);
 			mapLayout.Children.Insert(0, map);
 
 			// Make the results grid visible to the user.
+			foreach(var child in resultsGrid.Children) {
+				child.BindingContext = bindingModel;
+			}
 			resultsGrid.IsVisible = true;
 		}
 
@@ -190,13 +201,9 @@ namespace Trace {
 		}
 
 
-		private TotalDuration calculateRouteTime() {
+		private string calculateRouteTime() {
 			TimeSpan elapsedTime = StopTrackingTime.Subtract(StartTrackingTime);
-			return new TotalDuration {
-				Hours = elapsedTime.Hours,
-				Minutes = elapsedTime.Minutes,
-				Seconds = elapsedTime.Seconds
-			};
+			return TimeUtil.SecondsToHHMMSS((long) elapsedTime.TotalSeconds);
 		}
 
 
@@ -303,7 +310,7 @@ namespace Trace {
 
 		/// <summary>
 		/// Updates the pins on the map.
-		/// Occurs when the challenge list is updated.
+		/// Called when the checkpoint list in the CheckpointListPage is updated.
 		/// </summary>
 		public void UpdatePins() {
 			map.Pins.Clear();

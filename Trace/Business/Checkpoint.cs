@@ -1,7 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading.Tasks;
+using Plugin.Geolocator.Abstractions;
 using SQLite;
+using Trace.Localization;
 using Xamarin.Forms;
 
 namespace Trace {
@@ -42,9 +45,30 @@ namespace Trace {
 			set { challenges = value ?? new List<Challenge>(); }
 		}
 
+
 		// 'double' instead of 'Position' because SQLite only supports basic types. 
 		public double Longitude { get; set; }
 		public double Latitude { get; set; }
+		[Ignore]
+		public Position Position { get { return new Position { Latitude = Latitude, Longitude = Longitude }; } }
+		public double DistanceToUser { get; set; }
+
+		[Ignore]
+		public string Distance { get { return $"{Math.Truncate(DistanceToUser)} m"; } }
+
+
+		// Used for displaying the rewards string in the CheckpointsListPage.
+		[Ignore]
+		public string Rewards {
+			get {
+				var result = "";
+				if(Challenges.Count > 0)
+					result += $"{Language.CycleToShop}: {Challenges[0].Reward}";
+				if(Challenges.Count > 1)
+					result += $"\n{string.Format(Language.BikeCondition, Challenges[1].NeededCyclingDistance)}: {Challenges[1].Reward}";
+				return result;
+			}
+		}
 
 
 		/// <summary>
@@ -74,6 +98,27 @@ namespace Trace {
 		public override string ToString() {
 			return string.Format("[Checkpoint GId->{0} UserId->{1} Name->{2} LogoURL->{3} Longitude->{4} Latitude->{5}]",
 					 			 GId, UserId, Name, LogoURL, Longitude, Latitude);
+		}
+	}
+
+
+	/// <summary>
+	/// The CheckpointVM is used to display the list of checkpoints in the and CheckpointListPage. 
+	/// It also has a header 'Summary' showing a message telling the user how many were found.
+	/// </summary>
+	class CheckpointVM {
+		public IList<Checkpoint> Checkpoints { get; set; }
+		public string Summary {
+			get {
+				int count = Checkpoints.Count;
+				if(count == 0) {
+					return Language.NoCheckpointsFound;
+				}
+				if(count != 1)
+					return Language.ThereAre + " " + count + " " + Language.CheckpointsNear;
+				else
+					return Language.OneCheckpointFound;
+			}
 		}
 	}
 }

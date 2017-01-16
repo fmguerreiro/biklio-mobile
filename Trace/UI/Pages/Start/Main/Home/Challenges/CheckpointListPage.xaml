@@ -5,13 +5,13 @@
 	xmlns:locals="clr-namespace:Trace;assembly=Trace"
 	xmlns:language="clr-namespace:Trace.Localization;assembly=Trace"
 	xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
-	x:Class="Trace.ChallengeListPage"
+	x:Class="Trace.CheckpointListPage"
 	Title="{language:Translate Challenges}">
 	<ContentPage.Content>
 		<ListView
 			CachingStrategy="RecycleElement"
-			x:Name="ChallengeListView"
-			ItemsSource="{Binding Challenges}"
+			x:Name="checkpointListView"
+			ItemsSource="{Binding Checkpoints}"
 			RowHeight="60"
 			ItemSelected="OnSelection"
 			IsPullToRefreshEnabled="true"
@@ -52,7 +52,7 @@
 									Width="*" />
 							</Grid.ColumnDefinitions>
 							<ffimageloading:CachedImage
-								Source="{Binding ThisCheckpoint.LogoURL}"
+								Source="{Binding LogoURL}"
 								Margin="3"
 								DownsampleToViewSize="true"
 								Aspect="Fill"
@@ -61,27 +61,30 @@
 								Grid.RowSpan="2">
 							</ffimageloading:CachedImage>
 							<Label
-								Text="{Binding ThisCheckpoint.Name}"
+								Text="{Binding Name}"
 								LineBreakMode="NoWrap"
+								FontSize="15"
 								FontAttributes="Bold"
 								VerticalTextAlignment="End"
 								Grid.Row="0"
 								Grid.Column="1" />
 							<Label
-								Text="{Binding Condition}"
-								LineBreakMode="NoWrap"
-								FontSize="14"
+								Text="{Binding Rewards}"
+								FontSize="9"
+								TextColor="Gray"
 								Grid.Row="1"
 								Grid.Column="1" />
-							<ffimageloading:CachedImage
-								Source="{Binding ThisCheckpoint.MapImageURL}"
+							<Label
+								Text="{Binding Distance}"
 								Margin="3"
-								DownsampleToViewSize="true"
-								Aspect="AspectFill"
+								LineBreakMode="NoWrap"
+								TextColor="{StaticResource PrimaryColor}"
+								VerticalOptions="Center"
+								HorizontalOptions="Center"
 								Grid.Row="0"
 								Grid.Column="2"
 								Grid.RowSpan="2">
-							</ffimageloading:CachedImage>
+							</Label>
 						</Grid>
 					</ViewCell>
 				</DataTemplate>

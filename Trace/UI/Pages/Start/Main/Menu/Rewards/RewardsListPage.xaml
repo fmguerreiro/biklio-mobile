@@ -12,6 +12,12 @@
 			ItemsSource="{Binding Rewards}"
 			CachingStrategy="RecycleElement"
 			ItemSelected="OnSelection">
+			<ListView.Header>
+				<Label
+					Text="{Binding Summary}"
+					FontSize="14"
+					XAlign="Center" />
+			</ListView.Header>
 			<ListView.ItemTemplate>
 				<DataTemplate>
 					<ViewCell>

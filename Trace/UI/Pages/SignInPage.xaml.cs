@@ -14,7 +14,7 @@ namespace Trace {
 			string username = null;
 			usernameText.Text = username = DependencyService.Get<ICredentialsStore>().Username;
 			passwordText.Text = DependencyService.Get<ICredentialsStore>().GetPassword(usernameText.Text);
-			if(username != null) {
+			if(username != null || DependencyService.Get<ICredentialsStore>().OAuthExists()) {
 				tosSwitch.IsToggled = true;
 			}
 
@@ -167,11 +167,5 @@ namespace Trace {
 		void onCheckTos(object sender, EventArgs e) {
 			Navigation.PushModalAsync(new PrivacyPolicyPage());
 		}
-
-
-		void onAgreeToToS(object sender, EventArgs e) {
-			//doesUserAgreeToS = !doesUserAgreeToS;
-		}
-
 	}
 }

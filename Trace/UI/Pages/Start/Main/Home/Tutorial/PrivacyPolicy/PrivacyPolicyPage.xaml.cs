@@ -10,11 +10,11 @@ namespace Trace {
 		public PrivacyPolicyPage() {
 			InitializeComponent();
 
-			var policyParts = new List<PrivacyPolicyDataModel> {
-				new PrivacyPolicyDataModel { Text = Language.PrivacyPolicyPart1, Indicator = "1/4" },
-				new PrivacyPolicyDataModel { Text = Language.PrivacyPolicyPart2, Indicator = "2/4" },
-				new PrivacyPolicyDataModel { Text = Language.PrivacyPolicyPart3, Indicator = "3/4" },
-				new PrivacyPolicyDataModel { Text = Language.PrivacyPolicyPart4, Indicator = "4/4" }
+			var policyParts = new List<PrivacyPolicyModel> {
+				new PrivacyPolicyModel { Text = Language.PrivacyPolicyPart1, Indicator = "1/4" },
+				new PrivacyPolicyModel { Text = Language.PrivacyPolicyPart2, Indicator = "2/4" },
+				new PrivacyPolicyModel { Text = Language.PrivacyPolicyPart3, Indicator = "3/4" },
+				new PrivacyPolicyModel { Text = Language.PrivacyPolicyPart4, Indicator = "4/4" }
 			};
 
 			policyCarouselView.ItemsSource = policyParts;

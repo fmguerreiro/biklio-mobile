@@ -38,12 +38,7 @@ namespace Trace {
 		public Checkpoint ThisCheckpoint { get; set; }
 		public long CheckpointId { get; set; }
 
-		// These properties are used to display information when listed in the ChallengesPage.
-		[Ignore]
-		public string Description { get { return Reward + " " + Language.At + " " + CheckpointName; } }
-		[Ignore]
-		public string Image { get { return ThisCheckpoint?.LogoURL ?? "images/challenge_list/default_shop.png"; } }
-		[Ignore]
+		// These properties are used to display information when listed in the CheckpointsListPage.
 		public string Condition {
 			get {
 				if(NeededCyclingDistance == 0)
@@ -59,25 +54,9 @@ namespace Trace {
 	}
 
 	/// <summary>
-	/// The Challenge and Reward Visual Models are used to bind 
-	/// a list of challenges for display in the Challenge Page and Reward Page.
+	/// The Reward Data Model is used to bind 
+	/// a list of challenges for display in the Reward Page.
 	/// </summary>
-	class ChallengeVM {
-		public IList<Challenge> Challenges { get; set; }
-		public string Summary {
-			get {
-				int count = Challenges.Count;
-				if(count == 0) {
-					return Language.NoChallengesFound;
-				}
-				if(count != 1)
-					return Language.ThereAre + " " + count + " " + Language.ChallengesNear;
-				else
-					return Language.OneChallengeFound;
-			}
-		}
-	}
-
 	class RewardVM {
 		public IList<Challenge> Rewards { get; set; }
 		public string Summary {

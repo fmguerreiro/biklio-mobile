@@ -659,15 +659,15 @@ namespace Trace.Localization {
             }
         }
         
-        public static string NoChallengesFound {
+        public static string NoCheckpointsFound {
             get {
-                return ResourceManager.GetString("NoChallengesFound", resourceCulture);
+                return ResourceManager.GetString("NoCheckpointsFound", resourceCulture);
             }
         }
         
-        public static string OneChallengeFound {
+        public static string OneCheckpointFound {
             get {
-                return ResourceManager.GetString("OneChallengeFound", resourceCulture);
+                return ResourceManager.GetString("OneCheckpointFound", resourceCulture);
             }
         }
         
@@ -677,9 +677,9 @@ namespace Trace.Localization {
             }
         }
         
-        public static string ChallengesNear {
+        public static string CheckpointsNear {
             get {
-                return ResourceManager.GetString("ChallengesNear", resourceCulture);
+                return ResourceManager.GetString("CheckpointsNear", resourceCulture);
             }
         }
         
@@ -998,6 +998,36 @@ namespace Trace.Localization {
         public static string TrajectoryNotUploadedError {
             get {
                 return ResourceManager.GetString("TrajectoryNotUploadedError", resourceCulture);
+            }
+        }
+        
+        public static string Meters {
+            get {
+                return ResourceManager.GetString("Meters", resourceCulture);
+            }
+        }
+        
+        public static string BiklioWelcomeMessage {
+            get {
+                return ResourceManager.GetString("BiklioWelcomeMessage", resourceCulture);
+            }
+        }
+        
+        public static string BiklioAudioWarningMessage {
+            get {
+                return ResourceManager.GetString("BiklioAudioWarningMessage", resourceCulture);
+            }
+        }
+        
+        public static string Welcome {
+            get {
+                return ResourceManager.GetString("Welcome", resourceCulture);
+            }
+        }
+        
+        public static string Notice {
+            get {
+                return ResourceManager.GetString("Notice", resourceCulture);
             }
         }
     }

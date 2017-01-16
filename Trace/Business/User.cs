@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
+using Plugin.Geolocator.Abstractions;
 using SQLite;
 
 namespace Trace {
@@ -47,6 +47,8 @@ namespace Trace {
 		// when user gets too far from here, reset WSSnapshotVersion
 		public double PrevLongitude { get; set; }
 		public double PrevLatitude { get; set; }
+		[Ignore]
+		public Position Position { get { return new Position { Latitude = PrevLatitude, Longitude = PrevLongitude }; } }
 
 
 		// The webserver stores several snapshots of the challenge and checkpoint data.
@@ -70,8 +72,7 @@ namespace Trace {
 		public string NoLongerEligibleSoundSetting { get; set; } = "clapping.wav";
 
 
-		// TODO delete. user language is taken from phone settings
-		public SelectedLanguage UserLanguage { get; set; } = SelectedLanguage.English;
+		public bool IsFirstLogin { get; set; } = true;
 
 
 		List<Trajectory> trajectories;

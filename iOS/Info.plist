@@ -37,7 +37,7 @@
 	<key>XSAppIconAssets</key>
 	<string>Assets.xcassets/AppIcon.appiconset</string>
 	<key>NSLocationAlwaysUsageDescription</key>
-	<string>We need your location to see the distance you covered and what mode of transport you used</string>
+	<string>We need your location to see the distance you covered</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>We need your location to show where you are on the map</string>
 	<key>UIBackgroundModes</key>
@@ -47,7 +47,7 @@
 		<string>remote-notification</string>
 	</array>
 	<key>NSMotionUsageDescription</key>
-	<string>We need your motion activity to determine if you are eligible for rewards</string>
+	<string>We need your motion activity to determine what mode of transport you used and if you are eligible for rewards</string>
 	<key>XSLaunchImageAssets</key>
 	<string>Assets.xcassets/LaunchImage.launchimage</string>
 	<key>NSAppTransportSecurity</key>
@@ -65,7 +65,7 @@
 			<key>CFBundleURLTypes</key>
 			<string>Editor</string>
 			<key>CFBundleURLIconFile</key>
-			<string>logo_58x58</string>
+			<string>ic_launcher_motion_58x</string>
 		</dict>
 		<dict>
 			<key>CFBundleURLSchemes</key>
@@ -75,7 +75,7 @@
 			<key>CFBundleURLTypes</key>
 			<string>Editor</string>
 			<key>CFBundleURLIconFile</key>
-			<string>icon/icon58px</string>
+			<string>ic_launcher_motion_58x</string>
 		</dict>
 	</array>
 	<key>CFBundleLocalizations</key>

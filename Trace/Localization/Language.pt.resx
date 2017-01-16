@@ -288,7 +288,7 @@
         <value>Peso</value>
   	</data>
 	<data name="SearchRadius" xml:space="preserve">
-        <value>Raio de procura</value>
+        <value>Raio de procura (km)</value>
   	</data>
 	<data name="Delete" xml:space="preserve">
         <value>Apagar</value>
@@ -329,17 +329,17 @@
 	<data name="At" xml:space="preserve">
         <value>em</value>
   	</data>
-	<data name="NoChallengesFound" xml:space="preserve">
-        <value>Nenhum desafio encontrado.</value>
+	<data name="NoCheckpointsFound" xml:space="preserve">
+        <value>Nenhum spot encontrado perto de ti.</value>
   	</data>
-	<data name="OneChallengeFound" xml:space="preserve">
-        <value>Existe um desafio perto de ti.</value>
+	<data name="OneCheckpointFound" xml:space="preserve">
+        <value>Existe um spot perto de ti.</value>
   	</data>
 	<data name="ThereAre" xml:space="preserve">
         <value>Existem</value>
   	</data>
-	<data name="ChallengesNear" xml:space="preserve">
-        <value>desafios perto de ti.</value>
+	<data name="CheckpointsNear" xml:space="preserve">
+        <value>spots perto de ti.</value>
   	</data>
 	<data name="NoRoutesYet" xml:space="preserve">
     	<value>Ainda não tens trajetos.</value>
@@ -402,7 +402,7 @@
     	<value>Já aderiu à campanha local.</value>
   	</data>
 	<data name="NoRewardsYet" xml:space="preserve">
-    	<value>Ainda não tens Recompensas disponíveis.</value>
+    	<value>Ainda não tens Recompensas disponíveis. Vai de bicicleta até um Biklio spot para ganhares alguma!</value>
   	</data>
 	<data name="OneRewardEarned" xml:space="preserve">
     	<value>Podes obter uma Recompensa.</value>
@@ -506,5 +506,25 @@ Once revoked, identifiable data such as email and name is removed within a few h
   	</data>
 	<data name="TrajectoryNotUploadedError" xml:space="preserve">
     	<value>Não foi possível enviar o trajeto para o servidor. Tente mais tarde.</value>
+  	</data>
+	<data name="Meters" xml:space="preserve">
+    	<value>Metros</value>
+  	</data>
+	<data name="BiklioWelcomeMessage" xml:space="preserve">
+    	<value>Welcome to Biklio!
+Swipe down the page to see Biklio spots near you.
+Next, start cycling for a few minutes to become eligible to earn their rewards.</value>
+  	</data>
+	<data name="BiklioAudioWarningMessage" xml:space="preserve">
+    	<value>Biklio uses music in the background to let you know when you are eligible to earn rewards.
+You can customize, silence or disable these tracks all together in the "Settings" pane of the application at any time.
+If you disable this feature, Biklio will only warn you of your status when you open the app again.
+		</value>
+  	</data>
+	<data name="Welcome" xml:space="preserve">
+    	<value>Bem-vindo</value>
+  	</data>
+	<data name="Notice" xml:space="preserve">
+    	<value>Aviso</value>
   	</data>
 </root>

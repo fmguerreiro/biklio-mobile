@@ -8,7 +8,7 @@ namespace Trace {
 	/// an image, an indicator for the page the user is in and its background color.
 	/// In addition, each part holds a title at the top of the page, and a longer description near the bottom.
 	/// </summary>
-	public class TutorialDataModel {
+	public class TutorialModel {
 
 		public IList<TutorialPart> Parts { get; set; }
 	}

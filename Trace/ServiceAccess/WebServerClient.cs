@@ -96,7 +96,7 @@ namespace Trace {
 		/// <param name="position">Position.</param>
 		/// <param name="radiusInKM">Radius in KM.</param>
 		/// <param name="version">Version.</param>
-		public async Task<WSResult> FetchChallenges(Position position, int radiusInKM, long version) {
+		public async Task<WSResult> FetchCheckpoints(Position position, int radiusInKM, long version) {
 			var query = new FormUrlEncodedContent(new[] {
 				new KeyValuePair<string, string>("latitude", position.Latitude.ToString().Replace(',','.')),
 				new KeyValuePair<string, string>("longitude", position.Longitude.ToString().Replace(',','.')),

@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Trace {
+﻿namespace Trace {
 
 	/// <summary>
 	/// Interface for securely storing data in an account store that's backed by Keychain services in iOS,
@@ -13,6 +11,8 @@ namespace Trace {
 		string GetPassword(string username);
 
 		bool Exists(string username);
+
+		bool OAuthExists();
 
 		void SaveCredentials(string username, string password);
 
