@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Diagnostics;
+using CoreLocation;
 using FFImageLoading.Forms.Touch;
 using Firebase.CloudMessaging;
 using Foundation;
+using CoreMotion;
 using Google.Core;
 using Google.SignIn;
 using UIKit;
@@ -11,6 +13,11 @@ using UserNotifications;
 namespace Trace.iOS {
 	[Register("AppDelegate")]
 	public partial class AppDelegate : global::Xamarin.Forms.Platform.iOS.FormsApplicationDelegate, IUNUserNotificationCenterDelegate, IMessagingDelegate {
+
+		private CLLocationManager locationManager;
+
+		private NSDate prevDate;
+		private CMMotionActivityManager activityManager;
 
 		public override bool FinishedLaunching(UIApplication app, NSDictionary options) {
 			global::Xamarin.Forms.Forms.Init();
@@ -63,7 +70,63 @@ namespace Trace.iOS {
 
 			//sendTestNotification();
 
+			locationManager = new CLLocationManager();
+			locationManager.RequestAlwaysAuthorization(); //to access user's location in the background
+			locationManager.RequestWhenInUseAuthorization(); //to access user's location when the app is in use.
+			locationManager.AllowsBackgroundLocationUpdates = true;
+			activityManager = new CMMotionActivityManager();
+			prevDate = NSDate.Now;
+
 			return base.FinishedLaunching(app, options);
+		}
+
+
+		/// <summary>
+		/// When the iOS app enters background, register for cell tower change events and check if the user is eligible.
+		/// </summary>
+		/// <param name="uiApplication">User interface application.</param>
+		public override void DidEnterBackground(UIApplication uiApplication) {
+			base.DidEnterBackground(uiApplication);
+			var isUserLoggedIn = LoginManager.IsOfflineLoggedIn;
+			if(CLLocationManager.LocationServicesEnabled && isUserLoggedIn && !User.Instance.IsBackgroundAudioEnabled) {
+				locationManager.StartMonitoringSignificantLocationChanges();
+				// On location change, check motion history to see if user is eligible.
+				locationManager.LocationsUpdated += (o, e) => {
+					//var tempQueue = new NSOperationQueue();
+					var now = NSDate.Now;
+					Debug.WriteLine($"Location change received: {now}");
+					processMotionData(now);
+					prevDate = now;
+				};
+			}
+		}
+
+
+		public override void WillEnterForeground(UIApplication application) {
+			var isUserLoggedIn = LoginManager.IsOfflineLoggedIn;
+			if(CLLocationManager.LocationServicesEnabled && isUserLoggedIn && !User.Instance.IsBackgroundAudioEnabled) {
+				locationManager.StopMonitoringSignificantLocationChanges();
+				var now = NSDate.Now;
+				processMotionData(now);
+				prevDate = now;
+			}
+		}
+
+
+		void processMotionData(NSDate now) {
+			var tempQueue = new NSOperationQueue();
+			activityManager.QueryActivity(start: prevDate, end: now, queue: tempQueue, handler: (activities, error) => {
+				Debug.WriteLine($"prevDate {prevDate}, now {now}, tempQueue {tempQueue?.DebugDescription}, activities {activities}");
+				if(activities != null && activities.Length > 0) {
+					var start = activities[0].Timestamp;
+					foreach(var a in activities) {
+						if(a.Confidence != CMMotionActivityConfidence.Low) {
+							var elapsed = (int) (a.Timestamp - start);
+							RewardEligibilityManager.Instance.Input(MotionActivityManager.ActivityToType(a), elapsed);
+						}
+					}
+				}
+			});
 		}
 
 

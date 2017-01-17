@@ -30,8 +30,8 @@ namespace Trace {
 
 			// First page of the application.
 			var firstPage = new NavigationPage(new SignInPage());
-			firstPage.BarBackgroundColor = (Color) App.Current.Resources["PrimaryColor"];
-			firstPage.BarTextColor = (Color) App.Current.Resources["PrimaryTextColor"];
+			firstPage.BarBackgroundColor = (Color) Current.Resources["PrimaryColor"];
+			firstPage.BarTextColor = (Color) Current.Resources["PrimaryTextColor"];
 			MainPage = firstPage;
 		}
 
@@ -51,13 +51,20 @@ namespace Trace {
 			CrossConnectivity.Current.ConnectivityChanged -= LoginManager.OnConnectivityChanged;
 			Geolocator.TryLowerAccuracy();
 
-			// Start background music loop to keep app from suspending on iOS.
-			if(LoginManager.IsOfflineLoggedIn && !Geolocator.IsTrackingInProgress) {
-				Device.BeginInvokeOnMainThread(() => {
-					DependencyService.Get<ISoundPlayer>().ActivateAudioSession();
-					DependencyService.Get<ISoundPlayer>().PlaySound(null); // null -> play previous track
-					Debug.WriteLine("StartAudioSession(): " + DependencyService.Get<ISoundPlayer>().IsPlaying());
-				});
+			var isUserSignedIn = LoginManager.IsOfflineLoggedIn;
+			// Use either audio background if enabled or cell tower changes in iOS to fetch motion data in background (moved to AppDelegate.cs in iOS).
+			if(!Geolocator.IsTrackingInProgress && isUserSignedIn) {
+
+				if(User.Instance.IsBackgroundAudioEnabled) {
+					Device.BeginInvokeOnMainThread(() => {
+						DependencyService.Get<ISoundPlayer>().ActivateAudioSession();
+						DependencyService.Get<ISoundPlayer>().PlaySound(null); // null -> play previous track
+						Debug.WriteLine("StartAudioSession(): " + DependencyService.Get<ISoundPlayer>().IsPlaying());
+					});
+				}
+				//else {
+				//	await Geolocator.StartListeningSignificantLocationChanges();
+				//}
 			}
 
 			// Serialize and store KPIs obtained.
@@ -70,6 +77,7 @@ namespace Trace {
 		/// </summary>
 		protected override void OnResume() {
 			CrossConnectivity.Current.ConnectivityChanged += LoginManager.OnConnectivityChanged;
+
 			Geolocator.ImproveAccuracy();
 			//await Task.Delay(1000);
 			if(LoginManager.IsOfflineLoggedIn) {
@@ -77,8 +85,6 @@ namespace Trace {
 				DependencyService.Get<ISoundPlayer>().DeactivateAudioSession();
 			}
 			Debug.WriteLine("EndAudioSession(): " + !DependencyService.Get<ISoundPlayer>().IsPlaying());
-			if(!Geolocator.IsTrackingInProgress)
-				Task.Run(() => Geolocator.Stop());
 		}
 	}
 }

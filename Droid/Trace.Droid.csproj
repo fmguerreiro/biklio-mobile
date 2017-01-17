@@ -20,7 +20,7 @@
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
+    <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Debug</OutputPath>
     <DefineConstants>DEBUG;</DefineConstants>
@@ -196,21 +196,6 @@
     <Reference Include="Xamarin.Forms.Maps">
       <HintPath>..\packages\Xamarin.Forms.Maps.2.3.3.180\lib\MonoAndroid10\Xamarin.Forms.Maps.dll</HintPath>
     </Reference>
-    <Reference Include="FFImageLoading">
-      <HintPath>..\packages\Xamarin.FFImageLoading.2.2.6\lib\MonoAndroid10\FFImageLoading.dll</HintPath>
-    </Reference>
-    <Reference Include="FFImageLoading.Platform">
-      <HintPath>..\packages\Xamarin.FFImageLoading.2.2.6\lib\MonoAndroid10\FFImageLoading.Platform.dll</HintPath>
-    </Reference>
-    <Reference Include="FFImageLoading.Transformations">
-      <HintPath>..\packages\Xamarin.FFImageLoading.Transformations.2.2.6\lib\MonoAndroid10\FFImageLoading.Transformations.dll</HintPath>
-    </Reference>
-    <Reference Include="FFImageLoading.Forms">
-      <HintPath>..\packages\Xamarin.FFImageLoading.Forms.2.2.6\lib\MonoAndroid10\FFImageLoading.Forms.dll</HintPath>
-    </Reference>
-    <Reference Include="FFImageLoading.Forms.Droid">
-      <HintPath>..\packages\Xamarin.FFImageLoading.Forms.2.2.6\lib\MonoAndroid10\FFImageLoading.Forms.Droid.dll</HintPath>
-    </Reference>
     <Reference Include="Acr.Support.Android">
       <HintPath>..\packages\Acr.Support.2.1.0\lib\MonoAndroid10\Acr.Support.Android.dll</HintPath>
     </Reference>
@@ -226,6 +211,21 @@
     <Reference Include="Acr.UserDialogs.Interface">
       <HintPath>..\packages\Acr.UserDialogs.6.3.5\lib\MonoAndroid10\Acr.UserDialogs.Interface.dll</HintPath>
     </Reference>
+    <Reference Include="FFImageLoading">
+      <HintPath>..\packages\Xamarin.FFImageLoading.2.2.7\lib\MonoAndroid10\FFImageLoading.dll</HintPath>
+    </Reference>
+    <Reference Include="FFImageLoading.Platform">
+      <HintPath>..\packages\Xamarin.FFImageLoading.2.2.7\lib\MonoAndroid10\FFImageLoading.Platform.dll</HintPath>
+    </Reference>
+    <Reference Include="FFImageLoading.Forms">
+      <HintPath>..\packages\Xamarin.FFImageLoading.Forms.2.2.7\lib\MonoAndroid10\FFImageLoading.Forms.dll</HintPath>
+    </Reference>
+    <Reference Include="FFImageLoading.Forms.Droid">
+      <HintPath>..\packages\Xamarin.FFImageLoading.Forms.2.2.7\lib\MonoAndroid10\FFImageLoading.Forms.Droid.dll</HintPath>
+    </Reference>
+    <Reference Include="FFImageLoading.Transformations">
+      <HintPath>..\packages\Xamarin.FFImageLoading.Transformations.2.2.7\lib\MonoAndroid10\FFImageLoading.Transformations.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Trace\Trace.csproj">
@@ -239,22 +239,70 @@
     <Compile Include="MainApplication.cs" />
     <Compile Include="App\Security\KeyStore.cs" />
     <Compile Include="App\Data\SQLite.cs" />
-    <Compile Include="App\Business\Map\TraceMapRenderer.cs" />
-    <Compile Include="App\Business\MotionActivity\MotionActivityManager.cs" />
+    <Compile Include="App\Application\MotionActivity\MotionActivityManager.cs" />
     <Compile Include="App\Security\OAuth.cs" />
-    <Compile Include="UI\FacebookOAuthPageRenderer.cs" />
     <Compile Include="App\Data\FileSystem.cs" />
-    <Compile Include="UI\GoogleOAuthPageRenderer.cs" />
     <Compile Include="Resources\Resource.designer.cs" />
     <Compile Include="Localization\Localize.cs" />
     <Compile Include="App\Utils\ImageResizer.cs" />
-    <Compile Include="UI\CustomEffects\UnderlineEffect.cs" />
+    <Compile Include="App\Utils\SoundPlayer.cs" />
+    <Compile Include="App\Renderers\Map\TraceMapRenderer.cs" />
+    <Compile Include="App\Renderers\OAuth\FacebookOAuthPageRenderer.cs" />
+    <Compile Include="App\Renderers\OAuth\GoogleOAuthPageRenderer.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />
     <None Include="Properties\AndroidManifest.xml" />
     <None Include="Assets\AboutAssets.txt" />
     <None Include="packages.config" />
+    <None Include="Resources\drawable\images\logo_icon.png" />
+    <None Include="Resources\drawable\images\logo_name.png" />
+    <None Include="Resources\drawable\images\logo_slogan_splashscreen.png" />
+    <None Include="Resources\drawable\images\splashscreen.png" />
+    <None Include="Resources\drawable\images\activity_modes\cycling.png" />
+    <None Include="Resources\drawable\images\activity_modes\driving.png" />
+    <None Include="Resources\drawable\images\activity_modes\running.png" />
+    <None Include="Resources\drawable\images\activity_modes\walking.png" />
+    <None Include="Resources\drawable\images\challenge_list\default_shop.png" />
+    <None Include="Resources\drawable\images\challenge_list\default_shop_20px.png" />
+    <None Include="Resources\drawable\images\challenge_list\location_unknown.png" />
+    <None Include="Resources\drawable\images\challenge_list\trophy.png" />
+    <None Include="Resources\drawable\images\home\dashboard.png" />
+    <None Include="Resources\drawable\images\home\home.png" />
+    <None Include="Resources\drawable\images\home\logout.png" />
+    <None Include="Resources\drawable\images\home\menu.png" />
+    <None Include="Resources\drawable\images\home\menu_background.png" />
+    <None Include="Resources\drawable\images\home\my_routes.png" />
+    <None Include="Resources\drawable\images\home\reward.png" />
+    <None Include="Resources\drawable\images\home\reward_glow.png" />
+    <None Include="Resources\drawable\images\home\settings.png" />
+    <None Include="Resources\drawable\images\home\subscribed_campaigns.png" />
+    <None Include="Resources\drawable\images\home\tutorial.png" />
+    <None Include="Resources\drawable\images\map\locate.png" />
+    <None Include="Resources\drawable\images\map\maps_icon.png" />
+    <None Include="Resources\drawable\images\map\play_arrow.png" />
+    <None Include="Resources\drawable\images\map\stop.png" />
+    <None Include="Resources\drawable\images\mytrajectories_list\cross_error.png" />
+    <None Include="Resources\drawable\images\mytrajectories_list\green_check.png" />
+    <None Include="Resources\drawable\images\number_icons\number_1.png" />
+    <None Include="Resources\drawable\images\number_icons\number_2.png" />
+    <None Include="Resources\drawable\images\number_icons\number_3.png" />
+    <None Include="Resources\drawable\images\number_icons\number_4.png" />
+    <None Include="Resources\drawable\images\number_icons\number_5.png" />
+    <None Include="Resources\drawable\images\number_icons\number_6.png" />
+    <None Include="Resources\drawable\images\number_icons\number_7.png" />
+    <None Include="Resources\drawable\images\number_icons\number_8.png" />
+    <None Include="Resources\drawable\images\number_icons\number_9.png" />
+    <None Include="Resources\drawable\images\privacy_policy\logo_name.png" />
+    <None Include="Resources\drawable\images\tutorial\tutorial_part1.png" />
+    <None Include="Resources\drawable\images\tutorial\tutorial_part2.png" />
+    <None Include="Resources\drawable\images\tutorial\tutorial_part3.png" />
+    <None Include="Resources\drawable\images\tutorial\tutorial_part4.png" />
+    <None Include="Resources\drawable\sounds\bike_bell.wav" />
+    <None Include="Resources\drawable\sounds\bike_no_pedaling.aiff" />
+    <None Include="Resources\drawable\sounds\clapping.wav" />
+    <None Include="Resources\drawable\sounds\silence.wav" />
+    <None Include="Resources\drawable\sounds\walking_pavement.wav" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\layout\Tabbar.axml" />
@@ -263,42 +311,21 @@
     <AndroidResource Include="Resources\drawable-hdpi\icon.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\icon.png" />
     <AndroidResource Include="Resources\drawable-xxhdpi\icon.png" />
-    <AndroidResource Include="Resources\drawable\campaign.png" />
-    <AndroidResource Include="Resources\drawable\cross_error.png" />
-    <AndroidResource Include="Resources\drawable\cycling.png" />
-    <AndroidResource Include="Resources\drawable\dashboard.png" />
-    <AndroidResource Include="Resources\drawable\default_shop.png" />
-    <AndroidResource Include="Resources\drawable\driving.png" />
-    <AndroidResource Include="Resources\drawable\green_check.png" />
-    <AndroidResource Include="Resources\drawable\home.png" />
-    <AndroidResource Include="Resources\drawable\logout.png" />
-    <AndroidResource Include="Resources\drawable\menu.png" />
-    <AndroidResource Include="Resources\drawable\my_routes.png" />
-    <AndroidResource Include="Resources\drawable\new_campaign.png" />
-    <AndroidResource Include="Resources\drawable\reward.png" />
-    <AndroidResource Include="Resources\drawable\rewards.png" />
-    <AndroidResource Include="Resources\drawable\running.png" />
-    <AndroidResource Include="Resources\drawable\settings.png" />
-    <AndroidResource Include="Resources\drawable\subscribed_campaigns.png" />
-    <AndroidResource Include="Resources\drawable\walking.png" />
     <AndroidResource Include="Resources\layout\TabLayout.axml" />
-    <AndroidResource Include="Resources\drawable\default_shop_20px.png" />
-    <AndroidResource Include="Resources\drawable\location_unknown.png" />
-    <AndroidResource Include="Resources\drawable\maps_icon.png" />
-    <AndroidResource Include="Resources\drawable\trophy.png" />
+    <AndroidResource Include="Resources\drawable\icon.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App\" />
-    <Folder Include="UI\" />
     <Folder Include="App\Security\" />
     <Folder Include="App\Data\" />
-    <Folder Include="App\Business\" />
-    <Folder Include="App\Business\Map\" />
-    <Folder Include="App\Business\MotionActivity\" />
+    <Folder Include="App\Application\" />
+    <Folder Include="App\Application\MotionActivity\" />
     <Folder Include="Resources\drawable\" />
     <Folder Include="Localization\" />
     <Folder Include="App\Utils\" />
-    <Folder Include="UI\CustomEffects\" />
+    <Folder Include="App\Renderers\" />
+    <Folder Include="App\Renderers\Map\" />
+    <Folder Include="App\Renderers\OAuth\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <Import Project="..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" />

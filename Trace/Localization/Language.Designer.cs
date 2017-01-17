@@ -1036,5 +1036,23 @@ namespace Trace.Localization {
                 return ResourceManager.GetString("StartTracking", resourceCulture);
             }
         }
+        
+        public static string DisableBackgroundAudio {
+            get {
+                return ResourceManager.GetString("DisableBackgroundAudio", resourceCulture);
+            }
+        }
+        
+        public static string Allow {
+            get {
+                return ResourceManager.GetString("Allow", resourceCulture);
+            }
+        }
+        
+        public static string DoNotAllow {
+            get {
+                return ResourceManager.GetString("DoNotAllow", resourceCulture);
+            }
+        }
     }
 }

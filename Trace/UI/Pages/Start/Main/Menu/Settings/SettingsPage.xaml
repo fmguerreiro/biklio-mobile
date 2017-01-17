@@ -86,6 +86,30 @@
 							</Grid.ColumnDefinitions>
 							<Label
 								Grid.Column="1"
+								Text="{language:Translate DisableBackgroundAudio}"
+								LineBreakMode="TailTruncation" />
+							<Switch
+								Grid.Column="2"
+								VerticalOptions="Center"
+								HorizontalOptions="End"
+								Margin="0,0,10,0"
+								x:Name="soundSettingSwitch"
+								Toggled="onSoundSettingChanged">
+							</Switch>
+						</Grid>
+					</ViewCell>
+					<ViewCell>
+						<Grid>
+							<Grid.ColumnDefinitions>
+								<ColumnDefinition
+									Width="10" />
+								<ColumnDefinition
+									Width="150" />
+								<ColumnDefinition
+									Width="*" />
+							</Grid.ColumnDefinitions>
+							<Label
+								Grid.Column="1"
 								Text="{language:Translate IneligibleBackground}"
 								LineBreakMode="TailTruncation" />
 							<local:BindablePicker

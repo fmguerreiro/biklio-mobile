@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Threading.Tasks;
 using Xamarin.Forms;
 
 namespace Trace {
@@ -13,8 +12,8 @@ namespace Trace {
 			Master = masterPage;
 
 			var detailPage = new NavigationPage(new HomePage());
-			detailPage.BarBackgroundColor = (Color) App.Current.Resources["PrimaryColor"];
-			detailPage.BarTextColor = (Color) App.Current.Resources["PrimaryTextColor"];
+			detailPage.BarBackgroundColor = (Color) Application.Current.Resources["PrimaryColor"];
+			detailPage.BarTextColor = (Color) Application.Current.Resources["PrimaryTextColor"];
 			Detail = detailPage;
 		}
 
@@ -22,8 +21,8 @@ namespace Trace {
 			var item = e.SelectedItem as MasterPageItem;
 			if(item != null) {
 				var nextPage = new NavigationPage((Page) Activator.CreateInstance(item.TargetType));
-				nextPage.BarBackgroundColor = (Color) App.Current.Resources["PrimaryColor"];
-				nextPage.BarTextColor = (Color) App.Current.Resources["PrimaryTextColor"];
+				nextPage.BarBackgroundColor = (Color) Application.Current.Resources["PrimaryColor"];
+				nextPage.BarTextColor = (Color) Application.Current.Resources["PrimaryTextColor"];
 				Detail = nextPage;
 				masterPage.ListView.SelectedItem = null;
 				IsPresented = false;

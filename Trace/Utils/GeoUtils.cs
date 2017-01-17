@@ -8,7 +8,8 @@ namespace Trace {
 	public static class GeoUtils {
 
 		static int GET_LOCATION_TIMEOUT = 1500;
-		static Position prevLocation = new Position { Longitude = 0, Latitude = 0 };
+		// Default position is centered in Europe.
+		static Position prevLocation = new Position { Longitude = 15.2551, Latitude = 54.526 };
 
 		/// <summary>
 		/// Attempts to get the user location within a specified timeout.

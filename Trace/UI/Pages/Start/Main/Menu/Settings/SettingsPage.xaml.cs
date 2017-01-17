@@ -8,6 +8,7 @@ namespace Trace {
 
 		public SettingsPage() {
 			InitializeComponent();
+			soundSettingSwitch.IsToggled = User.Instance.IsBackgroundAudioEnabled;
 			//list.Add($"New Spot {DateTime.Now.ToLocalTime()}");
 		}
 
@@ -19,8 +20,8 @@ namespace Trace {
 			if(isLogout) {
 				await LoginManager.PrepareLogout();
 				var nextPage = new NavigationPage(new SignInPage());
-				nextPage.BarBackgroundColor = (Color) App.Current.Resources["PrimaryColor"];
-				nextPage.BarTextColor = (Color) App.Current.Resources["PrimaryTextColor"];
+				nextPage.BarBackgroundColor = (Color) Application.Current.Resources["PrimaryColor"];
+				nextPage.BarTextColor = (Color) Application.Current.Resources["PrimaryTextColor"];
 				Application.Current.MainPage = nextPage;
 			}
 		}
@@ -37,6 +38,13 @@ namespace Trace {
 			SQLiteDB.Instance.SaveUser(User.Instance);
 		}
 
+		void onSoundSettingChanged(object sender, ToggledEventArgs e) {
+			User.Instance.IsBackgroundAudioEnabled = soundSettingSwitch.IsToggled;
+			Debug.WriteLine($"IsBackgroundAudioEnabled = {User.Instance.IsBackgroundAudioEnabled}");
+			SQLiteDB.Instance.SaveUser(User.Instance);
+			// Restart eligibility state machine: null -> upon next call to Instance, a new Manager is instantiated.
+			RewardEligibilityManager.Instance = null;
+		}
 
 		void onIneligibleSoundChanged(object sender, EventArgs e) {
 			var picker = (BindablePicker) sender;

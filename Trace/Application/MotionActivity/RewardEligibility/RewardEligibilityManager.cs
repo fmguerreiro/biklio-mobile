@@ -12,8 +12,8 @@ namespace Trace {
 	/// if the state machine should transition or not. 
 	/// </summary>
 	public class RewardEligibilityManager {
-		readonly RewardEligibilityStateMachine stateMachine;
-		Dictionary<State, Action> transitionGuards;
+		RewardEligibilityStateMachine stateMachine;
+		Dictionary<State, Action<int>> transitionGuards;
 		Timer timer;
 		Timer vehicularTimer;
 		Task checkNearbyCheckpointsTask;
@@ -28,6 +28,11 @@ namespace Trace {
 		private const int UNKNOWN_ELIGIBLE_TIMEOUT = 12 * 60 * 60 * 1000;
 		// Timeout threshold between 'inAVehicle' to 'ineligible' in ms. 5 min.
 		private const int VEHICULAR_TIMEOUT = 5 * 60 * 1000;
+
+		// Timers used when the device is only updated between radio tower changes (iOS w/ background audio off).
+		private int backgroundCyclingIneligibleTimer = CYCLING_INELIGIBLE_TIMEOUT;
+		private int backgroundUnknownEligibleTimer = UNKNOWN_ELIGIBLE_TIMEOUT;
+		private int backgroundVehicularTimer = VEHICULAR_TIMEOUT;
 
 		// Minimum distance between user and checkpoints for reward eligibility.
 		private readonly double CKPT_DISTANCE_THRESHOLD = 120;
@@ -55,12 +60,12 @@ namespace Trace {
 		/// </summary>
 		public RewardEligibilityManager() {
 			stateMachine = new RewardEligibilityStateMachine();
-			transitionGuards = new Dictionary<State, Action> {
-				{ State.Ineligible, new Action(ineligibleStateGuards) },
-				{ State.CyclingIneligible, new Action(cyclingIneligibleStateGuards) },
-				{ State.CyclingEligible, new Action(cyclingEligibleStateGuards) },
-				{ State.UnknownEligible, new Action(unknownEligibleStateGuards) },
-				{ State.Vehicular, new Action(vehicularStateGuards) }
+			transitionGuards = new Dictionary<State, Action<int>> {
+				{ State.Ineligible, new Action<int>(ineligibleStateGuards) },
+				{ State.CyclingIneligible, new Action<int>(cyclingIneligibleStateGuards) },
+				{ State.CyclingEligible, new Action<int>(cyclingEligibleStateGuards) },
+				{ State.UnknownEligible, new Action<int>(unknownEligibleStateGuards) },
+				{ State.Vehicular, new Action<int>(vehicularStateGuards) }
 			};
 		}
 
@@ -71,6 +76,7 @@ namespace Trace {
 			timer?.Dispose();
 			vehicularTimer?.Dispose();
 			checkNearbyCheckpointsTimer?.Dispose();
+			stateMachine = null;
 		}
 
 		/// <summary>
@@ -79,10 +85,43 @@ namespace Trace {
 		/// <param name="activity">Activity.</param>
 		public void Input(ActivityType activity) {
 			incrementCounters(activity);
-			Action nextAction;
+			Action<int> nextAction;
 			var state = stateMachine.CurrentState;
 			transitionGuards.TryGetValue(state, out nextAction);
-			nextAction.Invoke();
+			nextAction.Invoke(-1);
+		}
+
+
+		/// <summary>
+		/// Same as above but used sporadically by iOS devices when significant location updates occur (cell towers change).
+		/// </summary>
+		/// <param name="activity">Activity.</param>
+		public void Input(ActivityType activity, int elapsedTime) {
+			incrementCounters(activity);
+			Action<int> nextAction;
+			var state = stateMachine.CurrentState;
+			switch(state) {
+				case State.CyclingIneligible:
+					backgroundCyclingIneligibleTimer -= elapsedTime;
+					break;
+				case State.CyclingEligible:
+					backgroundUnknownEligibleTimer -= elapsedTime;
+					break;
+				case State.Vehicular:
+					backgroundVehicularTimer -= elapsedTime;
+					break;
+			}
+
+			if(backgroundCyclingIneligibleTimer < 1 || backgroundUnknownEligibleTimer < 1 || backgroundVehicularTimer < 1) {
+				stateMachine.MoveNext(Command.Timeout);
+				state = stateMachine.CurrentState;
+				backgroundCyclingIneligibleTimer = CYCLING_INELIGIBLE_TIMEOUT;
+				backgroundUnknownEligibleTimer = UNKNOWN_ELIGIBLE_TIMEOUT;
+				backgroundVehicularTimer = VEHICULAR_TIMEOUT;
+			}
+
+			transitionGuards.TryGetValue(state, out nextAction);
+			nextAction.Invoke(elapsedTime);
 		}
 
 
@@ -93,6 +132,7 @@ namespace Trace {
 		public State GetCurrentState() {
 			return stateMachine.CurrentState;
 		}
+
 
 		/// <summary>
 		/// Increments the counters depending on the activity.
@@ -111,24 +151,27 @@ namespace Trace {
 			}
 		}
 
+
 		void resetCounters() {
 			cyclingCount = nonCyclingCount = vehicularCount = nonVehicularCount = 0;
 		}
 
 
-		void ineligibleStateGuards() {
+		void ineligibleStateGuards(int elapsedTime) {
 			// If user starts using a bycicle, go to: 'cyclingIneligible'.
 			if(cyclingCount > THRESHOLD) {
 				resetCounters();
 				cyclingEventStart = TimeUtil.CurrentEpochTimeSeconds();
 				stateMachine.MoveNext(Command.Cycling);
 				// Start timer -> If user continues using a bycicle for a certain time, go to: 'cyclingEligible'.
-				timer = new Timer(new TimerCallback(goToCyclingEligibleCallback), null, CYCLING_INELIGIBLE_TIMEOUT);
+				if(elapsedTime == -1) {
+					timer = new Timer(new TimerCallback(goToCyclingEligibleCallback), null, CYCLING_INELIGIBLE_TIMEOUT);
+				}
 			}
 		}
 
 
-		void cyclingIneligibleStateGuards() {
+		void cyclingIneligibleStateGuards(int elapsedTime) {
 			// If user stops using a bycicle, go back to the start: 'ineligible'.
 			if(nonCyclingCount > THRESHOLD) {
 				timer.Dispose();
@@ -140,7 +183,7 @@ namespace Trace {
 		}
 
 
-		void cyclingEligibleStateGuards() {
+		void cyclingEligibleStateGuards(int elapsedTime) {
 			// If user stops using a bycicle, go to: 'unknownEligible'.
 			if(nonCyclingCount > THRESHOLD) {
 				resetCounters();
@@ -155,12 +198,14 @@ namespace Trace {
 
 				// Start a long timer where the user is still eligible for rewards even when not using a bycicle.
 				// If the timer goes off (the user goes too long without using a bycicle), go back to 'ineligible'.
-				timer = new Timer(new TimerCallback(goToIneligibleCallback), null, UNKNOWN_ELIGIBLE_TIMEOUT);
+				if(elapsedTime == -1) {
+					timer = new Timer(new TimerCallback(goToIneligibleCallback), null, UNKNOWN_ELIGIBLE_TIMEOUT);
+				}
 			}
 		}
 
 
-		void unknownEligibleStateGuards() {
+		void unknownEligibleStateGuards(int elapsedTime) {
 			// When user leaves bike, check for nearby checkpoints/shops for reward notification every CHECK_NEARBY_TIMEOUT period.
 			if(checkNearbyCheckpointsTask == null) {
 				checkNearbyCheckpointsTask = new Task(() => checkNearbyCheckpoints());
@@ -171,7 +216,9 @@ namespace Trace {
 			if(vehicularCount > THRESHOLD) {
 				resetCounters();
 				stateMachine.MoveNext(Command.InAVehicle);
-				vehicularTimer = new Timer(new TimerCallback(goToIneligibleCallback), null, VEHICULAR_TIMEOUT);
+				if(elapsedTime == -1) {
+					vehicularTimer = new Timer(new TimerCallback(goToIneligibleCallback), null, VEHICULAR_TIMEOUT);
+				}
 			}
 			// If user starts cycling again, go back to 'cyclingEligible'.
 			if(cyclingCount > THRESHOLD) {
@@ -184,7 +231,7 @@ namespace Trace {
 		}
 
 
-		void vehicularStateGuards() {
+		void vehicularStateGuards(int elapsedTime) {
 			// If the user stops using a vehicle, go back to 'unknownEligible'.
 			if(nonVehicularCount > THRESHOLD) {
 				resetCounters();
@@ -192,6 +239,7 @@ namespace Trace {
 				stateMachine.MoveNext(Command.NotInAVehicle);
 			}
 		}
+
 
 		/// <summary>
 		/// When a user goes from 'cyclingEligible' to 'unknownEligible', i.e., stops cycling, 
@@ -248,7 +296,6 @@ namespace Trace {
 			}
 			return res;
 		}
-
 
 
 		/// <summary>

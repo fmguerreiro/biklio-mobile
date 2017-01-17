@@ -530,4 +530,13 @@ If you disable this feature, Biklio will only warn you of your status when you o
 	<data name="StartTracking" xml:space="preserve">
     	<value>O Biklio está a gravar o teu trajeto.</value>
   	</data>
+	<data name="DisableBackgroundAudio" xml:space="preserve">
+    	<value>Permitir Audio</value>
+  	</data>
+	<data name="Allow" xml:space="preserve">
+    	<value>Permitir</value>
+  	</data>
+	<data name="DoNotAllow" xml:space="preserve">
+    	<value>Não Permitir</value>
+  	</data>
 </root>

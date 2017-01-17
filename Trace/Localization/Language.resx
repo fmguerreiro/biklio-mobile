@@ -532,4 +532,13 @@ Note that if you disable this feature, Biklio will only warn you of your status 
 	<data name="StartTracking" xml:space="preserve">
     	<value>Biklio is now tracking you.</value>
   	</data>
+	<data name="DisableBackgroundAudio" xml:space="preserve">
+    	<value>Audio Enabled</value>
+  	</data>
+	<data name="Allow" xml:space="preserve">
+    	<value>Allow</value>
+  	</data>
+	<data name="DoNotAllow" xml:space="preserve">
+    	<value>Don't Allow</value>
+  	</data>
 </root>

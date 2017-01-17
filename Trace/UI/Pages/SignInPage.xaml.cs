@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Xamarin.Forms;
 using Trace.Localization;
+using System.Diagnostics;
 
 namespace Trace {
 	/// <summary>
@@ -88,6 +89,8 @@ namespace Trace {
 				return;
 			}
 
+			//Device.OpenUri(new Uri("http://google.com"));
+
 			OAuthConfigurationManager.SetConfig(new GoogleOAuthConfig());
 			await Navigation.PushAsync(new GoogleOAuthUIPage());
 		}
@@ -116,7 +119,7 @@ namespace Trace {
 		public static Action SuccessfulOAuthLoginAction {
 			get {
 				return new Action(async () => {
-
+					Debug.WriteLine("SuccessfulOAuthLogin()");
 					// Leave OAuth provider page.
 					//NavPage.PopModalAsync();
 
@@ -135,7 +138,9 @@ namespace Trace {
 					await Task.Delay(1000);
 					// Record login event.
 					Device.BeginInvokeOnMainThread(() => {
+						Debug.WriteLine("SuccessfulOAuthLogin() -> mainThread");
 						Application.Current.MainPage = new MainPage();
+						Debug.WriteLine("SuccessfulOAuthLogin() -> mainPage called");
 						LoginManager.TryLogin(isCredentialsLogin: false).DoNotAwait();
 						User.Instance.GetCurrentKPI().AddLoginEvent(TimeUtil.CurrentEpochTimeSeconds());
 					});

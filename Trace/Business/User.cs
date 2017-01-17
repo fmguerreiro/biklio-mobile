@@ -73,6 +73,7 @@ namespace Trace {
 
 
 		public bool IsFirstLogin { get; set; } = true;
+		public bool IsBackgroundAudioEnabled { get; set; } = false;
 
 
 		List<Trajectory> trajectories;
@@ -121,6 +122,7 @@ namespace Trace {
 
 
 		List<KPI> kpis;
+
 		[Ignore]
 		public List<KPI> KPIs {
 			get { if(kpis == null) { kpis = new List<KPI>(); } return kpis; }

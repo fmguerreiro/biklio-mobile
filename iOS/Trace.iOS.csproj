@@ -221,21 +221,6 @@
     <Reference Include="Xamarin.Forms.Maps.iOS">
       <HintPath>..\packages\Xamarin.Forms.Maps.2.3.3.180\lib\Xamarin.iOS10\Xamarin.Forms.Maps.iOS.dll</HintPath>
     </Reference>
-    <Reference Include="FFImageLoading">
-      <HintPath>..\packages\Xamarin.FFImageLoading.2.2.6\lib\Xamarin.iOS10\FFImageLoading.dll</HintPath>
-    </Reference>
-    <Reference Include="FFImageLoading.Platform">
-      <HintPath>..\packages\Xamarin.FFImageLoading.2.2.6\lib\Xamarin.iOS10\FFImageLoading.Platform.dll</HintPath>
-    </Reference>
-    <Reference Include="FFImageLoading.Forms">
-      <HintPath>..\packages\Xamarin.FFImageLoading.Forms.2.2.6\lib\Xamarin.iOS10\FFImageLoading.Forms.dll</HintPath>
-    </Reference>
-    <Reference Include="FFImageLoading.Forms.Touch">
-      <HintPath>..\packages\Xamarin.FFImageLoading.Forms.2.2.6\lib\Xamarin.iOS10\FFImageLoading.Forms.Touch.dll</HintPath>
-    </Reference>
-    <Reference Include="FFImageLoading.Transformations">
-      <HintPath>..\packages\Xamarin.FFImageLoading.Transformations.2.2.6\lib\Xamarin.iOS10\FFImageLoading.Transformations.dll</HintPath>
-    </Reference>
     <Reference Include="Acr.Support.iOS">
       <HintPath>..\packages\Acr.Support.2.1.0\lib\Xamarin.iOS10\Acr.Support.iOS.dll</HintPath>
     </Reference>
@@ -247,6 +232,21 @@
     </Reference>
     <Reference Include="Acr.UserDialogs.Interface">
       <HintPath>..\packages\Acr.UserDialogs.6.3.5\lib\Xamarin.iOS10\Acr.UserDialogs.Interface.dll</HintPath>
+    </Reference>
+    <Reference Include="FFImageLoading">
+      <HintPath>..\packages\Xamarin.FFImageLoading.2.2.7\lib\Xamarin.iOS10\FFImageLoading.dll</HintPath>
+    </Reference>
+    <Reference Include="FFImageLoading.Platform">
+      <HintPath>..\packages\Xamarin.FFImageLoading.2.2.7\lib\Xamarin.iOS10\FFImageLoading.Platform.dll</HintPath>
+    </Reference>
+    <Reference Include="FFImageLoading.Transformations">
+      <HintPath>..\packages\Xamarin.FFImageLoading.Transformations.2.2.7\lib\Xamarin.iOS10\FFImageLoading.Transformations.dll</HintPath>
+    </Reference>
+    <Reference Include="FFImageLoading.Forms">
+      <HintPath>..\packages\Xamarin.FFImageLoading.Forms.2.2.7\lib\Xamarin.iOS10\FFImageLoading.Forms.dll</HintPath>
+    </Reference>
+    <Reference Include="FFImageLoading.Forms.Touch">
+      <HintPath>..\packages\Xamarin.FFImageLoading.Forms.2.2.7\lib\Xamarin.iOS10\FFImageLoading.Forms.Touch.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -272,15 +272,15 @@
     <Folder Include="App\" />
     <Folder Include="App\Security\" />
     <Folder Include="App\Data\" />
-    <Folder Include="App\Business\" />
-    <Folder Include="App\Business\Map\" />
-    <Folder Include="App\Business\MotionActivity\" />
-    <Folder Include="App\UI\" />
+    <Folder Include="App\Application\" />
+    <Folder Include="App\Application\MotionActivity\" />
     <Folder Include="Properties\" />
     <Folder Include="Localization\" />
     <Folder Include="App\ServiceAccess\" />
     <Folder Include="App\Utils\" />
-    <Folder Include="App\UI\CustomEffects\" />
+    <Folder Include="App\Renderers\" />
+    <Folder Include="App\Renderers\Map\" />
+    <Folder Include="App\Renderers\OAuth\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
@@ -295,24 +295,22 @@
     <Compile Include="AppDelegate.cs" />
     <Compile Include="App\Security\KeyChain.cs" />
     <Compile Include="App\Data\SQLite.cs" />
-    <Compile Include="App\Business\Map\TraceMapRenderer.cs" />
-    <Compile Include="App\Business\MotionActivity\MotionActivityManager.cs" />
-    <Compile Include="App\Business\MotionActivity\NSDateConverter.cs" />
+    <Compile Include="App\Application\MotionActivity\MotionActivityManager.cs" />
+    <Compile Include="App\Application\MotionActivity\NSDateConverter.cs" />
     <Compile Include="App\Security\OAuth.cs" />
-    <Compile Include="App\Business\Map\CustomMKAnnotationView.cs" />
     <Compile Include="App\Data\FileSystem.cs" />
-    <Compile Include="App\UI\FacebookOAuthPageRenderer.cs" />
-    <Compile Include="App\UI\GoogleOAuthPageRenderer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Localization\Localize.cs" />
     <Compile Include="App\NotificationMessage.cs" />
     <Compile Include="App\Utils\ImageResizer.cs" />
     <Compile Include="App\Utils\SoundPlayer.cs" />
-    <Compile Include="App\UI\CustomEffects\UnderlineEffect.cs" />
+    <Compile Include="App\Renderers\Map\CustomMKAnnotationView.cs" />
+    <Compile Include="App\Renderers\Map\TraceMapRenderer.cs" />
+    <Compile Include="App\Renderers\OAuth\GoogleOAuthPageRenderer.cs" />
+    <Compile Include="App\Renderers\OAuth\FacebookOAuthPageRenderer.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="GoogleService-Info.plist" />
-    <BundleResource Include="Resources\images\logo.png" />
     <BundleResource Include="Resources\images\activity_modes\cycling.png" />
     <BundleResource Include="Resources\images\activity_modes\driving.png" />
     <BundleResource Include="Resources\images\activity_modes\running.png" />

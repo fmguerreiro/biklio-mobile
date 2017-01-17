@@ -64,8 +64,11 @@ namespace Trace {
 
 		async void onConfirmationClicked(object sender, EventArgs e) {
 			if(User.Instance.IsFirstLogin) {
-				// TODO actionsheet instead of alert
-				await DisplayAlert(Language.Notice, Language.BiklioAudioWarningMessage, Language.Ok);
+				// Ask user for permission to play audio in background.
+				var isAllow = await DisplayAlert(Language.Notice, Language.BiklioAudioWarningMessage, Language.Allow, Language.DoNotAllow);
+				User.Instance.IsBackgroundAudioEnabled = isAllow;
+
+				// Show welcome to biklio message.
 				await DisplayAlert(Language.Welcome, Language.BiklioWelcomeMessage, Language.GotIt);
 				User.Instance.IsFirstLogin = false;
 				SQLiteDB.Instance.SaveUser(User.Instance);
