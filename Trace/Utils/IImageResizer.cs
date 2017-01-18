@@ -1,7 +1,7 @@
-﻿namespace Trace {
+namespace Trace {
 
 	/// <summary>
-	/// A simple dependency service that can downsample images.
+	/// A simple dependency service that can downsample 
 	/// </summary>
 	public interface IImageResizer {
 

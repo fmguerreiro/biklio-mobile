@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using Trace.Localization;
 using Xamarin.Forms;
 
@@ -12,32 +12,32 @@ namespace Trace {
 			var masterPageItems = new List<MasterPageItem>();
 			masterPageItems.Add(new MasterPageItem {
 				Title = Language.Home,
-				IconSource = "images/home/home.png",
+				IconSource = "home__home.png",
 				TargetType = typeof(HomePage)
 			});
 			masterPageItems.Add(new MasterPageItem {
 				Title = Language.Rewards,
-				IconSource = "images/home/reward.png",
+				IconSource = "home__reward.png",
 				TargetType = typeof(RewardsListPage)
 			});
 			masterPageItems.Add(new MasterPageItem {
 				Title = Language.Dashboard,
-				IconSource = "images/home/dashboard.png",
+				IconSource = "home__dashboard.png",
 				TargetType = typeof(DashboardPage)
 			});
 			masterPageItems.Add(new MasterPageItem {
 				Title = Language.MyRoutes,
-				IconSource = "images/home/my_routes.png",
+				IconSource = "home__my_routes.png",
 				TargetType = typeof(MyTrajectoriesPage)
 			});
 			masterPageItems.Add(new MasterPageItem {
 				Title = Language.JoinACampaign,
-				IconSource = "images/home/subscribed_campaigns.png",
+				IconSource = "home__subscribed_campaigns.png",
 				TargetType = typeof(CampaignsPage)
 			});
 			masterPageItems.Add(new MasterPageItem {
 				Title = Language.Settings,
-				IconSource = "images/home/settings.png",
+				IconSource = "home__settings.png",
 				TargetType = typeof(SettingsPage)
 			});
 

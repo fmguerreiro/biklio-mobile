@@ -30,6 +30,9 @@ namespace Trace {
 				return;
 			}
 
+			// Stops view from going back to user location after centering on checkpoint.
+			MapPage.ShouldCenterOnUser = false;
+
 			// Go back to (tabbed) Home page.
 			await Navigation.PopToRootAsync();
 			var homePage = ((NavigationPage) ((MainPage) Application.Current.MainPage).Detail).CurrentPage as HomePage;

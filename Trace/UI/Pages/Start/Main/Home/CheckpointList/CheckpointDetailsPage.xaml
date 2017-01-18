@@ -38,6 +38,7 @@
 								Source="{Binding LogoURL}"
 								DownsampleToViewSize="true"
 								Aspect="AspectFit"
+								ErrorPlaceholder="challengelist__default_shop.png"
 								Grid.Row="0"
 								Grid.Column="0"
 								Grid.RowSpan="2">

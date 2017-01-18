@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -26,10 +26,14 @@ namespace Trace {
 		private DateTime StopTrackingTime;
 		private const long MIN_SIZE_TRAJECTORY = 250; // meters
 
+		// Used when user clicks on map from checkpoint details page.
+		public static bool ShouldCenterOnUser = true;
+
+
 		public MapPage() {
 			InitializeComponent();
 			Debug.WriteLine("MapPage.Initialize()");
-			if(Device.OS == TargetPlatform.iOS) { Icon = "images/map/maps_icon.png"; }
+			if(Device.OS == TargetPlatform.iOS) { Icon = "map__maps_icon.png"; }
 
 			initializeCheckpointPins();
 
@@ -63,11 +67,14 @@ namespace Trace {
 
 		// Center map on user position when page displays.
 		protected override async void OnAppearing() {
-			base.OnAppearing();
 			Debug.WriteLine("MapPage.OnAppearing()");
-			Geolocator.TryLowerAccuracy();
-			var userLocation = await GeoUtils.GetCurrentUserLocation();
-			Locator.UpdateMap(userLocation);
+			base.OnAppearing();
+			if(ShouldCenterOnUser) {
+				Geolocator.TryLowerAccuracy();
+				var userLocation = await GeoUtils.GetCurrentUserLocation();
+				Locator.UpdateMap(userLocation);
+			}
+			ShouldCenterOnUser = true; // Next time center on user.
 		}
 
 
@@ -141,7 +148,7 @@ namespace Trace {
 					AvgSpeed = trajectory.AvgSpeed
 				};
 
-				trackButtonImage.Source = "images/map/play_arrow.png";
+				trackButtonImage.Source = "map__play_arrow.png";
 
 				displayResultsGrid(displayResultsModel);
 
@@ -159,7 +166,7 @@ namespace Trace {
 
 				await Locator.Start();
 
-				trackButtonImage.Source = "images/map/stop.png";
+				trackButtonImage.Source = "map__stop.png";
 				map.RouteCoordinates.Clear();
 				StartTrackingTime = DateTime.Now;
 

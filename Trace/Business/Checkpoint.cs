@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading.Tasks;
@@ -21,14 +21,14 @@ namespace Trace {
 		public string Type { get; set; }
 
 		private string logoURL;
-		public string LogoURL { get { return logoURL ?? "images/challenge_list/default_shop.png"; } set { logoURL = value ?? logoURL; } }
+		public string LogoURL { get { return logoURL ?? "challengelist__default_shop.png"; } set { logoURL = value ?? logoURL; } }
 
 		// The stored logo image filepath for map pin image display.
 		private string pinLogoPath;
 		public string PinLogoPath { get { return pinLogoPath; } set { pinLogoPath = value; } }
 
 		private string mapImageURL;
-		public string MapImageURL { get { return mapImageURL ?? "images/challenge_list/location_unknown.png"; } set { mapImageURL = value ?? mapImageURL; } }
+		public string MapImageURL { get { return mapImageURL ?? "challengelist__location_unknown.png"; } set { mapImageURL = value ?? mapImageURL; } }
 
 		public string Email { get; set; }
 		public string PhoneNumber { get; set; }

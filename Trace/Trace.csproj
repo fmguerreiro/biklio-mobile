@@ -113,7 +113,6 @@
     <Compile Include="Data\DatabaseEntityBase.cs" />
     <Compile Include="Data\UserItemBase.cs" />
     <Compile Include="Security\OAuth\IOAuth.cs" />
-    <Compile Include="UI\CustomConverters\ByteArrayToChallengeImageConverter.cs" />
     <Compile Include="Data\IFileSystem.cs" />
     <Compile Include="Security\OAuth\OAuthConfigurationManager.cs" />
     <Compile Include="Security\OAuth\OAuthConfig.cs" />
@@ -224,7 +223,6 @@
     <Compile Include="UI\Pages\Start\Main\Home\Tutorial\PrivacyPolicy\PrivacyPolicyPage.xaml.cs">
       <DependentUpon>PrivacyPolicyPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UI\CustomEffects\UnderlineEffect.cs" />
     <Compile Include="UI\Pages\Start\Main\Menu\Rewards\ClaimRewardModel.cs" />
     <Compile Include="Application\MotionActivity\ActivityEvent.cs" />
     <Compile Include="Application\MotionActivity\ActivityType.cs" />
@@ -278,7 +276,6 @@
     <Folder Include="UI\Pages\Start\Main\Home\Map\" />
     <Folder Include="UI\Pages\Start\Main\Home\Tutorial\" />
     <Folder Include="UI\Pages\Start\Main\Home\Tutorial\PrivacyPolicy\" />
-    <Folder Include="UI\CustomEffects\" />
     <Folder Include="Application\" />
     <Folder Include="Application\MotionActivity\" />
     <Folder Include="Application\Map\" />

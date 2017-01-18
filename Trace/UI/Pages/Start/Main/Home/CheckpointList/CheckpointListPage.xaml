@@ -58,6 +58,7 @@
 								Aspect="Fill"
 								Grid.Row="0"
 								Grid.Column="0"
+								ErrorPlaceholder="challengelist__default_shop.png"
 								Grid.RowSpan="2">
 							</ffimageloading:CachedImage>
 							<Label

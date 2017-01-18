@@ -1,4 +1,4 @@
-﻿using System.Threading.Tasks;
+using System.Threading.Tasks;
 using Trace.Localization;
 using Xamarin.Forms;
 
@@ -18,12 +18,12 @@ namespace Trace {
 			Children.Add(challengesPage);
 			Children.Add(mapPage);
 
-			var giftToolbarButton = new ToolbarItem(Language.Rewards, "images/home/reward.png", async () => {
+			var giftToolbarButton = new ToolbarItem(Language.Rewards, "home__reward.png", async () => {
 				await Navigation.PushAsync(new RewardsListPage());
 			});
 			ToolbarItems.Add(giftToolbarButton);
 
-			var tutorialToolbarButton = new ToolbarItem(Language.Tutorial, "images/home/tutorial.png", async () => {
+			var tutorialToolbarButton = new ToolbarItem(Language.Tutorial, "home__tutorial.png", async () => {
 				await Navigation.PushModalAsync(new TutorialPage());
 			});
 			ToolbarItems.Add(tutorialToolbarButton);

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Globalization;
 using Xamarin.Forms;
 
@@ -14,10 +14,10 @@ namespace Trace {
 			ImageSource retSource = null;
 			var wasTrackSent = (bool) value;
 			if(wasTrackSent) {
-				retSource = ImageSource.FromFile("images/mytrajectories_list/green_check.png");
+				retSource = ImageSource.FromFile("mytrajectorieslist__green_check.png");
 			}
 			else {
-				retSource = ImageSource.FromFile("images/mytrajectories_list/cross_error.png");
+				retSource = ImageSource.FromFile("mytrajectorieslist__cross_error.png");
 			}
 			return retSource;
 		}

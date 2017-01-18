@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <ContentPage
 	xmlns="http://xamarin.com/schemas/2014/forms"
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -83,7 +83,7 @@
 			Grid.Column="1" />
 		<ffimageloading:CachedImage
 			x:Name="locateImage"
-			Source="images/map/locate.png"
+			Source="map__locate.png"
 			WidthRequest="24"
 			DownsampleWidth="24"
 			HorizontalOptions="Center"
@@ -103,7 +103,7 @@
 			Grid.Column="1" />
 		<ffimageloading:CachedImage
 			x:Name="trackButtonImage"
-			Source="images/map/play_arrow.png"
+			Source="map__play_arrow.png"
 			WidthRequest="24"
 			DownsampleWidth="24"
 			HorizontalOptions="Center"

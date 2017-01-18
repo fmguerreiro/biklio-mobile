@@ -4,6 +4,7 @@ using System.ComponentModel;
 using Android.Content;
 using Android.Gms.Maps;
 using Android.Gms.Maps.Model;
+using Android.Graphics;
 using Android.Widget;
 using Plugin.Geolocator.Abstractions;
 using Trace;
@@ -14,12 +15,12 @@ using Xamarin.Forms.Maps.Android;
 using Xamarin.Forms.Platform.Android;
 
 
-// TODO debug and test! taken from: https://github.com/xamarin/xamarin-forms-samples/blob/master/CustomRenderers/Map/Droid/CustomMapRenderer.cs
 [assembly: ExportRenderer(typeof(TraceMap), typeof(TraceMapRenderer))]
 namespace Trace.Droid {
 
 	/// <summary>
 	/// Custom renderer that shows the challenges and draws a polyline on the map to show the user's trajectory.
+	/// Example taken from: https://github.com/xamarin/xamarin-forms-samples/blob/master/CustomRenderers/Map/Droid/CustomMapRenderer.cs
 	/// </summary>
 	public class TraceMapRenderer : MapRenderer, GoogleMap.IInfoWindowAdapter, IOnMapReadyCallback {
 
@@ -45,6 +46,10 @@ namespace Trace.Droid {
 
 		public void OnMapReady(GoogleMap googleMap) {
 			map = googleMap;
+			map.UiSettings.ZoomControlsEnabled = false;
+			map.UiSettings.MyLocationButtonEnabled = false;
+			map.UiSettings.CompassEnabled = false;
+
 			// Set Pin event handler to show window on click.
 			map.InfoWindowClick += OnInfoWindowClick;
 			map.SetInfoWindowAdapter(this);
@@ -62,6 +67,7 @@ namespace Trace.Droid {
 				polylineOptions.Add(point);
 			}
 
+			// Center map to contain all points in trajectory.
 			if(nPoints > 1) {
 				LatLngBounds bounds = builder.Build();
 				int padding = 20; // offset from edges of the map in pixels
@@ -78,26 +84,28 @@ namespace Trace.Droid {
 			if(e.PropertyName.Equals("VisibleRegion") && !isDrawn) {
 				map?.Clear();
 
-				// TODO draw pins. this code draws pins that cover half the map atm.
-				//foreach(CustomPin pin in customPins) {
-				//	var marker = new MarkerOptions();
-				//	marker.SetPosition(new LatLng(pin.Pin.Position.Latitude, pin.Pin.Position.Longitude));
-				//	marker.SetTitle(pin.Pin.Label);
-				//	marker.SetSnippet(pin.Pin.Address);
-				//	if(pin.Checkpoint.LogoImageFilePath != null) {
-				//		string imagePath = DependencyService.Get<IFileSystem>().GetFilePath(pin.Checkpoint.LogoImageFilePath);
-				//		marker.SetIcon(BitmapDescriptorFactory.FromPath(imagePath));
-				//	}
-				//	else {
-				//		marker.SetIcon(BitmapDescriptorFactory.FromFile("default_shop.png"));
-				//	}
-				//	try {
-				//		map?.AddMarker(marker);
-				//	}
-				//	catch(Java.Lang.NullPointerException npE) {
-				//		System.Diagnostics.Debug.WriteLine("Error drawing pin: " + npE.Message);
-				//	}
-				//}
+				var defaultImage = BitmapDescriptorFactory.FromBitmap(BitmapFactory.DecodeResource(Context.Resources, Resource.Drawable.challengelist__default_shop_20px));
+				foreach(CustomPin pin in customPins) {
+					var marker = new MarkerOptions();
+					marker.SetPosition(new LatLng(pin.Pin.Position.Latitude, pin.Pin.Position.Longitude));
+					marker.SetTitle(pin.Pin.Label);
+					marker.SetSnippet(pin.Pin.Address);
+					if(!string.IsNullOrEmpty(pin.Checkpoint.PinLogoPath)) {
+						byte[] imageBytes = DependencyService.Get<IFileSystem>().LoadImage(pin.Checkpoint.PinLogoPath);
+						var bitmap = BitmapFactory.DecodeByteArray(imageBytes, 0, imageBytes.Length);
+						marker.SetIcon(BitmapDescriptorFactory.FromBitmap(bitmap));
+						//marker.SetIcon(BitmapDescriptorFactory.FromPath(imagePath));
+					}
+					else {
+						marker.SetIcon(defaultImage);
+					}
+					try {
+						map?.AddMarker(marker);
+					}
+					catch(Java.Lang.NullPointerException npE) {
+						System.Diagnostics.Debug.WriteLine("Error drawing pin: " + npE.Message);
+					}
+				}
 				isDrawn = true;
 			}
 		}
@@ -159,7 +167,7 @@ namespace Trace.Droid {
 
 		CustomPin GetCustomPin(Marker annotation) {
 			foreach(var pin in customPins) {
-				if(pin.Pin.Position.Longitude == annotation.Position.Longitude && pin.Pin.Position.Latitude == annotation.Position.Latitude) {
+				if(pin.Id == annotation.Id) {
 					return pin;
 				}
 			}

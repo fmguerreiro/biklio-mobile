@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using Xamarin.Forms;
@@ -19,7 +19,7 @@ namespace Trace {
 
 		public CheckpointListPage(MapPage mapPage) {
 			InitializeComponent();
-			if(Device.OS == TargetPlatform.iOS) { Icon = "images/challenge_list/trophy.png"; }
+			if(Device.OS == TargetPlatform.iOS) { Icon = "challengelist__trophy.png"; }
 			this.mapPage = mapPage;
 
 			// Show the checkpoints saved on the device.
@@ -190,7 +190,7 @@ namespace Trace {
 
 
 		/// <summary>
-		/// Delete invalidated checkpoints (i.e., ids in 'canceled' payload field) and their images.
+		/// Delete invalidated checkpoints (i.e., ids in 'canceled' payload field) and their 
 		/// </summary>
 		/// <param name="result">Result.</param>
 		long[] deleteInvalidatedCheckpoints(WSResult result, Dictionary<long, Checkpoint> checkpointsDict) {
@@ -287,7 +287,7 @@ namespace Trace {
 			Debug.WriteLine("STARTING fetchPinImages()");
 			foreach(Challenge c in challenges) {
 				var url = c.ThisCheckpoint.LogoURL;
-				if(string.IsNullOrEmpty(c.ThisCheckpoint.PinLogoPath) && !url.Equals("images/challenge_list/default_shop.png")) {
+				if(string.IsNullOrEmpty(c.ThisCheckpoint.PinLogoPath) && !url.Equals("challengelist__default_shop.png")) {
 					Task.Run(() => c.ThisCheckpoint.FetchImageAsync(url)).DoNotAwait();
 				}
 			}
