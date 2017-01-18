@@ -10,16 +10,22 @@ namespace Trace.iOS {
 
 	public class MotionActivityManager : IMotionActivityManager {
 
+		public IList<ActivityEvent> ActivityEvents { get; set; }
+		public int WalkingDuration { get; set; }
+		public int RunningDuration { get; set; }
+		public int CyclingDuration { get; set; }
+		public int DrivingDuration { get; set; }
+
 		CMMotionActivityManager motionActivityMgr;
 
 
-		public override void InitMotionActivity() {
+		public void InitMotionActivity() {
 			motionActivityMgr = new CMMotionActivityManager();
 			ActivityEvents = new List<ActivityEvent>();
 		}
 
 
-		public override void StartMotionUpdates(Action<ActivityType> handler) {
+		public void StartMotionUpdates(Action<ActivityType> handler) {
 			motionActivityMgr.StartActivityUpdates(NSOperationQueue.MainQueue, ((activity) => {
 
 				// A CMMotionActivity can have several modes set to true. We prioritize bycicle events. 
@@ -33,12 +39,12 @@ namespace Trace.iOS {
 		}
 
 
-		public override void StopMotionUpdates() {
+		public void StopMotionUpdates() {
 			motionActivityMgr.StopActivityUpdates();
 		}
 
 
-		public override void Reset() {
+		public void Reset() {
 			WalkingDuration = 0;
 			RunningDuration = 0;
 			CyclingDuration = 0;
@@ -48,7 +54,7 @@ namespace Trace.iOS {
 		}
 
 
-		public override ActivityType GetMostCommonActivity() {
+		public ActivityType GetMostCommonActivity() {
 			long[] activityDurations = { WalkingDuration, RunningDuration, CyclingDuration, DrivingDuration };
 			long max = activityDurations.Max();
 
@@ -64,7 +70,7 @@ namespace Trace.iOS {
 		}
 
 
-		public override async Task QueryHistoricalData(DateTime start, DateTime end) {
+		public async Task QueryHistoricalData(DateTime start, DateTime end) {
 			await queryHistoricalDataAsync(NSDateConverter.ToNSDate(start), NSDateConverter.ToNSDate(end));
 		}
 
@@ -177,22 +183,22 @@ namespace Trace.iOS {
 				return ActivityType.Automative;
 			if(activity.Stationary)
 				return ActivityType.Stationary;
-			else
-				return ActivityType.Unknown;
+
+			return ActivityType.Unknown;
 		}
 
 		public static string ActivityTypeToString(ActivityType type) {
 			switch(type) {
-				case ActivityType.Walking:
-					return "Walking";
+				case ActivityType.Cycling:
+					return "Cycling";
 				case ActivityType.Running:
 					return "Running";
+				case ActivityType.Walking:
+					return "Walking";
 				case ActivityType.Automative:
 					return "Automotive";
 				case ActivityType.Stationary:
 					return "Stationary";
-				case ActivityType.Cycling:
-					return "Cycling";
 				default:
 					return "Unknown";
 			}

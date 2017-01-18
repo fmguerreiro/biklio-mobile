@@ -3,18 +3,18 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Trace {
-	public abstract class IMotionActivityManager {
-		public IList<ActivityEvent> ActivityEvents { get; set; }
-		public int WalkingDuration { get; set; }
-		public int RunningDuration { get; set; }
-		public int CyclingDuration { get; set; }
-		public int DrivingDuration { get; set; }
+	public interface IMotionActivityManager {
+		IList<ActivityEvent> ActivityEvents { get; }
+		int WalkingDuration { get; }
+		int RunningDuration { get; }
+		int CyclingDuration { get; }
+		int DrivingDuration { get; }
 
-		public abstract void InitMotionActivity();
-		public abstract void StartMotionUpdates(Action<ActivityType> handler);
-		public abstract void StopMotionUpdates();
-		public abstract void Reset();
-		public abstract Task QueryHistoricalData(DateTime start, DateTime end);
-		public abstract ActivityType GetMostCommonActivity();
+		void InitMotionActivity();
+		void StartMotionUpdates(Action<ActivityType> handler);
+		void StopMotionUpdates();
+		void Reset();
+		Task QueryHistoricalData(DateTime start, DateTime end);
+		ActivityType GetMostCommonActivity();
 	}
 }

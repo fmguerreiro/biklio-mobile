@@ -68,7 +68,7 @@ namespace Trace {
 			await locator?.StopListeningAsync();
 		}
 
-
+		// TODO remove, this is now in iOS Appdelegate code.
 		public static async Task StartListeningSignificantLocationChanges() {
 			locator = CrossGeolocator.Current;
 			/*if(!locator.IsGeolocationEnabled) {

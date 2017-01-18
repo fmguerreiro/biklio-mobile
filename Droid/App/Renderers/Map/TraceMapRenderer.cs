@@ -5,8 +5,6 @@ using Android.Content;
 using Android.Gms.Maps;
 using Android.Gms.Maps.Model;
 using Android.Graphics;
-using Android.Widget;
-using Plugin.Geolocator.Abstractions;
 using Trace;
 using Trace.Droid;
 using Xamarin.Forms;
