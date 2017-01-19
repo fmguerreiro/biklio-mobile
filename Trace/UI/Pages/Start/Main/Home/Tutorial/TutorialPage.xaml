@@ -87,8 +87,10 @@
 				BackgroundColor="#80000000" />
 			<Button
 				Text="{language:Translate Privacy}"
+				BackgroundColor="Transparent"
+				BorderColor="Transparent"
 				FontSize="12"
-				Margin="5"
+				Margin="5,0,5,0"
 				Clicked="onPrivacyPolicyClicked"
 				VerticalOptions="Center"
 				HorizontalOptions="Center"
@@ -100,7 +102,9 @@
 				x:Name="confirmationButton"
 				IsVisible="false"
 				Text="{language:Translate GotIt}"
-				Margin="5"
+				BackgroundColor="Transparent"
+				BorderColor="Transparent"
+				Margin="5,0,5,0"
 				Clicked="onConfirmationClicked"
 				VerticalOptions="Center"
 				HorizontalOptions="Center"

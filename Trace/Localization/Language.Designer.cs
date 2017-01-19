@@ -1054,5 +1054,11 @@ namespace Trace.Localization {
                 return ResourceManager.GetString("DoNotAllow", resourceCulture);
             }
         }
+        
+        public static string FetchUserLocation {
+            get {
+                return ResourceManager.GetString("FetchUserLocation", resourceCulture);
+            }
+        }
     }
 }

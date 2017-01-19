@@ -7,23 +7,35 @@
 	xmlns:cv="clr-namespace:Xamarin.Forms;assembly=Xamarin.Forms.CarouselView"
 	x:Class="Trace.PrivacyPolicyPage">
 	<ContentPage.Content>
-		<StackLayout
+		<Grid
 			BackgroundColor="{StaticResource SecondaryColor}">
-			<BoxView
-				HeightRequest="40">
-			</BoxView>
+			<Grid.RowDefinitions>
+				<RowDefinition
+					Height="40" />
+				<RowDefinition
+					Height="120" />
+				<RowDefinition
+					Height="40" />
+				<RowDefinition
+					Height="*" />
+				<RowDefinition
+					Height="60" />
+			</Grid.RowDefinitions>
 			<ffimageloading:CachedImage
 				Source="privacypolicy__logo_name.png"
+				Grid.Row="1"
 				HorizontalOptions="Center"
 				VerticalOptions="End"
 				HeightRequest="120"
 				DownsampleHeight="120"
 				DownsampleToViewSize="true"
+				Margin="10,0,10,0"
 				Aspect="AspectFit">
 			</ffimageloading:CachedImage>
 			<Label
 				Text="{language:Translate PrivacyPolicy}"
 				TextColor="{StaticResource SecondaryTextColor}"
+				Grid.Row="2"
 				HorizontalOptions="Center"
 				VerticalOptions="Start"
 				FontAttributes="Bold"
@@ -31,6 +43,8 @@
 			<cv:CarouselView
 				x:Name="policyCarouselView"
 				Margin="8"
+				Grid.Row="3"
+				ItemSelected="onPolicyPartChanged"
 				VerticalOptions="FillAndExpand">
 				<cv:CarouselView.ItemTemplate>
 					<DataTemplate>
@@ -51,15 +65,17 @@
 			</cv:CarouselView>
 			<Button
 				Text="Ok"
+				Grid.Row="4"
+				IsVisible="false"
+				x:Name="confirmationButton"
 				Clicked="onConfirmation"
 				BackgroundColor="{StaticResource PrimaryColor}"
 				TextColor="{StaticResource PrimaryTextColor}"
 				HorizontalOptions="Center"
-				HeightRequest="30"
+				VerticalOptions="End"
 				WidthRequest="120"
 				BorderRadius="0"
-				Margin="15"
-				VerticalOptions="End" />
-		</StackLayout>
+				Margin="5" />
+		</Grid>
 	</ContentPage.Content>
 </ContentPage>

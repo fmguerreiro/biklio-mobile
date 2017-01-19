@@ -38,7 +38,7 @@ namespace Trace {
 
 			locator.DesiredAccuracy = LOCATOR_GOOD_ACCURACY;
 			var locationSettings = new ListenerSettings {
-				AllowBackgroundUpdates = true,
+				AllowBackgroundUpdates = true
 				//PauseLocationUpdatesAutomatically = true
 			};
 
@@ -68,40 +68,11 @@ namespace Trace {
 			await locator?.StopListeningAsync();
 		}
 
-		// TODO remove, this is now in iOS Appdelegate code.
-		public static async Task StartListeningSignificantLocationChanges() {
-			locator = CrossGeolocator.Current;
-			/*if(!locator.IsGeolocationEnabled) {
-				await DisplayAlert("", "GPS is disabled, please enable it and come back", "Return");
-				return;
-			}*/
-			if(locator.IsListening)
-				await locator.StopListeningAsync();
-
-			var locationSettings = new ListenerSettings {
-				AllowBackgroundUpdates = true,
-				PauseLocationUpdatesAutomatically = true,
-				ListenForSignificantChanges = true
-			};
-
-			// Listen to position changes and update map
-			try {
-				if(!locator.IsListening)
-					await locator.StartListeningAsync(minTime: 5000, minDistance: 15, includeHeading: false, settings: locationSettings);
-			}
-			catch(Exception e) { Debug.WriteLine(e); return; }
-			Debug.WriteLine("Starting -> ListeningForSignificantPositionChanges()");
-			// On radio cell changed, calculate motion data to check if user is eligible for rewards.
-			locator.PositionChanged += (sender, e) => {
-				Debug.WriteLine("Significant position changed"); // TODO
-			};
-		}
-
 
 		public void UpdateMap(Plugin.Geolocator.Abstractions.Position position) {
 			Map.MoveToRegion(
 				MapSpan.FromCenterAndRadius(
-					new Xamarin.Forms.Maps.Position(position.Latitude, position.Longitude), Distance.FromKilometers(1)));
+					new Xamarin.Forms.Maps.Position(position.Latitude, position.Longitude), Distance.FromKilometers(2)));
 		}
 
 

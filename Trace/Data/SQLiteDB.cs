@@ -32,6 +32,7 @@ namespace Trace {
 			database.CreateTable<Checkpoint>();
 			database.CreateTable<Campaign>();
 			database.CreateTable<KPI>();
+			database.CreateTable<ActivityData>();
 		}
 
 

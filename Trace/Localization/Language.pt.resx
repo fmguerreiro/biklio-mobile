@@ -539,4 +539,7 @@ If you disable this feature, Biklio will only warn you of your status when you o
 	<data name="DoNotAllow" xml:space="preserve">
     	<value>Não Permitir</value>
   	</data>
+	<data name="FetchUserLocation" xml:space="preserve">
+    	<value>Calculando a tua posição ...</value>
+  	</data>
 </root>

@@ -2,14 +2,13 @@
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using Android.Gms.Common.Apis;
-using Android.OS;
-using Android.Gms.Common;
 using Android.Gms.Location;
 using Android.App;
 using Android.Content;
 using System.Linq;
+using Xamarin.Forms;
 
-[assembly: Xamarin.Forms.Dependency(typeof(Trace.Droid.MotionActivityManager))]
+[assembly: Dependency(typeof(Trace.Droid.MotionActivityManager))]
 namespace Trace.Droid {
 	public class MotionActivityManager : IMotionActivityManager {
 
@@ -19,113 +18,92 @@ namespace Trace.Droid {
 		public int CyclingDuration { get; set; }
 		public int DrivingDuration { get; set; }
 
-		internal GoogleApiClient mApiClient;
+		// Handles connections, disconnections from google api (for accessing motion data).
+		static internal GoogleApiHandler gApiHandler = new GoogleApiHandler();
+
+		// TODO likely to be removed -- not needed
+		static public ActivityDetectionBroadcastReceiver BroadcastReceiver;
 
 		/// <summary>
 		/// Intent message sent to DetectedActivitiesIntentService whenever motion detection data is obtained.
 		/// </summary>
-		PendingIntent activityDetectionPendingIntent;
-		PendingIntent ActivityDetectionPendingIntent {
+		static PendingIntent activityDetectionPendingIntent;
+		public static PendingIntent ActivityDetectionPendingIntent {
 			get {
 				if(activityDetectionPendingIntent != null) {
 					return activityDetectionPendingIntent;
 				}
-				var intent = new Intent(Xamarin.Forms.Forms.Context, typeof(DetectedActivitiesIntentService));
-				return activityDetectionPendingIntent = PendingIntent.GetService(Xamarin.Forms.Forms.Context, 0, intent, PendingIntentFlags.UpdateCurrent);
+				var intent = new Intent(Forms.Context, typeof(DetectedActivitiesService));
+				return activityDetectionPendingIntent = PendingIntent.GetService(Forms.Context, 0, intent, PendingIntentFlags.UpdateCurrent);
 			}
 		}
 
 
 		/// <summary>
-		/// Internal class that implements the required interface for connecting to Google api client.
-		/// Implementing these classes requires IntPtr and Dispose methods to be implemented as well to be visible to Mono.
-		/// Having a class inherit from Java.Lang.Object fixes this (the father class could not do this because it already extends IMotionActivityManager).
+		/// Functions that implement the IMotionActivityManager from the shared code project.
 		/// </summary>
-		private MotionActivityManagerHandler handler = new MotionActivityManagerHandler();
-		private class MotionActivityManagerHandler : Java.Lang.Object,
-					GoogleApiClient.IConnectionCallbacks,
-					GoogleApiClient.IOnConnectionFailedListener {
-
-			public void OnConnected(Bundle connectionHint) {
-				System.Diagnostics.Debug.WriteLine("MotionActivityManager.OnConnected()");
-			}
-
-			public void OnConnectionSuspended(int cause) {
-				System.Diagnostics.Debug.WriteLine("MotionActivityManager.OnConnectionSuspended()");
-				//mApiClient.Connect();
-			}
-
-			public void OnConnectionFailed(ConnectionResult result) {
-				System.Diagnostics.Debug.WriteLine("MotionActivityManager.OnConnectionFailed()");
-			}
-		}
-
-
 		public void InitMotionActivity() {
-			ActivityEvents = new List<ActivityEvent>();
-			WalkingDuration = 0;
-			RunningDuration = 0;
-			CyclingDuration = 0;
-			DrivingDuration = 0;
 
-			if(Xamarin.Forms.Forms.IsInitialized) {
-				mApiClient = new GoogleApiClient.Builder(Xamarin.Forms.Forms.Context, handler, handler)
+			//if(!DetectedActivitiesService.IsStarted) {
+			//	Forms.Context.StartService(new Intent(Forms.Context, typeof(DetectedActivitiesService)));
+			//}
+			DetectedActivitiesService.UserId = User.Instance.Id;
+
+			if(GoogleApiHandler.GApiClient == null || !GoogleApiHandler.GApiClient.IsConnected) {
+				GoogleApiHandler.GApiClient = new GoogleApiClient.Builder(Forms.Context)
 								.AddApi(ActivityRecognition.API)
-								.AddConnectionCallbacks(handler)
-								.AddOnConnectionFailedListener(handler)
+								.AddConnectionCallbacks(gApiHandler)
+								.AddOnConnectionFailedListener(gApiHandler)
 								.Build();
 
-				mApiClient.Connect();
-				mApiClient.RegisterConnectionCallbacks(handler);
+				GoogleApiHandler.GApiClient.RegisterConnectionCallbacks(gApiHandler);
+
+				//if(BroadcastReceiver == null) {
+				//	BroadcastReceiver = new ActivityDetectionBroadcastReceiver();
+				//	BroadcastReceiver.OnReceiveImpl = (context, intent) => {
+				//		System.Diagnostics.Debug.WriteLine("------- BROADCAST_RECEIVED -------");
+				//		//var updatedActivity = (Android.Gms.Location.DetectedActivity) intent.GetParcelableExtra(App.AppName + ".ACTIVITY_EXTRA");
+				//		//handlerCallback(ActivityToType(updatedActivity));
+				//	};
+				//}
 			}
-			else { System.Diagnostics.Debug.WriteLine("InitMotionActivity() -> Context not initialized."); }
+			else { System.Diagnostics.Debug.WriteLine("-------- InitMotionActivity() -> Context not initialized --------"); }
 		}
 
-		private void reset() {
+
+		public void StartMotionUpdates(Action<ActivityType> handler) {
+			System.Diagnostics.Debug.WriteLine("-------- Connecting to GMS Client --------");
+			if(!GoogleApiHandler.GApiClient.IsConnected)
+				GoogleApiHandler.GApiClient.Connect();
+
+			// Update the handler callback that feeds the motion data into the state machine.
+			DetectedActivitiesService.UserId = User.Instance.Id;
+			DetectedActivitiesService.HandlerCallback = handler;
+		}
+
+
+		public void StopMotionUpdates() {
+			if(GoogleApiHandler.GApiClient.IsConnected) {
+				GoogleApiHandler.GApiClient.Disconnect();
+			}
+			if(!LoginManager.IsOfflineLoggedIn) {
+				//DetectedActivitiesService.UserId = 0;
+				//// Unregister service.
+				//Forms.Context.StopService(new Intent(Forms.Context, typeof(DetectedActivitiesService)));
+				//DetectedActivitiesService.IsStarted = false;
+			}
+		}
+
+
+		public void Reset() {
 			WalkingDuration = 0;
 			RunningDuration = 0;
 			CyclingDuration = 0;
 			DrivingDuration = 0;
-			ActivityEvents.Clear();
+			// TODO clear db
+			ActivityEvents?.Clear();
 		}
 
-		public async void StartMotionUpdates(Action<ActivityType> handler) {
-			// HACK I do this because StartMotionUpdates is called right after InitMotionUpdates in shared code.
-			if(mApiClient.IsConnecting) {
-				await Task.Delay(2000);
-			}
-			if(mApiClient.IsConnected) {
-				await ActivityRecognition.ActivityRecognitionApi.RequestActivityUpdatesAsync(
-						mApiClient,
-						15 * 1000,
-						ActivityDetectionPendingIntent
-					);
-
-				// Update the handler function of the service that will process this request.
-				DetectedActivitiesIntentService.Handler = handler;
-			}
-			else { System.Diagnostics.Debug.WriteLine("StartMotionUpdates() -> GoogleApiClient is not connected yet!"); }
-		}
-
-		public void StopMotionUpdates() {
-			if(mApiClient.IsConnected)
-				mApiClient.Disconnect();
-		}
-
-		public void Reset() {
-			if(mApiClient.IsConnected) {
-				mApiClient.Disconnect();
-				if(Xamarin.Forms.Forms.IsInitialized) {
-					mApiClient = new GoogleApiClient.Builder(Xamarin.Forms.Forms.Context, handler, handler)
-									.AddApi(ActivityRecognition.API)
-									.AddConnectionCallbacks(handler)
-									.AddOnConnectionFailedListener(handler)
-									.Build();
-
-					mApiClient.Connect();
-				}
-			}
-		}
 
 		public ActivityType GetMostCommonActivity() {
 			long[] activityDurations = { WalkingDuration, RunningDuration, CyclingDuration, DrivingDuration };
@@ -143,7 +121,7 @@ namespace Trace.Droid {
 		}
 
 		/// <summary>
-		/// Process the motion data that happen between 'start' and 'end', calculating significant events
+		/// Process the motion data that occurs between 'start' and 'end', calculating significant events
 		/// and durations of each mode of transport used.
 		/// </summary>
 		/// <returns>The historical data.</returns>
@@ -151,11 +129,14 @@ namespace Trace.Droid {
 		/// <param name="end">End.</param>
 		public async Task QueryHistoricalData(DateTime start, DateTime end) {
 			// First filter the activities that happened between 'start' and 'end'.
-			var filteredActivities = new List<DetectedActivity>();
+			var filteredActivities = new List<ActivityData>();
 			var startInSeconds = start.DatetimeToEpochSeconds();
 			var endInSeconds = end.DatetimeToEpochSeconds();
-			foreach(var activity in DetectedActivitiesIntentService.ActivitiesObtained) {
-				var timeInSeconds = activity.Timestamp.DatetimeToEpochSeconds();
+
+			// Deserialize activities stored until now.
+			var activitiesObtained = SQLiteDB.Instance.GetItems<ActivityData>();
+			foreach(var activity in activitiesObtained) {
+				var timeInSeconds = activity.Timestamp;
 				if(TimeUtil.IsWithinPeriod(time: timeInSeconds, start: startInSeconds, end: endInSeconds)) {
 					filteredActivities.Add(activity);
 				}
@@ -165,8 +146,8 @@ namespace Trace.Droid {
 		}
 
 
-		List<ActivityEvent> aggregateActivitiesAsync(DetectedActivity[] activities) {
-			var filteredActivities = new List<DetectedActivity>();
+		List<ActivityEvent> aggregateActivitiesAsync(ActivityData[] activities) {
+			var filteredActivities = new List<ActivityData>();
 
 			// Skip all contiguous unclassified and stationary activities so that only one remains.
 			for(int i = 0; i < activities.Length; ++i) {
@@ -191,7 +172,7 @@ namespace Trace.Droid {
 				var activity = filteredActivities[i];
 				var nextActivity = filteredActivities[i + 1];
 
-				var duration = nextActivity.Timestamp.DatetimeToEpochSeconds() - activity.Timestamp.DatetimeToEpochSeconds();
+				var duration = nextActivity.Timestamp - activity.Timestamp;
 				const int THERESHOLD = 60 * 3;
 				if(duration < THERESHOLD && (activity.Type == DetectedActivity.Still || activity.Type == DetectedActivity.Unknown)) {
 					filteredActivities.RemoveAt(i);
@@ -228,8 +209,8 @@ namespace Trace.Droid {
 					continue;
 
 				var activityEvent = new ActivityEvent(ActivityToType(activity),
-					activity.Timestamp,
-					nextActivity.Timestamp);
+					TimeUtil.EpochSecondsToDatetime(activity.Timestamp),
+					TimeUtil.EpochSecondsToDatetime(nextActivity.Timestamp));
 
 				activityEvents.Add(activityEvent);
 				ActivityToDuration(activityEvent.ActivityType, activityEvent.ActivityDurationInSeconds());
@@ -250,20 +231,36 @@ namespace Trace.Droid {
 			}
 		}
 
-		public static string ActivityTypeToString(ActivityType type) {
+		public static ActivityType ActivityToType(Android.Gms.Location.DetectedActivity activity) {
+			switch(activity.Type) {
+				case DetectedActivity.OnBicycle: return ActivityType.Cycling;
+				case DetectedActivity.Running: return ActivityType.Running;
+				case DetectedActivity.Walking: return ActivityType.Walking;
+				case DetectedActivity.InVehicle: return ActivityType.Automative;
+				case DetectedActivity.Still: return ActivityType.Stationary;
+				default: return ActivityType.Unknown;
+			}
+		}
+
+		public static ActivityType ActivityToType(ActivityData activity) {
+			switch(activity.Type) {
+				case DetectedActivity.OnBicycle: return ActivityType.Cycling;
+				case DetectedActivity.Running: return ActivityType.Running;
+				case DetectedActivity.Walking: return ActivityType.Walking;
+				case DetectedActivity.InVehicle: return ActivityType.Automative;
+				case DetectedActivity.Still: return ActivityType.Stationary;
+				default: return ActivityType.Unknown;
+			}
+		}
+
+		public static string ActivityTypeToString(int type) {
 			switch(type) {
-				case ActivityType.Cycling:
-					return "Cycling";
-				case ActivityType.Running:
-					return "Running";
-				case ActivityType.Walking:
-					return "Walking";
-				case ActivityType.Automative:
-					return "Automotive";
-				case ActivityType.Stationary:
-					return "Stationary";
-				default:
-					return "Unknown";
+				case DetectedActivity.OnBicycle: return "Cycling";
+				case DetectedActivity.Running: return "Running";
+				case DetectedActivity.Walking: return "Walking";
+				case DetectedActivity.InVehicle: return "Automative";
+				case DetectedActivity.Still: return "Stationary";
+				default: return "Unknown";
 			}
 		}
 

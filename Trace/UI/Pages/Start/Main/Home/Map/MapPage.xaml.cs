@@ -41,7 +41,7 @@ namespace Trace {
 			//Locator.Start().DoNotAwait();
 
 			currentActivity = new CurrentActivity();
-			currentActivityLabel.BindingContext = currentActivity;
+			//currentActivityLabel.BindingContext = currentActivity;
 
 			// Send input to state machine 
 			DependencyService.Get<IMotionActivityManager>().InitMotionActivity();
@@ -70,7 +70,10 @@ namespace Trace {
 			Debug.WriteLine("MapPage.OnAppearing()");
 			base.OnAppearing();
 			if(ShouldCenterOnUser) {
-				Geolocator.TryLowerAccuracy();
+				var toastCfg = new ToastConfig(Language.FetchUserLocation) {
+					Duration = new TimeSpan(0, 0, 2)
+				};
+				UserDialogs.Instance.Toast(toastCfg);
 				var userLocation = await GeoUtils.GetCurrentUserLocation();
 				Locator.UpdateMap(userLocation);
 			}
@@ -79,6 +82,10 @@ namespace Trace {
 
 
 		async void OnLocateUser(object send, EventArgs eventArgs) {
+			var toastCfg = new ToastConfig(Language.FetchUserLocation) {
+				Duration = new TimeSpan(0, 0, 2)
+			};
+			UserDialogs.Instance.Toast(toastCfg);
 			var pos = await GeoUtils.GetCurrentUserLocation();
 			Geolocator.UpdateMap(new Position(latitude: pos.Latitude, longitude: pos.Longitude));
 		}
@@ -171,7 +178,7 @@ namespace Trace {
 				StartTrackingTime = DateTime.Now;
 
 				// Show Activity text again and remove Results grid.
-				currentActivityLabel.IsVisible = true;
+				//currentActivityLabel.IsVisible = true;
 				resultsGrid.IsVisible = false;
 
 				// Reset in order to clean list of accumulated activities and counters.
@@ -184,7 +191,7 @@ namespace Trace {
 
 
 		private void displayResultsGrid(MapPageModel bindingModel) {
-			currentActivityLabel.IsVisible = false;
+			//currentActivityLabel.IsVisible = false;
 
 			Debug.WriteLine("Trajectory # of points: " + map.RouteCoordinates.Count);
 			// Refresh the map to display the trajectory.

@@ -15,9 +15,6 @@ namespace Trace {
 			string username = null;
 			usernameText.Text = username = DependencyService.Get<ICredentialsStore>().Username;
 			passwordText.Text = DependencyService.Get<ICredentialsStore>().GetPassword(usernameText.Text);
-			if(username != null || DependencyService.Get<ICredentialsStore>().OAuthExists()) {
-				tosSwitch.IsToggled = true;
-			}
 
 			// Add tap event handlers to the labels so the user can click on them.
 			var registerGR = new TapGestureRecognizer();
@@ -27,6 +24,14 @@ namespace Trace {
 			var checkToSGR = new TapGestureRecognizer();
 			checkToSGR.Tapped += onCheckTos;
 			tosWarningLabel.GestureRecognizers.Add(checkToSGR);
+
+			// Check if the user has previously agreed to the ToS.
+			if(username != null || DependencyService.Get<ICredentialsStore>().OAuthExists()) {
+				tosSwitch.IsToggled = true;
+			}
+			else {
+				Navigation.PushModalAsync(new PrivacyPolicyPage()); // TODO change this to ToS page
+			}
 		}
 
 

@@ -50,7 +50,7 @@ namespace Trace {
 		}
 
 
-		// Show a 'finish' button when the user reaches the last page of the carousel view.		
+		// Show a 'finish' button when the user reaches the last page of the tutorial (carousel view).		
 		void onTutorialPartChanged(object sender, SelectedItemChangedEventArgs e) {
 			var selectedPart = (TutorialPart) e.SelectedItem;
 			if(selectedPart == lastPart) {

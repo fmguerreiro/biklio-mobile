@@ -29,6 +29,7 @@
     <AndroidLinkMode>None</AndroidLinkMode>
     <JavaMaximumHeapSize>2G</JavaMaximumHeapSize>
     <EmbedAssembliesIntoApk>true</EmbedAssembliesIntoApk>
+    <AndroidHttpClientHandlerType>Xamarin.Android.Net.AndroidClientHandler</AndroidHttpClientHandlerType>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugSymbols>false</DebugSymbols>
@@ -41,7 +42,7 @@
     <AndroidUseSharedRuntime>false</AndroidUseSharedRuntime>
     <JavaMaximumHeapSize>2G</JavaMaximumHeapSize>
     <AndroidLinkMode>SdkOnly</AndroidLinkMode>
-    <AndroidHttpClientHandlerType></AndroidHttpClientHandlerType>
+    <AndroidHttpClientHandlerType>Xamarin.Android.Net.AndroidClientHandler</AndroidHttpClientHandlerType>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -252,8 +253,10 @@
     <Compile Include="App\Renderers\Map\TraceMapRenderer.cs" />
     <Compile Include="App\Renderers\OAuth\FacebookOAuthPageRenderer.cs" />
     <Compile Include="App\Renderers\OAuth\GoogleOAuthPageRenderer.cs" />
-    <Compile Include="App\Application\MotionActivity\DetectedActivitiesIntentService.cs" />
+    <Compile Include="App\Application\MotionActivity\DetectedActivitiesService.cs" />
     <Compile Include="App\Application\MotionActivity\DetectedActivity.cs" />
+    <Compile Include="App\Application\MotionActivity\GoogleApiHandler.cs" />
+    <Compile Include="App\Application\MotionActivity\ActivityDetectionBroadcastReceiver.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />

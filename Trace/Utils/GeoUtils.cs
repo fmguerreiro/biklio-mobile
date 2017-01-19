@@ -8,8 +8,7 @@ namespace Trace {
 	public static class GeoUtils {
 
 		static int GET_LOCATION_TIMEOUT = 1500;
-		// Default position is centered in Europe.
-		static Position prevLocation = new Position { Longitude = 15.2551, Latitude = 54.526 };
+		static Position prevLocation = new Position { Longitude = 0D, Latitude = 0D };
 
 		/// <summary>
 		/// Attempts to get the user location within a specified timeout.
@@ -18,18 +17,18 @@ namespace Trace {
 		public static async Task<Position> GetCurrentUserLocation() {
 			Position location;
 			var locator = CrossGeolocator.Current;
-			//var prevAccuracy = locator.DesiredAccuracy;
-			//locator.DesiredAccuracy = Geolocator.LOCATOR_GOOD_ACCURACY;
+			var prevAccuracy = locator.DesiredAccuracy;
+			locator.DesiredAccuracy = Geolocator.LOCATOR_GOOD_ACCURACY;
 
 			try {
 				prevLocation = location = await locator.GetPositionAsync(GET_LOCATION_TIMEOUT);
 			}
 			catch(Exception) {
-				//locator.DesiredAccuracy = prevAccuracy;
+				locator.DesiredAccuracy = prevAccuracy;
 				return prevLocation;
 			}
 
-			//locator.DesiredAccuracy = prevAccuracy;
+			locator.DesiredAccuracy = prevAccuracy;
 			return location;
 		}
 

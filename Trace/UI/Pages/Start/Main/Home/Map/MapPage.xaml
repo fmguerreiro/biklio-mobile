@@ -55,22 +55,6 @@
 			Grid.Column="0"
 			Grid.RowSpan="5"
 			Grid.ColumnSpan="2" />
-		<Label
-			x:Name="currentActivityLabel"
-			Text="{Binding LocalizedActivity}"
-			HorizontalTextAlignment="Center"
-			Margin="0"
-			IsVisible="true"
-			BackgroundColor="{StaticResource SecondaryColor}"
-			Grid.Row="0"
-			Grid.Column="0"
-			Grid.ColumnSpan="2"
-			TextColor="{StaticResource SecondaryTextColor}"
-			VerticalTextAlignment="Center">
-		</Label>
-		<Label.BindingContext>
-			<locals:CurrentActivity />
-		</Label.BindingContext>
 		<Button
 			Clicked="OnLocateUser"
 			BackgroundColor="{StaticResource PrimaryColor}"
