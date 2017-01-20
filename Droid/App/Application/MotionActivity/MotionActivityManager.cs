@@ -22,7 +22,7 @@ namespace Trace.Droid {
 		static internal GoogleApiHandler gApiHandler = new GoogleApiHandler();
 
 		// TODO likely to be removed -- not needed
-		static public ActivityDetectionBroadcastReceiver BroadcastReceiver;
+		//static public ActivityDetectionBroadcastReceiver BroadcastReceiver;
 
 		/// <summary>
 		/// Intent message sent to DetectedActivitiesIntentService whenever motion detection data is obtained.
@@ -221,17 +221,6 @@ namespace Trace.Droid {
 
 		#region Utility
 		public static ActivityType ActivityToType(DetectedActivity activity) {
-			switch(activity.Type) {
-				case DetectedActivity.OnBicycle: return ActivityType.Cycling;
-				case DetectedActivity.Running: return ActivityType.Running;
-				case DetectedActivity.Walking: return ActivityType.Walking;
-				case DetectedActivity.InVehicle: return ActivityType.Automative;
-				case DetectedActivity.Still: return ActivityType.Stationary;
-				default: return ActivityType.Unknown;
-			}
-		}
-
-		public static ActivityType ActivityToType(Android.Gms.Location.DetectedActivity activity) {
 			switch(activity.Type) {
 				case DetectedActivity.OnBicycle: return ActivityType.Cycling;
 				case DetectedActivity.Running: return ActivityType.Running;

@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Threading.Tasks;
 using Plugin.Geolocator.Abstractions;
 using SQLite;
 
@@ -110,6 +111,16 @@ namespace Trace {
 		public Dictionary<long, Checkpoint> Checkpoints {
 			get { if(checkpoints == null) { checkpoints = new Dictionary<long, Checkpoint>(); } return checkpoints; }
 			set { checkpoints = value ?? new Dictionary<long, Checkpoint>(); }
+		}
+
+
+		public async Task<IList<Checkpoint>> GetOrderedCheckpointsAsync() {
+			return await Task.Run(() => Checkpoints.Values.OrderBy((x) => x.DistanceToUser).ToList());
+		}
+
+		// Returns a list of the user's favorite checkpoints ordered by distance to the user.
+		public async Task<IList<Checkpoint>> GetFavoriteCheckpointsAsync() {
+			return await Task.Run(() => Checkpoints.Values.Where((x) => x.IsUserFavorite).OrderBy((x) => x.DistanceToUser).ToList());
 		}
 
 

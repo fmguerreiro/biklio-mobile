@@ -254,7 +254,6 @@
     <Compile Include="App\Renderers\OAuth\FacebookOAuthPageRenderer.cs" />
     <Compile Include="App\Renderers\OAuth\GoogleOAuthPageRenderer.cs" />
     <Compile Include="App\Application\MotionActivity\DetectedActivitiesService.cs" />
-    <Compile Include="App\Application\MotionActivity\DetectedActivity.cs" />
     <Compile Include="App\Application\MotionActivity\GoogleApiHandler.cs" />
     <Compile Include="App\Application\MotionActivity\ActivityDetectionBroadcastReceiver.cs" />
   </ItemGroup>
@@ -311,6 +310,8 @@
     <AndroidResource Include="Resources\drawable\tutorial__tutorial_part2.png" />
     <AndroidResource Include="Resources\drawable\tutorial__tutorial_part3.png" />
     <AndroidResource Include="Resources\drawable\tutorial__tutorial_part4.png" />
+    <AndroidResource Include="Resources\drawable\checkpointdetails__star.png" />
+    <AndroidResource Include="Resources\drawable\checkpointdetails__star_outline.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App\" />

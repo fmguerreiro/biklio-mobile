@@ -355,6 +355,9 @@
     <BundleResource Include="Resources\tutorial__tutorial_part2.png" />
     <BundleResource Include="Resources\tutorial__tutorial_part3.png" />
     <BundleResource Include="Resources\tutorial__tutorial_part4.png" />
+    <BundleResource Include="Resources\checkpointdetails__star.png" />
+    <BundleResource Include="Resources\checkpointdetails__star_outline.png" />
+    <BundleResource Include="Resources\checkpointlist__star_half.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
   <Import Project="..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" />

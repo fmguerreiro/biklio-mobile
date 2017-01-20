@@ -17,14 +17,20 @@ namespace Trace {
 		// Reference to the map page in order to update pins when challenges are updated.
 		MapPage mapPage;
 
+		//static readonly object updateListLock = new object();
+		bool shouldFilterByFavorites = false;
+
+
 		public CheckpointListPage(MapPage mapPage) {
 			InitializeComponent();
 			if(Device.OS == TargetPlatform.iOS) { Icon = "challengelist__trophy.png"; }
 			this.mapPage = mapPage;
 
-			// Show the checkpoints saved on the device.
-			var orderedCheckpointList = User.Instance.Checkpoints.Values.ToList().OrderBy((x) => x.DistanceToUser).ToList();
-			BindingContext = new CheckpointVM { Checkpoints = orderedCheckpointList };
+			// Show the checkpoints saved on the device. Initialize the list in the background to lighten load on UI thread.
+			Task.Run(async () => {
+				var orderedCheckpointList = await User.Instance.GetOrderedCheckpointsAsync();
+				BindingContext = new CheckpointListModel { Checkpoints = orderedCheckpointList.Select((x) => new CheckpointViewModel(x)).ToList() };
+			}).DoNotAwait();
 		}
 
 
@@ -34,11 +40,9 @@ namespace Trace {
 		/// </summary>
 		/// <param name="sender">The listview.</param>
 		/// <param name="e">E.</param>
-		async void OnRefresh(object sender, EventArgs e) {
+		void OnRefresh(object sender, EventArgs e) {
 			var list = (ListView) sender;
-			await Task.Run(() => getCheckpoints());
-			list.IsRefreshing = false;
-			PullUpHintLabel.IsVisible = false;
+			Task.Run(() => getCheckpoints()).DoNotAwait();
 		}
 
 
@@ -69,7 +73,7 @@ namespace Trace {
 					//DisplayAlert(Language.ErrorFetchingChallenges, result.error, Language.Ok);
 					checkpointListView.IsRefreshing = false;
 					PullUpHintLabel.IsVisible = false;
-					BindingContext = new CheckpointVM { Checkpoints = newOrderedList };
+					BindingContext = new CheckpointListModel { Checkpoints = newOrderedList.Select((x) => new CheckpointViewModel(x)).ToList() };
 				});
 				return;
 			}
@@ -107,10 +111,12 @@ namespace Trace {
 
 			// Finally, display available challenges.
 			//var unclaimedChallenges = User.Instance.Challenges.FindAll((x) => !x.IsClaimed);
-			var orderedResult = User.Instance.Checkpoints.Values.OrderBy((x) => x.DistanceToUser).ToList();
+			var orderedResult = await User.Instance.GetOrderedCheckpointsAsync();
 			Device.BeginInvokeOnMainThread(() => {
-				BindingContext = new CheckpointVM { Checkpoints = orderedResult };
+				BindingContext = new CheckpointListModel { Checkpoints = orderedResult.Select((x) => new CheckpointViewModel(x)).ToList() };
 				mapPage.UpdatePins();
+				checkpointListView.IsRefreshing = false;
+				PullUpHintLabel.IsVisible = false;
 			});
 		}
 
@@ -332,13 +338,26 @@ namespace Trace {
 		/// <param name="sender">Sender.</param>
 		/// <param name="e">The challenge in the listview that was clicked.</param>
 		void OnSelection(object sender, SelectedItemChangedEventArgs e) {
-			Checkpoint checkpoint = (Checkpoint) e.SelectedItem;
+			var checkpoint = (CheckpointViewModel) e.SelectedItem;
 			if(checkpoint != null) {
 				Navigation.PushAsync(new CheckpointDetailsPage(checkpoint));
 			}
 			else {
 				DisplayAlert(Language.Error, Language.ChallengeWithoutCheckpointError, Language.Ok);
 			}
+		}
+
+		async void onFilterFavorites(object sender, EventArgs e) {
+
+			IList<Checkpoint> checkpoints = null;
+			shouldFilterByFavorites = !shouldFilterByFavorites;
+			if(shouldFilterByFavorites)
+				checkpoints = await User.Instance.GetFavoriteCheckpointsAsync();
+			else
+				checkpoints = await User.Instance.GetOrderedCheckpointsAsync();
+
+			BindingContext = new CheckpointListModel { Checkpoints = checkpoints.Select((x) => new CheckpointViewModel(x)).ToList() };
+
 		}
 	}
 }

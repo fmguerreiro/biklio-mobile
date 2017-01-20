@@ -20,6 +20,9 @@ namespace Trace {
 		// Describes the type of checkpoint it is, e.g., Restaurant, Shop, Gym, etc.
 		public string Type { get; set; }
 
+		// Users can 'favorite' a shop so it is easier to search and filter in the CheckpointListPage.
+		public bool IsUserFavorite { get; set; }
+
 		private string logoURL;
 		public string LogoURL { get { return logoURL ?? "challengelist__default_shop.png"; } set { logoURL = value ?? logoURL; } }
 
@@ -98,27 +101,6 @@ namespace Trace {
 		public override string ToString() {
 			return string.Format("[Checkpoint GId->{0} UserId->{1} Name->{2} LogoURL->{3} Longitude->{4} Latitude->{5}]",
 					 			 GId, UserId, Name, LogoURL, Longitude, Latitude);
-		}
-	}
-
-
-	/// <summary>
-	/// The CheckpointVM is used to display the list of checkpoints in the and CheckpointListPage. 
-	/// It also has a header 'Summary' showing a message telling the user how many were found.
-	/// </summary>
-	class CheckpointVM {
-		public IList<Checkpoint> Checkpoints { get; set; }
-		public string Summary {
-			get {
-				int count = Checkpoints.Count;
-				if(count == 0) {
-					return Language.NoCheckpointsFound;
-				}
-				if(count != 1)
-					return Language.ThereAre + " " + count + " " + Language.CheckpointsNear;
-				else
-					return Language.OneCheckpointFound;
-			}
 		}
 	}
 }

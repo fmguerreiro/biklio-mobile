@@ -226,7 +226,6 @@
     <Compile Include="UI\Pages\Start\Main\Menu\Rewards\ClaimRewardModel.cs" />
     <Compile Include="Application\MotionActivity\ActivityEvent.cs" />
     <Compile Include="Application\MotionActivity\ActivityType.cs" />
-    <Compile Include="Application\MotionActivity\CurrentActivity.cs" />
     <Compile Include="Application\MotionActivity\IMotionActivityManager.cs" />
     <Compile Include="Application\MotionActivity\RewardEligibility\RewardEligibilityManager.cs" />
     <Compile Include="Application\MotionActivity\RewardEligibility\RewardEligibilityStateMachine.cs" />
@@ -238,6 +237,8 @@
     <Compile Include="Application\Map\TraceMap.cs" />
     <Compile Include="UI\Pages\Start\Main\Home\Map\MapPageModel.cs" />
     <Compile Include="Application\MotionActivity\ActivityData.cs" />
+    <Compile Include="UI\Pages\Start\Main\Home\Map\CurrentActivity.cs" />
+    <Compile Include="UI\Pages\Start\Main\Home\CheckpointList\CheckpointListModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Business\" />

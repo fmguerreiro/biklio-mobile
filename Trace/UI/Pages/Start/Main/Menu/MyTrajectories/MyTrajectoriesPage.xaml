@@ -12,32 +12,32 @@
 				x:Key="converter" />
 		</ResourceDictionary>
 	</ContentPage.Resources>
-	<ListView
-		ItemsSource="{Binding Trajectories}"
-		Header="{Binding Summary}"
-		SeparatorVisibility="None"
-		ItemSelected="OnSelection">
-		<ListView.HeaderTemplate>
-			<DataTemplate>
-				<StackLayout
-					Spacing="0">
-					<Label
-						FontAttributes="Bold"
-						XAlign="Center"
-						Text="{Binding .}" />
-				</StackLayout>
-			</DataTemplate>
-		</ListView.HeaderTemplate>
-		<ListView.ItemTemplate>
-			<DataTemplate>
-				<ImageCell
-					Text="{Binding Id}"
-					Detail="{Binding TotalDistanceMeters, StringFormat='{0} m'}"
-					ImageSource="{Binding WasTrackSent, Converter={StaticResource converter}}">
-				</ImageCell>
-			</DataTemplate>
-		</ListView.ItemTemplate>
-	</ListView>
 	<ContentPage.Content>
+		<ListView
+			ItemsSource="{Binding Trajectories}"
+			Header="{Binding Summary}"
+			SeparatorVisibility="None"
+			ItemSelected="OnSelection">
+			<ListView.HeaderTemplate>
+				<DataTemplate>
+					<StackLayout
+						Spacing="0">
+						<Label
+							FontAttributes="Bold"
+							XAlign="Center"
+							Text="{Binding .}" />
+					</StackLayout>
+				</DataTemplate>
+			</ListView.HeaderTemplate>
+			<ListView.ItemTemplate>
+				<DataTemplate>
+					<ImageCell
+						Text="{Binding Id}"
+						Detail="{Binding TotalDistanceMeters, StringFormat='{0} m'}"
+						ImageSource="{Binding WasTrackSent, Converter={StaticResource converter}}">
+					</ImageCell>
+				</DataTemplate>
+			</ListView.ItemTemplate>
+		</ListView>
 	</ContentPage.Content>
 </ContentPage>

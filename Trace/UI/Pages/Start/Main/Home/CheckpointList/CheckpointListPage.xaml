@@ -8,88 +8,124 @@
 	x:Class="Trace.CheckpointListPage"
 	Title="{language:Translate Challenges}">
 	<ContentPage.Content>
-		<ListView
-			CachingStrategy="RecycleElement"
-			x:Name="checkpointListView"
-			ItemsSource="{Binding Checkpoints}"
-			RowHeight="60"
-			ItemSelected="OnSelection"
-			IsPullToRefreshEnabled="true"
-			Refreshing="OnRefresh">
-			<ListView.Header>
-				<StackLayout
-					Spacing="0">
-					<Label
-						Text="{Binding Summary}"
-						LineBreakMode="NoWrap"
-						FontAttributes="Bold"
-						XAlign="Center" />
-					<Label
-						x:Name="PullUpHintLabel"
-						Text="{language:Translate PullUpToUpdate}"
-						XAlign="Center"
-						FontSize="Small" />
-				</StackLayout>
-			</ListView.Header>
-			<ListView.ItemTemplate>
-				<DataTemplate>
-					<ViewCell>
-						<Grid>
-							<Grid.RowDefinitions
-								RowSpacing="1"
-								ColumnSpacing="1">
-								<RowDefinition
-									Height="*" />
-								<RowDefinition
-									Height="*" />
-							</Grid.RowDefinitions>
-							<Grid.ColumnDefinitions>
-								<ColumnDefinition
-									Width="60" />
-								<ColumnDefinition
-									Width="2*" />
-								<ColumnDefinition
-									Width="*" />
-							</Grid.ColumnDefinitions>
-							<ffimageloading:CachedImage
-								Source="{Binding LogoURL}"
-								Margin="3"
-								DownsampleToViewSize="true"
-								Aspect="Fill"
-								Grid.Row="0"
-								Grid.Column="0"
-								ErrorPlaceholder="challengelist__default_shop.png"
-								Grid.RowSpan="2">
-							</ffimageloading:CachedImage>
-							<Label
-								Text="{Binding Name}"
-								LineBreakMode="NoWrap"
-								FontSize="15"
-								FontAttributes="Bold"
-								VerticalTextAlignment="End"
-								Grid.Row="0"
-								Grid.Column="1" />
-							<Label
-								Text="{Binding Rewards}"
-								FontSize="9"
-								TextColor="Gray"
-								Grid.Row="1"
-								Grid.Column="1" />
-							<Label
-								Text="{Binding Distance}"
-								Margin="3"
-								LineBreakMode="NoWrap"
-								TextColor="{StaticResource PrimaryColor}"
-								VerticalOptions="Center"
-								HorizontalOptions="Center"
-								Grid.Row="0"
-								Grid.Column="2"
-								Grid.RowSpan="2">
-							</Label>
-						</Grid>
-					</ViewCell>
-				</DataTemplate>
-			</ListView.ItemTemplate>
-		</ListView>
+		<Grid>
+			<Grid.RowDefinitions>
+				<RowDefinition
+					Height="*">
+				</RowDefinition>
+				<RowDefinition
+					Height="60">
+				</RowDefinition>
+			</Grid.RowDefinitions>
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition
+					Width="*">
+				</ColumnDefinition>
+				<ColumnDefinition
+					Width="60">
+				</ColumnDefinition>
+			</Grid.ColumnDefinitions>
+			<ListView
+				CachingStrategy="RecycleElement"
+				x:Name="checkpointListView"
+				ItemsSource="{Binding Checkpoints}"
+				RowHeight="60"
+				Grid.Row="0"
+				Grid.RowSpan="2"
+				Grid.Column="0"
+				Grid.ColumnSpan="2"
+				ItemSelected="OnSelection"
+				IsPullToRefreshEnabled="true"
+				Refreshing="OnRefresh">
+				<ListView.Header>
+					<StackLayout
+						Spacing="0">
+						<Label
+							Text="{Binding Summary}"
+							LineBreakMode="NoWrap"
+							FontAttributes="Bold"
+							XAlign="Center" />
+						<Label
+							x:Name="PullUpHintLabel"
+							Text="{language:Translate PullUpToUpdate}"
+							XAlign="Center"
+							FontSize="Small" />
+					</StackLayout>
+				</ListView.Header>
+				<ListView.ItemTemplate>
+					<DataTemplate>
+						<ViewCell>
+							<Grid
+								BackgroundColor="{Binding BackgroundColor}">
+								<Grid.RowDefinitions
+									RowSpacing="1"
+									ColumnSpacing="1">
+									<RowDefinition
+										Height="*" />
+									<RowDefinition
+										Height="*" />
+								</Grid.RowDefinitions>
+								<Grid.ColumnDefinitions>
+									<ColumnDefinition
+										Width="60" />
+									<ColumnDefinition
+										Width="2*" />
+									<ColumnDefinition
+										Width="*" />
+								</Grid.ColumnDefinitions>
+								<ffimageloading:CachedImage
+									Source="{Binding Checkpoint.LogoURL}"
+									Margin="3"
+									DownsampleToViewSize="true"
+									Aspect="Fill"
+									Grid.Row="0"
+									Grid.Column="0"
+									ErrorPlaceholder="challengelist__default_shop.png"
+									Grid.RowSpan="2">
+								</ffimageloading:CachedImage>
+								<Label
+									Text="{Binding Checkpoint.Name}"
+									LineBreakMode="NoWrap"
+									FontSize="15"
+									FontAttributes="Bold"
+									VerticalTextAlignment="End"
+									Grid.Row="0"
+									Grid.Column="1" />
+								<Label
+									Text="{Binding Checkpoint.Rewards}"
+									FontSize="9"
+									TextColor="Gray"
+									Grid.Row="1"
+									Grid.Column="1" />
+								<Label
+									Text="{Binding Checkpoint.Distance}"
+									Margin="3"
+									LineBreakMode="NoWrap"
+									TextColor="{StaticResource PrimaryColor}"
+									VerticalOptions="Center"
+									HorizontalOptions="Center"
+									Grid.Row="0"
+									Grid.Column="2"
+									Grid.RowSpan="2">
+								</Label>
+							</Grid>
+						</ViewCell>
+					</DataTemplate>
+				</ListView.ItemTemplate>
+			</ListView>
+			<Button
+				BackgroundColor="{StaticResource PrimaryColor}"
+				HorizontalOptions="Center"
+				VerticalOptions="Center"
+				HeightRequest="45"
+				WidthRequest="45"
+				BorderRadius="23"
+				Image="checkpointlist__star_half.png"
+				Margin="0,0,10,10"
+				Grid.Row="1"
+				Grid.Column="1"
+				Clicked="onFilterFavorites">
+			</Button>
+		</Grid>
 	</ContentPage.Content>
 </ContentPage>

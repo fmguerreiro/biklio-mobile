@@ -143,10 +143,12 @@ The user may choose at any time to silence or disable this audio option.
 If the user disables the audio, we lose the real-time notification ability.
 iPhone devices starting from version 5s carry a dedicated processor for motion updates called M7 (M8 and M10 in later devices) which continuosly records user activity. Any app can query this historical data either when the user re-opens the app or if we  register the app for region monitoring (more precise) or significant location changes (uses cell towers, less precise).
 
-Warnings
+Notes
 -------
 
-Do not update the oxyplot lib (plot drawning library) from NuGet. The current Android version adds build errors.
+- If the iOS version fails to deploy to the device, open XCode with a project with the same bundle identifier as the Xamarin.iOS project (pt.inesc.trace), go to the Info.plist, under the 'General' tab -> 'Signing' section, make sure you select 'automatically manage signing'. If you're using 'free provising', the profile will expire every week, so you must repeat this process each time.   
+- Do not update the oxyplot lib (plot drawning library) from NuGet. The current Android version adds build errors.
+
 
 Support
 -------

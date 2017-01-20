@@ -35,7 +35,7 @@
 									Width="*" />
 							</Grid.ColumnDefinitions>
 							<ffimageloading:CachedImage
-								Source="{Binding LogoURL}"
+								Source="{Binding Checkpoint.LogoURL}"
 								DownsampleToViewSize="true"
 								Aspect="AspectFit"
 								ErrorPlaceholder="challengelist__default_shop.png"
@@ -44,35 +44,46 @@
 								Grid.RowSpan="2">
 							</ffimageloading:CachedImage>
 							<Label
-								Text="{Binding Name}"
+								Text="{Binding Checkpoint.Name}"
 								VerticalTextAlignment="End"
 								LineBreakMode="NoWrap"
 								FontAttributes="Bold"
 								Grid.Row="0"
 								Grid.Column="1" />
+							<ffimageloading:CachedImage
+								Source="{Binding FavoriteImage}"
+								x:Name="favoriteStar"
+								WidthRequest="36"
+								VerticalOptions="Center"
+								HorizontalOptions="End"
+								Margin="0,0,3,0"
+								Grid.Row="0"
+								Grid.Column="1"
+								Grid.RowSpan="2">
+							</ffimageloading:CachedImage>
 							<Label
-								Text="{Binding Type}"
+								Text="{Binding Checkpoint.Type}"
 								LineBreakMode="NoWrap"
 								FontSize="Small"
 								TextColor="Gray"
 								Grid.Row="1"
 								Grid.Column="1" />
 							<Label
-								Text="{Binding AvailableHours, StringFormat={language:Translate ShopOpenBetween}}"
+								Text="{Binding Checkpoint.AvailableHours, StringFormat={language:Translate ShopOpenBetween}}"
 								LineBreakMode="NoWrap"
 								FontSize="Small"
 								Grid.Row="2"
 								Grid.Column="0"
 								Grid.ColumnSpan="2" />
 							<Label
-								Text="{Binding PhoneNumber, StringFormat={language:Translate ShopPhoneNumber}}"
+								Text="{Binding Checkpoint.PhoneNumber, StringFormat={language:Translate ShopPhoneNumber}}"
 								LineBreakMode="NoWrap"
 								FontSize="Small"
 								Grid.Row="3"
 								Grid.Column="0"
 								Grid.ColumnSpan="2" />
 							<Label
-								Text="{Binding WebsiteAddress, StringFormat={language:Translate ShopWebsite}}"
+								Text="{Binding Checkpoint.WebsiteAddress, StringFormat={language:Translate ShopWebsite}}"
 								LineBreakMode="NoWrap"
 								FontSize="Small"
 								Grid.Row="4"
@@ -89,11 +100,11 @@
 						<StackLayout
 							Margin="5">
 							<Label
-								Text="{Binding Address}"
+								Text="{Binding Checkpoint.Address}"
 								FontSize="12"
 								LineBreakMode="NoWrap" />
 							<ffimageloading:CachedImage
-								Source="{Binding MapImageURL}"
+								Source="{Binding Checkpoint.MapImageURL}"
 								DownsampleToViewSize="true"
 								HeightRequest="180"
 								Aspect="AspectFill">
@@ -108,19 +119,19 @@
 						<StackLayout
 							Margin="5">
 							<Label
-								Text="{Binding Email, StringFormat='Email: {0}'}"
+								Text="{Binding Checkpoint.Email, StringFormat='Email: {0}'}"
 								LineBreakMode="NoWrap"
 								FontSize="Small" />
 							<Label
-								Text="{Binding FacebookAddress, StringFormat='Facebook: {0}'}"
+								Text="{Binding Checkpoint.FacebookAddress, StringFormat='Facebook: {0}'}"
 								LineBreakMode="NoWrap"
 								FontSize="Small" />
 							<Label
-								Text="{Binding TwitterAddress, StringFormat='Twitter: {0}'}"
+								Text="{Binding Checkpoint.TwitterAddress, StringFormat='Twitter: {0}'}"
 								LineBreakMode="NoWrap"
 								FontSize="Small" />
 							<Label
-								Text="{Binding Description, StringFormat={language:Translate ShopDescription}}"
+								Text="{Binding Checkpoint.Description, StringFormat={language:Translate ShopDescription}}"
 								FontSize="Small" />
 						</StackLayout>
 					</ViewCell>
@@ -129,7 +140,7 @@
 					Title="{language:Translate Challenges}">
 					<ViewCell>
 						<ListView
-							ItemsSource="{Binding Challenges}">
+							ItemsSource="{Binding Checkpoint.Challenges}">
 							<ListView.ItemTemplate>
 								<DataTemplate>
 									<TextCell
