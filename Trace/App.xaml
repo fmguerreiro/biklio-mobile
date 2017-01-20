@@ -6,16 +6,36 @@
 	<Application.Resources>
 		<!-- Application resource dictionary -->
 		<ResourceDictionary>
+			<!-- Biklio colors -->
 			<Color
-				x:Key="PrimaryColor">#2fb49a</Color>
+				x:Key="PrimaryColor">#1EC35F</Color>
 			<Color
-				x:Key="SecondaryColor">#34c8ab</Color>
+				x:Key="PrimaryLightColor">#81CC45</Color>
+			<Color
+				x:Key="PrimaryDarkColor">#1EB75A</Color>
+			<Color
+				x:Key="PrimaryDarkestColor">#19A04E</Color>
+			<Color
+				x:Key="SecondaryColor">#38484F</Color>
 			<Color
 				x:Key="PrimaryTextColor">White</Color>
 			<Color
-				x:Key="SecondaryTextColor">Black</Color>
-			<Color
-				x:Key="FavoriteBackgroundColor">#F3FAB6</Color>
+				x:Key="SecondaryTextColor">#1EC35F</Color>
+			<!-- Apply custom font -->
+			<Style
+				TargetType="Label">
+				<Setter
+					Property="FontFamily">
+					<Setter.Value>
+						<OnPlatform
+							x:TypeArguments="x:String">
+							<OnPlatform.iOS>Nunito-Regular</OnPlatform.iOS>
+							<OnPlatform.Android>Nunito-Regular.ttf#Nunito-Regular
+							</OnPlatform.Android>
+						</OnPlatform>
+					</Setter.Value>
+				</Setter>
+			</Style>
 		</ResourceDictionary>
 	</Application.Resources>
 </Application>

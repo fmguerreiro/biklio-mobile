@@ -28,9 +28,9 @@ namespace Trace.Droid {
 					MOTION_DATA_UPDATE_PERIOD,
 					MotionActivityManager.ActivityDetectionPendingIntent
 				);
-			LocalBroadcastManager.GetInstance(Forms.Context).RegisterReceiver(
-				MotionActivityManager.BroadcastReceiver,
-				new IntentFilter(App.AppName + ".BROADCAST_ACTION"));
+			//LocalBroadcastManager.GetInstance(Forms.Context).RegisterReceiver(
+			//	MotionActivityManager.BroadcastReceiver,
+			//	new IntentFilter(App.AppName + ".BROADCAST_ACTION"));
 		}
 
 		public void OnConnectionSuspended(int cause) {

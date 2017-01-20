@@ -19,10 +19,8 @@ namespace Trace {
 			App.DEBUG_ActivityLog = "";
 			if(isLogout) {
 				await LoginManager.PrepareLogout();
-				var nextPage = new NavigationPage(new SignInPage());
-				nextPage.BarBackgroundColor = (Color) Application.Current.Resources["PrimaryColor"];
-				nextPage.BarTextColor = (Color) Application.Current.Resources["PrimaryTextColor"];
-				Application.Current.MainPage = nextPage;
+
+				Application.Current.MainPage = SignInPage.CreateSignInPage();
 			}
 		}
 

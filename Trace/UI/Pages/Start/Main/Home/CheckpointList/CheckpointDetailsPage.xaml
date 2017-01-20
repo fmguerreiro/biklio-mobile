@@ -33,6 +33,8 @@
 									Width="60" />
 								<ColumnDefinition
 									Width="*" />
+								<ColumnDefinition
+									Width="60" />
 							</Grid.ColumnDefinitions>
 							<ffimageloading:CachedImage
 								Source="{Binding Checkpoint.LogoURL}"
@@ -50,15 +52,22 @@
 								FontAttributes="Bold"
 								Grid.Row="0"
 								Grid.Column="1" />
+							<Button
+								Grid.Row="0"
+								Grid.Column="2"
+								HorizontalOptions="Fill"
+								VerticalOptions="Fill"
+								Clicked="onFavoriteTapped">
+							</Button>
 							<ffimageloading:CachedImage
 								Source="{Binding FavoriteImage}"
 								x:Name="favoriteStar"
 								WidthRequest="36"
 								VerticalOptions="Center"
-								HorizontalOptions="End"
+								HorizontalOptions="Center"
 								Margin="0,0,3,0"
 								Grid.Row="0"
-								Grid.Column="1"
+								Grid.Column="2"
 								Grid.RowSpan="2">
 							</ffimageloading:CachedImage>
 							<Label
@@ -74,21 +83,21 @@
 								FontSize="Small"
 								Grid.Row="2"
 								Grid.Column="0"
-								Grid.ColumnSpan="2" />
+								Grid.ColumnSpan="3" />
 							<Label
 								Text="{Binding Checkpoint.PhoneNumber, StringFormat={language:Translate ShopPhoneNumber}}"
 								LineBreakMode="NoWrap"
 								FontSize="Small"
 								Grid.Row="3"
 								Grid.Column="0"
-								Grid.ColumnSpan="2" />
+								Grid.ColumnSpan="3" />
 							<Label
 								Text="{Binding Checkpoint.WebsiteAddress, StringFormat={language:Translate ShopWebsite}}"
 								LineBreakMode="NoWrap"
 								FontSize="Small"
 								Grid.Row="4"
 								Grid.Column="0"
-								Grid.ColumnSpan="2" />
+								Grid.ColumnSpan="3" />
 						</Grid>
 					</ViewCell>
 				</TableSection>

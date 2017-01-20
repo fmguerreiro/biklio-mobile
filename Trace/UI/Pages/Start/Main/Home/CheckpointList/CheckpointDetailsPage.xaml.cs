@@ -7,6 +7,9 @@ using Xamarin.Forms.Maps;
 namespace Trace {
 
 	public partial class CheckpointDetailsPage : ContentPage {
+		void Handle_Clicked(object sender, System.EventArgs e) {
+			throw new NotImplementedException();
+		}
 
 		CheckpointViewModel checkpoint;
 
@@ -17,11 +20,7 @@ namespace Trace {
 
 			// Add favorite/unfavorite interaction with star image.
 			var starOnTap = new TapGestureRecognizer();
-			starOnTap.Tapped += (sender, e) => {
-				checkpoint.IsUserFavorite = !checkpoint.IsUserFavorite;
-				favoriteStar.Source = checkpoint.FavoriteImage;
-				SQLiteDB.Instance.SaveItem(checkpoint.Checkpoint);
-			};
+			starOnTap.Tapped += onFavoriteTapped;
 			favoriteStar.GestureRecognizers.Add(starOnTap);
 		}
 
@@ -53,6 +52,13 @@ namespace Trace {
 
 			var pos = new Position(latitude: checkpoint.Checkpoint.Latitude, longitude: checkpoint.Checkpoint.Longitude);
 			Geolocator.UpdateMap(pos);
+		}
+
+
+		void onFavoriteTapped(object sender, EventArgs e) {
+			checkpoint.IsUserFavorite = !checkpoint.IsUserFavorite;
+			favoriteStar.Source = checkpoint.FavoriteImage;
+			SQLiteDB.Instance.SaveItem(checkpoint.Checkpoint);
 		}
 	}
 }

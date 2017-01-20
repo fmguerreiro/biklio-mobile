@@ -164,10 +164,7 @@ namespace Trace {
 					await LoginManager.PrepareLogout();
 					await Application.Current.MainPage.DisplayAlert(Language.Error, Language.OAuthError, Language.Ok);
 
-					var signInPage = new NavigationPage(new SignInPage());
-					signInPage.BarBackgroundColor = (Color) App.Current.Resources["PrimaryColor"];
-					signInPage.BarTextColor = (Color) App.Current.Resources["PrimaryTextColor"];
-					Application.Current.MainPage = signInPage;
+					Application.Current.MainPage = SignInPage.CreateSignInPage();
 				});
 			}
 		}
@@ -176,6 +173,14 @@ namespace Trace {
 		// TODO use ToS page instead of Privacy policy!!
 		void onCheckTos(object sender, EventArgs e) {
 			Navigation.PushModalAsync(new PrivacyPolicyPage());
+		}
+
+
+		public static NavigationPage CreateSignInPage() {
+			var signinPage = new NavigationPage(new SignInPage());
+			signinPage.BarBackgroundColor = (Color) Application.Current.Resources["PrimaryColor"];
+			signinPage.BarTextColor = (Color) Application.Current.Resources["PrimaryTextColor"];
+			return signinPage;
 		}
 	}
 }

@@ -8,7 +8,7 @@
 	x:Class="Trace.PrivacyPolicyPage">
 	<ContentPage.Content>
 		<Grid
-			BackgroundColor="{StaticResource SecondaryColor}">
+			BackgroundColor="{StaticResource PrimaryDarkestColor}">
 			<Grid.RowDefinitions>
 				<RowDefinition
 					Height="40" />
@@ -34,7 +34,7 @@
 			</ffimageloading:CachedImage>
 			<Label
 				Text="{language:Translate PrivacyPolicy}"
-				TextColor="{StaticResource SecondaryTextColor}"
+				TextColor="{StaticResource PrimaryTextColor}"
 				Grid.Row="2"
 				HorizontalOptions="Center"
 				VerticalOptions="Start"
@@ -51,12 +51,12 @@
 						<StackLayout>
 							<Label
 								Text="{Binding Text}"
-								TextColor="{StaticResource SecondaryTextColor}"
+								TextColor="{StaticResource PrimaryTextColor}"
 								FontSize="14"
 								VerticalOptions="CenterAndExpand" />
 							<Label
 								Text="{Binding Indicator}"
-								TextColor="{StaticResource SecondaryTextColor}"
+								TextColor="{StaticResource PrimaryTextColor}"
 								HorizontalOptions="Center"
 								VerticalOptions="End" />
 						</StackLayout>
@@ -69,13 +69,12 @@
 				IsVisible="false"
 				x:Name="confirmationButton"
 				Clicked="onConfirmation"
-				BackgroundColor="{StaticResource PrimaryColor}"
-				TextColor="{StaticResource PrimaryTextColor}"
+				BackgroundColor="{StaticResource SecondaryColor}"
+				TextColor="{StaticResource SecondaryTextColor}"
 				HorizontalOptions="Center"
-				VerticalOptions="End"
-				WidthRequest="120"
-				BorderRadius="0"
-				Margin="5" />
+				VerticalOptions="Center"
+				WidthRequest="60"
+				BorderRadius="20" />
 		</Grid>
 	</ContentPage.Content>
 </ContentPage>

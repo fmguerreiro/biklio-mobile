@@ -93,5 +93,9 @@
 	<string>UIStatusBarStyleLightContent</string>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+	<key>UIAppFonts</key>
+	<array>
+		<string>fonts/Nunito-Regular.ttf</string>
+	</array>
 </dict>
 </plist>

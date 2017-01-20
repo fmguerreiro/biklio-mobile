@@ -7,7 +7,7 @@
 	xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
 	x:Class="Trace.SignInPage"
 	Title="{language:Translate SignIn}"
-	BackgroundColor="{StaticResource SecondaryColor}">
+	BackgroundColor="{StaticResource PrimaryDarkColor}">
 	<ContentPage.Padding>
 		<OnPlatform
 			x:TypeArguments="Thickness"
@@ -21,7 +21,7 @@
 			HorizontalOptions="FillAndExpand"
 			Orientation="Vertical">
 			<ffimageloading:CachedImage
-				Source="logo_name.png"
+				Source="signin__biklio_benefits.png"
 				HeightRequest="120"
 				DownsampleHeight="120"
 				HorizontalOptions="Center"
@@ -48,21 +48,21 @@
 			</Entry>
 			<Button
 				Text="{language:Translate SignIn}"
-				BackgroundColor="{StaticResource PrimaryColor}"
-				TextColor="{StaticResource PrimaryTextColor}"
-				BorderRadius="0"
+				BackgroundColor="{StaticResource SecondaryColor}"
+				TextColor="{StaticResource SecondaryTextColor}"
+				BorderRadius="20"
 				Clicked="onLogin" />
 			<Label
 				x:Name="registerLabel"
 				Text="{language:Translate DontHaveAccount}"
-				TextColor="{StaticResource SecondaryTextColor}"
+				TextColor="Black"
 				FontSize="Small"
 				VerticalOptions="Center"
 				HorizontalOptions="Center"
 				Margin="0,8,0,0" />
 			<BoxView
 				HeightRequest="1"
-				BackgroundColor="{StaticResource SecondaryTextColor}"
+				BackgroundColor="Black"
 				HorizontalOptions="FillAndExpand"
 				Margin="10">
 			</BoxView>
@@ -78,8 +78,8 @@
 					Text="{language:Translate LoginWithGoogle}"
 					TextColor="White"
 					BorderWidth="2"
-					BorderColor="{StaticResource PrimaryColor}"
-					BorderRadius="0"
+					BorderColor="{StaticResource SecondaryColor}"
+					BorderRadius="20"
 					BackgroundColor="#DD4B39"
 					Clicked="onGoogleLogin" />
 				<Button
@@ -87,8 +87,8 @@
 					Grid.Column="1"
 					TextColor="White"
 					BorderWidth="2"
-					BorderColor="{StaticResource PrimaryColor}"
-					BorderRadius="0"
+					BorderColor="{StaticResource SecondaryColor}"
+					BorderRadius="20"
 					BackgroundColor="#3B5998"
 					Clicked="onFacebookLogin" />
 			</Grid>
@@ -108,7 +108,7 @@
 					x:Name="tosWarningLabel"
 					Text="{language:Translate IAgreeToToS}"
 					FontSize="Small"
-					TextColor="{StaticResource SecondaryTextColor}"
+					TextColor="Black"
 					Grid.Column="1">
 				</Label>
 			</Grid>

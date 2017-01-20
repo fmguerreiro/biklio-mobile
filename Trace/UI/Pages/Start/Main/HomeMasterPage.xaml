@@ -9,7 +9,7 @@
 	x:Class="Trace.HomeMasterPage"
 	Title="{language:Translate Menu}"
 	Icon="home__menu.png"
-	BackgroundColor="{StaticResource SecondaryColor}">
+	BackgroundColor="{StaticResource PrimaryDarkestColor}">
 	<ContentPage.Content>
 		<StackLayout
 			VerticalOptions="FillAndExpand">

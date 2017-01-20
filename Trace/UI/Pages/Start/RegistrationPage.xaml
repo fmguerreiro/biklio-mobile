@@ -73,13 +73,13 @@
 				Text="{language:Translate Register}"
 				BackgroundColor="{StaticResource SecondaryColor}"
 				TextColor="{StaticResource SecondaryTextColor}"
-				BorderRadius="0"
+				BorderRadius="20"
 				Clicked="onRegister" />
 			<Button
 				Text="{language:Translate Cancel}"
 				BackgroundColor="{StaticResource SecondaryColor}"
 				TextColor="{StaticResource SecondaryTextColor}"
-				BorderRadius="0"
+				BorderRadius="20"
 				Clicked="onCancel" />
 		</StackLayout>
 	</ContentPage.Content>

@@ -29,10 +29,7 @@ namespace Trace {
 			InitializeComponent();
 
 			// First page of the application.
-			var firstPage = new NavigationPage(new SignInPage());
-			firstPage.BarBackgroundColor = (Color) Current.Resources["PrimaryColor"];
-			firstPage.BarTextColor = (Color) Current.Resources["PrimaryTextColor"];
-			MainPage = firstPage;
+			MainPage = SignInPage.CreateSignInPage();
 		}
 
 

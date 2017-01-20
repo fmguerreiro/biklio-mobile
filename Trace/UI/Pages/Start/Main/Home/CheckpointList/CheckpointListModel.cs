@@ -56,8 +56,20 @@ namespace Trace {
 			isUserFavorite = checkpoint.IsUserFavorite;
 		}
 
-		public string FavoriteImage { get { if(IsUserFavorite) return "checkpointdetails__star.png"; return "checkpointdetails__star_outline.png"; } }
+		public string FavoriteImage {
+			get {
+				if(IsUserFavorite)
+					return "checkpointdetails__star.png";
+				return "checkpointdetails__star_outline.png";
+			}
+		}
 
-		public Color BackgroundColor { get { if(IsUserFavorite) return (Color) Application.Current.Resources["FavoriteBackgroundColor"]; return Color.White; } }
+		public Color BackgroundColor {
+			get {
+				if(IsUserFavorite)
+					return (Color) Application.Current.Resources["PrimaryLightColor"];
+				return Color.White;
+			}
+		}
 	}
 }

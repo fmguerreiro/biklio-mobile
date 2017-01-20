@@ -34,9 +34,9 @@
 				Grid.RowSpan="2"
 				Grid.Column="0"
 				Grid.ColumnSpan="2"
-				ItemSelected="OnSelection"
+				ItemTapped="onTapped"
 				IsPullToRefreshEnabled="true"
-				Refreshing="OnRefresh">
+				Refreshing="onRefresh">
 				<ListView.Header>
 					<StackLayout
 						Spacing="0">
@@ -114,14 +114,14 @@
 				</ListView.ItemTemplate>
 			</ListView>
 			<Button
-				BackgroundColor="{StaticResource PrimaryColor}"
+				BackgroundColor="{StaticResource SecondaryColor}"
 				HorizontalOptions="Center"
 				VerticalOptions="Center"
-				HeightRequest="45"
-				WidthRequest="45"
-				BorderRadius="23"
+				HeightRequest="50"
+				WidthRequest="50"
+				BorderRadius="20"
 				Image="checkpointlist__star_half.png"
-				Margin="0,0,10,10"
+				Margin="0,0,20,20"
 				Grid.Row="1"
 				Grid.Column="1"
 				Clicked="onFilterFavorites">

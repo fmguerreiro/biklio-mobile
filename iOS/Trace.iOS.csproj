@@ -358,6 +358,10 @@
     <BundleResource Include="Resources\checkpointdetails__star.png" />
     <BundleResource Include="Resources\checkpointdetails__star_outline.png" />
     <BundleResource Include="Resources\checkpointlist__star_half.png" />
+    <BundleResource Include="Resources\signin__biklio_benefits.png" />
+    <BundleResource Include="Resources\fonts\Nunito-Regular.ttf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </BundleResource>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
   <Import Project="..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" />

@@ -40,8 +40,7 @@ namespace Trace {
 		/// </summary>
 		/// <param name="sender">The listview.</param>
 		/// <param name="e">E.</param>
-		void OnRefresh(object sender, EventArgs e) {
-			var list = (ListView) sender;
+		void onRefresh(object sender, EventArgs e) {
 			Task.Run(() => getCheckpoints()).DoNotAwait();
 		}
 
@@ -337,8 +336,8 @@ namespace Trace {
 		/// </summary>
 		/// <param name="sender">Sender.</param>
 		/// <param name="e">The challenge in the listview that was clicked.</param>
-		void OnSelection(object sender, SelectedItemChangedEventArgs e) {
-			var checkpoint = (CheckpointViewModel) e.SelectedItem;
+		void onTapped(object sender, ItemTappedEventArgs e) {
+			var checkpoint = (CheckpointViewModel) e.Item;
 			if(checkpoint != null) {
 				Navigation.PushAsync(new CheckpointDetailsPage(checkpoint));
 			}

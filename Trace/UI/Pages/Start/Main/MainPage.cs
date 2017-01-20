@@ -8,7 +8,7 @@ namespace Trace {
 		public MainPage() {
 
 			masterPage = new HomeMasterPage();
-			masterPage.ListView.ItemSelected += OnItemSelected;
+			masterPage.ListView.ItemTapped += onItemTapped;
 			Master = masterPage;
 
 			var detailPage = new NavigationPage(new HomePage());
@@ -17,8 +17,8 @@ namespace Trace {
 			Detail = detailPage;
 		}
 
-		void OnItemSelected(object sender, SelectedItemChangedEventArgs e) {
-			var item = e.SelectedItem as MasterPageItem;
+		void onItemTapped(object sender, ItemTappedEventArgs e) {
+			var item = e.Item as MasterPageItem;
 			if(item != null) {
 				var nextPage = new NavigationPage((Page) Activator.CreateInstance(item.TargetType));
 				nextPage.BarBackgroundColor = (Color) Application.Current.Resources["PrimaryColor"];

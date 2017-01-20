@@ -51,10 +51,8 @@ namespace Trace {
 							Device.BeginInvokeOnMainThread(async () => {
 								await Application.Current.MainPage.DisplayAlert(Language.Error, Language.OnlineLoginError, Language.Ok);
 								await PrepareLogout();
-								var signInPage = new NavigationPage(new SignInPage());
-								signInPage.BarBackgroundColor = (Color) App.Current.Resources["PrimaryColor"];
-								signInPage.BarTextColor = (Color) App.Current.Resources["PrimaryTextColor"];
-								Application.Current.MainPage = signInPage;
+
+								Application.Current.MainPage = SignInPage.CreateSignInPage();
 							});
 							return;
 						}
