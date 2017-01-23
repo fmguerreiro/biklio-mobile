@@ -10,6 +10,7 @@ using Google.SignIn;
 using UIKit;
 using UserNotifications;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Trace.iOS {
 	[Register("AppDelegate")]
@@ -91,22 +92,24 @@ namespace Trace.iOS {
 			base.DidEnterBackground(uiApplication);
 			var isUserLoggedIn = WebServerLoginManager.IsOfflineLoggedIn;
 			if(CLLocationManager.LocationServicesEnabled && isUserLoggedIn && !User.Instance.IsBackgroundAudioEnabled) {
-				Debug.WriteLine($"DidEnterBackground() -> starting significant motion changes monitoring");
-				locationManager.StartMonitoringSignificantLocationChanges();
-				// On location change, check motion history to see if user is eligible.
-				locationManager.LocationsUpdated += (o, e) => {
-					//var tempQueue = new NSOperationQueue();
-					var now = NSDate.Now;
-					Debug.WriteLine($"Location change received: {now}");
-					processMotionData(now);
-					Debug.WriteLine($"do i get here?: {now}");
-					prevDate = now;
-				};
+				Task.Run(() => {
+					Debug.WriteLine($"DidEnterBackground() -> starting significant motion changes monitoring");
+					locationManager.StartMonitoringSignificantLocationChanges();
+					// On location change, check motion history to see if user is eligible.
+					locationManager.LocationsUpdated += (o, e) => {
+						//var tempQueue = new NSOperationQueue();
+						var now = NSDate.Now;
+						Debug.WriteLine($"Location change received: {now}");
+						processMotionData(now);
+						Debug.WriteLine($"do i get here?: {now}");
+						prevDate = now;
+					};
+				});
 			}
 		}
 
 
-		public override void WillEnterForeground(UIApplication application) {
+		public override void WillEnterForeground(UIApplication uiApplication) {
 			var isUserLoggedIn = WebServerLoginManager.IsOfflineLoggedIn;
 			if(CLLocationManager.LocationServicesEnabled && isUserLoggedIn && !User.Instance.IsBackgroundAudioEnabled) {
 				locationManager.StopMonitoringSignificantLocationChanges();

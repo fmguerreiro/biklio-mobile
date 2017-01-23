@@ -29,9 +29,6 @@ namespace Trace {
 			if(username != null || DependencyService.Get<ICredentialsStore>().OAuthExists()) {
 				tosSwitch.IsToggled = true;
 			}
-			else {
-				Navigation.PushModalAsync(new PrivacyPolicyPage()); // TODO change this to ToS page
-			}
 		}
 
 
@@ -59,12 +56,31 @@ namespace Trace {
 			string storedPassword = DependencyService.Get<ICredentialsStore>().GetPassword(username);
 			bool doesPasswordMatch = storedPassword != null && storedPassword.Equals(password);
 			if(!doesUsernameExist || !doesPasswordMatch) {
-				await DisplayAlert(Language.Warning, Language.LocalIncorrectCredentialsWarning, Language.Yes, Language.No);
-				await WebServerLoginManager.TryLogin(isCredentialsLogin: true);
-				if(!WebServerLoginManager.IsLoginVerified) {
-					await DisplayAlert(Language.Error, Language.LoginError, Language.Ok);
-					return;
+				bool shouldTry = await DisplayAlert(Language.Warning, Language.LocalIncorrectCredentialsWarning, Language.Yes, Language.No);
+				if(shouldTry) {
+					User.Instance.Username = username;
+					User.Instance.Password = password;
+					var isSuccess = await WebServerLoginManager.LoginWithCredentials() ?? false;
+					if(!isSuccess) {
+						Debug.WriteLine($"2 -> {WebServerLoginManager.IsLoginVerified}");
+						await DisplayAlert(Language.Error, Language.LoginError, Language.Ok);
+						return;
+					}
+					else {
+						WebServerLoginManager.IsLoginVerified = true;
+
+						new WebServerClient().SendKPIs(User.Instance.GetFinishedKPIs()).DoNotAwait();
+
+						AutoLoginManager.MostRecentLoginType = LoginType.Normal;
+						SQLiteDB.Instance.SaveAutoLoginConfig();
+
+						DependencyService.Get<ICredentialsStore>().SaveCredentials(username, password);
+						SQLiteDB.Instance.InstantiateUser(username);
+						Application.Current.MainPage = new MainPage();
+						return;
+					}
 				}
+				else return;
 			}
 
 			// Remember me => Store credentials in keychain.
@@ -85,7 +101,6 @@ namespace Trace {
 			AutoLoginManager.MostRecentLoginType = LoginType.Normal;
 			SQLiteDB.Instance.SaveAutoLoginConfig();
 
-			//await Task.Delay(1000);
 			Application.Current.MainPage = new MainPage();
 		}
 
@@ -165,7 +180,7 @@ namespace Trace {
 			get {
 				return new Action(async () => {
 					await Task.Delay(1000);
-					await WebServerLoginManager.PrepareLogout();
+					WebServerLoginManager.PrepareLogout();
 					await Application.Current.MainPage.DisplayAlert(Language.Error, Language.OAuthError, Language.Ok);
 
 					Application.Current.MainPage = SignInPage.CreateSignInPage();

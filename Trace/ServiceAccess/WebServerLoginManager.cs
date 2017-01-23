@@ -50,7 +50,7 @@ namespace Trace {
 							// If user credentials were wrong, send the user to sign in screen and show error message.
 							Device.BeginInvokeOnMainThread(async () => {
 								await Application.Current.MainPage.DisplayAlert(Language.Error, Language.OnlineLoginError, Language.Ok);
-								await PrepareLogout();
+								PrepareLogout();
 
 								Application.Current.MainPage = SignInPage.CreateSignInPage();
 							});
@@ -89,6 +89,7 @@ namespace Trace {
 			else if(result.error.StartsWith("404", StringComparison.Ordinal)) {
 				return null;
 			}
+			Debug.WriteLine($"1 -> {result.success}");
 			return result.success;
 		}
 
@@ -138,11 +139,11 @@ namespace Trace {
 
 
 
-		public async static Task PrepareLogout() {
+		public static void PrepareLogout() {
 			User.Instance = null;
 			RewardEligibilityManager.Instance = null;
 			IsLoginVerified = IsOfflineLoggedIn = false;
-			await CrossGeolocator.Current.StopListeningAsync();
+			CrossGeolocator.Current.StopListeningAsync().DoNotAwait();
 			DependencyService.Get<IMotionActivityManager>().StopMotionUpdates();
 			DependencyService.Get<ICredentialsStore>().DeleteAllCredentials();
 			AutoLoginManager.MostRecentLoginType = LoginType.None;

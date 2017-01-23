@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Threading.Tasks;
 using Trace.Localization;
 using Xamarin.Forms;
 
@@ -14,12 +15,14 @@ namespace Trace {
 
 		async void onLogout(object sender, EventArgs e) {
 			bool isLogout = await DisplayAlert(Language.Logout, Language.AreYouSure, Language.Yes, Language.No);
-			// TODO remove activity log on logout.
+
+			// TODO remove DEBUG_ActivityLog on logout and from mapPage.
 			await DisplayAlert("Activity Results", App.DEBUG_ActivityLog, "Ok");
 			App.DEBUG_ActivityLog = "";
-			if(isLogout) {
-				await WebServerLoginManager.PrepareLogout();
 
+			if(isLogout) {
+				WebServerLoginManager.PrepareLogout();
+				//await Task.Delay(1000);
 				Application.Current.MainPage = SignInPage.CreateSignInPage();
 			}
 		}
