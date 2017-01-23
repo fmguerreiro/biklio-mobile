@@ -27,6 +27,7 @@ namespace Trace {
 			database = DependencyService.Get<ISQLite>().GetConnection();
 			//NuclearOption();
 			database.CreateTable<User>();
+			database.CreateTable<AutoLoginManager>();
 			database.CreateTable<Trajectory>();
 			database.CreateTable<Challenge>();
 			database.CreateTable<Checkpoint>();
@@ -89,6 +90,28 @@ namespace Trace {
 				else {
 					Debug.WriteLine($"Inserting new user: {user.Username} with token:{user.IDToken}");
 					return database.Insert(user);
+				}
+			}
+		}
+
+
+		public AutoLoginManager InstantiateAutoLoginConfig() {
+			lock(locker) {
+				return (from i in database.Table<AutoLoginManager>()
+						select i).FirstOrDefault();
+			}
+		}
+
+
+		public int SaveAutoLoginConfig() {
+			lock(locker) {
+				if(AutoLoginManager.Instance.Id != 0) {
+					Debug.WriteLine($"Updating AutoLoginManager -> {AutoLoginManager.MostRecentLoginType}");
+					return database.Update(AutoLoginManager.Instance);
+				}
+				else {
+					Debug.WriteLine($"Inserting new AutoLoginManager -> {AutoLoginManager.MostRecentLoginType}");
+					return database.Insert(AutoLoginManager.Instance);
 				}
 			}
 		}

@@ -18,7 +18,7 @@ namespace Trace {
 			await DisplayAlert("Activity Results", App.DEBUG_ActivityLog, "Ok");
 			App.DEBUG_ActivityLog = "";
 			if(isLogout) {
-				await LoginManager.PrepareLogout();
+				await WebServerLoginManager.PrepareLogout();
 
 				Application.Current.MainPage = SignInPage.CreateSignInPage();
 			}

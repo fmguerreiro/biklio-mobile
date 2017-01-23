@@ -9,6 +9,7 @@ using Google.Core;
 using Google.SignIn;
 using UIKit;
 using UserNotifications;
+using System.Linq;
 
 namespace Trace.iOS {
 	[Register("AppDelegate")]
@@ -83,12 +84,14 @@ namespace Trace.iOS {
 
 		/// <summary>
 		/// When the iOS app enters background, register for cell tower change events and check if the user is eligible.
+		/// The app is given about 5 seconds of processing time.
 		/// </summary>
 		/// <param name="uiApplication">User interface application.</param>
 		public override void DidEnterBackground(UIApplication uiApplication) {
 			base.DidEnterBackground(uiApplication);
-			var isUserLoggedIn = LoginManager.IsOfflineLoggedIn;
+			var isUserLoggedIn = WebServerLoginManager.IsOfflineLoggedIn;
 			if(CLLocationManager.LocationServicesEnabled && isUserLoggedIn && !User.Instance.IsBackgroundAudioEnabled) {
+				Debug.WriteLine($"DidEnterBackground() -> starting significant motion changes monitoring");
 				locationManager.StartMonitoringSignificantLocationChanges();
 				// On location change, check motion history to see if user is eligible.
 				locationManager.LocationsUpdated += (o, e) => {
@@ -96,6 +99,7 @@ namespace Trace.iOS {
 					var now = NSDate.Now;
 					Debug.WriteLine($"Location change received: {now}");
 					processMotionData(now);
+					Debug.WriteLine($"do i get here?: {now}");
 					prevDate = now;
 				};
 			}
@@ -103,7 +107,7 @@ namespace Trace.iOS {
 
 
 		public override void WillEnterForeground(UIApplication application) {
-			var isUserLoggedIn = LoginManager.IsOfflineLoggedIn;
+			var isUserLoggedIn = WebServerLoginManager.IsOfflineLoggedIn;
 			if(CLLocationManager.LocationServicesEnabled && isUserLoggedIn && !User.Instance.IsBackgroundAudioEnabled) {
 				locationManager.StopMonitoringSignificantLocationChanges();
 				var now = NSDate.Now;
@@ -114,9 +118,12 @@ namespace Trace.iOS {
 
 
 		void processMotionData(NSDate now) {
-			var tempQueue = new NSOperationQueue();
-			activityManager.QueryActivity(start: prevDate, end: now, queue: tempQueue, handler: (activities, error) => {
-				Debug.WriteLine($"prevDate {prevDate}, now {now}, tempQueue {tempQueue?.DebugDescription}, activities {activities}");
+			var opQueue = NSOperationQueue.MainQueue;
+			var testTime = NSDate.FromTimeIntervalSinceReferenceDate(now.SecondsSinceReferenceDate - 6 * 24 * 60 * 60);
+			Debug.WriteLine($"{testTime} to {now}");
+			activityManager.QueryActivity(start: testTime, end: now, queue: opQueue, handler: (activities, error) => {
+				Debug.WriteLine($"{error}");
+				Debug.WriteLine($"prevDate {testTime}, now {now}, tempQueue {opQueue?.Description}, activities {activities?.Length}");
 				if(activities != null && activities.Length > 0) {
 					var start = activities[0].Timestamp;
 					foreach(var a in activities) {

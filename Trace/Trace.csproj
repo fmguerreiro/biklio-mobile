@@ -171,7 +171,7 @@
     <Compile Include="UI\Pages\Start\Main\Menu\Dashboard\Units\DistancePerActivity.cs" />
     <Compile Include="UI\Pages\Start\Main\Menu\Dashboard\Units\CaloriesPerActivity.cs" />
     <Compile Include="UI\Pages\Start\Main\Menu\Dashboard\Units\UnitPerActivity.cs" />
-    <Compile Include="ServiceAccess\LoginManager.cs" />
+    <Compile Include="ServiceAccess\WebServerLoginManager.cs" />
     <Compile Include="Localization\Language.Designer.cs">
       <DependentUpon>Language.resx</DependentUpon>
     </Compile>
@@ -239,6 +239,7 @@
     <Compile Include="Application\MotionActivity\ActivityData.cs" />
     <Compile Include="UI\Pages\Start\Main\Home\Map\CurrentActivity.cs" />
     <Compile Include="UI\Pages\Start\Main\Home\CheckpointList\CheckpointListModel.cs" />
+    <Compile Include="Application\AutoLoginManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Business\" />

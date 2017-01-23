@@ -60,8 +60,8 @@ namespace Trace {
 			bool doesPasswordMatch = storedPassword != null && storedPassword.Equals(password);
 			if(!doesUsernameExist || !doesPasswordMatch) {
 				await DisplayAlert(Language.Warning, Language.LocalIncorrectCredentialsWarning, Language.Yes, Language.No);
-				await LoginManager.TryLogin(isCredentialsLogin: true);
-				if(!LoginManager.IsLoginVerified) {
+				await WebServerLoginManager.TryLogin(isCredentialsLogin: true);
+				if(!WebServerLoginManager.IsLoginVerified) {
 					await DisplayAlert(Language.Error, Language.LoginError, Language.Ok);
 					return;
 				}
@@ -77,10 +77,13 @@ namespace Trace {
 			// Used later for background login when user has internet connection.
 			User.Instance.Password = password;
 
-			LoginManager.TryLogin(isCredentialsLogin: true).DoNotAwait();
+			WebServerLoginManager.TryLogin(isCredentialsLogin: true).DoNotAwait();
 
 			// Record login event.
 			User.Instance.GetCurrentKPI().AddLoginEvent(TimeUtil.CurrentEpochTimeSeconds());
+
+			AutoLoginManager.MostRecentLoginType = LoginType.Normal;
+			SQLiteDB.Instance.SaveAutoLoginConfig();
 
 			//await Task.Delay(1000);
 			Application.Current.MainPage = new MainPage();
@@ -95,7 +98,7 @@ namespace Trace {
 			}
 
 			//Device.OpenUri(new Uri("http://google.com"));
-
+			AutoLoginManager.MostRecentLoginType = LoginType.GoogleOAuth;
 			OAuthConfigurationManager.SetConfig(new GoogleOAuthConfig());
 			await Navigation.PushAsync(new GoogleOAuthUIPage());
 		}
@@ -108,6 +111,7 @@ namespace Trace {
 				return;
 			}
 
+			AutoLoginManager.MostRecentLoginType = LoginType.FacebookOAuth;
 			OAuthConfigurationManager.SetConfig(new FacebookOAuthConfig());
 			await Navigation.PushAsync(new FacebookOAuthUIPage());
 		}
@@ -143,10 +147,10 @@ namespace Trace {
 					await Task.Delay(1000);
 					// Record login event.
 					Device.BeginInvokeOnMainThread(() => {
-						Debug.WriteLine("SuccessfulOAuthLogin() -> mainThread");
 						Application.Current.MainPage = new MainPage();
+						SQLiteDB.Instance.SaveAutoLoginConfig();
 						Debug.WriteLine("SuccessfulOAuthLogin() -> mainPage called");
-						LoginManager.TryLogin(isCredentialsLogin: false).DoNotAwait();
+						WebServerLoginManager.TryLogin(isCredentialsLogin: false).DoNotAwait();
 						User.Instance.GetCurrentKPI().AddLoginEvent(TimeUtil.CurrentEpochTimeSeconds());
 					});
 				});
@@ -161,7 +165,7 @@ namespace Trace {
 			get {
 				return new Action(async () => {
 					await Task.Delay(1000);
-					await LoginManager.PrepareLogout();
+					await WebServerLoginManager.PrepareLogout();
 					await Application.Current.MainPage.DisplayAlert(Language.Error, Language.OAuthError, Language.Ok);
 
 					Application.Current.MainPage = SignInPage.CreateSignInPage();

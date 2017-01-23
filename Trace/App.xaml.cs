@@ -20,16 +20,13 @@ namespace Trace {
 			Language.Culture = ci; // set the RESX for resource localization
 			DependencyService.Get<ILocalize>().SetLocale(ci); // set the Thread for locale-aware methods
 
-			// This is for checking if the language resource file is linked correctly, i.e., Language.Designer.cs
-			//var assembly = typeof(StartPage).GetTypeInfo().Assembly;
-			//foreach(var res in assembly.GetManifestResourceNames()) {
-			//	System.Diagnostics.Debug.WriteLine("found resource: " + res);
-			//}
-
 			InitializeComponent();
 
+			// Auto-login using previous credentials entered.
+			SQLiteDB.Instance.InstantiateAutoLoginConfig();
+
 			// First page of the application.
-			MainPage = SignInPage.CreateSignInPage();
+			MainPage = AutoLoginManager.GetAppFirstPage();
 		}
 
 
@@ -37,7 +34,7 @@ namespace Trace {
 		/// Handle when your app starts
 		/// </summary>
 		protected override void OnStart() {
-			CrossConnectivity.Current.ConnectivityChanged += LoginManager.OnConnectivityChanged;
+			CrossConnectivity.Current.ConnectivityChanged += WebServerLoginManager.OnConnectivityChanged;
 		}
 
 
@@ -45,10 +42,10 @@ namespace Trace {
 		/// Handle when your app enters background. Runs for about 5 seconds.
 		/// </summary>
 		protected override void OnSleep() {
-			CrossConnectivity.Current.ConnectivityChanged -= LoginManager.OnConnectivityChanged;
+			CrossConnectivity.Current.ConnectivityChanged -= WebServerLoginManager.OnConnectivityChanged;
 			Geolocator.TryLowerAccuracy();
 
-			var isUserSignedIn = LoginManager.IsOfflineLoggedIn;
+			var isUserSignedIn = WebServerLoginManager.IsOfflineLoggedIn;
 			// Use either audio background if enabled or cell tower changes in iOS to fetch motion data in background (moved to AppDelegate.cs in iOS).
 			if(!Geolocator.IsTrackingInProgress && isUserSignedIn) {
 
@@ -73,15 +70,15 @@ namespace Trace {
 		/// Handle when your app resumes.
 		/// </summary>
 		protected override void OnResume() {
-			CrossConnectivity.Current.ConnectivityChanged += LoginManager.OnConnectivityChanged;
+			CrossConnectivity.Current.ConnectivityChanged += WebServerLoginManager.OnConnectivityChanged;
 
-			Geolocator.ImproveAccuracy();
+			//Geolocator.ImproveAccuracy();
 			//await Task.Delay(1000);
-			if(LoginManager.IsOfflineLoggedIn) {
+			if(WebServerLoginManager.IsOfflineLoggedIn && User.Instance.IsBackgroundAudioEnabled) {
 				DependencyService.Get<ISoundPlayer>().StopSound();
 				DependencyService.Get<ISoundPlayer>().DeactivateAudioSession();
+				Debug.WriteLine("EndAudioSession(): " + !DependencyService.Get<ISoundPlayer>().IsPlaying());
 			}
-			Debug.WriteLine("EndAudioSession(): " + !DependencyService.Get<ISoundPlayer>().IsPlaying());
 		}
 	}
 }

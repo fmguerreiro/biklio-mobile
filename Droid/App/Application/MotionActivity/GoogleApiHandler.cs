@@ -1,11 +1,8 @@
-﻿using System;
-using Android.Content;
-using Android.Gms.Common;
+﻿using Android.Gms.Common;
 using Android.Gms.Common.Apis;
 using Android.Gms.Location;
 using Android.OS;
-using Android.Support.V4.Content;
-using Xamarin.Forms;
+
 
 namespace Trace.Droid {
 	/// <summary>

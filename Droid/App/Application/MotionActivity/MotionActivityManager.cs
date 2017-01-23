@@ -86,7 +86,7 @@ namespace Trace.Droid {
 			if(GoogleApiHandler.GApiClient.IsConnected) {
 				GoogleApiHandler.GApiClient.Disconnect();
 			}
-			if(!LoginManager.IsOfflineLoggedIn) {
+			if(!WebServerLoginManager.IsOfflineLoggedIn) {
 				//DetectedActivitiesService.UserId = 0;
 				//// Unregister service.
 				//Forms.Context.StopService(new Intent(Forms.Context, typeof(DetectedActivitiesService)));

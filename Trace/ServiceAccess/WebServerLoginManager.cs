@@ -11,7 +11,7 @@ namespace Trace {
 	/// <summary>
 	/// This class handles online login with the WebServer in the background after the user has passed offline login.
 	/// </summary>
-	public static class LoginManager {
+	public static class WebServerLoginManager {
 
 		public static bool IsOfflineLoggedIn { get; set; }
 		public static bool IsLoginVerified { get; set; }
@@ -145,6 +145,8 @@ namespace Trace {
 			await CrossGeolocator.Current.StopListeningAsync();
 			DependencyService.Get<IMotionActivityManager>().StopMotionUpdates();
 			DependencyService.Get<ICredentialsStore>().DeleteAllCredentials();
+			AutoLoginManager.MostRecentLoginType = LoginType.None;
+			SQLiteDB.Instance.SaveAutoLoginConfig();
 		}
 	}
 }
