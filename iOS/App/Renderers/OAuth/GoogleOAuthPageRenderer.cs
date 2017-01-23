@@ -81,7 +81,7 @@ namespace Trace.iOS {
 			//});
 		}
 
-		public override void ViewDidLoad() {
+		public override async void ViewDidLoad() {
 			base.ViewDidLoad();
 
 			// Assign the SignIn Delegates to receive callbacks
@@ -101,8 +101,9 @@ namespace Trace.iOS {
 			}
 			Debug.WriteLine("GoogleOAuthPageRenderer.ViewDidLoad(): New user, using google oauth.");
 
-			// Sign the user in automatically
-			// TODO never called on actual device
+			// HACK not sure why this works, but thank the lord.
+			await Task.Delay(1000);
+
 			SignIn.SharedInstance.SignInUser();
 			//SignIn.SharedInstance.SignInUserSilently();
 		}

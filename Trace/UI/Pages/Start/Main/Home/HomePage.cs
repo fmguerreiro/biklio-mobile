@@ -31,7 +31,7 @@ namespace Trace {
 			// Show tutorial to user on first login.
 			if(User.Instance.IsFirstLogin) {
 				Device.BeginInvokeOnMainThread(async () => {
-					await Task.Delay(1000); // await this page to load first.
+					await Task.Delay(1500); // await this page to load first.
 					await Navigation.PushModalAsync(new TutorialPage());
 				});
 			}
