@@ -67,10 +67,14 @@ namespace Trace {
 		public int SearchRadius { get; set; } = 100; // kilometers
 
 
-		public string BackgroundIneligibleSoundSetting { get; set; } = "bike_bell.wav";
-		public string BycicleEligibleSoundSetting { get; set; } = "bike_no_pedaling.aiff";
-		public string CongratulatorySoundSetting { get; set; } = "bike_bell.wav";
-		public string NoLongerEligibleSoundSetting { get; set; } = "clapping.wav";
+		public string WalkingSoundSetting { get; set; } = "walking_pavement.mp3";
+		public string RunningSoundSetting { get; set; } = "running_pavement.mp3";
+		public string CyclingSoundSetting { get; set; } = "bike_no_pedaling.mp3";
+		public string VehicularSoundSetting { get; set; } = "spaceship_idle.mp3";
+		public string StationarySoundSetting { get; set; } = "silence.mp3";
+
+		public string CongratulatorySoundSetting { get; set; } = "bike_bell.mp3";
+		public string NoLongerEligibleSoundSetting { get; set; } = "clapping.mp3";
 
 
 		public bool IsFirstLogin { get; set; } = true;

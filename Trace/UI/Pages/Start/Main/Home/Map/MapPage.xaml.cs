@@ -48,6 +48,7 @@ namespace Trace {
 			DependencyService.Get<IMotionActivityManager>().StartMotionUpdates((activity) => {
 				if(activity != ActivityType.Unknown) {
 					currentActivity.ActivityType = activity;
+					Debug.WriteLine(DateTime.Now + ": " + activity);
 					App.DEBUG_ActivityLog += DateTime.Now + ": " + activity + "\n";
 					// TODO use activity confidence as well
 					RewardEligibilityManager.Instance.Input(activity);
@@ -66,16 +67,18 @@ namespace Trace {
 
 
 		// Center map on user position when page displays.
-		protected override async void OnAppearing() {
+		protected override void OnAppearing() {
 			Debug.WriteLine("MapPage.OnAppearing()");
 			base.OnAppearing();
 			if(ShouldCenterOnUser) {
-				var toastCfg = new ToastConfig(Language.FetchUserLocation) {
-					Duration = new TimeSpan(0, 0, 2)
-				};
-				UserDialogs.Instance.Toast(toastCfg);
-				var userLocation = await GeoUtils.GetCurrentUserLocation();
-				Locator.UpdateMap(userLocation);
+				//DependencyService.Get<TraceMapRenderer>().CenterOnUser();
+				//map.CenterOnUser();
+				//	var toastCfg = new ToastConfig(Language.FetchUserLocation) {
+				//		Duration = new TimeSpan(0, 0, 2)
+				//	};
+				//	UserDialogs.Instance.Toast(toastCfg);
+				//	var userLocation = await GeoUtils.GetCurrentUserLocation();
+				//	Locator.UpdateMap(userLocation);
 			}
 			ShouldCenterOnUser = true; // Next time center on user.
 		}
@@ -83,11 +86,12 @@ namespace Trace {
 
 		async void OnLocateUser(object send, EventArgs eventArgs) {
 			var toastCfg = new ToastConfig(Language.FetchUserLocation) {
-				Duration = new TimeSpan(0, 0, 2)
+				Duration = new TimeSpan(0, 0, 5)
 			};
 			UserDialogs.Instance.Toast(toastCfg);
-			var pos = await GeoUtils.GetCurrentUserLocation();
+			var pos = await GeoUtils.GetCurrentUserLocation(timeout: 5000);
 			Geolocator.UpdateMap(new Position(latitude: pos.Latitude, longitude: pos.Longitude));
+			//map.CenterOnUser();
 		}
 
 

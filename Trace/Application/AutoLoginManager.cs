@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Linq;
+using System.Threading.Tasks;
 using SQLite;
 using Xamarin.Auth;
 using Xamarin.Forms;
@@ -9,19 +10,27 @@ namespace Trace {
 	/// <summary>
 	/// Responsible for logging the user in using the most recent login info used.
 	/// </summary>
-	public class AutoLoginManager : DatabaseEntityBase {
+	public class AutoLoginManager {
 
-		static AutoLoginManager instance;
-		[Ignore]
-		public static AutoLoginManager Instance {
+		public static LoginType MostRecentLoginType {
 			get {
-				if(instance == null) { instance = new AutoLoginManager(); }
-				return instance;
+				if(Application.Current.Properties.ContainsKey("login_type")) {
+					var _ = Application.Current.Properties["login_type"];
+					return (LoginType) _;
+				}
+				else {
+					Application.Current.Properties["login_type"] = 0;
+					return (LoginType) Application.Current.Properties["login_type"];
+				}
 			}
-			set { instance = value; }
+			// Note: the enum is cast to an 'int' because the 'properties' dict will fail silently with non-standard types.
+			set {
+				Application.Current.Properties["login_type"] = (int) value;
+				Task.Run(async () => {
+					await Application.Current.SavePropertiesAsync();
+				});
+			}
 		}
-
-		public static LoginType MostRecentLoginType { get; set; }
 
 
 		public static Page GetAppFirstPage() {
@@ -60,16 +69,15 @@ namespace Trace {
 			}
 			else {
 				MostRecentLoginType = LoginType.None;
-				SQLiteDB.Instance.SaveAutoLoginConfig();
 				return SignInPage.CreateSignInPage();
 			}
 		}
 	}
 
 	public enum LoginType {
-		None,
-		Normal,
-		GoogleOAuth,
-		FacebookOAuth
+		None = 0,
+		Normal = 1,
+		GoogleOAuth = 2,
+		FacebookOAuth = 3
 	}
 }

@@ -287,6 +287,7 @@
     <Folder Include="App\Renderers\" />
     <Folder Include="App\Renderers\Map\" />
     <Folder Include="App\Renderers\OAuth\" />
+    <Folder Include="Resources\sounds\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
@@ -317,10 +318,6 @@
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="GoogleService-Info.plist" />
-    <BundleResource Include="Resources\sounds\bike_bell.wav" />
-    <BundleResource Include="Resources\sounds\bike_no_pedaling.aiff" />
-    <BundleResource Include="Resources\sounds\silence.wav" />
-    <BundleResource Include="Resources\sounds\clapping.wav" />
     <BundleResource Include="Resources\ic_launcher_motion_58x.png" />
     <BundleResource Include="Resources\activitymodes__cycling.png" />
     <BundleResource Include="Resources\activitymodes__driving.png" />
@@ -362,6 +359,19 @@
     <BundleResource Include="Resources\fonts\Nunito-Regular.ttf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </BundleResource>
+    <BundleResource Include="Resources\sounds\bike_bell.mp3" />
+    <BundleResource Include="Resources\sounds\bike_no_pedaling.mp3" />
+    <BundleResource Include="Resources\sounds\bike_pedal.mp3" />
+    <BundleResource Include="Resources\sounds\clapping.mp3" />
+    <BundleResource Include="Resources\sounds\forest_birds.mp3" />
+    <BundleResource Include="Resources\sounds\light_rain.mp3" />
+    <BundleResource Include="Resources\sounds\running_leaves.mp3" />
+    <BundleResource Include="Resources\sounds\running_pavement.mp3" />
+    <BundleResource Include="Resources\sounds\silence.mp3" />
+    <BundleResource Include="Resources\sounds\spaceship_idle.mp3" />
+    <BundleResource Include="Resources\sounds\walking_grass.mp3" />
+    <BundleResource Include="Resources\sounds\walking_pavement.mp3" />
+    <BundleResource Include="Resources\sounds\wind.mp3" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
   <Import Project="..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" />

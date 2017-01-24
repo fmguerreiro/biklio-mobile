@@ -72,7 +72,6 @@ namespace Trace {
 						new WebServerClient().SendKPIs(User.Instance.GetFinishedKPIs()).DoNotAwait();
 
 						AutoLoginManager.MostRecentLoginType = LoginType.Normal;
-						SQLiteDB.Instance.SaveAutoLoginConfig();
 
 						DependencyService.Get<ICredentialsStore>().SaveCredentials(username, password);
 						SQLiteDB.Instance.InstantiateUser(username);
@@ -99,7 +98,6 @@ namespace Trace {
 			User.Instance.GetCurrentKPI().AddLoginEvent(TimeUtil.CurrentEpochTimeSeconds());
 
 			AutoLoginManager.MostRecentLoginType = LoginType.Normal;
-			SQLiteDB.Instance.SaveAutoLoginConfig();
 
 			Application.Current.MainPage = new MainPage();
 		}
@@ -163,7 +161,6 @@ namespace Trace {
 					// Record login event.
 					Device.BeginInvokeOnMainThread(() => {
 						Application.Current.MainPage = new MainPage();
-						SQLiteDB.Instance.SaveAutoLoginConfig();
 						Debug.WriteLine("SuccessfulOAuthLogin() -> mainPage called");
 						WebServerLoginManager.TryLogin(isCredentialsLogin: false).DoNotAwait();
 						User.Instance.GetCurrentKPI().AddLoginEvent(TimeUtil.CurrentEpochTimeSeconds());

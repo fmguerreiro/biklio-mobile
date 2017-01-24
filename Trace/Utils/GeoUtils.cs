@@ -7,21 +7,21 @@ namespace Trace {
 
 	public static class GeoUtils {
 
-		static int GET_LOCATION_TIMEOUT = 1500;
+		const int GET_LOCATION_TIMEOUT = 1500;
 		static Position prevLocation = new Position { Longitude = 0D, Latitude = 0D };
 
 		/// <summary>
 		/// Attempts to get the user location within a specified timeout.
 		/// </summary>
 		/// <returns>The current user location.</returns>
-		public static async Task<Position> GetCurrentUserLocation() {
+		public static async Task<Position> GetCurrentUserLocation(int timeout = GET_LOCATION_TIMEOUT) {
 			Position location;
 			var locator = CrossGeolocator.Current;
 			var prevAccuracy = locator.DesiredAccuracy;
 			locator.DesiredAccuracy = Geolocator.LOCATOR_GOOD_ACCURACY;
 
 			try {
-				prevLocation = location = await locator.GetPositionAsync(GET_LOCATION_TIMEOUT);
+				prevLocation = location = await locator.GetPositionAsync(timeout);
 			}
 			catch(Exception) {
 				locator.DesiredAccuracy = prevAccuracy;

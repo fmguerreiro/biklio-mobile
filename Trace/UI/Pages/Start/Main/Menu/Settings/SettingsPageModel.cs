@@ -21,10 +21,18 @@ namespace Trace {
 			User = User.Instance;
 			Genders = Enum.GetNames(typeof(SelectedGender));
 			Sounds = new string[] {
-				"silence.wav",
-				"bike_bell.wav",
-				"bike_no_pedaling.aiff",
-				"clapping.wav"
+				"silence.mp3",
+				"bike_bell.mp3",
+				"bike_no_pedaling.mp3",
+				"bike_pedal.mp3",
+				"clapping.mp3",
+				"forest_birds.mp3",
+				"light_rain.mp3",
+				"running_leaves.mp3",
+				"running_pavement.mp3",
+				"spaceship_idle.mp3",
+				"walking_grass.mp3",
+				"walking_pavement.mp3"
 			};
 		}
 

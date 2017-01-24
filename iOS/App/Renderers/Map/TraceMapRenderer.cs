@@ -2,14 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
-using System.Threading.Tasks;
 using CoreGraphics;
 using CoreLocation;
-using FFImageLoading;
-using FFImageLoading.Forms;
 using Foundation;
 using MapKit;
-using Mono;
 using Trace;
 using Trace.iOS;
 using UIKit;
@@ -22,10 +18,12 @@ using Xamarin.Forms.Platform.iOS;
 namespace Trace.iOS {
 
 	/// <summary>
-	/// Custom renderer that shows the challenges and draws a polyline on the map to show the user's trajectory.
+	/// Custom renderer that shows the checkpoints on the map
+	/// and draws a polyline once the user finishes tracking to show the user's trajectory.
 	/// </summary>
 	public class TraceMapRenderer : MapRenderer {
 
+		MKMapView map;
 		MKPolylineRenderer polylineRenderer;
 
 		UIView customPinView;
@@ -47,7 +45,7 @@ namespace Trace.iOS {
 
 			if(e.NewElement != null) {
 				var formsMap = (TraceMap) e.NewElement;
-				var nativeMap = Control as MKMapView;
+				var nativeMap = map = Control as MKMapView;
 				customPins = formsMap.CustomPins;
 				nativeMap.GetViewForAnnotation = GetViewForAnnotation;
 				//nativeMap.CalloutAccessoryControlTapped += OnCalloutAccessoryControlTapped;
@@ -64,9 +62,21 @@ namespace Trace.iOS {
 					index++;
 				}
 
-				var routeOverlay = MKPolyline.FromCoordinates(coords);
-				nativeMap.AddOverlay(routeOverlay);
-				nativeMap.SetVisibleMapRect(fitRegionToPolyline(routeOverlay), false);
+				if(index != 0) {
+					var routeOverlay = MKPolyline.FromCoordinates(coords);
+					nativeMap.AddOverlay(routeOverlay);
+					nativeMap.SetVisibleMapRect(fitRegionToPolyline(routeOverlay), false);
+				}
+				else {
+					// Update map to show user location when it's calculated, and then remove it again so user can scroll map.
+					EventHandler<MKUserLocationEventArgs> didUpdateUserLocationHandler = null;
+					didUpdateUserLocationHandler = (object sender, MKUserLocationEventArgs userLoc) => {
+						Debug.WriteLine($"didUpdateUserLocationHandler");
+						nativeMap.CenterCoordinate = userLoc.UserLocation.Coordinate;
+						nativeMap.DidUpdateUserLocation -= didUpdateUserLocationHandler;
+					};
+					nativeMap.DidUpdateUserLocation += didUpdateUserLocationHandler;
+				}
 			}
 		}
 
@@ -171,6 +181,24 @@ namespace Trace.iOS {
 				polylineRenderer.Alpha = 0.6f;
 			}
 			return polylineRenderer;
+		}
+
+
+		public void CenterOnUser() {
+			Debug.WriteLine("do i get here=");
+			var userLoc = map?.UserLocation?.Coordinate;
+			if(userLoc != null) {
+				map.SetCenterCoordinate(map.UserLocation.Coordinate, true);
+			}
+			else {
+				Debug.WriteLine("CenterOnUser() -> User location is still null");
+			}
+			//var userLoc = map.UserLocation;
+			//var x = userLoc.Coordinate.Longitude;
+			//var y = userLoc.Coordinate.Latitude;
+			//var size = 1000; // m?
+			//var mapRect = new MKMapRect(x, y, size, size);
+			//map.SetVisibleMapRect(mapRect, false);
 		}
 
 		/// <summary>

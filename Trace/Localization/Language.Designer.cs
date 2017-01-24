@@ -917,15 +917,33 @@ namespace Trace.Localization {
             }
         }
         
-        public static string IneligibleBackground {
+        public static string StationarySoundSetting {
             get {
-                return ResourceManager.GetString("IneligibleBackground", resourceCulture);
+                return ResourceManager.GetString("StationarySoundSetting", resourceCulture);
             }
         }
         
-        public static string EligibleBackground {
+        public static string WalkingSoundSetting {
             get {
-                return ResourceManager.GetString("EligibleBackground", resourceCulture);
+                return ResourceManager.GetString("WalkingSoundSetting", resourceCulture);
+            }
+        }
+        
+        public static string RunningSoundSetting {
+            get {
+                return ResourceManager.GetString("RunningSoundSetting", resourceCulture);
+            }
+        }
+        
+        public static string CyclingSoundSetting {
+            get {
+                return ResourceManager.GetString("CyclingSoundSetting", resourceCulture);
+            }
+        }
+        
+        public static string VehicularSoundSetting {
+            get {
+                return ResourceManager.GetString("VehicularSoundSetting", resourceCulture);
             }
         }
         

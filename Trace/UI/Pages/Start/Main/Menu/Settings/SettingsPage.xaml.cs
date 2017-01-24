@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Diagnostics;
-using System.Threading.Tasks;
 using Trace.Localization;
 using Xamarin.Forms;
 
@@ -41,38 +40,26 @@ namespace Trace {
 
 		void onSoundSettingChanged(object sender, ToggledEventArgs e) {
 			User.Instance.IsBackgroundAudioEnabled = soundSettingSwitch.IsToggled;
-			Debug.WriteLine($"IsBackgroundAudioEnabled = {User.Instance.IsBackgroundAudioEnabled}");
 			SQLiteDB.Instance.SaveUser(User.Instance);
 			// Restart eligibility state machine: null -> upon next call to Instance, a new Manager is instantiated.
 			RewardEligibilityManager.Instance = null;
 		}
 
-		void onIneligibleSoundChanged(object sender, EventArgs e) {
+		void onSoundChanged(object sender, EventArgs e) {
 			var picker = (BindablePicker) sender;
 			string item = picker.Items[picker.SelectedIndex];
-			Debug.WriteLine("onIneligibleSoundChanged(): " + item);
-			User.Instance.BackgroundIneligibleSoundSetting = item;
-			SQLiteDB.Instance.SaveUser(User.Instance);
-		}
+			Debug.WriteLine($"item picked: {item}");
 
-		void onEligibleSoundChanged(object sender, EventArgs e) {
-			var picker = (BindablePicker) sender;
-			string item = picker.Items[picker.SelectedIndex];
-			User.Instance.BycicleEligibleSoundSetting = item;
-			SQLiteDB.Instance.SaveUser(User.Instance);
-		}
+			switch(picker.StyleId) {
+				case ("stationary"): User.Instance.StationarySoundSetting = item; break;
+				case ("walking"): User.Instance.WalkingSoundSetting = item; break;
+				case ("running"): User.Instance.RunningSoundSetting = item; break;
+				case ("cycling"): User.Instance.CyclingSoundSetting = item; break;
+				case ("vehicle"): User.Instance.VehicularSoundSetting = item; break;
+				case ("eligibleWarning"): User.Instance.CongratulatorySoundSetting = item; break;
+				case ("ineligibleWarning"): User.Instance.NoLongerEligibleSoundSetting = item; break;
+			}
 
-		void onCongratulatorySoundChanged(object sender, EventArgs e) {
-			var picker = (BindablePicker) sender;
-			string item = picker.Items[picker.SelectedIndex];
-			User.Instance.CongratulatorySoundSetting = item;
-			SQLiteDB.Instance.SaveUser(User.Instance);
-		}
-
-		void onNoLongerEligibleSoundChanged(object sender, EventArgs e) {
-			var picker = (BindablePicker) sender;
-			string item = picker.Items[picker.SelectedIndex];
-			User.Instance.NoLongerEligibleSoundSetting = item;
 			SQLiteDB.Instance.SaveUser(User.Instance);
 		}
 

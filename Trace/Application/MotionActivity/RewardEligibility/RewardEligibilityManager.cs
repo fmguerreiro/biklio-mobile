@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using Plugin.Geolocator.Abstractions;
 using Trace.Localization;
@@ -14,14 +15,12 @@ namespace Trace {
 	public class RewardEligibilityManager {
 		RewardEligibilityStateMachine stateMachine;
 		Dictionary<State, Action<int>> transitionGuards;
-		Timer timer;
-		Timer vehicularTimer;
+
 		Task checkNearbyCheckpointsTask;
 
+		// Events recorded for KPI.
 		long cyclingEventStart;
 
-		// Successive count threshold for transitioning between states.
-		private const int THRESHOLD = 5;
 		// Timeout threshold between 'cyclingIneligible' to 'cyclingEligible' in ms. 1,5 min.
 		private const int CYCLING_INELIGIBLE_TIMEOUT = 90 * 1000;
 		// Timeout threshold between 'unknownEligible' to 'ineligible' in ms. 12 h.
@@ -29,10 +28,19 @@ namespace Trace {
 		// Timeout threshold between 'inAVehicle' to 'ineligible' in ms. 5 min.
 		private const int VEHICULAR_TIMEOUT = 5 * 60 * 1000;
 
-		// Timers used when the device is only updated between radio tower changes (iOS w/ background audio off).
-		private int backgroundCyclingIneligibleTimer = CYCLING_INELIGIBLE_TIMEOUT;
-		private int backgroundUnknownEligibleTimer = UNKNOWN_ELIGIBLE_TIMEOUT;
-		private int backgroundVehicularTimer = VEHICULAR_TIMEOUT;
+		// When the user allows for constant background execution (either audio or GPS tracking),
+		// use timers to determine when states should transition.
+		Timer timer;
+		Timer vehicularTimer;
+
+		// Otherwise, when working in the background with periodic execution time (GSM updates),
+		// these values keep track of the time and are updated whenever the app is allowed to run.
+		private int backgroundCyclingIneligibleTimeAlloted = CYCLING_INELIGIBLE_TIMEOUT;
+		private int backgroundUnknownEligibleTimeAlloted = UNKNOWN_ELIGIBLE_TIMEOUT;
+		private int backgroundVehicularTimeAlloted = VEHICULAR_TIMEOUT;
+
+		// This value indicates whether the state machine should start timers or use the 'timeAlloted' counters.
+		private const int USING_TIMERS_FLAG = -1;
 
 		// Minimum distance between user and checkpoints for reward eligibility.
 		private readonly double CKPT_DISTANCE_THRESHOLD = 120;
@@ -40,10 +48,20 @@ namespace Trace {
 		private readonly int CHECK_NEARBY_TIMEOUT = 90 * 1000;
 		private Timer checkNearbyCheckpointsTimer;
 
+		// Counters for the number of CONSECUTIVE times an activity is obtained.
+		// When one reaches THRESHOLD, switch sound setting and transition between states (when applicable).
+		int walkingCount;
+		int runningCount;
 		int cyclingCount;
-		int nonCyclingCount;
+		int stationaryCount;
 		int vehicularCount;
+
+		int nonCyclingCount;
 		int nonVehicularCount;
+
+		// Successive count threshold for transitioning between states.
+		// On iOS, it throttles activity reports after 3 consecutive if it does not change.
+		private const int THRESHOLD = 3;
 
 		static RewardEligibilityManager instance;
 		public static RewardEligibilityManager Instance {
@@ -53,6 +71,7 @@ namespace Trace {
 			}
 			set { instance = value; }
 		}
+
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="T:Trace.RewardEligibilityManager"/> class.
@@ -69,6 +88,7 @@ namespace Trace {
 			};
 		}
 
+
 		/// <summary>
 		/// Destructor called upon dereferencing (i.e. when user logs out).
 		/// </summary>
@@ -79,6 +99,7 @@ namespace Trace {
 			stateMachine = null;
 		}
 
+
 		/// <summary>
 		/// The feedback from the motion detector goes here, passes the guard checks and goes into the state-machine.
 		/// </summary>
@@ -88,7 +109,7 @@ namespace Trace {
 			Action<int> nextAction;
 			var state = stateMachine.CurrentState;
 			transitionGuards.TryGetValue(state, out nextAction);
-			nextAction.Invoke(-1);
+			nextAction.Invoke(USING_TIMERS_FLAG);
 		}
 
 
@@ -96,32 +117,36 @@ namespace Trace {
 		/// Same as above but used sporadically by iOS devices when significant location updates occur (cell towers change).
 		/// </summary>
 		/// <param name="activity">Activity.</param>
-		public void Input(ActivityType activity, int elapsedTime) {
+		public void Input(ActivityType activity, int elapsedMilis) {
 			incrementCounters(activity);
 			Action<int> nextAction;
 			var state = stateMachine.CurrentState;
+			Debug.WriteLine($"elapsed milis: {elapsedMilis}");
 			switch(state) {
 				case State.CyclingIneligible:
-					backgroundCyclingIneligibleTimer -= elapsedTime;
+					backgroundCyclingIneligibleTimeAlloted -= elapsedMilis;
+					Debug.WriteLine($"milis remaining for cyclingEligible: {backgroundCyclingIneligibleTimeAlloted}");
 					break;
-				case State.CyclingEligible:
-					backgroundUnknownEligibleTimer -= elapsedTime;
+				case State.UnknownEligible:
+					backgroundUnknownEligibleTimeAlloted -= elapsedMilis;
+					Debug.WriteLine($"milis remaining for ineligible: {backgroundUnknownEligibleTimeAlloted}");
 					break;
 				case State.Vehicular:
-					backgroundVehicularTimer -= elapsedTime;
+					backgroundVehicularTimeAlloted -= elapsedMilis;
+					Debug.WriteLine($"milis remaining for ineligible: {backgroundVehicularTimeAlloted}");
 					break;
 			}
 
-			if(backgroundCyclingIneligibleTimer < 1 || backgroundUnknownEligibleTimer < 1 || backgroundVehicularTimer < 1) {
+			if(backgroundCyclingIneligibleTimeAlloted < 1 || backgroundUnknownEligibleTimeAlloted < 1 || backgroundVehicularTimeAlloted < 1) {
 				stateMachine.MoveNext(Command.Timeout);
 				state = stateMachine.CurrentState;
-				backgroundCyclingIneligibleTimer = CYCLING_INELIGIBLE_TIMEOUT;
-				backgroundUnknownEligibleTimer = UNKNOWN_ELIGIBLE_TIMEOUT;
-				backgroundVehicularTimer = VEHICULAR_TIMEOUT;
+				backgroundCyclingIneligibleTimeAlloted = CYCLING_INELIGIBLE_TIMEOUT;
+				backgroundUnknownEligibleTimeAlloted = UNKNOWN_ELIGIBLE_TIMEOUT;
+				backgroundVehicularTimeAlloted = VEHICULAR_TIMEOUT;
 			}
 
 			transitionGuards.TryGetValue(state, out nextAction);
-			nextAction.Invoke(elapsedTime);
+			nextAction.Invoke(elapsedMilis);
 		}
 
 
@@ -135,25 +160,61 @@ namespace Trace {
 
 
 		/// <summary>
-		/// Increments the counters depending on the activity.
-		/// Counters count SUCCESSIVE activities.
+		/// Increments the number of SUCCESSIVE activities.
+		/// When any activity counter reaches THRESHOLD value, change music in background.
 		/// </summary>
 		/// <param name="activity">Activity.</param>
 		void incrementCounters(ActivityType activity) {
-			if(activity == ActivityType.Cycling) {
-				cyclingCount++; nonVehicularCount++; nonCyclingCount = vehicularCount = 0;
-			}
-			else if(activity == ActivityType.Automative) {
-				vehicularCount++; nonCyclingCount++; cyclingCount = 0;
-			}
-			else {
-				nonCyclingCount++; nonVehicularCount++; cyclingCount = vehicularCount = 0;
+			switch(activity) {
+				case ActivityType.Stationary:
+					stationaryCount++; nonCyclingCount++; nonVehicularCount++;
+					cyclingCount = walkingCount = vehicularCount = runningCount = 0;
+					if(stationaryCount == THRESHOLD && User.Instance.IsBackgroundAudioEnabled) {
+						stationaryCount = 0;
+						DependencyService.Get<ISoundPlayer>().PlaySound(User.Instance.StationarySoundSetting);
+					}
+					return;
+				case ActivityType.Walking:
+					walkingCount++; nonCyclingCount++; nonVehicularCount++;
+					cyclingCount = runningCount = vehicularCount = stationaryCount = 0;
+					if(walkingCount == THRESHOLD && User.Instance.IsBackgroundAudioEnabled) {
+						walkingCount = 0;
+						DependencyService.Get<ISoundPlayer>().PlaySound(User.Instance.WalkingSoundSetting);
+					}
+					return;
+				case ActivityType.Running:
+					runningCount++; nonCyclingCount++; nonVehicularCount++;
+					cyclingCount = walkingCount = vehicularCount = stationaryCount = 0;
+					if(runningCount == THRESHOLD && User.Instance.IsBackgroundAudioEnabled) {
+						runningCount = 0;
+						DependencyService.Get<ISoundPlayer>().PlaySound(User.Instance.RunningSoundSetting);
+					}
+					return;
+				case ActivityType.Cycling:
+					cyclingCount++; nonVehicularCount++;
+					nonCyclingCount = walkingCount = stationaryCount = runningCount = vehicularCount = 0;
+					if(cyclingCount == THRESHOLD && User.Instance.IsBackgroundAudioEnabled) {
+						cyclingCount = 0;
+						DependencyService.Get<ISoundPlayer>().PlaySound(User.Instance.CyclingSoundSetting);
+					}
+					return;
+				case ActivityType.Automative:
+					vehicularCount++; nonCyclingCount++;
+					nonVehicularCount = stationaryCount = walkingCount = runningCount = cyclingCount = 0;
+					if(vehicularCount == THRESHOLD && User.Instance.IsBackgroundAudioEnabled) {
+						vehicularCount = 0;
+						DependencyService.Get<ISoundPlayer>().PlaySound(User.Instance.VehicularSoundSetting);
+					}
+					return;
 			}
 		}
 
 
 		void resetCounters() {
-			cyclingCount = nonCyclingCount = vehicularCount = nonVehicularCount = 0;
+			stationaryCount = walkingCount = runningCount = cyclingCount = vehicularCount = nonCyclingCount = nonVehicularCount = 0;
+			backgroundVehicularTimeAlloted = VEHICULAR_TIMEOUT;
+			backgroundCyclingIneligibleTimeAlloted = CYCLING_INELIGIBLE_TIMEOUT;
+			// The eligibleUnknownTimeAlloted is different, only reset when going to 'cyclingEligible' state from 'unknownEligible' and 'cyclingIneligible'.
 		}
 
 
@@ -164,7 +225,7 @@ namespace Trace {
 				cyclingEventStart = TimeUtil.CurrentEpochTimeSeconds();
 				stateMachine.MoveNext(Command.Cycling);
 				// Start timer -> If user continues using a bycicle for a certain time, go to: 'cyclingEligible'.
-				if(elapsedTime == -1) {
+				if(elapsedTime == USING_TIMERS_FLAG) {
 					timer = new Timer(new TimerCallback(goToCyclingEligibleCallback), null, CYCLING_INELIGIBLE_TIMEOUT);
 				}
 			}
@@ -194,11 +255,12 @@ namespace Trace {
 				stateMachine.MoveNext(Command.NotCycling);
 
 				// User likely got off bike, give an audible congratulatory sound to let her know she is eligible.
-				DependencyService.Get<ISoundPlayer>().PlayShortSound(User.Instance.CongratulatorySoundSetting, 0);
+				if(User.Instance.IsBackgroundAudioEnabled)
+					DependencyService.Get<ISoundPlayer>().PlayShortSound(User.Instance.CongratulatorySoundSetting, 0);
 
 				// Start a long timer where the user is still eligible for rewards even when not using a bycicle.
 				// If the timer goes off (the user goes too long without using a bycicle), go back to 'ineligible'.
-				if(elapsedTime == -1) {
+				if(elapsedTime == USING_TIMERS_FLAG) {
 					timer = new Timer(new TimerCallback(goToIneligibleCallback), null, UNKNOWN_ELIGIBLE_TIMEOUT);
 				}
 			}
@@ -216,7 +278,7 @@ namespace Trace {
 			if(vehicularCount > THRESHOLD) {
 				resetCounters();
 				stateMachine.MoveNext(Command.InAVehicle);
-				if(elapsedTime == -1) {
+				if(elapsedTime == USING_TIMERS_FLAG) {
 					vehicularTimer = new Timer(new TimerCallback(goToIneligibleCallback), null, VEHICULAR_TIMEOUT);
 				}
 			}
@@ -225,7 +287,8 @@ namespace Trace {
 				resetCounters();
 				cyclingEventStart = TimeUtil.CurrentEpochTimeSeconds();
 				stateMachine.MoveNext(Command.Cycling);
-				DependencyService.Get<ISoundPlayer>().PlaySound(User.Instance.BycicleEligibleSoundSetting);
+				backgroundUnknownEligibleTimeAlloted = UNKNOWN_ELIGIBLE_TIMEOUT;
+				//DependencyService.Get<ISoundPlayer>().PlayShortSound(User.Instance.BycicleEligibleSoundSetting);
 				timer.Dispose();
 			}
 		}
@@ -339,11 +402,11 @@ namespace Trace {
 			stateMachine.MoveNext(Command.Timeout);
 			Task.Run(() => checkForRewards()).DoNotAwait();
 			// Start different sound in background if needed.
-			var soundPlayer = DependencyService.Get<ISoundPlayer>();
-			if(soundPlayer.IsPlaying()) {
-				soundPlayer.StopSound();
-				soundPlayer.PlaySound(User.Instance.BycicleEligibleSoundSetting);
-			}
+			//var soundPlayer = DependencyService.Get<ISoundPlayer>();
+			//if(soundPlayer.IsPlaying() && User.Instance.IsBackgroundAudioEnabled) {
+			//	soundPlayer.StopSound();
+			//	soundPlayer.PlaySound(User.Instance.BycicleEligibleSoundSetting);
+			//}
 		}
 
 
@@ -355,7 +418,8 @@ namespace Trace {
 			stateMachine.MoveNext(Command.Timeout);
 			timer.Dispose();
 			vehicularTimer.Dispose();
-			DependencyService.Get<ISoundPlayer>().PlayShortSound(User.Instance.NoLongerEligibleSoundSetting);
+			if(User.Instance.IsBackgroundAudioEnabled)
+				DependencyService.Get<ISoundPlayer>().PlayShortSound(User.Instance.NoLongerEligibleSoundSetting);
 		}
 	}
 }

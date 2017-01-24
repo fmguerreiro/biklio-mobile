@@ -15,14 +15,19 @@ namespace Trace.iOS {
 		private static AVAudioPlayer player;
 		private static bool isActive;
 
+		private string prevSound = "silence.mp3";
 		private float musicVolume = 0.5f;
 
 
 		public void PlaySound(string sound, int loops = -1) {
+			if(!App.IsInBackground) {
+				prevSound = sound ?? prevSound;
+				return;
+			}
 
-			// Play background track if none is provided.
+			// Play previous track if none is provided.
 			if(string.IsNullOrEmpty(sound))
-				sound = getBackgroundSound();
+				sound = prevSound;
 
 			// Any existing player?
 			if(player != null) {
@@ -48,6 +53,7 @@ namespace Trace.iOS {
 			};
 			player.NumberOfLoops = loops;
 			player.Play();
+			prevSound = sound;
 		}
 
 
@@ -99,16 +105,6 @@ namespace Trace.iOS {
 			var session = AVAudioSession.SharedInstance();
 			session.SetActive(false);
 			isActive = false;
-		}
-
-
-		private string getBackgroundSound() {
-			switch(RewardEligibilityManager.Instance.GetCurrentState()) {
-				case State.CyclingEligible:
-					return User.Instance.BycicleEligibleSoundSetting;
-				default:
-					return User.Instance.BackgroundIneligibleSoundSetting;
-			}
 		}
 	}
 }

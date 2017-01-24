@@ -51,7 +51,7 @@ namespace Trace {
 		/// </summary>
 		private async Task getCheckpoints() {
 			// Get current position to fetch closest challenges
-			var position = await GeoUtils.GetCurrentUserLocation();
+			var position = await GeoUtils.GetCurrentUserLocation(timeout: 5000);
 
 			// If the user got too far from the previous position where he got the last set of challenges, reset Snapshot point.
 			await checkIfUserRequiresNewCheckpoints();

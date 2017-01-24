@@ -18,7 +18,7 @@ namespace Trace.iOS {
 
 		private CLLocationManager locationManager;
 
-		private NSDate prevDate;
+		private long prevTime; // seconds
 		private CMMotionActivityManager activityManager;
 
 		public override bool FinishedLaunching(UIApplication app, NSDictionary options) {
@@ -77,32 +77,36 @@ namespace Trace.iOS {
 			locationManager.RequestWhenInUseAuthorization(); //to access user's location when the app is in use.
 			locationManager.AllowsBackgroundLocationUpdates = true;
 			activityManager = new CMMotionActivityManager();
-			prevDate = NSDate.Now;
+			prevTime = (long) NSDate.Now.SecondsSinceReferenceDate;
 
 			return base.FinishedLaunching(app, options);
 		}
 
 
 		/// <summary>
-		/// When the iOS app enters background, register for cell tower change events and check if the user is eligible.
-		/// The app is given about 5 seconds of processing time.
+		/// When the iOS app enters background, register for cell tower change events.
+		/// When an event fires, query the motion data obtained in the meantime and update the eligibility state machine.
+		/// The app is given about 5 seconds of processing time before being suspended when entering this method.
 		/// </summary>
 		/// <param name="uiApplication">User interface application.</param>
 		public override void DidEnterBackground(UIApplication uiApplication) {
 			base.DidEnterBackground(uiApplication);
 			var isUserLoggedIn = WebServerLoginManager.IsOfflineLoggedIn;
-			if(CLLocationManager.LocationServicesEnabled && isUserLoggedIn && !User.Instance.IsBackgroundAudioEnabled) {
+			if(CLLocationManager.LocationServicesEnabled && isUserLoggedIn && !User.Instance.IsBackgroundAudioEnabled && !Geolocator.IsTrackingInProgress) {
+				// TODO this would be a good time for releasing system resources ... call preparetologout() ?
 				Task.Run(() => {
 					Debug.WriteLine($"DidEnterBackground() -> starting significant motion changes monitoring");
 					locationManager.StartMonitoringSignificantLocationChanges();
-					// On location change, check motion history to see if user is eligible.
+
+					// On location change, start background task to get enough time to process motion history.
 					locationManager.LocationsUpdated += (o, e) => {
-						//var tempQueue = new NSOperationQueue();
-						var now = NSDate.Now;
-						Debug.WriteLine($"Location change received: {now}");
-						processMotionData(now);
-						Debug.WriteLine($"do i get here?: {now}");
-						prevDate = now;
+						nint taskID = UIApplication.SharedApplication.BeginBackgroundTask(() => { });
+						new Task(() => {
+							var now = (long) NSDate.Now.SecondsSinceReferenceDate;
+							Debug.WriteLine($"Location change received: {NSDate.Now.SecondsSinceReferenceDate}");
+							processMotionData(now);
+							UIApplication.SharedApplication.EndBackgroundTask(taskID);
+						}).Start();
 					};
 				});
 			}
@@ -111,31 +115,38 @@ namespace Trace.iOS {
 
 		public override void WillEnterForeground(UIApplication uiApplication) {
 			var isUserLoggedIn = WebServerLoginManager.IsOfflineLoggedIn;
-			if(CLLocationManager.LocationServicesEnabled && isUserLoggedIn && !User.Instance.IsBackgroundAudioEnabled) {
+			if(CLLocationManager.LocationServicesEnabled && isUserLoggedIn && !User.Instance.IsBackgroundAudioEnabled && !Geolocator.IsTrackingInProgress) {
 				locationManager.StopMonitoringSignificantLocationChanges();
-				var now = NSDate.Now;
+				var now = (long) NSDate.Now.SecondsSinceReferenceDate;
 				processMotionData(now);
-				prevDate = now;
+				prevTime = now;
 			}
 		}
 
 
-		void processMotionData(NSDate now) {
+		void processMotionData(long now) {
 			var opQueue = NSOperationQueue.MainQueue;
-			var testTime = NSDate.FromTimeIntervalSinceReferenceDate(now.SecondsSinceReferenceDate - 6 * 24 * 60 * 60);
-			Debug.WriteLine($"{testTime} to {now}");
-			activityManager.QueryActivity(start: testTime, end: now, queue: opQueue, handler: (activities, error) => {
-				Debug.WriteLine($"{error}");
-				Debug.WriteLine($"prevDate {testTime}, now {now}, tempQueue {opQueue?.Description}, activities {activities?.Length}");
+			//var prevDate = NSDate.FromTimeIntervalSinceReferenceDate(now.SecondsSinceReferenceDate - 6 * 24 * 60 * 60);
+			var previousDate = NSDate.FromTimeIntervalSinceReferenceDate(prevTime);
+			var nowDate = NSDate.FromTimeIntervalSinceReferenceDate(now);
+			activityManager.QueryActivity(start: previousDate, end: nowDate, queue: opQueue, handler: (activities, error) => {
+				Debug.WriteLine($"{error?.LocalizedFailureReason}");
+				Debug.WriteLine($"prevDate: {prevTime}, now: {now}, nr. activities: {activities?.Length}, time remaining: {UIApplication.SharedApplication.BackgroundTimeRemaining}");
+				RewardEligibilityManager.Instance.Input(ActivityType.Cycling, (int) (now - prevTime) * 1000);
 				if(activities != null && activities.Length > 0) {
 					var start = activities[0].Timestamp;
+					var DEBUG_activityString = "";
 					foreach(var a in activities) {
+						Debug.WriteLine($"{a.Description}");
+						DEBUG_activityString += a.Description + "\n";
 						if(a.Confidence != CMMotionActivityConfidence.Low) {
-							var elapsed = (int) (a.Timestamp - start);
-							RewardEligibilityManager.Instance.Input(MotionActivityManager.ActivityToType(a), elapsed);
+							var elapsed = (int) (a.Timestamp - start); // TODO check if timestamp is from reference time and in secs
+							RewardEligibilityManager.Instance.Input(MotionActivityManager.ActivityToType(a), elapsed * 1000);
 						}
 					}
+					new NotificationMessage().Send("debug", "DEBUG", DEBUG_activityString, activities.Length);
 				}
+				prevTime = now;
 			});
 		}
 

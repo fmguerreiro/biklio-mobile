@@ -12,6 +12,8 @@ namespace Trace {
 
 		public static string AppName { get { return "Trace"; } }
 
+		public static bool IsInBackground;
+
 		public static string DEBUG_ActivityLog = "";
 
 		public App() {
@@ -21,9 +23,6 @@ namespace Trace {
 			DependencyService.Get<ILocalize>().SetLocale(ci); // set the Thread for locale-aware methods
 
 			InitializeComponent();
-
-			// Auto-login using previous credentials entered.
-			SQLiteDB.Instance.InstantiateAutoLoginConfig();
 
 			// First page of the application.
 			MainPage = AutoLoginManager.GetAppFirstPage();
@@ -42,6 +41,7 @@ namespace Trace {
 		/// Handle when your app enters background. Runs for about 5 seconds.
 		/// </summary>
 		protected override void OnSleep() {
+			IsInBackground = true;
 			CrossConnectivity.Current.ConnectivityChanged -= WebServerLoginManager.OnConnectivityChanged;
 			Geolocator.TryLowerAccuracy();
 
@@ -70,6 +70,7 @@ namespace Trace {
 		/// Handle when your app resumes.
 		/// </summary>
 		protected override void OnResume() {
+			IsInBackground = false;
 			CrossConnectivity.Current.ConnectivityChanged += WebServerLoginManager.OnConnectivityChanged;
 
 			//Geolocator.ImproveAccuracy();

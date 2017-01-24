@@ -8,13 +8,14 @@ namespace Trace {
 		Other // transgenders and whatnot.
 	}
 
-	public enum SelectedSound {
-		Silence,
-		BikeChain,
-		BikeBell,
-		Clapping,
-		Walking
-	}
+	// TODO not yet used
+	//public enum SelectedSound {
+	//	Silence,
+	//	BikeChain,
+	//	BikeBell,
+	//	Clapping,
+	//	Walking
+	//}
 
 
 	//public Dictionary<SelectedSound, string> SelectedSounds {

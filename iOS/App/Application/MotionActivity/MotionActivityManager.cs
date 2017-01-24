@@ -26,16 +26,18 @@ namespace Trace.iOS {
 
 
 		public void StartMotionUpdates(Action<ActivityType> handler) {
-			motionActivityMgr.StartActivityUpdates(NSOperationQueue.MainQueue, ((activity) => {
+			if(User.Instance.IsBackgroundAudioEnabled || Geolocator.IsTrackingInProgress) {
+				motionActivityMgr.StartActivityUpdates(NSOperationQueue.MainQueue, ((activity) => {
 
-				// A CMMotionActivity can have several modes set to true. We prioritize bycicle events. 
-				if(activity.Cycling) {
-					handler(ActivityType.Cycling);
-				}
-				else {
-					handler(ActivityToType(activity));
-				}
-			}));
+					// A CMMotionActivity can have several modes set to true. We prioritize bycicle events. 
+					if(activity.Cycling) {
+						handler(ActivityType.Cycling);
+					}
+					else {
+						handler(ActivityToType(activity));
+					}
+				}));
+			}
 		}
 
 
@@ -71,12 +73,7 @@ namespace Trace.iOS {
 
 
 		public async Task QueryHistoricalData(DateTime start, DateTime end) {
-			await queryHistoricalDataAsync(NSDateConverter.ToNSDate(start), NSDateConverter.ToNSDate(end));
-		}
-
-
-		async Task queryHistoricalDataAsync(NSDate startDate, NSDate endDate) {
-			var activities = await motionActivityMgr.QueryActivityAsync(startDate, endDate, NSOperationQueue.MainQueue);
+			var activities = await motionActivityMgr.QueryActivityAsync(NSDateConverter.ToNSDate(start), NSDateConverter.ToNSDate(end), NSOperationQueue.MainQueue);
 			ActivityEvents = aggregateActivitiesAsync(activities);
 		}
 

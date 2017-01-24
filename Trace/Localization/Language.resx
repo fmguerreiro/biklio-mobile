@@ -467,11 +467,20 @@ Once revoked, identifiable data such as email and name is removed within a few h
 	<data name="Sound" xml:space="preserve">
     	<value>Sound</value>
   	</data>
-	<data name="IneligibleBackground" xml:space="preserve">
-    	<value>Ineligible background</value>
+	<data name="StationarySoundSetting" xml:space="preserve">
+    	<value>Stationary</value>
   	</data>
-	<data name="EligibleBackground" xml:space="preserve">
-    	<value>Eligible background</value>
+	<data name="WalkingSoundSetting" xml:space="preserve">
+    	<value>Walking</value>
+  	</data>
+	<data name="RunningSoundSetting" xml:space="preserve">
+    	<value>Running</value>
+  	</data>
+	<data name="CyclingSoundSetting" xml:space="preserve">
+    	<value>Cycling</value>
+  	</data>
+	<data name="VehicularSoundSetting" xml:space="preserve">
+    	<value>Vehicular</value>
   	</data>
 	<data name="IneligibleWarning" xml:space="preserve">
     	<value>Ineligible warning</value>

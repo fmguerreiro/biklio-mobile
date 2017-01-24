@@ -147,7 +147,6 @@ namespace Trace {
 			DependencyService.Get<IMotionActivityManager>().StopMotionUpdates();
 			DependencyService.Get<ICredentialsStore>().DeleteAllCredentials();
 			AutoLoginManager.MostRecentLoginType = LoginType.None;
-			SQLiteDB.Instance.SaveAutoLoginConfig();
 		}
 	}
 }

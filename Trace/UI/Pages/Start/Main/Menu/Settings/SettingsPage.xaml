@@ -110,13 +110,14 @@
 							</Grid.ColumnDefinitions>
 							<Label
 								Grid.Column="1"
-								Text="{language:Translate IneligibleBackground}"
+								Text="{language:Translate StationarySoundSetting}"
 								LineBreakMode="TailTruncation" />
 							<local:BindablePicker
 								Grid.Column="2"
-								SelectedIndexChanged="onIneligibleSoundChanged"
-								Title="{Binding User.BackgroundIneligibleSoundSetting}"
-								SelectedValue="{Binding User.BackgroundIneligibleSoundSetting, Mode=TwoWay}"
+								StyleId="stationary"
+								SelectedIndexChanged="onSoundChanged"
+								Title="{Binding User.StationarySoundSetting}"
+								SelectedValue="{Binding User.StationarySoundSetting, Mode=TwoWay}"
 								ItemsSource="{Binding Sounds}" />
 						</Grid>
 					</ViewCell>
@@ -132,13 +133,83 @@
 							</Grid.ColumnDefinitions>
 							<Label
 								Grid.Column="1"
-								Text="{language:Translate EligibleBackground}"
+								Text="{language:Translate WalkingSoundSetting}"
 								LineBreakMode="TailTruncation" />
 							<local:BindablePicker
 								Grid.Column="2"
-								SelectedIndexChanged="onEligibleSoundChanged"
-								Title="{Binding User.BycicleEligibleSoundSetting}"
-								SelectedValue="{Binding User.BycicleEligibleSoundSetting, Mode=TwoWay}"
+								StyleId="walking"
+								SelectedIndexChanged="onSoundChanged"
+								Title="{Binding User.WalkingSoundSetting}"
+								SelectedValue="{Binding User.WalkingSoundSetting, Mode=TwoWay}"
+								ItemsSource="{Binding Sounds}" />
+						</Grid>
+					</ViewCell>
+					<ViewCell>
+						<Grid>
+							<Grid.ColumnDefinitions>
+								<ColumnDefinition
+									Width="10" />
+								<ColumnDefinition
+									Width="150" />
+								<ColumnDefinition
+									Width="*" />
+							</Grid.ColumnDefinitions>
+							<Label
+								Grid.Column="1"
+								Text="{language:Translate RunningSoundSetting}"
+								LineBreakMode="TailTruncation" />
+							<local:BindablePicker
+								Grid.Column="2"
+								StyleId="running"
+								SelectedIndexChanged="onSoundChanged"
+								Title="{Binding User.RunningSoundSetting}"
+								SelectedValue="{Binding User.RunningSoundSetting, Mode=TwoWay}"
+								ItemsSource="{Binding Sounds}" />
+						</Grid>
+					</ViewCell>
+					<ViewCell>
+						<Grid>
+							<Grid.ColumnDefinitions>
+								<ColumnDefinition
+									Width="10" />
+								<ColumnDefinition
+									Width="150" />
+								<ColumnDefinition
+									Width="*" />
+							</Grid.ColumnDefinitions>
+							<Label
+								Grid.Column="1"
+								Text="{language:Translate CyclingSoundSetting}"
+								LineBreakMode="TailTruncation" />
+							<local:BindablePicker
+								Grid.Column="2"
+								StyleId="cycling"
+								SelectedIndexChanged="onSoundChanged"
+								Title="{Binding User.CyclingSoundSetting}"
+								SelectedValue="{Binding User.CyclingSoundSetting, Mode=TwoWay}"
+								ItemsSource="{Binding Sounds}" />
+						</Grid>
+					</ViewCell>
+					<ViewCell>
+						<Grid>
+							<Grid.ColumnDefinitions>
+								<ColumnDefinition
+									Width="10" />
+								<ColumnDefinition
+									Width="150" />
+								<ColumnDefinition
+									Width="*" />
+							</Grid.ColumnDefinitions>
+							<Label
+								Grid.Column="1"
+								Text="{language:Translate VehicularSoundSetting}"
+								LineBreakMode="TailTruncation" />
+							<local:BindablePicker
+								Grid.Column="2"
+								StyleId="vehicle"
+								SelectedIndexChanged="onSoundChanged"
+								Title="{Binding User.VehicularSoundSetting}"
+								SelectedValue="{Binding User.VehicularSoundSetting, Mode=TwoWay}"
 								ItemsSource="{Binding Sounds}" />
 						</Grid>
 					</ViewCell>
@@ -158,7 +229,8 @@
 								LineBreakMode="TailTruncation" />
 							<local:BindablePicker
 								Grid.Column="2"
-								SelectedIndexChanged="onCongratulatorySoundChanged"
+								StyleId="eligibleWarning"
+								SelectedIndexChanged="onSoundChanged"
 								Title="{Binding User.CongratulatorySoundSetting}"
 								SelectedValue="{Binding User.CongratulatorySoundSetting, Mode=TwoWay}"
 								ItemsSource="{Binding Sounds}" />
@@ -180,11 +252,22 @@
 								LineBreakMode="TailTruncation" />
 							<local:BindablePicker
 								Grid.Column="2"
-								SelectedIndexChanged="onNoLongerEligibleSoundChanged"
+								StyleId="ineligibleWarning"
+								SelectedIndexChanged="onSoundChanged"
 								Title="{Binding User.NoLongerEligibleSoundSetting}"
 								SelectedValue="{Binding User.NoLongerEligibleSoundSetting, Mode=TwoWay}"
 								ItemsSource="{Binding Sounds}" />
 						</Grid>
+					</ViewCell>
+					<ViewCell>
+						<Label
+							HeightRequest="14"
+							Text="Courtesy of freesound.org"
+							HorizontalOptions="Center"
+							VerticalOptions="Center"
+							FontSize="10"
+							FontAttributes="Italic">
+						</Label>
 					</ViewCell>
 				</TableSection>
 				<TableSection

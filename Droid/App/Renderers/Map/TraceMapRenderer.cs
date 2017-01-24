@@ -74,6 +74,17 @@ namespace Trace.Droid {
 
 				map.AddPolyline(polylineOptions);
 			}
+			else {
+				// Update map to show user location when it's calculated, and then remove it again so user can scroll map.
+				EventHandler<GoogleMap.MyLocationChangeEventArgs> didUpdateUserLocationHandler = null;
+				didUpdateUserLocationHandler = (object sender, GoogleMap.MyLocationChangeEventArgs userLoc) => {
+					System.Diagnostics.Debug.WriteLine($"didUpdateUserLocationHandler");
+					map.CameraPosition.Target.Latitude = userLoc.Location.Latitude;
+					map.CameraPosition.Target.Longitude = userLoc.Location.Longitude;
+					map.MyLocationChange -= didUpdateUserLocationHandler;
+				};
+				map.MyLocationChange += didUpdateUserLocationHandler;
+			}
 		}
 
 		protected override void OnElementPropertyChanged(object sender, PropertyChangedEventArgs e) {
