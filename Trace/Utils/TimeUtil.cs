@@ -34,13 +34,19 @@ namespace Trace {
 
 		public static string SecondsToHHMMSS(long seconds) {
 			string format = @"hh\:mm\:ss";
-			return TimeSpan.FromSeconds(seconds).ToString(format);
+			return EpochSecondsToDatetime(seconds).ToString(format);
+		}
+
+
+		public static string SecondsToHHMM(long seconds) {
+			string format = @"hh\:mm";
+			return EpochSecondsToDatetime(seconds).ToString(format);
 		}
 
 
 		public static string SecondsToFullDate(long seconds) {
 			string format = @"dd\/MM\/yyyy HH:mm";
-			return TimeSpan.FromSeconds(seconds).ToString(format);
+			return EpochSecondsToDatetime(seconds).ToString(format);
 		}
 
 		// TODO verify this

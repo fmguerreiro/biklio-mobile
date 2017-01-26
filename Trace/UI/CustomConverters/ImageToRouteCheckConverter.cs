@@ -3,7 +3,7 @@ using System.Globalization;
 using Xamarin.Forms;
 
 namespace Trace {
-
+	// NOTE - no longer used. Kept here for reference.
 	/// <summary>
 	/// This class is called on the MyTrajectoriesPage to show a visual green mark next to trajectories
 	/// that were successfully sent to the Web Server.

@@ -23,7 +23,7 @@ namespace Trace {
 
 		public CheckpointListPage(MapPage mapPage) {
 			InitializeComponent();
-			if(Device.OS == TargetPlatform.iOS) { Icon = "challengelist__trophy.png"; }
+			if(Device.OS == TargetPlatform.iOS) { Icon = "checkpointlist__trophy.png"; }
 			this.mapPage = mapPage;
 
 			// Show the checkpoints saved on the device. Initialize the list in the background to lighten load on UI thread.
@@ -292,7 +292,7 @@ namespace Trace {
 			Debug.WriteLine("STARTING fetchPinImages()");
 			foreach(Challenge c in challenges) {
 				var url = c.ThisCheckpoint.LogoURL;
-				if(string.IsNullOrEmpty(c.ThisCheckpoint.PinLogoPath) && !url.Equals("challengelist__default_shop.png")) {
+				if(string.IsNullOrEmpty(c.ThisCheckpoint.PinLogoPath) && !url.Equals("checkpointlist__default_shop.png")) {
 					Task.Run(() => c.ThisCheckpoint.FetchImageAsync(url)).DoNotAwait();
 				}
 			}

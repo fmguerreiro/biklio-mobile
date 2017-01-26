@@ -329,6 +329,12 @@ namespace Trace.Localization {
             }
         }
         
+        public static string BiklioSpots {
+            get {
+                return ResourceManager.GetString("BiklioSpots", resourceCulture);
+            }
+        }
+        
         public static string PullUpToUpdate {
             get {
                 return ResourceManager.GetString("PullUpToUpdate", resourceCulture);
@@ -1076,6 +1082,48 @@ namespace Trace.Localization {
         public static string FetchUserLocation {
             get {
                 return ResourceManager.GetString("FetchUserLocation", resourceCulture);
+            }
+        }
+        
+        public static string TrajectoryTooSmall {
+            get {
+                return ResourceManager.GetString("TrajectoryTooSmall", resourceCulture);
+            }
+        }
+        
+        public static string AllDataDeleted {
+            get {
+                return ResourceManager.GetString("AllDataDeleted", resourceCulture);
+            }
+        }
+        
+        public static string OperationCompleted {
+            get {
+                return ResourceManager.GetString("OperationCompleted", resourceCulture);
+            }
+        }
+        
+        public static string DeleteSpotsWarning {
+            get {
+                return ResourceManager.GetString("DeleteSpotsWarning", resourceCulture);
+            }
+        }
+        
+        public static string DeleteTrajectoriesWarning {
+            get {
+                return ResourceManager.GetString("DeleteTrajectoriesWarning", resourceCulture);
+            }
+        }
+        
+        public static string CourtesyOfFreesound {
+            get {
+                return ResourceManager.GetString("CourtesyOfFreesound", resourceCulture);
+            }
+        }
+        
+        public static string To {
+            get {
+                return ResourceManager.GetString("To", resourceCulture);
             }
         }
     }

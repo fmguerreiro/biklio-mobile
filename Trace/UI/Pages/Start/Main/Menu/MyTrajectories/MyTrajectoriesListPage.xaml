@@ -4,20 +4,13 @@
 	xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
 	xmlns:locals="clr-namespace:Trace;assembly=Trace"
 	xmlns:language="clr-namespace:Trace.Localization;assembly=Trace"
-	x:Class="Trace.MyTrajectoriesPage"
+	x:Class="Trace.MyTrajectoriesListPage"
 	Title="{language:Translate MyRoutes}">
-	<ContentPage.Resources>
-		<ResourceDictionary>
-			<locals:ImageToRouteCheckConverter
-				x:Key="converter" />
-		</ResourceDictionary>
-	</ContentPage.Resources>
 	<ContentPage.Content>
 		<ListView
 			ItemsSource="{Binding Trajectories}"
 			Header="{Binding Summary}"
-			SeparatorVisibility="None"
-			ItemSelected="OnSelection">
+			ItemTapped="onTapped">
 			<ListView.HeaderTemplate>
 				<DataTemplate>
 					<StackLayout
@@ -32,9 +25,9 @@
 			<ListView.ItemTemplate>
 				<DataTemplate>
 					<ImageCell
-						Text="{Binding Id}"
-						Detail="{Binding TotalDistanceMeters, StringFormat='{0} m'}"
-						ImageSource="{Binding WasTrackSent, Converter={StaticResource converter}}">
+						Text="{Binding Trajectory.Id}"
+						Detail="{Binding Trajectory.TotalDistanceMeters, StringFormat='{0} m'}"
+						ImageSource="{Binding TrackSentImage}">
 					</ImageCell>
 				</DataTemplate>
 			</ListView.ItemTemplate>

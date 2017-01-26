@@ -17,17 +17,18 @@ namespace Trace {
 	/// </summary>
 	public partial class MapPage : ContentPage {
 
-		private Geolocator Locator;
-		private CurrentActivity currentActivity;
+		//private CurrentActivity currentActivity;
 		// This prevents the user from issuing several tracking requests before the previous has completed.
-		private bool isProcessing = false;
+		private static bool isProcessing = false;
 
-		private DateTime StartTrackingTime;
-		private DateTime StopTrackingTime;
+		private static DateTime StartTrackingTime;
+		private static DateTime StopTrackingTime;
 		private const long MIN_SIZE_TRAJECTORY = 250; // meters
 
 		// Used when user clicks on map from checkpoint details page.
 		public static bool ShouldCenterOnUser = true;
+
+		private static List<Plugin.Geolocator.Abstractions.Position> routeCoordinates;
 
 
 		public MapPage() {
@@ -37,32 +38,50 @@ namespace Trace {
 
 			initializeCheckpointPins();
 
-			Locator = new Geolocator(map);
+			// When the user switches pages, all non-static objects are GC'ed, including the map.
+			// To keep the coordinates from the previous TraceMap, we use a static reference to the list.
+			if(Geolocator.IsTrackingInProgress) {
+				map.RouteCoordinates = routeCoordinates;
+			}
+			else {
+				Geolocator.Map = map;
+				routeCoordinates = map.RouteCoordinates;
+			}
 			//Locator.Start().DoNotAwait();
 
-			currentActivity = new CurrentActivity();
+			//currentActivity = new CurrentActivity();
 			//currentActivityLabel.BindingContext = currentActivity;
 
-			// Send input to state machine 
-			DependencyService.Get<IMotionActivityManager>().InitMotionActivity();
-			DependencyService.Get<IMotionActivityManager>().StartMotionUpdates((activity) => {
-				if(activity != ActivityType.Unknown) {
-					currentActivity.ActivityType = activity;
-					Debug.WriteLine(DateTime.Now + ": " + activity);
-					App.DEBUG_ActivityLog += DateTime.Now + ": " + activity + "\n";
-					// TODO use activity confidence as well
-					RewardEligibilityManager.Instance.Input(activity);
-				}
-			});
+			// Initialize handler function to receive input from the motion activity manager & send it to state machine. 
+			if(!Geolocator.IsTrackingInProgress) {
+				DependencyService.Get<IMotionActivityManager>().InitMotionActivity();
+				DependencyService.Get<IMotionActivityManager>().StartMotionUpdates((activity) => {
+					if(activity != ActivityType.Unknown) {
+						//currentActivity.ActivityType = activity;
+						Debug.WriteLine(DateTime.Now + ": " + activity);
+						App.DEBUG_ActivityLog += DateTime.Now + ": " + activity + "\n";
+						// TODO use activity confidence as well
+						RewardEligibilityManager.Instance.Input(activity);
+					}
+				});
+			}
 
 			// Add tap event handlers to the images on top of the circle buttons (otherwise, if users click on the img nothing happens)
 			var trackButtonGR = new TapGestureRecognizer();
-			trackButtonGR.Tapped += (sender, e) => OnStartTracking(null, null);
+			trackButtonGR.Tapped += (sender, e) => onStartTracking(sender, e);
 			trackButtonImage.GestureRecognizers.Add(trackButtonGR);
+			if(Geolocator.IsTrackingInProgress) {
+				trackButtonImage.Source = "map__stop.png";
+			}
 
 			var locateButtonGR = new TapGestureRecognizer();
-			locateButtonGR.Tapped += (sender, e) => OnLocateUser(null, null);
+			locateButtonGR.Tapped += (sender, e) => onLocateUser(sender, e);
 			locateImage.GestureRecognizers.Add(locateButtonGR);
+
+			// Add tap event handler to results grid so it can be dismissed by the user.
+			var gridGR = new TapGestureRecognizer();
+			gridGR.Tapped += (sender, e) => { resultsGrid.IsVisible = false; };
+			resultsGrid.GestureRecognizers.Add(gridGR);
 		}
 
 
@@ -70,21 +89,21 @@ namespace Trace {
 		protected override void OnAppearing() {
 			Debug.WriteLine("MapPage.OnAppearing()");
 			base.OnAppearing();
-			if(ShouldCenterOnUser) {
-				//DependencyService.Get<TraceMapRenderer>().CenterOnUser();
-				//map.CenterOnUser();
-				//	var toastCfg = new ToastConfig(Language.FetchUserLocation) {
-				//		Duration = new TimeSpan(0, 0, 2)
-				//	};
-				//	UserDialogs.Instance.Toast(toastCfg);
-				//	var userLocation = await GeoUtils.GetCurrentUserLocation();
-				//	Locator.UpdateMap(userLocation);
-			}
-			ShouldCenterOnUser = true; // Next time center on user.
+			//if(ShouldCenterOnUser) {
+			//	DependencyService.Get<TraceMapRenderer>().CenterOnUser();
+			//	map.CenterOnUser();
+			//		var toastCfg = new ToastConfig(Language.FetchUserLocation) {
+			//			Duration = new TimeSpan(0, 0, 2)
+			//		};
+			//		UserDialogs.Instance.Toast(toastCfg);
+			//		var userLocation = await GeoUtils.GetCurrentUserLocation();
+			//		Locator.UpdateMap(userLocation);
+			//}
+			//ShouldCenterOnUser = true; // Next time center on user.
 		}
 
 
-		async void OnLocateUser(object send, EventArgs eventArgs) {
+		async void onLocateUser(object send, EventArgs eventArgs) {
 			var toastCfg = new ToastConfig(Language.FetchUserLocation) {
 				Duration = new TimeSpan(0, 0, 5)
 			};
@@ -100,7 +119,7 @@ namespace Trace {
 		/// When 'start' is pressed, turn on GPS tracking and start storing user points.
 		/// When 'stop' is pressed, process the trajectory (calculate distance, calories, etc.) and show trace on map.
 		/// </summary>
-		async void OnStartTracking(object send, EventArgs eventArgs) {
+		async void onStartTracking(object send, EventArgs eventArgs) {
 
 			// On Stop Button pressed
 			if(Geolocator.IsTrackingInProgress && !isProcessing) {
@@ -129,11 +148,12 @@ namespace Trace {
 															   trajectory.TimeSpentCycling,
 															   trajectory.TimeSpentDriving);
 
+				// Calculate Motion activities along the trajectory.
+				IList<ActivityEvent> activityEvents = DependencyService.Get<IMotionActivityManager>().ActivityEvents;
+				trajectory.Points = await Task.Run(() => AssociatePointsWithActivity(activityEvents, map.RouteCoordinates));
+
 				// Save trajectory only if it is of relevant size.
 				if(distanceInMeters > MIN_SIZE_TRAJECTORY) {
-					// Calculate Motion activities along the trajectory.
-					IList<ActivityEvent> activityEvents = DependencyService.Get<IMotionActivityManager>().ActivityEvents;
-					trajectory.Points = await Task.Run(() => AssociatePointsWithActivity(activityEvents, map.RouteCoordinates));
 					trajectory.PointsJSON = JsonConvert.SerializeObject(trajectory.Points);
 
 					// Save created trajectory.
@@ -143,10 +163,16 @@ namespace Trace {
 					// Try to send trajectory to the Web Server right away.
 					Task.Run(() => new WebServerClient().SendTrajectory(trajectory)).DoNotAwait();
 				}
+				else {
+					var toastCfg = new ToastConfig(Language.TrajectoryTooSmall) {
+						Duration = new TimeSpan(0, 0, 5)
+					};
+					UserDialogs.Instance.Toast(toastCfg);
+				}
 
 				// Reset GPS recorded speeds.
-				Locator.AvgSpeed = 0;
-				Locator.MaxSpeed = 0;
+				Geolocator.AvgSpeed = 0;
+				Geolocator.MaxSpeed = 0;
 
 				var mainActivity = DependencyService.Get<IMotionActivityManager>().GetMostCommonActivity().ToLocalizedString();
 				var calories = await Task.Run(() => trajectory.CalculateCalories());
@@ -175,9 +201,10 @@ namespace Trace {
 				};
 				UserDialogs.Instance.Toast(toastCfg);
 
-				await Locator.Start();
-
 				trackButtonImage.Source = "map__stop.png";
+
+				await Geolocator.Start();
+
 				map.RouteCoordinates.Clear();
 				StartTrackingTime = DateTime.Now;
 
@@ -235,8 +262,8 @@ namespace Trace {
 				UserId = User.Instance.Id,
 				StartTime = StartTrackingTime.DatetimeToEpochSeconds(),
 				EndTime = StopTrackingTime.DatetimeToEpochSeconds(),
-				AvgSpeed = (float) (Locator.AvgSpeed / map.RouteCoordinates.Count),
-				MaxSpeed = (float) Locator.MaxSpeed,
+				AvgSpeed = (float) (Geolocator.AvgSpeed / map.RouteCoordinates.Count),
+				MaxSpeed = (float) Geolocator.MaxSpeed,
 				TotalDistanceMeters = (long) distanceInMeters,
 				MostCommonActivity = DependencyService.Get<IMotionActivityManager>().GetMostCommonActivity().ToString(),
 				TimeSpentWalking = DependencyService.Get<IMotionActivityManager>().WalkingDuration,

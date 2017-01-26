@@ -177,7 +177,7 @@
         <value>Erro ao tentar obter desafios do servidor.</value>
   	</data>
 	<data name="ChallengeWithoutCheckpointError" xml:space="preserve">
-        <value>Este desafio não tem uma loja associada. Provalmente um erro da nossa parte. Por favor, reporte o caso.</value>
+        <value>Este desafio não tem um Biklio spot associado. Provalmente um erro da nossa parte. Por favor, reporte o caso.</value>
   	</data>
 	<data name="CheckpointDetails" xml:space="preserve">
         <value>Detalhes</value>
@@ -330,7 +330,7 @@
         <value>em</value>
   	</data>
 	<data name="NoCheckpointsFound" xml:space="preserve">
-        <value>Nenhum spot encontrado perto de ti.</value>
+        <value>Nenhum Biklio spot encontrado perto de ti.</value>
   	</data>
 	<data name="OneCheckpointFound" xml:space="preserve">
         <value>Existe um spot perto de ti.</value>
@@ -339,7 +339,7 @@
         <value>Existem</value>
   	</data>
 	<data name="CheckpointsNear" xml:space="preserve">
-        <value>spots perto de ti.</value>
+        <value>Biklio spots perto de ti.</value>
   	</data>
 	<data name="NoRoutesYet" xml:space="preserve">
     	<value>Ainda não tens trajetos.</value>
@@ -550,5 +550,26 @@ If you disable this feature, Biklio will only warn you of your status when you o
   	</data>
 	<data name="FetchUserLocation" xml:space="preserve">
     	<value>Calculando a tua posição ...</value>
+  	</data>
+	<data name="TrajectoryTooSmall" xml:space="preserve">
+    	<value>Apenas são guardados trajetos mais longos que 250 m</value>
+  	</data>
+	<data name="AllDataDeleted" xml:space="preserve">
+    	<value>Os dados armazenados foram apagados.</value>
+  	</data>
+	<data name="OperationCompleted" xml:space="preserve">
+    	<value>A operação foi realizada com sucesso.</value>
+  	</data>
+	<data name="DeleteSpotsWarning" xml:space="preserve">
+    	<value>Esta operação irá eliminar todos os Biklio spots do teu dispositivo. As recompensas ganhas com esses spots também irão ser perdidas. Tem a certeza?</value>
+  	</data>
+	<data name="DeleteTrajectoriesWarning" xml:space="preserve">
+    	<value>Esta operação irá eliminar todos os trajetos do seu dispositivo. Trajetos que não foram ainda enviados para o servidor serão perdidos. Tem a certeza?</value>
+  	</data>
+	<data name="CourtesyOfFreesound" xml:space="preserve">
+    	<value>Cortesia de freesound.org</value>
+  	</data>
+	<data name="To" xml:space="preserve">
+    	<value> a </value>
   	</data>
 </root>

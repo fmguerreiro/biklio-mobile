@@ -9,27 +9,29 @@ namespace Trace {
 	/// This includes displaying the trajectory on the map, showing the dates, length and duration.
 	/// </summary>
 	public partial class TrajectoryDetailsPage : ContentPage {
-		private Trajectory trajectory;
+		private TrajectoryViewModel trajectoryVM;
 
-		public TrajectoryDetailsPage(Trajectory trajectory) {
+		public TrajectoryDetailsPage(TrajectoryViewModel trajectoryVM) {
 			InitializeComponent();
-			BindingContext = this.trajectory = trajectory;
-			UploadTrajectoryButton.IsVisible |= !trajectory.WasTrackSent;
+			BindingContext = this.trajectoryVM = trajectoryVM;
+			uploadTrajectoryButton.IsVisible |= !trajectoryVM.Trajectory.WasTrackSent;
 			// Redraw map with trajectory.
-			CustomMap.RouteCoordinates = trajectory.ToPosition();
+			CustomMap.RouteCoordinates = trajectoryVM.Trajectory.ToPosition();
 			Stack.Children.RemoveAt(1);
 			Stack.Children.Insert(1, CustomMap);
 		}
 
 		async void onUploadClicked(object sender, EventArgs args) {
-			UploadTrajectoryButton.IsVisible = false;
-			await new WebServerClient().SendTrajectory(trajectory);
-			if(trajectory.WasTrackSent) {
-				UploadTrajectoryButton.IsVisible = false;
+			uploadTrajectoryButton.IsVisible = false;
+			await new WebServerClient().SendTrajectory(trajectoryVM.Trajectory);
+			if(trajectoryVM.Trajectory.WasTrackSent) {
+				uploadTrajectoryButton.IsVisible = false;
+				await DisplayAlert(Language.Result, Language.OperationCompleted, Language.Ok);
+				trajectoryVM.TriggerPropertyChangedEvent(); // change image in mytrajectorylist page.
 			}
 			else {
 				await DisplayAlert(Language.Error, Language.TrajectoryNotUploadedError, Language.Ok);
-				UploadTrajectoryButton.IsVisible = true;
+				uploadTrajectoryButton.IsVisible = true;
 			}
 		}
 	}

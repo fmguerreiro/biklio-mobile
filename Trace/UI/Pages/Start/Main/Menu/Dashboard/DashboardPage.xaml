@@ -5,6 +5,7 @@
 	xmlns:oxy="clr-namespace:OxyPlot.Xamarin.Forms;assembly=OxyPlot.Xamarin.Forms"
 	xmlns:local="clr-namespace:Trace;assembly=Trace"
 	xmlns:language="clr-namespace:Trace.Localization;assembly=Trace"
+	xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
 	x:Class="Trace.DashboardPage"
 	Title="{language:Translate Dashboard}">
 	<ContentPage.Content>
@@ -31,48 +32,237 @@
 				</TableSection>
 				<TableSection
 					Title="{language:Translate DistanceTravelledMeters}">
-					<TextCell
+					<ViewCell
 						ClassId="today"
-						Text="{Binding DistanceToday.Total, StringFormat={language:Translate TodayStats}}"
-						Tapped="onTappedDistance" />
-					<TextCell
+						Tapped="onTappedDistance">
+						<Grid>
+							<Grid.ColumnDefinitions>
+								<ColumnDefinition
+									Width="*" />
+								<ColumnDefinition
+									Width="34" />
+							</Grid.ColumnDefinitions>
+							<Label
+								Text="{Binding DistanceToday.Total, StringFormat={language:Translate TodayStats}}"
+								Margin="17,0,0,0"
+								VerticalOptions="Center"
+								Grid.Column="0" />
+							<ffimageloading:CachedImage
+								Source="dashboard__click_indicator.png"
+								WidthRequest="24"
+								DownsampleWidth="24"
+								HorizontalOptions="Center"
+								VerticalOptions="Center"
+								Grid.Column="1">
+							</ffimageloading:CachedImage>
+						</Grid>
+					</ViewCell>
+					<ViewCell
 						ClassId="week"
-						Text="{Binding DistanceWeek.Total, StringFormat={language:Translate ThisWeekStats}}"
-						Tapped="onTappedDistance" />
-					<TextCell
+						Tapped="onTappedDistance">
+						<Grid>
+							<Grid.ColumnDefinitions>
+								<ColumnDefinition
+									Width="*" />
+								<ColumnDefinition
+									Width="34" />
+							</Grid.ColumnDefinitions>
+							<Label
+								Text="{Binding DistanceWeek.Total, StringFormat={language:Translate ThisWeekStats}}"
+								VerticalOptions="Center"
+								Margin="17,0,0,0"
+								Grid.Column="0" />
+							<ffimageloading:CachedImage
+								Source="dashboard__click_indicator.png"
+								WidthRequest="24"
+								DownsampleWidth="24"
+								HorizontalOptions="Center"
+								VerticalOptions="Center"
+								Grid.Column="1">
+							</ffimageloading:CachedImage>
+						</Grid>
+					</ViewCell>
+					<ViewCell
 						ClassId="alltime"
-						Text="{Binding DistanceAllTime.Total, StringFormat={language:Translate AllTimeStats}}"
-						Tapped="onTappedDistance" />
+						Tapped="onTappedDistance">
+						<Grid>
+							<Grid.ColumnDefinitions>
+								<ColumnDefinition
+									Width="*" />
+								<ColumnDefinition
+									Width="34" />
+							</Grid.ColumnDefinitions>
+							<Label
+								Text="{Binding DistanceAllTime.Total, StringFormat={language:Translate AllTimeStats}}"
+								VerticalOptions="Center"
+								Margin="17,0,0,0"
+								Grid.Column="0" />
+							<ffimageloading:CachedImage
+								Source="dashboard__click_indicator.png"
+								WidthRequest="24"
+								DownsampleWidth="24"
+								HorizontalOptions="Center"
+								VerticalOptions="Center"
+								Grid.Column="1">
+							</ffimageloading:CachedImage>
+						</Grid>
+					</ViewCell>
 				</TableSection>
 				<TableSection
 					Title="{language:Translate TimeSpentHours}">
-					<TextCell
+					<ViewCell
 						ClassId="today"
-						Text="{Binding TimeToday.Total, StringFormat={language:Translate TodayStats}}"
-						Tapped="onTappedTime" />
-					<TextCell
+						Tapped="onTappedTime">
+						<Grid>
+							<Grid.ColumnDefinitions>
+								<ColumnDefinition
+									Width="*" />
+								<ColumnDefinition
+									Width="34" />
+							</Grid.ColumnDefinitions>
+							<Label
+								Text="{Binding TimeToday.Total, StringFormat={language:Translate TodayStats}}"
+								VerticalOptions="Center"
+								Margin="17,0,0,0"
+								Grid.Column="0" />
+							<ffimageloading:CachedImage
+								Source="dashboard__click_indicator.png"
+								WidthRequest="24"
+								DownsampleWidth="24"
+								HorizontalOptions="Center"
+								VerticalOptions="Center"
+								Grid.Column="1">
+							</ffimageloading:CachedImage>
+						</Grid>
+					</ViewCell>
+					<ViewCell
 						ClassId="week"
-						Text="{Binding TimeWeek.Total, StringFormat={language:Translate ThisWeekStats}}"
-						Tapped="onTappedTime" />
-					<TextCell
+						Tapped="onTappedTime">
+						<Grid>
+							<Grid.ColumnDefinitions>
+								<ColumnDefinition
+									Width="*" />
+								<ColumnDefinition
+									Width="34" />
+							</Grid.ColumnDefinitions>
+							<Label
+								Text="{Binding TimeWeek.Total, StringFormat={language:Translate ThisWeekStats}}"
+								VerticalOptions="Center"
+								Margin="17,0,0,0"
+								Grid.Column="0" />
+							<ffimageloading:CachedImage
+								Source="dashboard__click_indicator.png"
+								WidthRequest="24"
+								DownsampleWidth="24"
+								HorizontalOptions="Center"
+								VerticalOptions="Center"
+								Grid.Column="1">
+							</ffimageloading:CachedImage>
+						</Grid>
+					</ViewCell>
+					<ViewCell
 						ClassId="alltime"
-						Text="{Binding TimeAllTime.Total, StringFormat={language:Translate AllTimeStats}}"
-						Tapped="onTappedTime" />
+						Tapped="onTappedTime">
+						<Grid>
+							<Grid.ColumnDefinitions>
+								<ColumnDefinition
+									Width="*" />
+								<ColumnDefinition
+									Width="34" />
+							</Grid.ColumnDefinitions>
+							<Label
+								Text="{Binding TimeAllTime.Total, StringFormat={language:Translate AllTimeStats}}"
+								VerticalOptions="Center"
+								Margin="17,0,0,0"
+								Grid.Column="0" />
+							<ffimageloading:CachedImage
+								Source="dashboard__click_indicator.png"
+								WidthRequest="24"
+								DownsampleWidth="24"
+								HorizontalOptions="Center"
+								VerticalOptions="Center"
+								Grid.Column="1">
+							</ffimageloading:CachedImage>
+						</Grid>
+					</ViewCell>
 				</TableSection>
 				<TableSection
 					Title="{language:Translate CaloriesBurnedKCals}">
-					<TextCell
+					<ViewCell
 						ClassId="today"
-						Text="{Binding CaloriesToday.Total, StringFormat={language:Translate TodayStats}}"
-						Tapped="onTappedCalories" />
-					<TextCell
+						Tapped="onTappedCalories">
+						<Grid>
+							<Grid.ColumnDefinitions>
+								<ColumnDefinition
+									Width="*" />
+								<ColumnDefinition
+									Width="34" />
+							</Grid.ColumnDefinitions>
+							<Label
+								Text="{Binding CaloriesToday.Total, StringFormat={language:Translate TodayStats}}"
+								VerticalOptions="Center"
+								Margin="17,0,0,0"
+								Grid.Column="0" />
+							<ffimageloading:CachedImage
+								Source="dashboard__click_indicator.png"
+								WidthRequest="24"
+								DownsampleWidth="24"
+								HorizontalOptions="Center"
+								VerticalOptions="Center"
+								Grid.Column="1">
+							</ffimageloading:CachedImage>
+						</Grid>
+					</ViewCell>
+					<ViewCell
 						ClassId="week"
-						Text="{Binding CaloriesWeek.Total, StringFormat={language:Translate ThisWeekStats}}"
-						Tapped="onTappedCalories" />
-					<TextCell
+						Tapped="onTappedCalories">
+						<Grid>
+							<Grid.ColumnDefinitions>
+								<ColumnDefinition
+									Width="*" />
+								<ColumnDefinition
+									Width="34" />
+							</Grid.ColumnDefinitions>
+							<Label
+								Text="{Binding CaloriesWeek.Total, StringFormat={language:Translate ThisWeekStats}}"
+								VerticalOptions="Center"
+								Margin="17,0,0,0"
+								Grid.Column="0" />
+							<ffimageloading:CachedImage
+								Source="dashboard__click_indicator.png"
+								WidthRequest="24"
+								DownsampleWidth="24"
+								HorizontalOptions="Center"
+								VerticalOptions="Center"
+								Grid.Column="1">
+							</ffimageloading:CachedImage>
+						</Grid>
+					</ViewCell>
+					<ViewCell
 						ClassId="alltime"
-						Text="{Binding CaloriesAllTime.Total, StringFormat={language:Translate AllTimeStats}}"
-						Tapped="onTappedCalories" />
+						Tapped="onTappedCalories">
+						<Grid>
+							<Grid.ColumnDefinitions>
+								<ColumnDefinition
+									Width="*" />
+								<ColumnDefinition
+									Width="34" />
+							</Grid.ColumnDefinitions>
+							<Label
+								Text="{Binding CaloriesAllTime.Total, StringFormat={language:Translate AllTimeStats}}"
+								VerticalOptions="Center"
+								Margin="17,0,0,0"
+								Grid.Column="0" />
+							<ffimageloading:CachedImage
+								Source="dashboard__click_indicator.png"
+								WidthRequest="24"
+								DownsampleWidth="24"
+								HorizontalOptions="Center"
+								VerticalOptions="Center"
+								Grid.Column="1">
+							</ffimageloading:CachedImage>
+						</Grid>
+					</ViewCell>
 				</TableSection>
 			</TableRoot>
 		</TableView>

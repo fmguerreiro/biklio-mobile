@@ -61,7 +61,7 @@ namespace Trace.iOS {
 			long max = activityDurations.Max();
 
 			if(max == 0)
-				return ActivityType.Unknown;
+				return ActivityType.Stationary;
 			if(max == CyclingDuration)
 				return ActivityType.Cycling;
 			if(max == RunningDuration)

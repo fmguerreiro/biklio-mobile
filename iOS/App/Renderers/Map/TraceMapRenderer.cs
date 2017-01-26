@@ -46,6 +46,13 @@ namespace Trace.iOS {
 			if(e.NewElement != null) {
 				var formsMap = (TraceMap) e.NewElement;
 				var nativeMap = map = Control as MKMapView;
+
+				nativeMap.ShowsCompass = false;
+				if(!formsMap.IsShowingUser) {
+					nativeMap.ShowsUserLocation = false;
+					nativeMap.UserInteractionEnabled = false;
+				}
+
 				customPins = formsMap.CustomPins;
 				nativeMap.GetViewForAnnotation = GetViewForAnnotation;
 				//nativeMap.CalloutAccessoryControlTapped += OnCalloutAccessoryControlTapped;
@@ -62,17 +69,21 @@ namespace Trace.iOS {
 					index++;
 				}
 
+				// Draw trajectory over map if it has one and zoom on it.
 				if(index != 0) {
 					var routeOverlay = MKPolyline.FromCoordinates(coords);
 					nativeMap.AddOverlay(routeOverlay);
 					nativeMap.SetVisibleMapRect(fitRegionToPolyline(routeOverlay), false);
 				}
+				// Or, show user location, and then remove it again so user can scroll map.
 				else {
-					// Update map to show user location when it's calculated, and then remove it again so user can scroll map.
 					EventHandler<MKUserLocationEventArgs> didUpdateUserLocationHandler = null;
 					didUpdateUserLocationHandler = (object sender, MKUserLocationEventArgs userLoc) => {
-						Debug.WriteLine($"didUpdateUserLocationHandler");
-						nativeMap.CenterCoordinate = userLoc.UserLocation.Coordinate;
+						if(MapPage.ShouldCenterOnUser) {
+							Debug.WriteLine($"didUpdateUserLocationHandler");
+							nativeMap.CenterCoordinate = userLoc.UserLocation.Coordinate;
+						}
+						MapPage.ShouldCenterOnUser = true;
 						nativeMap.DidUpdateUserLocation -= didUpdateUserLocationHandler;
 					};
 					nativeMap.DidUpdateUserLocation += didUpdateUserLocationHandler;
@@ -111,7 +122,7 @@ namespace Trace.iOS {
 				image = UIImage.LoadFromData(NSData.FromArray(imageBytes));
 			}
 			else
-				image = UIImage.FromFile("challengelist__default_shop_20px.png");
+				image = UIImage.FromFile("checkpointlist__default_shop_20px.png");
 			//var maxWidth = 20f;
 			//var maxHeight = maxWidth;
 			//image = maxResizeImage(image, maxWidth, maxHeight);
@@ -138,7 +149,7 @@ namespace Trace.iOS {
 			if(customView.Id == "") {
 				customPinView.Frame = new CGRect(0, 0, 200, 84);
 				var image = new UIImageView(new CGRect(0, 0, 200, 84));
-				image.Image = UIImage.FromFile("challengelist__default_shop.png");
+				image.Image = UIImage.FromFile("checkpointlist__default_shop.png");
 				customPinView.AddSubview(image);
 				customPinView.Center = new CGPoint(0, -(e.View.Frame.Height + 75));
 				e.View.AddSubview(customPinView);

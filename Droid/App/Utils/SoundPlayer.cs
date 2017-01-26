@@ -114,12 +114,13 @@ namespace Trace.Droid {
 
 
 		private string getBackgroundSound() {
-			switch(RewardEligibilityManager.Instance.GetCurrentState()) {
-				case State.CyclingEligible:
-					return User.Instance.BycicleEligibleSoundSetting;
-				default:
-					return User.Instance.BackgroundIneligibleSoundSetting;
-			}
+			//switch(RewardEligibilityManager.Instance.GetCurrentState()) {
+			//	case State.CyclingEligible:
+			//		return User.Instance.BycicleEligibleSoundSetting;
+			//	default:
+			//		return User.Instance.BackgroundIneligibleSoundSetting;
+			//}
+			return "silence.mp3";
 		}
 	}
 }

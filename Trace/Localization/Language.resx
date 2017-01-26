@@ -164,6 +164,9 @@
 	<data name="Challenges" xml:space="preserve">
     	<value>Challenges</value>
   	</data>
+	<data name="BiklioSpots" xml:space="preserve">
+    	<value>Biklio Spots</value>
+  	</data>
 	<data name="PullUpToUpdate" xml:space="preserve">
     	<value>Pull up to update.</value>
   	</data>
@@ -177,7 +180,7 @@
     	<value>Error fetching challenges from server</value>
   	</data>
 	<data name="ChallengeWithoutCheckpointError" xml:space="preserve">
-    	<value>That challenge does not have an associated checkpoint. Probably a DB consistency issue, please report.</value>
+    	<value>That challenge does not have an associated Biklio spot. Probably a DB consistency issue, please report.</value>
   	</data>
 	<data name="CheckpointDetails" xml:space="preserve">
     	<value>Details</value>
@@ -331,7 +334,7 @@
 		<comment>Context: 10% discount 'at' MacDonalds.</comment>
   	</data>
 	<data name="NoCheckpointsFound" xml:space="preserve">
-    	<value>No spots found near you.</value>
+    	<value>No Biklio spots found near you.</value>
   	</data>
 	<data name="OneCheckpointFound" xml:space="preserve">
     	<value>There is 1 spot near you.</value>
@@ -340,7 +343,7 @@
     	<value>There are</value>
   	</data>
 	<data name="CheckpointsNear" xml:space="preserve">
-    	<value>spots near you.</value>
+    	<value>Biklio spots near you.</value>
   	</data>
 	<data name="NoRoutesYet" xml:space="preserve">
     	<value>No routes yet.</value>
@@ -552,5 +555,27 @@ Note that if you disable this feature, Biklio will only warn you of your status 
   	</data>
 	<data name="FetchUserLocation" xml:space="preserve">
     	<value>Calculating your position ...</value>
+  	</data>
+	<data name="TrajectoryTooSmall" xml:space="preserve">
+    	<value>Only trajectories longer than 250 m are saved</value>
+  	</data>
+	<data name="AllDataDeleted" xml:space="preserve">
+    	<value>All data deleted.</value>
+  	</data>
+	<data name="OperationCompleted" xml:space="preserve">
+    	<value>The operation was successful.</value>
+  	</data>
+	<data name="DeleteSpotsWarning" xml:space="preserve">
+    	<value>Deleting all Biklio spots stored on your device. Any rewards you have earned will be lost. Is this Ok?</value>
+  	</data>
+	<data name="DeleteTrajectoriesWarning" xml:space="preserve">
+    	<value>Deleting all trajectories stored on your device. Trajectories not yet sent to the web server will be lost. Is this Ok?</value>
+  	</data>
+	<data name="CourtesyOfFreesound" xml:space="preserve">
+    	<value>Courtesy of freesound.org</value>
+  	</data>
+	<data name="To" xml:space="preserve">
+    	<value> to </value>
+    	<comment>Used in: 'dateX' TO 'dateY'</comment>
   	</data>
 </root>

@@ -318,15 +318,33 @@
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="GoogleService-Info.plist" />
-    <BundleResource Include="Resources\ic_launcher_motion_58x.png" />
+    <BundleResource Include="Resources\fonts\Nunito-Regular.ttf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </BundleResource>
+    <BundleResource Include="Resources\sounds\bike_bell.mp3" />
+    <BundleResource Include="Resources\sounds\bike_no_pedaling.mp3" />
+    <BundleResource Include="Resources\sounds\bike_pedal.mp3" />
+    <BundleResource Include="Resources\sounds\clapping.mp3" />
+    <BundleResource Include="Resources\sounds\forest_birds.mp3" />
+    <BundleResource Include="Resources\sounds\light_rain.mp3" />
+    <BundleResource Include="Resources\sounds\running_leaves.mp3" />
+    <BundleResource Include="Resources\sounds\running_pavement.mp3" />
+    <BundleResource Include="Resources\sounds\silence.mp3" />
+    <BundleResource Include="Resources\sounds\spaceship_idle.mp3" />
+    <BundleResource Include="Resources\sounds\walking_grass.mp3" />
+    <BundleResource Include="Resources\sounds\walking_pavement.mp3" />
+    <BundleResource Include="Resources\sounds\wind.mp3" />
     <BundleResource Include="Resources\activitymodes__cycling.png" />
     <BundleResource Include="Resources\activitymodes__driving.png" />
     <BundleResource Include="Resources\activitymodes__running.png" />
     <BundleResource Include="Resources\activitymodes__walking.png" />
-    <BundleResource Include="Resources\challengelist__default_shop.png" />
-    <BundleResource Include="Resources\challengelist__default_shop_20px.png" />
-    <BundleResource Include="Resources\challengelist__location_unknown.png" />
-    <BundleResource Include="Resources\challengelist__trophy.png" />
+    <BundleResource Include="Resources\checkpointdetails__star.png" />
+    <BundleResource Include="Resources\checkpointdetails__star_outline.png" />
+    <BundleResource Include="Resources\checkpointlist__default_shop.png" />
+    <BundleResource Include="Resources\checkpointlist__default_shop_20px.png" />
+    <BundleResource Include="Resources\checkpointlist__location_unknown.png" />
+    <BundleResource Include="Resources\checkpointlist__star_half.png" />
+    <BundleResource Include="Resources\checkpointlist__trophy.png" />
     <BundleResource Include="Resources\home__dashboard.png" />
     <BundleResource Include="Resources\home__home.png" />
     <BundleResource Include="Resources\home__logout.png" />
@@ -347,31 +365,15 @@
     <BundleResource Include="Resources\mytrajectorieslist__cross_error.png" />
     <BundleResource Include="Resources\mytrajectorieslist__green_check.png" />
     <BundleResource Include="Resources\privacypolicy__logo_name.png" />
+    <BundleResource Include="Resources\signin__biklio_benefits.png" />
     <BundleResource Include="Resources\splashscreen.png" />
     <BundleResource Include="Resources\tutorial__tutorial_part1.png" />
     <BundleResource Include="Resources\tutorial__tutorial_part2.png" />
     <BundleResource Include="Resources\tutorial__tutorial_part3.png" />
     <BundleResource Include="Resources\tutorial__tutorial_part4.png" />
-    <BundleResource Include="Resources\checkpointdetails__star.png" />
-    <BundleResource Include="Resources\checkpointdetails__star_outline.png" />
-    <BundleResource Include="Resources\checkpointlist__star_half.png" />
-    <BundleResource Include="Resources\signin__biklio_benefits.png" />
-    <BundleResource Include="Resources\fonts\Nunito-Regular.ttf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </BundleResource>
-    <BundleResource Include="Resources\sounds\bike_bell.mp3" />
-    <BundleResource Include="Resources\sounds\bike_no_pedaling.mp3" />
-    <BundleResource Include="Resources\sounds\bike_pedal.mp3" />
-    <BundleResource Include="Resources\sounds\clapping.mp3" />
-    <BundleResource Include="Resources\sounds\forest_birds.mp3" />
-    <BundleResource Include="Resources\sounds\light_rain.mp3" />
-    <BundleResource Include="Resources\sounds\running_leaves.mp3" />
-    <BundleResource Include="Resources\sounds\running_pavement.mp3" />
-    <BundleResource Include="Resources\sounds\silence.mp3" />
-    <BundleResource Include="Resources\sounds\spaceship_idle.mp3" />
-    <BundleResource Include="Resources\sounds\walking_grass.mp3" />
-    <BundleResource Include="Resources\sounds\walking_pavement.mp3" />
-    <BundleResource Include="Resources\sounds\wind.mp3" />
+    <BundleResource Include="Resources\checkpointlist__trophy%402.png" />
+    <BundleResource Include="Resources\map__maps_icon%402.png" />
+    <BundleResource Include="Resources\dashboard__click_indicator.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
   <Import Project="..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" />

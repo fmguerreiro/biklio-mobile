@@ -45,9 +45,9 @@ namespace Trace {
 
 
 		async void onTappedDistance(object sender, EventArgs e) {
-			var textCellTapped = ((TextCell) sender);
+			var viewCellSelected = ((ViewCell) sender);
 			string title = Language.DistancePerActivity + " {0} s";
-			switch(textCellTapped.ClassId) {
+			switch(viewCellSelected.ClassId) {
 				case "today":
 					title = string.Format(title, string.Format(Language.TodayStats, DistanceToday.Total));
 					await Navigation.PushAsync(new DrawPlotPage(DistanceToday, title));
@@ -65,9 +65,9 @@ namespace Trace {
 
 
 		async void onTappedCalories(object sender, EventArgs e) {
-			var textCellTapped = ((TextCell) sender);
+			var viewCellSelected = ((ViewCell) sender);
 			string title = Language.CaloriesPerActivity + " {0} s";
-			switch(textCellTapped.ClassId) {
+			switch(viewCellSelected.ClassId) {
 				case "today":
 					title = string.Format(title, string.Format(Language.TodayStats, CaloriesToday.Total));
 					await Navigation.PushAsync(new DrawPlotPage(CaloriesToday, title));
@@ -85,9 +85,9 @@ namespace Trace {
 
 
 		async void onTappedTime(object sender, EventArgs e) {
-			var textCellTapped = ((TextCell) sender);
+			var viewCellSelected = ((ViewCell) sender);
 			string title = Language.TimePerActivity + " {0} s";
-			switch(textCellTapped.ClassId) {
+			switch(viewCellSelected.ClassId) {
 				case "today":
 					title = string.Format(title, string.Format(Language.TodayStats, TimeToday.Total));
 					await Navigation.PushAsync(new DrawPlotPage(TimeToday, title));
@@ -145,7 +145,7 @@ namespace Trace {
 				var walkCal = t.CalculateWalkingCalories();
 				var runCal = t.CalculateRunningCalories();
 				var cycleCal = t.CalculateCyclingCalories();
-				var driveCal = t.CalculateDrivingCalories();
+				var driveCal = t.CalculateStationaryCalories();
 				accumulate(caloriesAllTime, walkCal, runCal, cycleCal, driveCal);
 				if(TimeUtil.IsWithinPeriod(t.StartTime, aDayAgo, now)) accumulate(caloriesToday, walkCal, runCal, cycleCal, driveCal);
 				if(TimeUtil.IsWithinPeriod(t.StartTime, aWeekAgo, now)) accumulate(caloriesWeek, walkCal, runCal, cycleCal, driveCal);

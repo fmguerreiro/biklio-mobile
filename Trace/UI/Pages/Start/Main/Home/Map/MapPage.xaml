@@ -56,7 +56,7 @@
 			Grid.RowSpan="5"
 			Grid.ColumnSpan="2" />
 		<Button
-			Clicked="OnLocateUser"
+			Clicked="onLocateUser"
 			BackgroundColor="{StaticResource PrimaryColor}"
 			HeightRequest="40"
 			WidthRequest="40"
@@ -76,8 +76,8 @@
 			Grid.Column="1">
 		</ffimageloading:CachedImage>
 		<Button
-			Clicked="OnStartTracking"
-			BackgroundColor="#FFD355"
+			Clicked="onStartTracking"
+			BackgroundColor="{StaticResource SecondaryColor}"
 			HeightRequest="45"
 			WidthRequest="45"
 			BorderRadius="23"
@@ -107,6 +107,7 @@
 				x:Name="mainActivityLabel"
 				Text="{Binding MainActivity, StringFormat={language:Translate MainActivityLabel}}"
 				Grid.Row="0"
+				Grid.RowSpan="2"
 				Grid.Column="1"
 				Grid.ColumnSpan="3"
 				Style="{StaticResource lightTheme}"
@@ -114,6 +115,7 @@
 			<Label
 				Text="{Binding Distance, StringFormat={language:Translate DistanceLabel}}"
 				Grid.Row="1"
+				Grid.RowSpan="2"
 				Grid.Column="0"
 				Grid.ColumnSpan="2"
 				Style="{StaticResource lightTheme}"
@@ -122,19 +124,22 @@
 				Text="{Binding Duration, StringFormat={language:Translate DurationLabel}}"
 				Grid.Row="1"
 				Grid.Column="3"
+				Grid.RowSpan="2"
 				Grid.ColumnSpan="2"
 				Style="{StaticResource lightTheme}"
 				XAlign="Center" />
 			<Label
 				Text="{Binding Calories, StringFormat={language:Translate CaloriesLabel}}"
-				Grid.Row="2"
+				Grid.Row="3"
+				Grid.RowSpan="2"
 				Grid.Column="0"
 				Grid.ColumnSpan="2"
 				Style="{StaticResource lightTheme}"
 				XAlign="Center" />
 			<Label
 				Text="{Binding AvgSpeed, StringFormat={language:Translate AvgSpeedLabel}}"
-				Grid.Row="2"
+				Grid.Row="3"
+				Grid.RowSpan="2"
 				Grid.Column="3"
 				Grid.ColumnSpan="2"
 				Style="{StaticResource lightTheme}"

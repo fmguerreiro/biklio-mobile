@@ -37,7 +37,7 @@
     <EmbeddedResource Include="UI\Pages\Start\Main\Menu\MyTrajectories\TrajectoryDetailsPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\Pages\Start\Main\Menu\MyTrajectories\MyTrajectoriesPage.xaml">
+    <EmbeddedResource Include="UI\Pages\Start\Main\Menu\MyTrajectories\MyTrajectoriesListPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\Pages\Start\Main\Menu\Settings\SettingsPage.xaml">
@@ -142,8 +142,8 @@
     <Compile Include="UI\Pages\Start\Main\Menu\MyTrajectories\TrajectoryDetailsPage.xaml.cs">
       <DependentUpon>TrajectoryDetailsPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UI\Pages\Start\Main\Menu\MyTrajectories\MyTrajectoriesPage.xaml.cs">
-      <DependentUpon>MyTrajectoriesPage.xaml</DependentUpon>
+    <Compile Include="UI\Pages\Start\Main\Menu\MyTrajectories\MyTrajectoriesListPage.xaml.cs">
+      <DependentUpon>MyTrajectoriesListPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="UI\Pages\Start\Main\Menu\Settings\SettingsPage.xaml.cs">
       <DependentUpon>SettingsPage.xaml</DependentUpon>
@@ -240,6 +240,7 @@
     <Compile Include="UI\Pages\Start\Main\Home\Map\CurrentActivity.cs" />
     <Compile Include="UI\Pages\Start\Main\Home\CheckpointList\CheckpointListModel.cs" />
     <Compile Include="Application\AutoLoginManager.cs" />
+    <Compile Include="UI\Pages\Start\Main\Menu\MyTrajectories\MyTrajectoriesViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Business\" />

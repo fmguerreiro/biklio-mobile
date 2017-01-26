@@ -28,7 +28,7 @@ namespace Trace {
 			masterPageItems.Add(new MasterPageItem {
 				Title = Language.MyRoutes,
 				IconSource = "home__my_routes.png",
-				TargetType = typeof(MyTrajectoriesPage)
+				TargetType = typeof(MyTrajectoriesListPage)
 			});
 			masterPageItems.Add(new MasterPageItem {
 				Title = Language.JoinACampaign,

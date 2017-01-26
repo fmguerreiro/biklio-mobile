@@ -17,13 +17,13 @@
 		x:Name="Stack"
 		Orientation="Vertical">
 		<Label
-			Text="{Binding Id}"
+			Text="{Binding Trajectory.Id}"
 			XAlign="Center" />
 		<locals:TraceMap
 			x:Name="CustomMap"
 			WidthRequest="320"
 			HeightRequest="200"
-			IsShowingUser="true"
+			IsShowingUser="false"
 			MapType="Street" />
 		<Label
 			Text="{Binding DisplayTime, StringFormat={language:Translate DateDetails}}"
@@ -32,21 +32,24 @@
 			Text="{Binding DisplayDuration, StringFormat={language:Translate DurationDetails}}"
 			FontSize="Small" />
 		<Label
-			Text="{Binding TotalDistanceMeters, StringFormat={language:Translate DistanceDetails}}"
+			Text="{Binding Trajectory.TotalDistanceMeters, StringFormat={language:Translate DistanceDetails}}"
 			FontSize="Small" />
 		<Label
-			Text="{Binding MostCommonActivity, StringFormat={language:Translate MostCommonActivityDetails}}"
+			Text="{Binding Trajectory.MostCommonActivity, StringFormat={language:Translate MostCommonActivityDetails}}"
 			FontSize="Small" />
 		<Label
-			Text="{Binding AvgSpeed, StringFormat={language:Translate AvgSpeedDetails}}"
+			Text="{Binding Trajectory.AvgSpeed, StringFormat={language:Translate AvgSpeedDetails}}"
 			FontSize="Small" />
 		<Label
-			Text="{Binding MaxSpeed, StringFormat={language:Translate MaxSpeedDetails}}"
+			Text="{Binding Trajectory.MaxSpeed, StringFormat={language:Translate MaxSpeedDetails}}"
 			FontSize="Small" />
 		<Button
-			x:Name="UploadTrajectoryButton"
+			x:Name="uploadTrajectoryButton"
 			Text="{language:Translate Upload}"
 			IsVisible="false"
+			BackgroundColor="{StaticResource SecondaryColor}"
+			TextColor="{StaticResource SecondaryTextColor}"
+			BorderRadius="20"
 			Clicked="onUploadClicked">
 		</Button>
 	</StackLayout>

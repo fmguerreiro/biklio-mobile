@@ -262,7 +262,7 @@
 					<ViewCell>
 						<Label
 							HeightRequest="14"
-							Text="Courtesy of freesound.org"
+							Text="{language:Translate CourtesyOfFreesound}"
 							HorizontalOptions="Center"
 							VerticalOptions="Center"
 							FontSize="10"
@@ -284,8 +284,8 @@
 				<TableSection
 					Title="{language:Translate Delete}">
 					<TextCell
-						Text="{language:Translate Challenges}"
-						Tapped="onLicensesClicked" />
+						Text="{language:Translate BiklioSpots}"
+						Tapped="onCheckpointsDeleted" />
 					<TextCell
 						Text="{language:Translate Routes}"
 						Tapped="onLicensesClicked" />

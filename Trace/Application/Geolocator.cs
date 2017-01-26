@@ -7,27 +7,22 @@ using Xamarin.Forms.Maps;
 
 namespace Trace {
 
-	public class Geolocator {
+	public static class Geolocator {
 
 		public const int LOCATOR_GOOD_ACCURACY = 50;
 		private const int MOTION_ONLY_ACCURACY = 1;
+		private const int ZOOM_DISTANCE_KM = 1;
 
 		private static IGeolocator locator;
 
 		public static bool IsTrackingInProgress { get; set; }
-		private static TraceMap Map;
+		public static TraceMap Map { get; set; }
 
-		public double MaxSpeed;
-		public double AvgSpeed;
-
-
-		public Geolocator(TraceMap map) {
-			Map = map;
-			IsTrackingInProgress = false;
-		}
+		public static double MaxSpeed { get; set; }
+		public static double AvgSpeed { get; set; }
 
 
-		public async Task Start() {
+		public static async Task Start() {
 			locator = CrossGeolocator.Current;
 			/*if(!locator.IsGeolocationEnabled) {
 				await DisplayAlert("", "GPS is disabled, please enable it and come back", "Return");
@@ -69,16 +64,16 @@ namespace Trace {
 		}
 
 
-		public void UpdateMap(Plugin.Geolocator.Abstractions.Position position) {
+		public static void UpdateMap(Plugin.Geolocator.Abstractions.Position position) {
 			Map.MoveToRegion(
 				MapSpan.FromCenterAndRadius(
-					new Xamarin.Forms.Maps.Position(position.Latitude, position.Longitude), Distance.FromKilometers(2)));
+					new Xamarin.Forms.Maps.Position(position.Latitude, position.Longitude), Distance.FromKilometers(ZOOM_DISTANCE_KM)));
 		}
 
 
 		public static void UpdateMap(Xamarin.Forms.Maps.Position position) {
 			Map.MoveToRegion(
-				MapSpan.FromCenterAndRadius(position, Distance.FromKilometers(2)));
+				MapSpan.FromCenterAndRadius(position, Distance.FromKilometers(ZOOM_DISTANCE_KM)));
 		}
 
 

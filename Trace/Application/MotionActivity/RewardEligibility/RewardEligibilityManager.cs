@@ -60,8 +60,8 @@ namespace Trace {
 		int nonVehicularCount;
 
 		// Successive count threshold for transitioning between states.
-		// On iOS, it throttles activity reports after 3 consecutive if it does not change.
-		private const int THRESHOLD = 3;
+		// On iOS, it throttles activity reports after 3 consecutive activities if it does not change.
+		private const int THRESHOLD = 4;
 
 		static RewardEligibilityManager instance;
 		public static RewardEligibilityManager Instance {

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Linq;
 using Trace.Localization;
 using Xamarin.Forms;
 
@@ -74,6 +75,33 @@ namespace Trace {
 				User.Instance.Challenges = null;
 				User.Instance.Checkpoints = null;
 				User.Instance.Trajectories = null;
+				await DisplayAlert(Language.Result, Language.AllDataDeleted, Language.Ok);
+			}
+		}
+
+		async void onCheckpointsDeleted(object sender, EventArgs e) {
+			var isDelete = await DisplayAlert(Language.Warning, Language.DeleteSpotsWarning, Language.Delete, Language.Back);
+			if(isDelete) {
+				var checkpoints = SQLiteDB.Instance.GetItems<Checkpoint>().Select((Checkpoint i) => i.Id).ToArray();
+				SQLiteDB.Instance.DeleteItems<Checkpoint>(checkpoints);
+				User.Instance.WSSnapshotVersion = 0;
+				SQLiteDB.Instance.SaveUser(User.Instance);
+				User.Instance.Challenges = null;
+				User.Instance.Checkpoints = null;
+				await DisplayAlert(Language.Result, Language.OperationCompleted, Language.Ok);
+			}
+		}
+
+		async void onRoutesDeleted(object sender, EventArgs e) {
+			var isDelete = await DisplayAlert(Language.Warning, Language.DeleteTrajectoriesWarning, Language.Delete, Language.Back);
+			if(isDelete) {
+				var checkpoints = SQLiteDB.Instance.GetItems<Checkpoint>().Select((Checkpoint i) => i.Id).ToArray();
+				SQLiteDB.Instance.DeleteItems<Checkpoint>(checkpoints);
+				User.Instance.WSSnapshotVersion = 0;
+				SQLiteDB.Instance.SaveUser(User.Instance);
+				User.Instance.Challenges = null;
+				User.Instance.Checkpoints = null;
+				await DisplayAlert(Language.Result, Language.OperationCompleted, Language.Ok);
 			}
 		}
 

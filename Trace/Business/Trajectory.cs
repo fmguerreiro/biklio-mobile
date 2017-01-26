@@ -52,22 +52,6 @@ namespace Trace {
 		public string TrackSession { get; set; }
 		public bool WasTrackSent { get; set; } = false;
 
-
-		// Used in the Trajectory Details page.
-		[Ignore]
-		public string DisplayTime {
-			get {
-				string format = @"dd\/MM\/yyyy HH:mm";
-				string start = StartTime.EpochSecondsToDatetime().ToString(format);
-				string end = EndTime.EpochSecondsToDatetime().ToString(format);
-				return start + " to " + end;
-			}
-		}
-		[Ignore]
-		public string DisplayDuration {
-			get { return TimeUtil.SecondsToHHMMSS(ElapsedTime()); }
-		}
-
 		// In milliseconds.
 		public long ElapsedTime() {
 			return EndTime - StartTime;
@@ -80,16 +64,22 @@ namespace Trace {
 		public int CalculateDrivingDistance() { return (int) ((TotalDistanceMeters * TimeSpentDriving) / ElapsedTime()); }
 
 
-		// In kcal. Source: http://www.ideafit.com/fitness-library/calculating-caloric-expenditure-0
+		// Source: http://www.ideafit.com/fitness-library/calculating-caloric-expenditure-0
+		// In kcal (1 kcal = 1 Cal (Food calorie) = 1000 cal (energy calories), yes calories are confusing).
 		public int CalculateCalories() {
-			return CalculateWalkingCalories() + CalculateCyclingCalories() + CalculateRunningCalories() + CalculateDrivingCalories();
+			return CalculateWalkingCalories() + CalculateCyclingCalories() + CalculateRunningCalories() + CalculateStationaryCalories();
+		}
+
+		public int CalculateStationaryCalories() {
+			var total = (3.5 * User.Instance.Weight / 1000) * 5 * ((ElapsedTime() - TimeSpentWalking - TimeSpentRunning - TimeSpentCycling) / 60);
+			return (int) total;
 		}
 
 		public int CalculateWalkingCalories() {
 			var speed = 83.1494; // avg. walking speed (m/min)
 			var grade = 0.1; // land slope - we assume a slight angle
 			var formula = (0.1 * speed) + (1.8 * speed * grade) + 3.5; // (kg/m)
-			var total = (formula * User.Instance.Weight / 1000) * 5 * (ElapsedTime() / 60);
+			var total = (formula * User.Instance.Weight / 1000) * 5 * (TimeSpentWalking / 60);
 			return (int) total;
 		}
 
@@ -97,40 +87,20 @@ namespace Trace {
 			var speed = 210.701; // avg. running speed (m/min)
 			var grade = 0.1;
 			var formula = (0.2 * speed) + (0.9 * speed * grade) + 3.5; // (ml/kg/m)
-			var total = (formula * User.Instance.Weight / 1000) * 5 * (ElapsedTime() / 60);
+			var total = (formula * User.Instance.Weight / 1000) * 5 * (TimeSpentRunning / 60);
 			return (int) total;
 		}
 
 		public int CalculateCyclingCalories() {
 			int workRate = 250;
 			var formula = (1.8 * workRate) / User.Instance.Weight + 7;
-			var total = (formula * User.Instance.Weight / 1000) * 5 * (ElapsedTime() / 60);
-			return (int) total;
-		}
-
-		public int CalculateDrivingCalories() {
-			var total = (3.5 * User.Instance.Weight / 1000) * 5 * (ElapsedTime() / 60);
+			var total = (formula * User.Instance.Weight / 1000) * 5 * (TimeSpentCycling / 60);
 			return (int) total;
 		}
 
 		public override string ToString() {
 			return string.Format("[Trajectory Id->{0} UserId->{1} StartTime->{2} AvgSpeed->{3} TotalDistance->{4} MostCommonActivity->{5}]",
 								 Id, UserId, StartTime, AvgSpeed, TotalDistanceMeters, MostCommonActivity);
-		}
-	}
-
-	class TrajectoryVM {
-		public IList<Trajectory> Trajectories { get; set; }
-		public string Summary {
-			get {
-				if(Trajectories.Count == 0) {
-					return Language.NoRoutesYet;
-				}
-				if(Trajectories.Count != 1)
-					return Language.YouHave + " " + Trajectories.Count + " " + Language.routes_;
-				else
-					return Language.OneRoute;
-			}
 		}
 	}
 }

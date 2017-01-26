@@ -12,14 +12,19 @@ namespace Trace {
 
 		private List<Plugin.Geolocator.Abstractions.Position> routeCoordinates;
 		public List<Plugin.Geolocator.Abstractions.Position> RouteCoordinates {
-			get { return routeCoordinates ?? new List<Plugin.Geolocator.Abstractions.Position>(); }
+			get {
+				if(routeCoordinates == null) {
+					routeCoordinates = new List<Plugin.Geolocator.Abstractions.Position>();
+				}
+				return routeCoordinates;
+			}
 			set { routeCoordinates = value ?? new List<Plugin.Geolocator.Abstractions.Position>(); }
 		}
 
 		public List<CustomPin> CustomPins { get; set; }
 
 		public TraceMap() {
-			RouteCoordinates = new List<Plugin.Geolocator.Abstractions.Position>();
+			//RouteCoordinates = new List<Plugin.Geolocator.Abstractions.Position>();
 			CustomPins = new List<CustomPin>();
 		}
 	}
