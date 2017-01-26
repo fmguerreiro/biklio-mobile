@@ -81,7 +81,7 @@
     	<value>Facebook login</value>
   	</data>
 	<data name="LocalIncorrectCredentialsWarning" xml:space="preserve">
-    	<value>The username or password failed local verification. Want to attempt online verification?</value>
+    	<value>We could not confirm your credentials offline. Want to try online verification?</value>
   	</data>
 	<data name="LoginError" xml:space="preserve">
     	<value>The username or password is incorrect. Make sure you have registered.</value>
@@ -577,5 +577,20 @@ Note that if you disable this feature, Biklio will only warn you of your status 
 	<data name="To" xml:space="preserve">
     	<value> to </value>
     	<comment>Used in: 'dateX' TO 'dateY'</comment>
+  	</data>
+	<data name="PrivateInfo" xml:space="preserve">
+    	<value>Personal Information</value>
+  	</data>
+	<data name="Name" xml:space="preserve">
+    	<value>Name</value>
+  	</data>
+	<data name="Phone" xml:space="preserve">
+    	<value>Phone</value>
+  	</data>
+	<data name="Address" xml:space="preserve">
+    	<value>Address</value>
+  	</data>
+	<data name="ProcessingTrajectory" xml:space="preserve">
+    	<value>Processing your route ...</value>
   	</data>
 </root>

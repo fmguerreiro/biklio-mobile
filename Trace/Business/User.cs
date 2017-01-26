@@ -27,9 +27,13 @@ namespace Trace {
 		public string Username { get; set; } = "";
 		[Ignore]
 		public string Password { get; set; } = "";
-		public string Name { get; set; } = "";
 		public string Email { get; set; } = "";
 		public string PictureURL { get; set; } = "";
+
+		// Private Info
+		public string Name { get; set; } = "";
+		public string Phone { get; set; } = "";
+		public string Address { get; set; } = "";
 
 		// Token from the third-party OAuth provider that uniquely identifies the user.
 		private string idToken = "";

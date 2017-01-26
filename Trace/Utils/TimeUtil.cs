@@ -33,7 +33,7 @@ namespace Trace {
 
 
 		public static string SecondsToHHMMSS(long seconds) {
-			string format = @"hh\:mm\:ss";
+			string format = @"HH\:mm\:ss";
 			return EpochSecondsToDatetime(seconds).ToString(format);
 		}
 

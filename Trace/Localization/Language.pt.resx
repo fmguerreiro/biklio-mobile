@@ -81,7 +81,7 @@
         <value>Facebook login</value>
   	</data>
 	<data name="LocalIncorrectCredentialsWarning" xml:space="preserve">
-        <value>Não foram encontradas credenciais válidas no dispositivo. Quer tentar fazer a verificação online?</value>
+        <value>Não foi possível fazer a validação offline das suas credenciais. Quer tentar fazer a verificação online?</value>
   	</data>
 	<data name="LoginError" xml:space="preserve">
         <value>Um dos campos está incorrecto. Certifique-se que já fez o registro.</value>
@@ -571,5 +571,20 @@ If you disable this feature, Biklio will only warn you of your status when you o
   	</data>
 	<data name="To" xml:space="preserve">
     	<value> a </value>
+  	</data>
+	<data name="PrivateInfo" xml:space="preserve">
+    	<value>Informação Pessoal</value>
+  	</data>
+	<data name="Name" xml:space="preserve">
+    	<value>Nome</value>
+  	</data>
+	<data name="Phone" xml:space="preserve">
+    	<value>Telefone</value>
+  	</data>
+	<data name="Address" xml:space="preserve">
+    	<value>Morada</value>
+  	</data>
+	<data name="ProcessingTrajectory" xml:space="preserve">
+    	<value>A processar o trajeto ...</value>
   	</data>
 </root>

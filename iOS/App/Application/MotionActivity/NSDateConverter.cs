@@ -1,21 +1,24 @@
 ﻿using System;
+using System.Diagnostics;
 using Foundation;
 
 namespace Trace.iOS {
 	public static class NSDateConverter {
 
-		static DateTime reference = new DateTime(2001, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
-
-		public static DateTime ToDateTime(NSDate date) {
-			var utcDateTime = reference.AddSeconds(date.SecondsSinceReferenceDate);
-			var dateTime = utcDateTime.ToLocalTime();
-			return dateTime;
+		public static NSDate ToNsDate(DateTime datetime) {
+			//Debug.WriteLine(TimeUtil.SecondsToHHMMSS((long) datetime.DatetimeToEpochSeconds()));
+			DateTime newDate = TimeZone.CurrentTimeZone.ToLocalTime(new DateTime(2001, 1, 1, 0, 0, 0));
+			var nsDate = NSDate.FromTimeIntervalSinceReferenceDate((datetime - newDate).TotalSeconds);
+			//Debug.WriteLine(TimeUtil.SecondsToHHMMSS((long) nsDate.SecondsSinceReferenceDate));
+			return nsDate;
 		}
 
-		public static NSDate ToNSDate(DateTime datetime) {
-			var utcDateTime = datetime.ToUniversalTime();
-			var date = NSDate.FromTimeIntervalSinceReferenceDate((utcDateTime - reference).TotalSeconds);
-			return date;
+		public static DateTime ToDateTime(NSDate date) {
+			//Debug.WriteLine(TimeUtil.SecondsToHHMMSS((long) date.SecondsSinceReferenceDate));
+			DateTime newDate = TimeZone.CurrentTimeZone.ToUniversalTime(
+				new DateTime(2001, 1, 1, 0, 0, 0));
+			//Debug.WriteLine(TimeUtil.SecondsToHHMMSS((long) newDate.DatetimeToEpochSeconds()));
+			return newDate.AddSeconds(date.SecondsSinceReferenceDate);
 		}
 	}
 }

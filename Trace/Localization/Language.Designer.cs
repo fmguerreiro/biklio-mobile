@@ -1126,5 +1126,29 @@ namespace Trace.Localization {
                 return ResourceManager.GetString("To", resourceCulture);
             }
         }
+        
+        public static string PrivateInfo {
+            get {
+                return ResourceManager.GetString("PrivateInfo", resourceCulture);
+            }
+        }
+        
+        public static string Name {
+            get {
+                return ResourceManager.GetString("Name", resourceCulture);
+            }
+        }
+        
+        public static string Phone {
+            get {
+                return ResourceManager.GetString("Phone", resourceCulture);
+            }
+        }
+        
+        public static string ProcessingTrajectory {
+            get {
+                return ResourceManager.GetString("ProcessingTrajectory", resourceCulture);
+            }
+        }
     }
 }

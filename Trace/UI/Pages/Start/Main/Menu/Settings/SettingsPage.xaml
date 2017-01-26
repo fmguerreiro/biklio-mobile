@@ -43,6 +43,22 @@
 					</TextCell>
 				</TableSection>
 				<TableSection
+					Title="{language:Translate PrivateInfo}">
+					<EntryCell
+						Completed="onSettingChanged"
+						Label="{language:Translate Name}"
+						Text="{Binding User.Name, Mode=TwoWay}">
+					</EntryCell>
+					<EntryCell
+						Label="{language:Translate Phone}"
+						Completed="onSettingChanged"
+						Text="{Binding User.Phone, Mode=TwoWay}" />
+					<EntryCell
+						Label="{language:Translate Address}"
+						Completed="onSettingChanged"
+						Text="{Binding User.Address, Mode=TwoWay}" />
+				</TableSection>
+				<TableSection
 					Title="{language:Translate CaloriesCalculation}">
 					<EntryCell
 						Completed="onSettingChanged"

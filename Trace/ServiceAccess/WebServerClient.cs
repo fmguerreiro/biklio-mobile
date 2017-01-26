@@ -28,13 +28,13 @@ namespace Trace {
 		/// <param name="email">Email.</param>
 		public async Task<WSResult> Register(string username, string password, string email) {
 			var user = new WSUser {
-				name = "XamarinName", // TODO replace these with input from user in the Registration window
+				name = "", // these are optionally replaced by the user in the Settings page.
 				username = username,
 				password = password,
 				confirm = password,
 				email = email,
-				phone = "966845129",
-				address = "XamarinAddress"
+				phone = "",
+				address = ""
 			};
 
 			string request = JsonConvert.SerializeObject(user, Formatting.None);

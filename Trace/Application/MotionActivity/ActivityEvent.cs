@@ -28,5 +28,9 @@ namespace Trace {
 		public long ActivityDurationInSeconds() {
 			return (long) (EndDate - startDate).TotalSeconds;
 		}
+
+		public override string ToString() {
+			return $"{activityType}, {TimeUtil.SecondsToHHMMSS(startDate.DatetimeToEpochSeconds())} -> {TimeUtil.SecondsToHHMMSS(EndDate.DatetimeToEpochSeconds())}";
+		}
 	}
 }

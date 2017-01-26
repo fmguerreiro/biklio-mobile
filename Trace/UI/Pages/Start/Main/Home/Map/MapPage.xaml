@@ -57,7 +57,8 @@
 			Grid.ColumnSpan="2" />
 		<Button
 			Clicked="onLocateUser"
-			BackgroundColor="{StaticResource PrimaryColor}"
+			BackgroundColor="{StaticResource SecondaryColor}"
+			Image="map__locate.png"
 			HeightRequest="40"
 			WidthRequest="40"
 			BorderRadius="20"
@@ -65,19 +66,11 @@
 			HorizontalOptions="Center"
 			Grid.Row="1"
 			Grid.Column="1" />
-		<ffimageloading:CachedImage
-			x:Name="locateImage"
-			Source="map__locate.png"
-			WidthRequest="24"
-			DownsampleWidth="24"
-			HorizontalOptions="Center"
-			VerticalOptions="Center"
-			Grid.Row="1"
-			Grid.Column="1">
-		</ffimageloading:CachedImage>
 		<Button
+			x:Name="trackButton"
 			Clicked="onStartTracking"
-			BackgroundColor="{StaticResource SecondaryColor}"
+			BackgroundColor="{StaticResource PrimaryColor}"
+			Image="map__play_arrow.png"
 			HeightRequest="45"
 			WidthRequest="45"
 			BorderRadius="23"
@@ -85,16 +78,6 @@
 			HorizontalOptions="Center"
 			Grid.Row="2"
 			Grid.Column="1" />
-		<ffimageloading:CachedImage
-			x:Name="trackButtonImage"
-			Source="map__play_arrow.png"
-			WidthRequest="24"
-			DownsampleWidth="24"
-			HorizontalOptions="Center"
-			VerticalOptions="Center"
-			Grid.Row="2"
-			Grid.Column="1">
-		</ffimageloading:CachedImage>
 		<Grid
 			x:Name="resultsGrid"
 			IsVisible="false"

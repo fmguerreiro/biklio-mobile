@@ -58,25 +58,24 @@ namespace Trace {
 				DependencyService.Get<IMotionActivityManager>().StartMotionUpdates((activity) => {
 					if(activity != ActivityType.Unknown) {
 						//currentActivity.ActivityType = activity;
-						Debug.WriteLine(DateTime.Now + ": " + activity);
+						Debug.WriteLine(activity + ": " + DateTime.Now);
 						App.DEBUG_ActivityLog += DateTime.Now + ": " + activity + "\n";
-						// TODO use activity confidence as well
 						RewardEligibilityManager.Instance.Input(activity);
 					}
 				});
 			}
 
 			// Add tap event handlers to the images on top of the circle buttons (otherwise, if users click on the img nothing happens)
-			var trackButtonGR = new TapGestureRecognizer();
-			trackButtonGR.Tapped += (sender, e) => onStartTracking(sender, e);
-			trackButtonImage.GestureRecognizers.Add(trackButtonGR);
+			//var trackButtonGR = new TapGestureRecognizer();
+			//trackButtonGR.Tapped += (sender, e) => onStartTracking(sender, e);
+			//trackButtonImage.GestureRecognizers.Add(trackButtonGR);
 			if(Geolocator.IsTrackingInProgress) {
-				trackButtonImage.Source = "map__stop.png";
+				trackButton.Image = "map__stop.png";
 			}
 
-			var locateButtonGR = new TapGestureRecognizer();
-			locateButtonGR.Tapped += (sender, e) => onLocateUser(sender, e);
-			locateImage.GestureRecognizers.Add(locateButtonGR);
+			//var locateButtonGR = new TapGestureRecognizer();
+			//locateButtonGR.Tapped += (sender, e) => onLocateUser(sender, e);
+			//locateImage.GestureRecognizers.Add(locateButtonGR);
 
 			// Add tap event handler to results grid so it can be dismissed by the user.
 			var gridGR = new TapGestureRecognizer();
@@ -89,17 +88,6 @@ namespace Trace {
 		protected override void OnAppearing() {
 			Debug.WriteLine("MapPage.OnAppearing()");
 			base.OnAppearing();
-			//if(ShouldCenterOnUser) {
-			//	DependencyService.Get<TraceMapRenderer>().CenterOnUser();
-			//	map.CenterOnUser();
-			//		var toastCfg = new ToastConfig(Language.FetchUserLocation) {
-			//			Duration = new TimeSpan(0, 0, 2)
-			//		};
-			//		UserDialogs.Instance.Toast(toastCfg);
-			//		var userLocation = await GeoUtils.GetCurrentUserLocation();
-			//		Locator.UpdateMap(userLocation);
-			//}
-			//ShouldCenterOnUser = true; // Next time center on user.
 		}
 
 
@@ -110,7 +98,6 @@ namespace Trace {
 			UserDialogs.Instance.Toast(toastCfg);
 			var pos = await GeoUtils.GetCurrentUserLocation(timeout: 5000);
 			Geolocator.UpdateMap(new Position(latitude: pos.Latitude, longitude: pos.Longitude));
-			//map.CenterOnUser();
 		}
 
 
@@ -123,23 +110,32 @@ namespace Trace {
 
 			// On Stop Button pressed
 			if(Geolocator.IsTrackingInProgress && !isProcessing) {
+				//var toastCfg = new ToastConfig(Language.ProcessingTrajectory) {
+				//	Duration = new TimeSpan(0, 0, 3)
+				//};
+				//UserDialogs.Instance.Toast(toastCfg);
+				trackButton.IsVisible = false;
+
 				isProcessing = true;
 				// Calculate stats and show the results to the user.
-				StopTrackingTime = DateTime.Now;
-				DependencyService.Get<IMotionActivityManager>().StopMotionUpdates();
+				StopTrackingTime = DateTime.Now; Debug.WriteLine($"StopTrackingTime: {StopTrackingTime}");
 
 				// Put all CPU-bound operations outside of UI thread.
-				var calculateMotionTask = new Task(() =>
-					DependencyService.Get<IMotionActivityManager>().QueryHistoricalData(StartTrackingTime, StopTrackingTime));
-				var calculateDistanceTask = new Task<double>(calculateRouteDistance);
+				var calculateMotionTask = DependencyService.Get<IMotionActivityManager>()
+											.QueryHistoricalData(
+												StartTrackingTime, StopTrackingTime
+											  );
 
-				calculateMotionTask.Start();
-				calculateDistanceTask.Start();
-				await Task.WhenAll(calculateMotionTask, calculateDistanceTask);
+				var calculateDistanceTask = calculateRouteDistance();
+
+				await Task.WhenAll(
+					calculateMotionTask,
+					calculateDistanceTask
+				);
+				double distanceInMeters = calculateDistanceTask.Result;
 
 				// Create trajectory.
-				double distanceInMeters = calculateDistanceTask.Result;
-				Trajectory trajectory = await Task.Run(() => createTrajectory(distanceInMeters));
+				Trajectory trajectory = createTrajectory(distanceInMeters);
 
 				// Update KPI with new activity information.
 				User.Instance.GetCurrentKPI().AddActivityEvent(trajectory.StartTime,
@@ -151,7 +147,7 @@ namespace Trace {
 				// Calculate Motion activities along the trajectory.
 				IList<ActivityEvent> activityEvents = DependencyService.Get<IMotionActivityManager>().ActivityEvents;
 				trajectory.Points = await Task.Run(() => AssociatePointsWithActivity(activityEvents, map.RouteCoordinates));
-
+				//Debug.WriteLine("6");
 				// Save trajectory only if it is of relevant size.
 				if(distanceInMeters > MIN_SIZE_TRAJECTORY) {
 					trajectory.PointsJSON = JsonConvert.SerializeObject(trajectory.Points);
@@ -185,7 +181,8 @@ namespace Trace {
 					AvgSpeed = trajectory.AvgSpeed
 				};
 
-				trackButtonImage.Source = "map__play_arrow.png";
+				trackButton.Image = "map__play_arrow.png";
+				trackButton.IsVisible = true;
 
 				displayResultsGrid(displayResultsModel);
 
@@ -201,13 +198,12 @@ namespace Trace {
 				};
 				UserDialogs.Instance.Toast(toastCfg);
 
-				trackButtonImage.Source = "map__stop.png";
-
-				await Geolocator.Start();
+				trackButton.Image = "map__stop.png";
 
 				map.RouteCoordinates.Clear();
 				StartTrackingTime = DateTime.Now;
 
+				await Geolocator.Start();
 				// Show Activity text again and remove Results grid.
 				//currentActivityLabel.IsVisible = true;
 				resultsGrid.IsVisible = false;
@@ -218,6 +214,7 @@ namespace Trace {
 
 			Geolocator.IsTrackingInProgress = !Geolocator.IsTrackingInProgress;
 			isProcessing = false;
+
 		}
 
 
@@ -237,7 +234,7 @@ namespace Trace {
 		}
 
 
-		private double calculateRouteDistance() {
+		private async Task<double> calculateRouteDistance() {
 			double distanceInMeters = 0;
 			var coordinates = map.RouteCoordinates.GetEnumerator();
 			coordinates.MoveNext();
@@ -284,35 +281,32 @@ namespace Trace {
 		/// <param name="points">Points in the trajectory.</param>
 		public List<TrajectoryPoint> AssociatePointsWithActivity(IList<ActivityEvent> activityEvents, IEnumerable<Plugin.Geolocator.Abstractions.Position> points) {
 			var res = new List<TrajectoryPoint>();
-			IEnumerator activityEventPtr = activityEvents.GetEnumerator();
 
 			// Check for the case where there are no activities registered.
-			if(!activityEventPtr.MoveNext()) {
+			if(activityEvents.Count == 0) {
 				return fillTailWithUnknownPoints(points.GetEnumerator(), res);
 			}
 
-			foreach(Plugin.Geolocator.Abstractions.Position p in points) {
-				// Points are associated with the activity event period in which they occur.
-				var activityEvent = (ActivityEvent) activityEventPtr.Current;
+			var i = 0;
+			var ptr = points.GetEnumerator();
+			Debug.WriteLine($"activities: {activityEvents.Count} points: {points.Count()}");
+			foreach(ActivityEvent a in activityEvents) {
+				Debug.WriteLine($"{i++} a: {a.EndDate}");
 
-				if(p.Timestamp.UtcDateTime < activityEvent.EndDate) {
-					res.Add(createPoint(p, activityEvent));
-				}
-				// If the point does not belong to the activity period, search the next activity events until the period is found.
-				else {
-					while(p.Timestamp.UtcDateTime >= ((ActivityEvent) activityEventPtr.Current).EndDate)
-						activityEventPtr.MoveNext();
-					try {
-						activityEvent = (ActivityEvent) activityEventPtr.Current;
+				while(ptr.MoveNext()) {
+					Debug.WriteLine($"p: {ptr.Current.Timestamp}");
+
+					var p = ptr.Current;
+					if(p.Timestamp.UtcDateTime < a.EndDate) {
+						res.Add(createPoint(p, a));
 					}
-					catch(Exception) { return fillTailWithUnknownPoints(points.GetEnumerator(), res); }
-					res.Add(createPoint(p, activityEvent));
-				}
-
-				if(activityEventPtr.MoveNext()) {
-					return fillTailWithUnknownPoints(points.GetEnumerator(), res);
 				}
 			}
+
+			if(ptr.MoveNext()) {
+				return fillTailWithUnknownPoints(ptr, res);
+			}
+
 			return res;
 		}
 
@@ -327,6 +321,8 @@ namespace Trace {
 
 		private List<TrajectoryPoint> fillTailWithUnknownPoints(IEnumerator<Plugin.Geolocator.Abstractions.Position> pointsPtr, List<TrajectoryPoint> res) {
 			var activityEvent = new ActivityEvent(ActivityType.Unknown);
+			res.Add(createPoint(pointsPtr.Current, activityEvent));
+
 			while(pointsPtr.MoveNext()) {
 				var p = pointsPtr.Current;
 				res.Add(createPoint(p, activityEvent));

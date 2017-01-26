@@ -40,7 +40,7 @@ namespace Trace {
 		private int backgroundVehicularTimeAlloted = VEHICULAR_TIMEOUT;
 
 		// This value indicates whether the state machine should start timers or use the 'timeAlloted' counters.
-		private const int USING_TIMERS_FLAG = -1;
+		private const int USING_REALTIME_MOTION_FLAG = -1;
 
 		// Minimum distance between user and checkpoints for reward eligibility.
 		private readonly double CKPT_DISTANCE_THRESHOLD = 120;
@@ -109,7 +109,7 @@ namespace Trace {
 			Action<int> nextAction;
 			var state = stateMachine.CurrentState;
 			transitionGuards.TryGetValue(state, out nextAction);
-			nextAction.Invoke(USING_TIMERS_FLAG);
+			nextAction.Invoke(USING_REALTIME_MOTION_FLAG);
 		}
 
 
@@ -225,7 +225,7 @@ namespace Trace {
 				cyclingEventStart = TimeUtil.CurrentEpochTimeSeconds();
 				stateMachine.MoveNext(Command.Cycling);
 				// Start timer -> If user continues using a bycicle for a certain time, go to: 'cyclingEligible'.
-				if(elapsedTime == USING_TIMERS_FLAG) {
+				if(elapsedTime == USING_REALTIME_MOTION_FLAG) {
 					timer = new Timer(new TimerCallback(goToCyclingEligibleCallback), null, CYCLING_INELIGIBLE_TIMEOUT);
 				}
 			}
@@ -260,7 +260,7 @@ namespace Trace {
 
 				// Start a long timer where the user is still eligible for rewards even when not using a bycicle.
 				// If the timer goes off (the user goes too long without using a bycicle), go back to 'ineligible'.
-				if(elapsedTime == USING_TIMERS_FLAG) {
+				if(elapsedTime == USING_REALTIME_MOTION_FLAG) {
 					timer = new Timer(new TimerCallback(goToIneligibleCallback), null, UNKNOWN_ELIGIBLE_TIMEOUT);
 				}
 			}
@@ -278,7 +278,7 @@ namespace Trace {
 			if(vehicularCount > THRESHOLD) {
 				resetCounters();
 				stateMachine.MoveNext(Command.InAVehicle);
-				if(elapsedTime == USING_TIMERS_FLAG) {
+				if(elapsedTime == USING_REALTIME_MOTION_FLAG) {
 					vehicularTimer = new Timer(new TimerCallback(goToIneligibleCallback), null, VEHICULAR_TIMEOUT);
 				}
 			}
