@@ -34,7 +34,6 @@ namespace Trace {
 			locator.DesiredAccuracy = LOCATOR_GOOD_ACCURACY;
 			var locationSettings = new ListenerSettings {
 				AllowBackgroundUpdates = true
-				//PauseLocationUpdatesAutomatically = true
 			};
 
 			// Get first position
@@ -48,19 +47,25 @@ namespace Trace {
 			}
 			catch(Exception e) { Debug.WriteLine(e); return; }
 
-			locator.PositionChanged += (sender, e) => {
-				if(IsTrackingInProgress) {
-					UpdateMap(e.Position);
-					if(e.Position.Speed > MaxSpeed) MaxSpeed = e.Position.Speed;
-					AvgSpeed += e.Position.Speed;
-					Map.RouteCoordinates.Add(e.Position);
-				}
-			};
+			locator.PositionChanged += onPositionChanged;
+		}
+
+
+		private static void onPositionChanged(object sender, PositionEventArgs args) {
+			if(IsTrackingInProgress) {
+				UpdateMap(args.Position);
+				if(args.Position.Speed > MaxSpeed) MaxSpeed = args.Position.Speed;
+				AvgSpeed += args.Position.Speed;
+				Map.RouteCoordinates.Add(args.Position);
+			}
 		}
 
 
 		public static async Task Stop() {
-			await locator?.StopListeningAsync();
+			if(locator != null) {
+				locator.PositionChanged -= onPositionChanged;
+				await locator.StopListeningAsync();
+			}
 		}
 
 

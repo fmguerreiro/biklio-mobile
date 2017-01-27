@@ -118,16 +118,16 @@
     <Compile Include="Security\OAuth\OAuthConfig.cs" />
     <Compile Include="Security\OAuth\Facebook\FacebookOAuthConfig.cs" />
     <Compile Include="Security\OAuth\Google\GoogleOAuthConfig.cs" />
-    <Compile Include="ServiceAccess\WebServiceObjects\Routes\WSAttributes.cs" />
-    <Compile Include="ServiceAccess\WebServiceObjects\Challenges\WSChallenge.cs" />
-    <Compile Include="ServiceAccess\WebServiceObjects\Challenges\WSCondition.cs" />
-    <Compile Include="ServiceAccess\WebServiceObjects\Challenges\WSContacts.cs" />
-    <Compile Include="ServiceAccess\WebServiceObjects\Challenges\WSDetails.cs" />
-    <Compile Include="ServiceAccess\WebServiceObjects\Challenges\WSFacilities.cs" />
-    <Compile Include="ServiceAccess\WebServiceObjects\Routes\WSPoint.cs" />
-    <Compile Include="ServiceAccess\WebServiceObjects\Challenges\WSShop.cs" />
-    <Compile Include="ServiceAccess\WebServiceObjects\Routes\WSTrackSummary.cs" />
-    <Compile Include="ServiceAccess\WebServiceObjects\Routes\WSTrajectory.cs" />
+    <Compile Include="ServiceAccess\WebServerObjects\Routes\WSAttributes.cs" />
+    <Compile Include="ServiceAccess\WebServerObjects\Challenges\WSChallenge.cs" />
+    <Compile Include="ServiceAccess\WebServerObjects\Challenges\WSCondition.cs" />
+    <Compile Include="ServiceAccess\WebServerObjects\Challenges\WSContacts.cs" />
+    <Compile Include="ServiceAccess\WebServerObjects\Challenges\WSDetails.cs" />
+    <Compile Include="ServiceAccess\WebServerObjects\Challenges\WSFacilities.cs" />
+    <Compile Include="ServiceAccess\WebServerObjects\Routes\WSPoint.cs" />
+    <Compile Include="ServiceAccess\WebServerObjects\Challenges\WSShop.cs" />
+    <Compile Include="ServiceAccess\WebServerObjects\Routes\WSTrackSummary.cs" />
+    <Compile Include="ServiceAccess\WebServerObjects\Routes\WSTrajectory.cs" />
     <Compile Include="Business\TrajectoryPoint.cs" />
     <Compile Include="UI\CustomConverters\ImageToRouteCheckConverter.cs" />
     <Compile Include="UI\CustomControls\BindablePicker.cs" />
@@ -184,20 +184,20 @@
     <Compile Include="Utils\TimeUtil.cs" />
     <Compile Include="ServiceAccess\Notifications\INotificationMessage.cs" />
     <Compile Include="Business\KPI.cs" />
-    <Compile Include="ServiceAccess\WebServiceObjects\KPIs\WSKPIs.cs" />
-    <Compile Include="ServiceAccess\WebServiceObjects\KPIs\WSModalitiesDuration.cs" />
-    <Compile Include="ServiceAccess\WebServiceObjects\KPIs\WSCyclingEvent.cs" />
-    <Compile Include="ServiceAccess\WebServiceObjects\KPIs\WSLoginEvent.cs" />
-    <Compile Include="ServiceAccess\WebServiceObjects\KPIs\WSClaimedRewardEvent.cs" />
-    <Compile Include="ServiceAccess\WebServiceObjects\KPIs\WSChallengeConditionCompletedEvent.cs" />
-    <Compile Include="ServiceAccess\WebServiceObjects\KPIs\WSCheckInEvent.cs" />
+    <Compile Include="ServiceAccess\WebServerObjects\KPIs\WSKPIs.cs" />
+    <Compile Include="ServiceAccess\WebServerObjects\KPIs\WSModalitiesDuration.cs" />
+    <Compile Include="ServiceAccess\WebServerObjects\KPIs\WSCyclingEvent.cs" />
+    <Compile Include="ServiceAccess\WebServerObjects\KPIs\WSLoginEvent.cs" />
+    <Compile Include="ServiceAccess\WebServerObjects\KPIs\WSClaimedRewardEvent.cs" />
+    <Compile Include="ServiceAccess\WebServerObjects\KPIs\WSChallengeConditionCompletedEvent.cs" />
+    <Compile Include="ServiceAccess\WebServerObjects\KPIs\WSCheckInEvent.cs" />
     <Compile Include="Business\Campaign.cs" />
-    <Compile Include="ServiceAccess\WebServiceObjects\WSResult.cs" />
-    <Compile Include="ServiceAccess\WebServiceObjects\WSPayload.cs" />
-    <Compile Include="ServiceAccess\WebServiceObjects\UserSession\WSUser.cs" />
-    <Compile Include="ServiceAccess\WebServiceObjects\OAuth\WSFederatedToken.cs" />
-    <Compile Include="ServiceAccess\WebServiceObjects\Campaigns\WSBounds.cs" />
-    <Compile Include="ServiceAccess\WebServiceObjects\Campaigns\WSCoordinate.cs" />
+    <Compile Include="ServiceAccess\WebServerObjects\WSResult.cs" />
+    <Compile Include="ServiceAccess\WebServerObjects\WSPayload.cs" />
+    <Compile Include="ServiceAccess\WebServerObjects\UserSession\WSUser.cs" />
+    <Compile Include="ServiceAccess\WebServerObjects\OAuth\WSFederatedToken.cs" />
+    <Compile Include="ServiceAccess\WebServerObjects\Campaigns\WSBounds.cs" />
+    <Compile Include="ServiceAccess\WebServerObjects\Campaigns\WSCoordinate.cs" />
     <Compile Include="UI\Pages\Start\Main\Menu\Campaigns\CampaignsPage.xaml.cs">
       <DependentUpon>CampaignsPage.xaml</DependentUpon>
     </Compile>
@@ -208,7 +208,7 @@
     <Compile Include="UI\Pages\Start\Main\Menu\Rewards\ClaimRewardPage.xaml.cs">
       <DependentUpon>ClaimRewardPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ServiceAccess\WebServiceObjects\Challenges\WSType.cs" />
+    <Compile Include="ServiceAccess\WebServerObjects\Challenges\WSType.cs" />
     <Compile Include="UI\Pages\SignInPage.xaml.cs">
       <DependentUpon>SignInPage.xaml</DependentUpon>
     </Compile>
@@ -241,6 +241,7 @@
     <Compile Include="UI\Pages\Start\Main\Home\CheckpointList\CheckpointListModel.cs" />
     <Compile Include="Application\AutoLoginManager.cs" />
     <Compile Include="UI\Pages\Start\Main\Menu\MyTrajectories\MyTrajectoriesViewModel.cs" />
+    <Compile Include="UI\CustomControls\BorderlessEntry.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Business\" />
@@ -250,13 +251,13 @@
     <Folder Include="Security\" />
     <Folder Include="Security\InputValidation\" />
     <Folder Include="Security\CredentialsHandling\" />
-    <Folder Include="ServiceAccess\WebServiceObjects\" />
+    <Folder Include="ServiceAccess\WebServerObjects\" />
     <Folder Include="Security\OAuth\" />
     <Folder Include="UI\CustomConverters\" />
     <Folder Include="Security\OAuth\Facebook\" />
     <Folder Include="Security\OAuth\Google\" />
-    <Folder Include="ServiceAccess\WebServiceObjects\Routes\" />
-    <Folder Include="ServiceAccess\WebServiceObjects\Challenges\" />
+    <Folder Include="ServiceAccess\WebServerObjects\Routes\" />
+    <Folder Include="ServiceAccess\WebServerObjects\Challenges\" />
     <Folder Include="UI\CustomControls\" />
     <Folder Include="UI\Pages\" />
     <Folder Include="UI\Pages\Start\" />
@@ -271,10 +272,10 @@
     <Folder Include="Localization\" />
     <Folder Include="Utils\" />
     <Folder Include="ServiceAccess\Notifications\" />
-    <Folder Include="ServiceAccess\WebServiceObjects\KPIs\" />
-    <Folder Include="ServiceAccess\WebServiceObjects\UserSession\" />
-    <Folder Include="ServiceAccess\WebServiceObjects\OAuth\" />
-    <Folder Include="ServiceAccess\WebServiceObjects\Campaigns\" />
+    <Folder Include="ServiceAccess\WebServerObjects\KPIs\" />
+    <Folder Include="ServiceAccess\WebServerObjects\UserSession\" />
+    <Folder Include="ServiceAccess\WebServerObjects\OAuth\" />
+    <Folder Include="ServiceAccess\WebServerObjects\Campaigns\" />
     <Folder Include="UI\Pages\Start\Main\Menu\Campaigns\" />
     <Folder Include="UI\Pages\Start\Main\Menu\Rewards\" />
     <Folder Include="UI\Pages\Start\Main\Home\Map\" />

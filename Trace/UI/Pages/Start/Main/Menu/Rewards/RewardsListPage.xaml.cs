@@ -11,7 +11,7 @@ namespace Trace {
 			InitializeComponent();
 
 			//IList<Challenge> rewards = SQLiteDB.Instance.GetRewards().ToList();
-			IList<Challenge> rewards = User.Instance.Challenges.FindAll((x) => x.IsComplete && !x.IsClaimed);
+			IList<Challenge> rewards = User.Instance.GetRewards();
 
 			//var testReward = User.Instance.Challenges.FirstOrDefault();
 			//rewards.Add(testReward);

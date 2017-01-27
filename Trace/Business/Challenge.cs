@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using SQLite;
 using Trace.Localization;
 
@@ -33,10 +34,30 @@ namespace Trace {
 		public long ClaimedAt { get; set; }
 		public bool IsRepeatable { get; set; }
 
-		public string CheckpointName { get; set; }
+		// This weak reference prevents a circular loop between checkpoint <-> challenge, allowing the GC to collect them.
+		WeakReference<Checkpoint> thisCheckpoint;
 		[Ignore]
-		public Checkpoint ThisCheckpoint { get; set; }
+		public Checkpoint ThisCheckpoint {
+			get {
+				if(thisCheckpoint == null)
+					return null;
+
+				Checkpoint res = null;
+				if(thisCheckpoint.TryGetTarget(out res))
+					return res;
+				else {
+					return null;
+				}
+			}
+
+			set {
+				if(thisCheckpoint != null)
+					thisCheckpoint.SetTarget(value);
+				else thisCheckpoint = new WeakReference<Checkpoint>(value);
+			}
+		}
 		public long CheckpointId { get; set; }
+
 
 		// These properties are used to display information when listed in the CheckpointsListPage.
 		public string Condition {
@@ -49,7 +70,7 @@ namespace Trace {
 
 		public override string ToString() {
 			return string.Format("[Challenge GId->{0} UserId->{1} CheckpointId->{2} Reward->{3} Checkpoint->{4} Distance->{5}]",
-								 GId, UserId, CheckpointId, Reward, CheckpointName, NeededCyclingDistance);
+								 GId, UserId, ThisCheckpoint.GId, Reward, ThisCheckpoint.Name, NeededCyclingDistance);
 		}
 	}
 

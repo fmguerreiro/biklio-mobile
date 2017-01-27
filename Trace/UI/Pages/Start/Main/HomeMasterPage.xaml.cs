@@ -40,6 +40,11 @@ namespace Trace {
 				IconSource = "home__settings.png",
 				TargetType = typeof(SettingsPage)
 			});
+			masterPageItems.Add(new MasterPageItem {
+				Title = Language.Tutorial,
+				IconSource = "home__tutorial.png",
+				TargetType = typeof(TutorialPage)
+			});
 
 			listView.ItemsSource = masterPageItems;
 

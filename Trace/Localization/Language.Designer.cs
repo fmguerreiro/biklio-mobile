@@ -1150,5 +1150,11 @@ namespace Trace.Localization {
                 return ResourceManager.GetString("ProcessingTrajectory", resourceCulture);
             }
         }
+        
+        public static string MaxChallenges {
+            get {
+                return ResourceManager.GetString("MaxChallenges", resourceCulture);
+            }
+        }
     }
 }

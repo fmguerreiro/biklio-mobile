@@ -234,7 +234,7 @@ namespace Trace {
 
 		void cyclingIneligibleStateGuards(int elapsedTime) {
 			// If user stops using a bycicle, go back to the start: 'ineligible'.
-			if(nonCyclingCount > THRESHOLD) {
+			if(nonCyclingCount > THRESHOLD * 4) {
 				timer.Dispose();
 				resetCounters();
 				// Ignore small cycling events.
@@ -342,7 +342,7 @@ namespace Trace {
 			}
 
 			sendRewardNotificationUser(nChallengesCompleted);
-
+			HomePage.UpdateRewardIcon(User.Instance.GetRewards().Count);
 			// Start a timer that waits a certain period before doing 'checkNearbyCheckpoints' again.
 			checkNearbyCheckpointsTimer = new Timer(new TimerCallback(
 													(obj) => { checkNearbyCheckpointsTask = null; }),
@@ -377,7 +377,7 @@ namespace Trace {
 				// Record event
 				User.Instance.GetCurrentKPI().AddCheckInEvent(now, c.CheckpointId);
 			}
-
+			HomePage.UpdateRewardIcon(User.Instance.GetRewards().Count);
 			sendRewardNotificationUser(nChallengesCompleted);
 		}
 

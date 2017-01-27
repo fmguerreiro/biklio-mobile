@@ -47,10 +47,10 @@ namespace Trace.iOS {
 			}
 			Debug.WriteLine("Playing sound: " + sound);
 			player.Volume = musicVolume;
-			player.FinishedPlaying += delegate {
-				Debug.WriteLine("StartAudioSession().FinishedPlaying ->" + sound);
-				player = null;
-			};
+			//player.FinishedPlaying += delegate {
+			//	Debug.WriteLine("StartAudioSession().FinishedPlaying ->" + sound);
+			//	player = null;
+			//};
 			player.NumberOfLoops = loops;
 			player.Play();
 			prevSound = sound;
@@ -69,11 +69,14 @@ namespace Trace.iOS {
 			PlaySound(newSound, loops);
 
 			// Restart the player using the appropriate background sound in order to prevent app suspension.
-			player.FinishedPlaying += (sender, e) => {
+			EventHandler<AVStatusEventArgs> finishedPlayingEventHandler = null;
+			finishedPlayingEventHandler = (sender, e) => {
 				if(isActive) {
 					PlaySound(null);
 				}
+				player.FinishedPlaying -= finishedPlayingEventHandler;
 			};
+			player.FinishedPlaying += finishedPlayingEventHandler;
 		}
 
 

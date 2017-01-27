@@ -99,17 +99,22 @@ namespace Trace.iOS {
 					locationManager.StartMonitoringSignificantLocationChanges();
 
 					// On location change, start background task to get enough time to process motion history.
-					locationManager.LocationsUpdated += (o, e) => {
-						nint taskID = UIApplication.SharedApplication.BeginBackgroundTask(() => { });
-						new Task(() => {
-							var now = (long) NSDate.Now.SecondsSinceReferenceDate;
-							Debug.WriteLine($"Location change received: {NSDate.Now.SecondsSinceReferenceDate}");
-							processMotionData(now);
-							UIApplication.SharedApplication.EndBackgroundTask(taskID);
-						}).Start();
-					};
+					// This is to make sure there is not a new event handler added every time!
+					locationManager.LocationsUpdated -= onLocationUpdate;
+					locationManager.LocationsUpdated += onLocationUpdate;
 				});
 			}
+		}
+
+
+		private void onLocationUpdate(object sender, CLLocationsUpdatedEventArgs args) {
+			nint taskID = UIApplication.SharedApplication.BeginBackgroundTask(() => { });
+			new Task(() => {
+				var now = (long) NSDate.Now.SecondsSinceReferenceDate;
+				Debug.WriteLine($"Location change received: {NSDate.Now.SecondsSinceReferenceDate}");
+				processMotionData(now);
+				UIApplication.SharedApplication.EndBackgroundTask(taskID);
+			}).Start();
 		}
 
 

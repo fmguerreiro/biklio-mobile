@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using Trace.Localization;
 
 namespace Trace {
@@ -24,9 +23,9 @@ namespace Trace {
 	}
 
 
-	public class TrajectoryViewModel : INotifyPropertyChanged {
+	public class TrajectoryViewModel {
 
-		public event PropertyChangedEventHandler PropertyChanged;
+		//public event PropertyChangedEventHandler PropertyChanged;
 
 		public Trajectory Trajectory { get; set; }
 
@@ -34,23 +33,36 @@ namespace Trace {
 			Trajectory = trajectory;
 		}
 
-		public string TrackSentImage {
+		public string MainActivityImage {
 			get {
-				if(Trajectory.WasTrackSent)
-					return "mytrajectorieslist__green_check.png";
-				return "mytrajectorieslist__cross_error.png";
+				var activityEnum = (ActivityType) Enum.Parse(typeof(ActivityType), Trajectory.MostCommonActivity);
+				switch(activityEnum) {
+					case ActivityType.Cycling: return "mytrajectories__cycle";
+					case ActivityType.Running: return "mytrajectories__run";
+					case ActivityType.Walking: return "mytrajectories__walk";
+					case ActivityType.Automative: return "mytrajectories__vehicle";
+					default: return "mytrajectories__stationary";
+				}
 			}
 		}
+
+		//public string TrackSentImage {
+		//	get {
+		//		if(Trajectory.WasTrackSent)
+		//			return "mytrajectorieslist__green_check.png";
+		//		return "mytrajectorieslist__cross_error.png";
+		//	}
+		//}
 
 
 		/// <summary>
 		/// Change image in MyTrajectoryListPage to reflect that the trajectory was sent.
 		/// </summary>
-		public void TriggerPropertyChangedEvent() {
-			if(PropertyChanged != null) {
-				PropertyChanged(this, new PropertyChangedEventArgs("ImageSource"));
-			}
-		}
+		//public void TriggerPropertyChangedEvent() {
+		//	if(PropertyChanged != null) {
+		//		PropertyChanged(this, new PropertyChangedEventArgs("ImageSource"));
+		//	}
+		//}
 
 		public string DisplayTime {
 			get {

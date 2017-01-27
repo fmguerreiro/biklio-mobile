@@ -288,6 +288,7 @@
     <Folder Include="App\Renderers\Map\" />
     <Folder Include="App\Renderers\OAuth\" />
     <Folder Include="Resources\sounds\" />
+    <Folder Include="App\Renderers\Controls\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
@@ -315,6 +316,7 @@
     <Compile Include="App\Renderers\Map\TraceMapRenderer.cs" />
     <Compile Include="App\Renderers\OAuth\GoogleOAuthPageRenderer.cs" />
     <Compile Include="App\Renderers\OAuth\FacebookOAuthPageRenderer.cs" />
+    <Compile Include="App\Renderers\Controls\BorderlessEntryRenderer.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="GoogleService-Info.plist" />
@@ -334,10 +336,6 @@
     <BundleResource Include="Resources\sounds\walking_grass.mp3" />
     <BundleResource Include="Resources\sounds\walking_pavement.mp3" />
     <BundleResource Include="Resources\sounds\wind.mp3" />
-    <BundleResource Include="Resources\activitymodes__cycling.png" />
-    <BundleResource Include="Resources\activitymodes__driving.png" />
-    <BundleResource Include="Resources\activitymodes__running.png" />
-    <BundleResource Include="Resources\activitymodes__walking.png" />
     <BundleResource Include="Resources\checkpointdetails__star.png" />
     <BundleResource Include="Resources\checkpointdetails__star_outline.png" />
     <BundleResource Include="Resources\checkpointlist__default_shop.png" />
@@ -345,6 +343,8 @@
     <BundleResource Include="Resources\checkpointlist__location_unknown.png" />
     <BundleResource Include="Resources\checkpointlist__star_half.png" />
     <BundleResource Include="Resources\checkpointlist__trophy.png" />
+    <BundleResource Include="Resources\checkpointlist__trophy%402.png" />
+    <BundleResource Include="Resources\dashboard__click_indicator.png" />
     <BundleResource Include="Resources\home__dashboard.png" />
     <BundleResource Include="Resources\home__home.png" />
     <BundleResource Include="Resources\home__logout.png" />
@@ -360,8 +360,14 @@
     <BundleResource Include="Resources\logo_slogan_splashscreen.png" />
     <BundleResource Include="Resources\map__locate.png" />
     <BundleResource Include="Resources\map__maps_icon.png" />
+    <BundleResource Include="Resources\map__maps_icon%402.png" />
     <BundleResource Include="Resources\map__play_arrow.png" />
     <BundleResource Include="Resources\map__stop.png" />
+    <BundleResource Include="Resources\mytrajectories__cycle.png" />
+    <BundleResource Include="Resources\mytrajectories__run.png" />
+    <BundleResource Include="Resources\mytrajectories__stationary.png" />
+    <BundleResource Include="Resources\mytrajectories__vehicle.png" />
+    <BundleResource Include="Resources\mytrajectories__walk.png" />
     <BundleResource Include="Resources\mytrajectorieslist__cross_error.png" />
     <BundleResource Include="Resources\mytrajectorieslist__green_check.png" />
     <BundleResource Include="Resources\privacypolicy__logo_name.png" />
@@ -371,9 +377,39 @@
     <BundleResource Include="Resources\tutorial__tutorial_part2.png" />
     <BundleResource Include="Resources\tutorial__tutorial_part3.png" />
     <BundleResource Include="Resources\tutorial__tutorial_part4.png" />
-    <BundleResource Include="Resources\checkpointlist__trophy%402.png" />
-    <BundleResource Include="Resources\map__maps_icon%402.png" />
-    <BundleResource Include="Resources\dashboard__click_indicator.png" />
+    <BundleResource Include="Resources\checkpointlist__clothing.png" />
+    <BundleResource Include="Resources\checkpointlist__culture.png" />
+    <BundleResource Include="Resources\checkpointlist__health.png" />
+    <BundleResource Include="Resources\checkpointlist__other.png" />
+    <BundleResource Include="Resources\checkpointlist__restaurant.png" />
+    <BundleResource Include="Resources\checkpointlist__sports.png" />
+    <BundleResource Include="Resources\checkpointlist__technology.png" />
+    <BundleResource Include="Resources\map__clothing.png" />
+    <BundleResource Include="Resources\map__culture.png" />
+    <BundleResource Include="Resources\map__health.png" />
+    <BundleResource Include="Resources\map__other.png" />
+    <BundleResource Include="Resources\map__restaurant.png" />
+    <BundleResource Include="Resources\map__sports.png" />
+    <BundleResource Include="Resources\map__technology.png" />
+    <BundleResource Include="Resources\home__number0.png" />
+    <BundleResource Include="Resources\home__number1.png" />
+    <BundleResource Include="Resources\home__number2.png" />
+    <BundleResource Include="Resources\home__number3.png" />
+    <BundleResource Include="Resources\home__number4.png" />
+    <BundleResource Include="Resources\home__number5.png" />
+    <BundleResource Include="Resources\home__number6.png" />
+    <BundleResource Include="Resources\home__number7.png" />
+    <BundleResource Include="Resources\home__number8.png" />
+    <BundleResource Include="Resources\home__number9.png" />
+    <BundleResource Include="Resources\home__number9plus.png" />
+    <BundleResource Include="Resources\checkpointdetails__star%402.png" />
+    <BundleResource Include="Resources\checkpointdetails__star%403.png" />
+    <BundleResource Include="Resources\checkpointdetails__star_outline%402.png" />
+    <BundleResource Include="Resources\checkpointdetails__star_outline%403.png" />
+    <BundleResource Include="Resources\checkpointlist__star_half%402.png" />
+    <BundleResource Include="Resources\checkpointlist__star_half%403.png" />
+    <BundleResource Include="Resources\home__number0%402.png" />
+    <BundleResource Include="Resources\home__number0%403.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
   <Import Project="..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" />

@@ -17,14 +17,35 @@ namespace Trace {
 		public string Address { get; set; }
 		public string AvailableHours { get; set; }
 		public long OwnerId { get; set; }
+
 		// Describes the type of checkpoint it is, e.g., Restaurant, Shop, Gym, etc.
+		public int TypeId { get; set; }
 		public string Type { get; set; }
 
 		// Users can 'favorite' a shop so it is easier to search and filter in the CheckpointListPage.
 		public bool IsUserFavorite { get; set; }
 
 		private string logoURL;
-		public string LogoURL { get { return logoURL ?? "checkpointlist__default_shop.png"; } set { logoURL = value ?? logoURL; } }
+		public string LogoURL {
+			get {
+				if(logoURL == null) {
+					logoURL = getShopImageAccordingToType();
+				}
+				return logoURL;
+			}
+			set { logoURL = value ?? logoURL; }
+		}
+		private string getShopImageAccordingToType() {
+			switch(TypeId) {
+				case 2: return "checkpointlist__restaurant";
+				case 3: return "checkpointlist__health";
+				case 4: return "checkpointlist__clothing";
+				case 5: return "checkpointlist__technology";
+				case 6: return "checkpointlist__culture";
+				case 7: return "checkpointlist__sports";
+				default: return "checkpointlist__other";
+			}
+		}
 
 		// The stored logo image filepath for map pin image display.
 		private string pinLogoPath;
@@ -52,26 +73,8 @@ namespace Trace {
 		// 'double' instead of 'Position' because SQLite only supports basic types. 
 		public double Longitude { get; set; }
 		public double Latitude { get; set; }
-		[Ignore]
 		public Position Position { get { return new Position { Latitude = Latitude, Longitude = Longitude }; } }
 		public double DistanceToUser { get; set; }
-
-		[Ignore]
-		public string Distance { get { return $"{Math.Truncate(DistanceToUser)} m"; } }
-
-
-		// Used for displaying the rewards string in the CheckpointsListPage.
-		[Ignore]
-		public string Rewards {
-			get {
-				var result = "";
-				if(Challenges.Count > 0)
-					result += $"{Language.CycleToShop}: {Challenges[0].Reward}";
-				if(Challenges.Count > 1)
-					result += $"\n{string.Format(Language.BikeCondition, Challenges[1].NeededCyclingDistance)}: {Challenges[1].Reward}";
-				return result;
-			}
-		}
 
 
 		/// <summary>

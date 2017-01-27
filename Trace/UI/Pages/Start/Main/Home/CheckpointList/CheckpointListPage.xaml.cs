@@ -104,13 +104,13 @@ namespace Trace {
 			User.Instance.WSSnapshotVersion = result.payload.version;
 			SQLiteDB.Instance.SaveUser(User.Instance);
 
-			Task.Run(() => fetchPinImages(User.Instance.Challenges)).DoNotAwait();
-
 			Task.Run(() => checkForRewards()).DoNotAwait();
 
 			// Finally, display available challenges.
 			//var unclaimedChallenges = User.Instance.Challenges.FindAll((x) => !x.IsClaimed);
 			var orderedResult = await User.Instance.GetOrderedCheckpointsAsync();
+			Task.Run(() => fetchPinImages(orderedResult)).DoNotAwait();
+
 			Device.BeginInvokeOnMainThread(() => {
 				BindingContext = new CheckpointListModel { Checkpoints = orderedResult.Select((x) => new CheckpointViewModel(x)).ToList() };
 				mapPage.UpdatePins();
@@ -138,10 +138,9 @@ namespace Trace {
 			return new Challenge {
 				GId = challenge.id,
 				UserId = User.Instance.Id,
-				CheckpointId = challenge.shopId,
 				Reward = challenge.reward,
 				ThisCheckpoint = checkpoint,
-				CheckpointName = checkpoint.Name,
+				CheckpointId = checkpoint.GId,
 				CreatedAt = challenge.createdAt,
 				ExpiresAt = challenge.expiresAt,
 				NeededCyclingDistance = (int) challenge.conditions.distance,
@@ -173,6 +172,7 @@ namespace Trace {
 				UserId = User.Instance.Id,
 				OwnerId = checkpoint.ownerId,
 				Name = checkpoint.name,
+				TypeId = checkpoint.details.type.id,
 				Type = checkpoint.details.type.description,
 				Address = checkpoint.contacts.address,
 				LogoURL = checkpoint.logoURL,
@@ -184,7 +184,10 @@ namespace Trace {
 				TwitterAddress = checkpoint.contacts.twitter,
 				Longitude = checkpoint.longitude,
 				Latitude = checkpoint.latitude,
-				DistanceToUser = GeoUtils.DistanceBetweenPoints(User.Instance.Position, new Position { Longitude = checkpoint.longitude, Latitude = checkpoint.latitude }),
+				DistanceToUser = GeoUtils.DistanceBetweenPoints(
+									User.Instance.Position,
+									new Position { Longitude = checkpoint.longitude, Latitude = checkpoint.latitude }
+								 ),
 				MapImageURL = checkpoint.mapURL,
 				//BikeFacilities = checkpoint.facilities.ToString(), // todo facilities is a jArray
 				Description = checkpoint.details.description
@@ -267,8 +270,8 @@ namespace Trace {
 
 
 		/// <summary>
-		/// Checks if user requires new challenges.
-		/// A user requires new challenges if he is a new area, far from the place he got the previous challenges.
+		/// Checks if user requires new checkpoints.
+		/// A user requires new checkpoints if she moved half a search radius away from the previous fetch point.
 		/// </summary>
 		async Task checkIfUserRequiresNewCheckpoints() {
 			var initPos = new Position {
@@ -285,15 +288,17 @@ namespace Trace {
 
 
 		/// <summary>
-		/// Fetch all the images for the map pin in the background.
+		/// Download and store all the images that will be displayed in the map as pins.
 		/// </summary>
-		/// <param name="challenges">Challenges.</param>
-		private void fetchPinImages(List<Challenge> challenges) {
+		/// <param name="checkpoints">Checkpoints.</param>
+		private void fetchPinImages(IList<Checkpoint> checkpoints) {
 			Debug.WriteLine("STARTING fetchPinImages()");
-			foreach(Challenge c in challenges) {
-				var url = c.ThisCheckpoint.LogoURL;
-				if(string.IsNullOrEmpty(c.ThisCheckpoint.PinLogoPath) && !url.Equals("checkpointlist__default_shop.png")) {
-					Task.Run(() => c.ThisCheckpoint.FetchImageAsync(url)).DoNotAwait();
+			foreach(Checkpoint c in checkpoints) {
+				var url = c.LogoURL;
+				Uri uriResult;
+				bool isValidUrl = Uri.TryCreate(url, UriKind.Absolute, out uriResult);
+				if(string.IsNullOrEmpty(c.PinLogoPath) && isValidUrl) {
+					Task.Run(() => c.FetchImageAsync(url)).DoNotAwait();
 				}
 			}
 		}
@@ -328,6 +333,7 @@ namespace Trace {
 				const string NOTIFICATION_ID = "getChallengesNotification";
 				DependencyService.Get<INotificationMessage>().Send(NOTIFICATION_ID, Language.RewardsUnlocked, string.Format(Language.RewardsUnlockedMessage, rewardCounter), rewardCounter);
 			}
+			HomePage.UpdateRewardIcon(User.Instance.GetRewards().Count);
 		}
 
 
@@ -337,6 +343,7 @@ namespace Trace {
 		/// <param name="sender">Sender.</param>
 		/// <param name="e">The challenge in the listview that was clicked.</param>
 		void onTapped(object sender, ItemTappedEventArgs e) {
+			((ListView) sender).SelectedItem = null; // Disable the visual selection state.
 			var checkpoint = (CheckpointViewModel) e.Item;
 			if(checkpoint != null) {
 				Navigation.PushAsync(new CheckpointDetailsPage(checkpoint));

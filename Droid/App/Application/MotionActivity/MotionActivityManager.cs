@@ -17,6 +17,7 @@ namespace Trace.Droid {
 		public int RunningDuration { get; set; }
 		public int CyclingDuration { get; set; }
 		public int DrivingDuration { get; set; }
+		public bool IsInitialized { get; set; }
 
 		// Handles connections, disconnections from google api (for accessing motion data).
 		static internal GoogleApiHandler gApiHandler = new GoogleApiHandler();
@@ -79,12 +80,14 @@ namespace Trace.Droid {
 			// Update the handler callback that feeds the motion data into the state machine.
 			DetectedActivitiesService.UserId = User.Instance.Id;
 			DetectedActivitiesService.HandlerCallback = handler;
+			IsInitialized = true;
 		}
 
 
 		public void StopMotionUpdates() {
 			if(GoogleApiHandler.GApiClient.IsConnected) {
 				GoogleApiHandler.GApiClient.Disconnect();
+				IsInitialized = false;
 			}
 			if(!WebServerLoginManager.IsOfflineLoggedIn) {
 				//DetectedActivitiesService.UserId = 0;

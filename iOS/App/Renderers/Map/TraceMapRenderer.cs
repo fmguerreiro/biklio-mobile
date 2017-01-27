@@ -19,7 +19,7 @@ namespace Trace.iOS {
 
 	/// <summary>
 	/// Custom renderer that shows the checkpoints on the map
-	/// and draws a polyline once the user finishes tracking to show the user's trajectory.
+	/// and draws a polyline to show the user's trajectory (if the map has points recorded by user).
 	/// </summary>
 	public class TraceMapRenderer : MapRenderer {
 
@@ -121,8 +121,11 @@ namespace Trace.iOS {
 				byte[] imageBytes = DependencyService.Get<IFileSystem>().LoadImage(customPin.Checkpoint.PinLogoPath);
 				image = UIImage.LoadFromData(NSData.FromArray(imageBytes));
 			}
-			else
-				image = UIImage.FromFile("checkpointlist__default_shop_20px.png");
+			else {
+				// TODO speed this up.
+				string mapIcon = "map__" + customPin.Checkpoint.LogoURL.Split(new char[] { '_' }, StringSplitOptions.RemoveEmptyEntries)[1];
+				image = UIImage.FromFile(mapIcon);
+			}
 			//var maxWidth = 20f;
 			//var maxHeight = maxWidth;
 			//image = maxResizeImage(image, maxWidth, maxHeight);

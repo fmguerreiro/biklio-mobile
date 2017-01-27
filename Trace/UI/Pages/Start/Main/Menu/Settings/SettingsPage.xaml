@@ -24,6 +24,13 @@
 					Value="Center" />
 			</Style>
 			<Style
+				TargetType="{x:Type local:BorderlessEntry}">
+				<Setter
+					Property="MinimumWidthRequest"
+					Value="80">
+				</Setter>
+			</Style>
+			<Style
 				TargetType="{x:Type local:BindablePicker}">
 				<Setter
 					Property="VerticalOptions"
@@ -44,49 +51,133 @@
 				</TableSection>
 				<TableSection
 					Title="{language:Translate PrivateInfo}">
-					<EntryCell
-						Completed="onSettingChanged"
-						Label="{language:Translate Name}"
-						Text="{Binding User.Name, Mode=TwoWay}">
-					</EntryCell>
-					<EntryCell
-						Label="{language:Translate Phone}"
-						Completed="onSettingChanged"
-						Text="{Binding User.Phone, Mode=TwoWay}" />
-					<EntryCell
-						Label="{language:Translate Address}"
-						Completed="onSettingChanged"
-						Text="{Binding User.Address, Mode=TwoWay}" />
+					<ViewCell>
+						<Grid>
+							<Label
+								Grid.Column="0"
+								Text="{language:Translate Name}"
+								HorizontalOptions="Start"
+								Margin="16,0,0,0" />
+							<local:BorderlessEntry
+								Grid.Column="1"
+								Text="{Binding User.Name, Mode=TwoWay}"
+								TextColor="Gray"
+								Completed="onSettingChanged"
+								HorizontalTextAlignment="End"
+								HorizontalOptions="End"
+								Margin="0,0,16,0">
+							</local:BorderlessEntry>
+						</Grid>
+					</ViewCell>
+					<ViewCell>
+						<Grid>
+							<Label
+								Grid.Column="0"
+								Text="{language:Translate Phone}"
+								HorizontalOptions="Start"
+								Margin="16,0,0,0" />
+							<local:BorderlessEntry
+								Grid.Column="1"
+								Text="{Binding User.Phone, Mode=TwoWay}"
+								TextColor="Gray"
+								Keyboard="Telephone"
+								TextChanged="onSettingChanged"
+								HorizontalTextAlignment="End"
+								HorizontalOptions="End"
+								Margin="0,0,16,0">
+							</local:BorderlessEntry>
+						</Grid>
+					</ViewCell>
+					<ViewCell>
+						<Grid>
+							<Label
+								Grid.Column="0"
+								Text="{language:Translate Address}"
+								HorizontalOptions="Start"
+								Margin="16,0,0,0" />
+							<local:BorderlessEntry
+								Grid.Column="1"
+								Text="{Binding User.Address, Mode=TwoWay}"
+								TextColor="Gray"
+								Completed="onSettingChanged"
+								HorizontalTextAlignment="End"
+								HorizontalOptions="End"
+								Margin="0,0,16,0" />
+						</Grid>
+					</ViewCell>
 				</TableSection>
 				<TableSection
 					Title="{language:Translate CaloriesCalculation}">
-					<EntryCell
-						Completed="onSettingChanged"
-						Label="{language:Translate Age}"
-						Text="{Binding User.Age, Mode=TwoWay}">
-					</EntryCell>
 					<ViewCell>
-						<StackLayout
-							Orientation="Horizontal">
+						<Grid>
 							<Label
-								TranslationX="15"
-								Text="{language:Translate Gender}" />
-							<local:BindablePicker
-								TranslationX="25"
-								SelectedIndexChanged="onGenderChanged"
-								Title="{Binding User.Gender}"
-								SelectedValue="{Binding User.Gender, Mode=TwoWay}"
-								ItemsSource="{Binding Genders}" />
-						</StackLayout>
+								Grid.Column="0"
+								Text="{language:Translate Age}"
+								HorizontalOptions="Start"
+								Margin="16,0,0,0" />
+							<local:BorderlessEntry
+								Grid.Column="1"
+								Text="{Binding User.Age, Mode=TwoWay}"
+								TextColor="Gray"
+								Keyboard="Numeric"
+								TextChanged="onSettingChanged"
+								HorizontalTextAlignment="End"
+								HorizontalOptions="End"
+								Margin="0,0,16,0" />
+						</Grid>
 					</ViewCell>
-					<EntryCell
-						Label="{language:Translate Height}"
-						Completed="onSettingChanged"
-						Text="{Binding User.Height, Mode=TwoWay}" />
-					<EntryCell
-						Label="{language:Translate Weight}"
-						Completed="onSettingChanged"
-						Text="{Binding User.Weight, Mode=TwoWay}" />
+					<ViewCell>
+						<Grid>
+							<Label
+								Grid.Column="0"
+								Text="{language:Translate Gender}"
+								HorizontalOptions="Start"
+								Margin="16,0,0,0" />
+							<local:BindablePicker
+								Grid.Column="1"
+								Title="{Binding User.Gender}"
+								SelectedIndexChanged="onGenderChanged"
+								SelectedValue="{Binding User.Gender, Mode=TwoWay}"
+								ItemsSource="{Binding Genders}"
+								HorizontalOptions="End" />
+						</Grid>
+					</ViewCell>
+					<ViewCell>
+						<Grid>
+							<Label
+								Grid.Column="0"
+								Text="{language:Translate Height}"
+								HorizontalOptions="Start"
+								Margin="16,0,0,0" />
+							<local:BorderlessEntry
+								Grid.Column="1"
+								Text="{Binding User.Height, Mode=TwoWay}"
+								TextColor="Gray"
+								Keyboard="Numeric"
+								TextChanged="onSettingChanged"
+								HorizontalTextAlignment="End"
+								HorizontalOptions="End"
+								Margin="0,0,16,0" />
+						</Grid>
+					</ViewCell>
+					<ViewCell>
+						<Grid>
+							<Label
+								Grid.Column="0"
+								Text="{language:Translate Weight}"
+								HorizontalOptions="Start"
+								Margin="16,0,0,0" />
+							<local:BorderlessEntry
+								Grid.Column="1"
+								Text="{Binding User.Weight, Mode=TwoWay}"
+								TextColor="Gray"
+								Keyboard="Numeric"
+								TextChanged="onSettingChanged"
+								HorizontalTextAlignment="End"
+								HorizontalOptions="End"
+								Margin="0,0,16,0" />
+						</Grid>
+					</ViewCell>
 				</TableSection>
 				<TableSection
 					Title="{language:Translate Sound}">
@@ -288,14 +379,42 @@
 				</TableSection>
 				<TableSection
 					Title="{language:Translate Challenges}">
-					<EntryCell
-						Completed="onSettingChanged"
-						Label="{language:Translate SearchRadius}"
-						Text="{Binding User.SearchRadius, Mode=TwoWay}" />
-					<EntryCell
-						Completed="onSettingChanged"
-						Label="Maximum"
-						Text="200" />
+					<ViewCell>
+						<Grid>
+							<Label
+								Grid.Column="0"
+								Text="{language:Translate SearchRadius}"
+								HorizontalOptions="Start"
+								Margin="16,0,0,0" />
+							<local:BorderlessEntry
+								Grid.Column="1"
+								Text="{Binding User.SearchRadius, Mode=TwoWay}"
+								TextColor="Gray"
+								Keyboard="Numeric"
+								TextChanged="onSettingChanged"
+								HorizontalTextAlignment="End"
+								HorizontalOptions="End"
+								Margin="0,0,16,0" />
+						</Grid>
+					</ViewCell>
+					<ViewCell>
+						<Grid>
+							<Label
+								Grid.Column="0"
+								Text="{language:Translate MaxChallenges}"
+								HorizontalOptions="Start"
+								Margin="16,0,0,0" />
+							<local:BorderlessEntry
+								Grid.Column="1"
+								Text="{Binding User.MaxChallenges, Mode=TwoWay}"
+								TextColor="Gray"
+								Keyboard="Numeric"
+								TextChanged="onSettingChanged"
+								HorizontalTextAlignment="End"
+								HorizontalOptions="End"
+								Margin="0,0,16,0" />
+						</Grid>
+					</ViewCell>
 				</TableSection>
 				<TableSection
 					Title="{language:Translate Delete}">

@@ -575,8 +575,7 @@ Note that if you disable this feature, Biklio will only warn you of your status 
     	<value>Courtesy of freesound.org</value>
   	</data>
 	<data name="To" xml:space="preserve">
-    	<value> to </value>
-    	<comment>Used in: 'dateX' TO 'dateY'</comment>
+    	<value> - </value>
   	</data>
 	<data name="PrivateInfo" xml:space="preserve">
     	<value>Personal Information</value>
@@ -592,5 +591,8 @@ Note that if you disable this feature, Biklio will only warn you of your status 
   	</data>
 	<data name="ProcessingTrajectory" xml:space="preserve">
     	<value>Processing your route ...</value>
+  	</data>
+	<data name="MaxChallenges" xml:space="preserve">
+    	<value>Maximum</value>
   	</data>
 </root>

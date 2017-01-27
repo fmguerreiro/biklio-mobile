@@ -30,7 +30,6 @@ namespace Trace {
 
 		private static List<Plugin.Geolocator.Abstractions.Position> routeCoordinates;
 
-
 		public MapPage() {
 			InitializeComponent();
 			Debug.WriteLine("MapPage.Initialize()");
@@ -52,8 +51,8 @@ namespace Trace {
 			//currentActivity = new CurrentActivity();
 			//currentActivityLabel.BindingContext = currentActivity;
 
-			// Initialize handler function to receive input from the motion activity manager & send it to state machine. 
-			if(!Geolocator.IsTrackingInProgress) {
+			if(!DependencyService.Get<IMotionActivityManager>().IsInitialized) {
+				// Initialize handler function to receive input from the motion activity manager & send it to state machine. 
 				DependencyService.Get<IMotionActivityManager>().InitMotionActivity();
 				DependencyService.Get<IMotionActivityManager>().StartMotionUpdates((activity) => {
 					if(activity != ActivityType.Unknown) {
@@ -79,15 +78,24 @@ namespace Trace {
 
 			// Add tap event handler to results grid so it can be dismissed by the user.
 			var gridGR = new TapGestureRecognizer();
-			gridGR.Tapped += (sender, e) => { resultsGrid.IsVisible = false; };
+			gridGR.Tapped += onClearResults;
 			resultsGrid.GestureRecognizers.Add(gridGR);
 		}
 
+		void onClearResults(object sender, EventArgs args) {
+			resultsGrid.IsVisible = false;
+		}
 
 		// Center map on user position when page displays.
 		protected override void OnAppearing() {
 			Debug.WriteLine("MapPage.OnAppearing()");
 			base.OnAppearing();
+		}
+
+		protected override void OnDisappearing() {
+			base.OnDisappearing();
+
+			((TapGestureRecognizer) resultsGrid.GestureRecognizers.FirstOrDefault()).Tapped -= onClearResults;
 		}
 
 
@@ -274,8 +282,7 @@ namespace Trace {
 
 
 		/// <summary>
-		/// For each point in the trajectory, the corresponding activity type is matched.
-		/// Matching is done by finding the activity period on which it fits.
+		/// For each activity event, match all the points that start and end during that period.
 		/// Running time is O(n+m), where 'n' is the size of the trajectory and 'm' is the size of activity event list.
 		/// </summary>
 		/// <param name="points">Points in the trajectory.</param>
@@ -314,14 +321,20 @@ namespace Trace {
 			return new TrajectoryPoint() {
 				Longitude = p.Longitude,
 				Latitude = p.Latitude,
-				Timestamp = TimeUtil.DatetimeToEpochSeconds(p.Timestamp),
+				Timestamp = p.Timestamp.DatetimeToEpochSeconds(),
 				Activity = activityEvent.ActivityType
 			};
 		}
 
-		private List<TrajectoryPoint> fillTailWithUnknownPoints(IEnumerator<Plugin.Geolocator.Abstractions.Position> pointsPtr, List<TrajectoryPoint> res) {
+		private List<TrajectoryPoint> fillTailWithUnknownPoints(
+			IEnumerator<Plugin.Geolocator.Abstractions.Position> pointsPtr,
+			List<TrajectoryPoint> res
+		) {
 			var activityEvent = new ActivityEvent(ActivityType.Unknown);
-			res.Add(createPoint(pointsPtr.Current, activityEvent));
+			try {
+				res.Add(createPoint(pointsPtr.Current, activityEvent));
+			}
+			catch(Exception) { return res; }
 
 			while(pointsPtr.MoveNext()) {
 				var p = pointsPtr.Current;

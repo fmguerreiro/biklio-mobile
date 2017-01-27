@@ -7,23 +7,33 @@
 	xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
 	x:Class="Trace.CheckpointListPage"
 	Title="{language:Translate BiklioSpots}">
+	<ContentPage.Resources>
+		<ResourceDictionary>
+			<Style
+				TargetType="Label">
+				<Setter
+					Property="VerticalOptions"
+					Value="Center" />
+			</Style>
+		</ResourceDictionary>
+	</ContentPage.Resources>
 	<ContentPage.Content>
 		<Grid>
 			<Grid.RowDefinitions>
 				<RowDefinition
-					Height="*">
-				</RowDefinition>
+					Height="*" />
 				<RowDefinition
-					Height="60">
-				</RowDefinition>
+					Height="60" />
+				<RowDefinition
+					Height="15" />
 			</Grid.RowDefinitions>
 			<Grid.ColumnDefinitions>
 				<ColumnDefinition
-					Width="*">
-				</ColumnDefinition>
+					Width="*" />
 				<ColumnDefinition
-					Width="60">
-				</ColumnDefinition>
+					Width="60" />
+				<ColumnDefinition
+					Width="15" />
 			</Grid.ColumnDefinitions>
 			<ListView
 				CachingStrategy="RecycleElement"
@@ -31,9 +41,9 @@
 				ItemsSource="{Binding Checkpoints}"
 				RowHeight="60"
 				Grid.Row="0"
-				Grid.RowSpan="2"
+				Grid.RowSpan="3"
 				Grid.Column="0"
-				Grid.ColumnSpan="2"
+				Grid.ColumnSpan="3"
 				ItemTapped="onTapped"
 				IsPullToRefreshEnabled="true"
 				Refreshing="onRefresh">
@@ -56,10 +66,12 @@
 					<DataTemplate>
 						<ViewCell>
 							<Grid
-								BackgroundColor="{Binding BackgroundColor}">
-								<Grid.RowDefinitions
-									RowSpacing="1"
-									ColumnSpacing="1">
+								RowSpacing="0">
+								<Grid.RowDefinitions>
+									<RowDefinition
+										Height="*" />
+									<RowDefinition
+										Height="*" />
 									<RowDefinition
 										Height="*" />
 									<RowDefinition
@@ -67,47 +79,56 @@
 								</Grid.RowDefinitions>
 								<Grid.ColumnDefinitions>
 									<ColumnDefinition
-										Width="60" />
-									<ColumnDefinition
-										Width="2*" />
-									<ColumnDefinition
 										Width="*" />
+									<ColumnDefinition
+										Width="4*" />
 								</Grid.ColumnDefinitions>
 								<ffimageloading:CachedImage
 									Source="{Binding Checkpoint.LogoURL}"
-									Margin="3"
+									Margin="1"
+									Aspect="AspectFit"
 									DownsampleToViewSize="true"
-									Aspect="Fill"
 									Grid.Row="0"
 									Grid.Column="0"
-									ErrorPlaceholder="checkpointlist__default_shop.png"
-									Grid.RowSpan="2">
+									Grid.RowSpan="4">
+								</ffimageloading:CachedImage>
+								<ffimageloading:CachedImage
+									Source="{Binding FavoriteIndicator}"
+									Margin="0,3,3,0"
+									Aspect="AspectFit"
+									DownsampleToViewSize="true"
+									VerticalOptions="Start"
+									HorizontalOptions="End"
+									Grid.Row="0"
+									Grid.RowSpan="2"
+									Grid.Column="1">
 								</ffimageloading:CachedImage>
 								<Label
 									Text="{Binding Checkpoint.Name}"
 									LineBreakMode="NoWrap"
-									FontSize="15"
+									FontSize="12"
 									FontAttributes="Bold"
-									VerticalTextAlignment="End"
 									Grid.Row="0"
 									Grid.Column="1" />
 								<Label
-									Text="{Binding Checkpoint.Rewards}"
+									Text="{Binding Rewards}"
 									FontSize="9"
 									TextColor="Gray"
+									VerticalOptions="Start"
+									LineBreakMode="TailTruncation"
 									Grid.Row="1"
+									Grid.RowSpan="3"
 									Grid.Column="1" />
 								<Label
-									Text="{Binding Checkpoint.Distance}"
-									Margin="3"
+									Text="{Binding Distance}"
+									Margin="0,0,3,1"
+									FontSize="12"
 									LineBreakMode="NoWrap"
 									TextColor="{StaticResource PrimaryColor}"
-									VerticalOptions="Center"
-									HorizontalOptions="Center"
-									Grid.Row="0"
-									Grid.Column="2"
-									Grid.RowSpan="2">
-								</Label>
+									HorizontalOptions="End"
+									Grid.Row="3"
+									Grid.Column="0"
+									Grid.ColumnSpan="2" />
 							</Grid>
 						</ViewCell>
 					</DataTemplate>
@@ -117,11 +138,10 @@
 				BackgroundColor="{StaticResource SecondaryColor}"
 				HorizontalOptions="Center"
 				VerticalOptions="Center"
-				HeightRequest="50"
-				WidthRequest="50"
-				BorderRadius="20"
+				HeightRequest="44"
+				WidthRequest="44"
+				BorderRadius="22"
 				Image="checkpointlist__star_half.png"
-				Margin="0,0,20,20"
 				Grid.Row="1"
 				Grid.Column="1"
 				Clicked="onFilterFavorites">

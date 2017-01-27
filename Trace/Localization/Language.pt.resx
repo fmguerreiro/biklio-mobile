@@ -569,9 +569,6 @@ If you disable this feature, Biklio will only warn you of your status when you o
 	<data name="CourtesyOfFreesound" xml:space="preserve">
     	<value>Cortesia de freesound.org</value>
   	</data>
-	<data name="To" xml:space="preserve">
-    	<value> a </value>
-  	</data>
 	<data name="PrivateInfo" xml:space="preserve">
     	<value>Informação Pessoal</value>
   	</data>
@@ -586,5 +583,8 @@ If you disable this feature, Biklio will only warn you of your status when you o
   	</data>
 	<data name="ProcessingTrajectory" xml:space="preserve">
     	<value>A processar o trajeto ...</value>
+  	</data>
+	<data name="MaxChallenges" xml:space="preserve">
+    	<value>Máximo</value>
   	</data>
 </root>

@@ -69,6 +69,7 @@ namespace Trace {
 
 
 		public int SearchRadius { get; set; } = 100; // kilometers
+		public int MaxChallenges { get; set; } = 50; // TODO not yet used
 
 
 		public string WalkingSoundSetting { get; set; } = "walking_pavement.mp3";
@@ -111,6 +112,11 @@ namespace Trace {
 				}
 				else challenges = new List<Challenge>();
 			}
+		}
+
+
+		public List<Challenge> GetRewards() {
+			return Challenges.FindAll((x) => x.IsComplete && !x.IsClaimed);
 		}
 
 

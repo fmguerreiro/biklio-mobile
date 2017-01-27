@@ -9,6 +9,7 @@ namespace Trace {
 		int RunningDuration { get; }
 		int CyclingDuration { get; }
 		int DrivingDuration { get; }
+		bool IsInitialized { get; }
 
 		void InitMotionActivity();
 		void StartMotionUpdates(Action<ActivityType> handler);

@@ -16,6 +16,7 @@ namespace Trace.iOS {
 		public int RunningDuration { get; set; }
 		public int CyclingDuration { get; set; }
 		public int DrivingDuration { get; set; }
+		public bool IsInitialized { get; set; }
 
 		CMMotionActivityManager motionActivityMgr;
 		IList<CMMotionActivity> activityList;
@@ -25,6 +26,7 @@ namespace Trace.iOS {
 			motionActivityMgr = new CMMotionActivityManager();
 			ActivityEvents = new List<ActivityEvent>();
 			activityList = new List<CMMotionActivity>();
+			IsInitialized = true;
 		}
 
 
@@ -48,6 +50,7 @@ namespace Trace.iOS {
 
 		public void StopMotionUpdates() {
 			motionActivityMgr.StopActivityUpdates();
+			IsInitialized = false;
 		}
 
 
@@ -88,7 +91,6 @@ namespace Trace.iOS {
 		/// <param name="start">Start.</param>
 		/// <param name="end">End.</param>
 		public async Task QueryHistoricalData(DateTime start, DateTime end) {
-			// If this is 
 			CMMotionActivity[] activities = null;
 			if(activityList.Count == 0) {
 				Debug.WriteLine($"QueryHistoricalData: {TimeUtil.SecondsToHHMMSS(start.DatetimeToEpochSeconds())} - {TimeUtil.SecondsToHHMMSS(end.DatetimeToEpochSeconds())}");

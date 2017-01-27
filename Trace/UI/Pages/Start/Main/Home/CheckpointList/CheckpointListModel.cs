@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
+using Plugin.Geolocator.Abstractions;
 using Trace.Localization;
 using Xamarin.Forms;
 
@@ -35,6 +37,7 @@ namespace Trace {
 
 		public Checkpoint Checkpoint { get; }
 
+		// When a user favorites this checkpoint, immediately switch image indicator in CheckpointListPage.
 		bool isUserFavorite;
 		public bool IsUserFavorite {
 			set {
@@ -42,7 +45,7 @@ namespace Trace {
 					isUserFavorite = value;
 					Checkpoint.IsUserFavorite = value;
 					if(PropertyChanged != null) {
-						PropertyChanged(this, new PropertyChangedEventArgs("BackgroundColor"));
+						PropertyChanged(this, new PropertyChangedEventArgs("FavoriteIndicator"));
 					}
 				}
 			}
@@ -64,12 +67,37 @@ namespace Trace {
 			}
 		}
 
-		public Color BackgroundColor {
+
+		public string FavoriteIndicator {
 			get {
 				if(IsUserFavorite)
-					return (Color) Application.Current.Resources["PrimaryLightColor"];
-				return Color.White;
+					return "checkpointdetails__star.png";
+				return "";
 			}
 		}
+
+
+		public string Rewards {
+			get {
+				var result = "";
+				if(Checkpoint.Challenges.Count > 0)
+					result += $"{Language.CycleToShop}: {Checkpoint.Challenges[0].Reward}";
+				if(Checkpoint.Challenges.Count > 1)
+					result += $"\n{string.Format(Language.BikeCondition, Checkpoint.Challenges[1].NeededCyclingDistance)}: {Checkpoint.Challenges[1].Reward}";
+				if(Checkpoint.Challenges.Count > 2)
+					result += "\n+";
+				return result;
+			}
+		}
+
+		public string Distance { get { return $"{(Checkpoint.DistanceToUser / 1000).ToString("F3")} km"; } }
+
+		//public Color BackgroundColor {
+		//	get {
+		//		if(IsUserFavorite)
+		//			return (Color) Application.Current.Resources["PrimaryLightColor"];
+		//		return Color.White;
+		//	}
+		//}
 	}
 }

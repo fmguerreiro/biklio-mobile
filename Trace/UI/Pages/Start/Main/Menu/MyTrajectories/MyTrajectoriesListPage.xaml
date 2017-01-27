@@ -27,7 +27,7 @@
 					<ImageCell
 						Text="{Binding Trajectory.Id}"
 						Detail="{Binding Trajectory.TotalDistanceMeters, StringFormat='{0} m'}"
-						ImageSource="{Binding TrackSentImage}">
+						ImageSource="{Binding MainActivityImage}">
 					</ImageCell>
 				</DataTemplate>
 			</ListView.ItemTemplate>

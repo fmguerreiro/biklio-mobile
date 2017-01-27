@@ -27,7 +27,7 @@ namespace Trace {
 			if(trajectoryVM.Trajectory.WasTrackSent) {
 				uploadTrajectoryButton.IsVisible = false;
 				await DisplayAlert(Language.Result, Language.OperationCompleted, Language.Ok);
-				trajectoryVM.TriggerPropertyChangedEvent(); // change image in mytrajectorylist page.
+				//trajectoryVM.TriggerPropertyChangedEvent(); // change image in mytrajectorylist page.
 			}
 			else {
 				await DisplayAlert(Language.Error, Language.TrajectoryNotUploadedError, Language.Ok);
