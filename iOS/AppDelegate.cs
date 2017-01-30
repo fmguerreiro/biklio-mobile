@@ -93,7 +93,7 @@ namespace Trace.iOS {
 			base.DidEnterBackground(uiApplication);
 			var isUserLoggedIn = WebServerLoginManager.IsOfflineLoggedIn;
 			if(CLLocationManager.LocationServicesEnabled && isUserLoggedIn && !User.Instance.IsBackgroundAudioEnabled && !Geolocator.IsTrackingInProgress) {
-				// TODO this would be a good time for releasing system resources ... call preparetologout() ?
+				// TODO this would be a good time for releasing system resources to help prevent app from being terminated by the OS... call preparetologout() ?
 				Task.Run(() => {
 					Debug.WriteLine($"DidEnterBackground() -> starting significant motion changes monitoring");
 					locationManager.StartMonitoringSignificantLocationChanges();

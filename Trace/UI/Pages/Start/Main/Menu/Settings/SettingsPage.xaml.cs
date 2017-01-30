@@ -60,7 +60,6 @@ namespace Trace {
 				case ("eligibleWarning"): User.Instance.CongratulatorySoundSetting = item; break;
 				case ("ineligibleWarning"): User.Instance.NoLongerEligibleSoundSetting = item; break;
 			}
-
 			SQLiteDB.Instance.SaveUser(User.Instance);
 		}
 

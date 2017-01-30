@@ -94,9 +94,12 @@ namespace Trace.iOS {
 			CMMotionActivity[] activities = null;
 			if(activityList.Count == 0) {
 				Debug.WriteLine($"QueryHistoricalData: {TimeUtil.SecondsToHHMMSS(start.DatetimeToEpochSeconds())} - {TimeUtil.SecondsToHHMMSS(end.DatetimeToEpochSeconds())}");
-				activities = await motionActivityMgr.QueryActivityAsync(
-				   NSDateConverter.ToNsDate(start), NSDateConverter.ToNsDate(end), NSOperationQueue.MainQueue
-			   	);
+				try {
+					activities = await motionActivityMgr.QueryActivityAsync(
+					   NSDateConverter.ToNsDate(start), NSDateConverter.ToNsDate(end), NSOperationQueue.MainQueue
+					   );
+				}
+				catch(Exception) { Debug.WriteLine("No activities found for this trajectory"); return; }
 			}
 			else activities = activityList.ToArray();
 			Debug.WriteLine($"Activity list length = {activities.Length}");
@@ -113,7 +116,7 @@ namespace Trace.iOS {
 		List<ActivityEvent> aggregateActivitiesAsync(CMMotionActivity[] activities) {
 			var filteredActivities = new List<CMMotionActivity>();
 
-			Debug.WriteLine($"1 {activities.Length}");
+			Debug.WriteLine($"aggregateActivitiesAsync 1 {activities.Length}");
 			// Skip all contiguous unclassified and stationary activities so that only one remains.
 			for(int i = 0; i < activities.Length; ++i) {
 				CMMotionActivity activity = activities[i];
@@ -129,7 +132,7 @@ namespace Trace.iOS {
 					}
 				}
 			}
-			Debug.WriteLine($"2 {filteredActivities.Count}");
+			Debug.WriteLine($"aggregateActivitiesAsync 2 {filteredActivities.Count}");
 			// Ignore all low confidence activities.
 			for(int i = 0; i < filteredActivities.Count;) {
 				CMMotionActivity activity = filteredActivities[i];
@@ -140,7 +143,7 @@ namespace Trace.iOS {
 					++i;
 				}
 			}
-			Debug.WriteLine($"3 {filteredActivities.Count}");
+			Debug.WriteLine($"aggregateActivitiesAsync 3 {filteredActivities.Count}");
 			// Skip all unclassified and stationary activities if their duration is smaller than
 			// some threshold.  This has the effect of coalescing the remaining med + high
 			// confidence activities together.
@@ -157,7 +160,7 @@ namespace Trace.iOS {
 					++i;
 				}
 			}
-			Debug.WriteLine($"4 {filteredActivities.Count}");
+			Debug.WriteLine($"aggregateActivitiesAsync 4 {filteredActivities.Count}");
 			// Coalesce activities where they differ only in confidence.
 			for(int i = 1; i < filteredActivities.Count;) {
 				CMMotionActivity prevActivity = filteredActivities[i - 1];
@@ -173,7 +176,7 @@ namespace Trace.iOS {
 					++i;
 				}
 			}
-			Debug.WriteLine($"5 {filteredActivities.Count}");
+			Debug.WriteLine($"aggregateActivitiesAsync 5 {filteredActivities.Count}");
 			// Finally, create ActivityEvents, which are periods where users used activity A from time X to Y.
 			var activityEvents = new List<ActivityEvent>();
 

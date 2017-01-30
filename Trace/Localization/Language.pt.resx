@@ -426,7 +426,7 @@
     	<value>Começas logo a ganhar! O Biklio consegue ver automaticamente se estás a pedalar. Para algumas lojas, isso é mais do que suficiente!</value>
   	</data>
 	<data name="TutorialTitle3" xml:space="preserve">
-    	<value>Regista os teus trajetos para mais recompensas</value>
+    	<value>Registe os seus trajetos para mais recompensas</value>
   	</data>
 	<data name="TutorialDescription3" xml:space="preserve">
     	<value>Algumas lojas requerem que pedales por alguns kilometros antes de ganhares a recompensa. Carrega no botão para registares a tua trajetória.</value>
@@ -537,7 +537,7 @@ If you disable this feature, Biklio will only warn you of your status when you o
     	<value>Aviso</value>
   	</data>
 	<data name="StartTracking" xml:space="preserve">
-    	<value>O Biklio está a gravar o teu trajeto.</value>
+    	<value>O Biklio está a gravar o seu trajeto</value>
   	</data>
 	<data name="DisableBackgroundAudio" xml:space="preserve">
     	<value>Permitir Audio</value>
@@ -552,7 +552,7 @@ If you disable this feature, Biklio will only warn you of your status when you o
     	<value>Calculando a tua posição ...</value>
   	</data>
 	<data name="TrajectoryTooSmall" xml:space="preserve">
-    	<value>Apenas são guardados trajetos mais longos que 250 m</value>
+    	<value>Apenas trajetos maiores que 250 m são guardados</value>
   	</data>
 	<data name="AllDataDeleted" xml:space="preserve">
     	<value>Os dados armazenados foram apagados.</value>
@@ -582,9 +582,12 @@ If you disable this feature, Biklio will only warn you of your status when you o
     	<value>Morada</value>
   	</data>
 	<data name="ProcessingTrajectory" xml:space="preserve">
-    	<value>A processar o trajeto ...</value>
+    	<value>A processar o seu trajeto ...</value>
   	</data>
 	<data name="MaxChallenges" xml:space="preserve">
     	<value>Máximo</value>
+  	</data>
+	<data name="GPSDisabledErrorMsg" xml:space="preserve">
+    	<value>O GPS não está ativado. Pretende ativar agora?</value>
   	</data>
 </root>

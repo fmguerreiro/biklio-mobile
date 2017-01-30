@@ -9,8 +9,9 @@ namespace Trace {
 
 	public static class Geolocator {
 
-		public const int LOCATOR_GOOD_ACCURACY = 50;
-		private const int MOTION_ONLY_ACCURACY = 1;
+		// Location precision in meters.
+		public const int LOCATOR_GOOD_ACCURACY = 15;
+		private const int MOTION_ONLY_ACCURACY = 30;
 		private const int ZOOM_DISTANCE_KM = 1;
 
 		private static IGeolocator locator;
@@ -24,10 +25,7 @@ namespace Trace {
 
 		public static async Task Start() {
 			locator = CrossGeolocator.Current;
-			/*if(!locator.IsGeolocationEnabled) {
-				await DisplayAlert("", "GPS is disabled, please enable it and come back", "Return");
-				return;
-			}*/
+
 			if(locator.IsListening)
 				await locator.StopListeningAsync();
 
@@ -91,6 +89,10 @@ namespace Trace {
 		public static void TryLowerAccuracy() {
 			if(locator != null && !IsTrackingInProgress)
 				locator.DesiredAccuracy = MOTION_ONLY_ACCURACY;
+		}
+
+		public static bool IsEnabled() {
+			return CrossGeolocator.Current.IsGeolocationEnabled;
 		}
 	}
 }

@@ -595,4 +595,7 @@ Note that if you disable this feature, Biklio will only warn you of your status 
 	<data name="MaxChallenges" xml:space="preserve">
     	<value>Maximum</value>
   	</data>
+	<data name="GPSDisabledErrorMsg" xml:space="preserve">
+    	<value>GPS is disabled. Would you like to enable it now?</value>
+  	</data>
 </root>

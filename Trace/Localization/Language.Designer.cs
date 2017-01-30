@@ -1156,5 +1156,11 @@ namespace Trace.Localization {
                 return ResourceManager.GetString("MaxChallenges", resourceCulture);
             }
         }
+        
+        public static string GPSDisabledErrorMsg {
+            get {
+                return ResourceManager.GetString("GPSDisabledErrorMsg", resourceCulture);
+            }
+        }
     }
 }

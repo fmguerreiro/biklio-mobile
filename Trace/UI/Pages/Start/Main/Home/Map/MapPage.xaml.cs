@@ -6,6 +6,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Acr.UserDialogs;
 using Newtonsoft.Json;
+using Plugin.Permissions;
+using Plugin.Permissions.Abstractions;
 using Trace.Localization;
 using Xamarin.Forms;
 using Xamarin.Forms.Maps;
@@ -64,10 +66,6 @@ namespace Trace {
 				});
 			}
 
-			// Add tap event handlers to the images on top of the circle buttons (otherwise, if users click on the img nothing happens)
-			//var trackButtonGR = new TapGestureRecognizer();
-			//trackButtonGR.Tapped += (sender, e) => onStartTracking(sender, e);
-			//trackButtonImage.GestureRecognizers.Add(trackButtonGR);
 			if(Geolocator.IsTrackingInProgress) {
 				trackButton.Image = "map__stop.png";
 			}
@@ -100,12 +98,27 @@ namespace Trace {
 
 
 		async void onLocateUser(object send, EventArgs eventArgs) {
-			var toastCfg = new ToastConfig(Language.FetchUserLocation) {
-				Duration = new TimeSpan(0, 0, 5)
-			};
+			// Check for permissions before using the GPS.
+			if(!Geolocator.IsEnabled()) {
+				var wantToChangeSetting = await DisplayAlert(Language.Notice, Language.GPSDisabledErrorMsg, Language.Yes, Language.No);
+
+				if(wantToChangeSetting)
+					CrossPermissions.Current.OpenAppSettings();
+
+				if(!Geolocator.IsEnabled())
+					return;
+			}
+
+			// Let user know the operation is underway (it can take a few seconds to get the location).
+			var toastCfg = new ToastConfig(Language.FetchUserLocation) { Duration = new TimeSpan(0, 0, 5) };
 			UserDialogs.Instance.Toast(toastCfg);
+
+			locateButton.IsVisible = false;
+
 			var pos = await GeoUtils.GetCurrentUserLocation(timeout: 5000);
 			Geolocator.UpdateMap(new Position(latitude: pos.Latitude, longitude: pos.Longitude));
+
+			locateButton.IsVisible = true;
 		}
 
 
@@ -115,6 +128,17 @@ namespace Trace {
 		/// When 'stop' is pressed, process the trajectory (calculate distance, calories, etc.) and show trace on map.
 		/// </summary>
 		async void onStartTracking(object send, EventArgs eventArgs) {
+
+			// Check for permissions first before trying to use the GPS.
+			if(!Geolocator.IsEnabled()) {
+				var wantToChangeSetting = await DisplayAlert(Language.Notice, Language.GPSDisabledErrorMsg, Language.Yes, Language.No);
+
+				if(wantToChangeSetting)
+					CrossPermissions.Current.OpenAppSettings();
+
+				if(!Geolocator.IsEnabled())
+					return;
+			}
 
 			// On Stop Button pressed
 			if(Geolocator.IsTrackingInProgress && !isProcessing) {
@@ -200,13 +224,12 @@ namespace Trace {
 			// On Start Button pressed
 			else if(!isProcessing) {
 				isProcessing = true;
+				trackButton.IsVisible = false;
 
 				var toastCfg = new ToastConfig(Language.StartTracking) {
 					Duration = new TimeSpan(0, 0, 2)
 				};
 				UserDialogs.Instance.Toast(toastCfg);
-
-				trackButton.Image = "map__stop.png";
 
 				map.RouteCoordinates.Clear();
 				StartTrackingTime = DateTime.Now;
@@ -218,6 +241,9 @@ namespace Trace {
 
 				// Reset in order to clean list of accumulated activities and counters.
 				DependencyService.Get<IMotionActivityManager>().Reset();
+
+				trackButton.Image = "map__stop.png";
+				trackButton.IsVisible = true;
 			}
 
 			Geolocator.IsTrackingInProgress = !Geolocator.IsTrackingInProgress;
