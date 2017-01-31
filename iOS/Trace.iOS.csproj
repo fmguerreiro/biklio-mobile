@@ -275,20 +275,14 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
-    <Folder Include="App\" />
-    <Folder Include="App\Security\" />
-    <Folder Include="App\Data\" />
-    <Folder Include="App\Application\" />
-    <Folder Include="App\Application\MotionActivity\" />
     <Folder Include="Properties\" />
     <Folder Include="Localization\" />
-    <Folder Include="App\ServiceAccess\" />
-    <Folder Include="App\Utils\" />
-    <Folder Include="App\Renderers\" />
-    <Folder Include="App\Renderers\Map\" />
-    <Folder Include="App\Renderers\OAuth\" />
     <Folder Include="Resources\sounds\" />
-    <Folder Include="App\Renderers\Controls\" />
+    <Folder Include="Application\" />
+    <Folder Include="Data\" />
+    <Folder Include="Renderers\" />
+    <Folder Include="Security\" />
+    <Folder Include="Utils\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
@@ -301,22 +295,24 @@
   <ItemGroup>
     <Compile Include="Main.cs" />
     <Compile Include="AppDelegate.cs" />
-    <Compile Include="App\Security\KeyChain.cs" />
-    <Compile Include="App\Data\SQLite.cs" />
-    <Compile Include="App\Application\MotionActivity\MotionActivityManager.cs" />
-    <Compile Include="App\Application\MotionActivity\NSDateConverter.cs" />
-    <Compile Include="App\Security\OAuth.cs" />
-    <Compile Include="App\Data\FileSystem.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Localization\Localize.cs" />
-    <Compile Include="App\NotificationMessage.cs" />
-    <Compile Include="App\Utils\ImageResizer.cs" />
-    <Compile Include="App\Utils\SoundPlayer.cs" />
-    <Compile Include="App\Renderers\Map\CustomMKAnnotationView.cs" />
-    <Compile Include="App\Renderers\Map\TraceMapRenderer.cs" />
-    <Compile Include="App\Renderers\OAuth\GoogleOAuthPageRenderer.cs" />
-    <Compile Include="App\Renderers\OAuth\FacebookOAuthPageRenderer.cs" />
-    <Compile Include="App\Renderers\Controls\BorderlessEntryRenderer.cs" />
+    <Compile Include="Application\Geofencing.cs" />
+    <Compile Include="Application\MotionActivity\MotionActivityManager.cs" />
+    <Compile Include="Application\MotionActivity\NSDateConverter.cs" />
+    <Compile Include="Application\Notifications\NotificationManager.cs" />
+    <Compile Include="Application\Notifications\NotificationMessage.cs" />
+    <Compile Include="Data\FileSystem.cs" />
+    <Compile Include="Data\SQLite.cs" />
+    <Compile Include="Renderers\Controls\BorderlessEntryRenderer.cs" />
+    <Compile Include="Renderers\Map\CustomMKAnnotationView.cs" />
+    <Compile Include="Renderers\Map\TraceMapRenderer.cs" />
+    <Compile Include="Renderers\OAuth\FacebookOAuthPageRenderer.cs" />
+    <Compile Include="Renderers\OAuth\GoogleOAuthPageRenderer.cs" />
+    <Compile Include="Security\KeyChain.cs" />
+    <Compile Include="Security\OAuth.cs" />
+    <Compile Include="Utils\ImageResizer.cs" />
+    <Compile Include="Utils\SoundPlayer.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="GoogleService-Info.plist" />
@@ -493,6 +489,8 @@
     <BundleResource Include="Resources\tutorial__tutorial_part2.png" />
     <BundleResource Include="Resources\tutorial__tutorial_part3.png" />
     <BundleResource Include="Resources\tutorial__tutorial_part4.png" />
+    <BundleResource Include="Resources\home__my_routes%402x.png" />
+    <BundleResource Include="Resources\home__my_routes%403x.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
   <Import Project="..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" />

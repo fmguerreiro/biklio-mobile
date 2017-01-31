@@ -93,7 +93,7 @@ namespace Trace.Droid {
 			if(e.PropertyName.Equals("VisibleRegion") && !isDrawn) {
 				map?.Clear();
 
-				var defaultImage = BitmapDescriptorFactory.FromBitmap(BitmapFactory.DecodeResource(Context.Resources, Resource.Drawable.checkpointlist__default_shop_20px));
+				var defaultImage = BitmapDescriptorFactory.FromBitmap(BitmapFactory.DecodeResource(Context.Resources, Resource.Drawable.challengelist__default_shop_20px));
 				foreach(CustomPin pin in customPins) {
 					var marker = new MarkerOptions();
 					marker.SetPosition(new LatLng(pin.Pin.Position.Latitude, pin.Pin.Position.Longitude));

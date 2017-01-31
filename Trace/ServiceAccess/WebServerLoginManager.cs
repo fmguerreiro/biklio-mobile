@@ -146,6 +146,7 @@ namespace Trace {
 			CrossGeolocator.Current.StopListeningAsync().DoNotAwait();
 			DependencyService.Get<IMotionActivityManager>().StopMotionUpdates();
 			DependencyService.Get<ICredentialsStore>().DeleteAllCredentials();
+			DependencyService.Get<GeofencingBase>().RemoveAllGeofences();
 			AutoLoginManager.MostRecentLoginType = LoginType.None;
 		}
 	}

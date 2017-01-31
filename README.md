@@ -130,18 +130,23 @@ To do this, we need to have the app always running in the background.
 
 Android allows this easily enough with the 'Service' interface.
 
-In iOS however, this process is much more complicated.
-Apple only allows an app to do a specific set of actions in the background, namely:
+In iOS however, this process is more complicated.
+Apple only allows an app to do a specific set of actions to be run continuously in the background, namely:
 play or record audio, track user location, use VoIP, download updates and communicate with a bluetooth accessory.
 Our first option involved tracking the user location at all times. However, this makes the app consume ~10% battery/h (on iPhone 5s), which is unreasonable. 
 The app still allows the user to track their trajectories, which allows the app to run continuously. We still needed another option for when the app was not tracking the user.
 
-Other fitness apps like Runkeeper and Strava overcome this problem by instead relying on the audio category through the use of a 'personal trainer' voice that motivates the user while running. In addition, they also use the accessory category by communicating with a heartrate monitor.
+Other fitness apps like Runkeeper and Strava overcome this problem by instead relying on the audio category through the use of a 'personal trainer' voice that motivates the user while running. In addition, they also use the accessory category by communicating with a heart-rate monitor.
 
 Our app uses the audio background option as well, letting the user know their eligibility state continuously.
 The user may choose at any time to silence or disable this audio option.
 If the user disables the audio, we lose the real-time notification ability.
-iPhone devices starting from version 5s carry a dedicated processor for motion updates called M7 (M8 and M10 in later devices) which continuosly records user activity. Any app can query this historical data either when the user re-opens the app or if we  register the app for region monitoring (more precise) or significant location changes (uses cell towers, less precise).
+iPhone devices starting from version 5s carry a dedicated processor for motion updates called M7 (M8 and M10 in later devices) which continuosly records user activity. 
+
+Another way to get processing time in the background is by registering to radio cell tower change events or geofence regions enter/leave events.
+We leverage this feature as well in case the user does not want the audio option (or Apple rejects the proposal in the App Store).
+- On radio cell tower changes, we query iOS's Motion Activity Manager for the motion data that occured between radio cell change periods and update the state machine. In addition, we calculate a continuous average for the user's speed to help determine if the user is riding a bicycle. IMPORTANT: As of this moment (iOS 10.0.2), the motion data does not register Cycling events! In our tests, they always register as 'Walking'.
+- We also place a geofence on each shop closest to the user (up to a maximum of 20 on iOS and 100 on Android). When the event fires, we check the average speed to see if the user is likely to be using a bicycle or walking and check whether to attribute the reward to the user.
 
 Notes
 -------

@@ -256,6 +256,7 @@
     <Compile Include="App\Application\MotionActivity\DetectedActivitiesService.cs" />
     <Compile Include="App\Application\MotionActivity\GoogleApiHandler.cs" />
     <Compile Include="App\Application\MotionActivity\ActivityDetectionBroadcastReceiver.cs" />
+    <Compile Include="App\Application\Geofencing.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />
@@ -318,8 +319,6 @@
   <ItemGroup>
     <Folder Include="App\" />
     <Folder Include="App\Security\" />
-    <Folder Include="App\Data\" />
-    <Folder Include="App\Application\" />
     <Folder Include="App\Application\MotionActivity\" />
     <Folder Include="Resources\drawable\" />
     <Folder Include="Localization\" />

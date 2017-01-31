@@ -110,7 +110,6 @@ namespace Trace {
 				return;
 			}
 
-			//Device.OpenUri(new Uri("http://google.com"));
 			AutoLoginManager.MostRecentLoginType = LoginType.GoogleOAuth;
 			OAuthConfigurationManager.SetConfig(new GoogleOAuthConfig());
 			await Navigation.PushAsync(new GoogleOAuthUIPage());

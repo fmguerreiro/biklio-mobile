@@ -88,6 +88,7 @@ namespace Trace {
 			if(res != null) {
 				// Resize image to 20x20 pixels to save space.
 				res = DependencyService.Get<IImageResizer>().ResizeImage(res, 20, 20);
+
 				// Store bytes as img in file system.
 				var filePath = GId.ToString();
 				DependencyService.Get<IFileSystem>().SaveImage(filePath, res);

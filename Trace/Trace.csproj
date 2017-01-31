@@ -242,6 +242,7 @@
     <Compile Include="Application\AutoLoginManager.cs" />
     <Compile Include="UI\Pages\Start\Main\Menu\MyTrajectories\MyTrajectoriesViewModel.cs" />
     <Compile Include="UI\CustomControls\BorderlessEntry.cs" />
+    <Compile Include="Application\GeofencingBase.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Business\" />

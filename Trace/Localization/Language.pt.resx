@@ -330,16 +330,16 @@
         <value>em</value>
   	</data>
 	<data name="NoCheckpointsFound" xml:space="preserve">
-        <value>Nenhum Biklio spot encontrado perto de ti.</value>
+        <value>Nenhum Biklio spot encontrado perto de si.</value>
   	</data>
 	<data name="OneCheckpointFound" xml:space="preserve">
-        <value>Existe um spot perto de ti.</value>
+        <value>Existe um spot perto de si.</value>
   	</data>
 	<data name="ThereAre" xml:space="preserve">
         <value>Existem</value>
   	</data>
 	<data name="CheckpointsNear" xml:space="preserve">
-        <value>Biklio spots perto de ti.</value>
+        <value>Biklio spots perto de si.</value>
   	</data>
 	<data name="NoRoutesYet" xml:space="preserve">
     	<value>Ainda não tens trajetos.</value>

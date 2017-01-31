@@ -105,7 +105,7 @@
 					Title="{language:Translate Address}">
 					<ViewCell
 						Height="210"
-						Tapped="AddressOnTap">
+						Tapped="viewMap">
 						<StackLayout
 							Margin="5">
 							<Label

@@ -52,8 +52,17 @@ namespace Trace {
 		// when user gets too far from here, reset WSSnapshotVersion
 		public double PrevLongitude { get; set; }
 		public double PrevLatitude { get; set; }
+
+		private Position position;
 		[Ignore]
-		public Position Position { get { return new Position { Latitude = PrevLatitude, Longitude = PrevLongitude }; } }
+		public Position Position {
+			get {
+				if(position == null) {
+					position = new Position { Latitude = PrevLatitude, Longitude = PrevLongitude };
+				}
+				return position;
+			}
+		}
 
 
 		// The webserver stores several snapshots of the challenge and checkpoint data.

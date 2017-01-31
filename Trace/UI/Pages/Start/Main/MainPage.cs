@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Diagnostics;
+using System.Threading.Tasks;
 using Xamarin.Forms;
 
 namespace Trace {
@@ -6,7 +8,7 @@ namespace Trace {
 		readonly HomeMasterPage masterPage;
 
 		public MainPage() {
-
+			Debug.WriteLine("MainPage Instantiated");
 			masterPage = new HomeMasterPage();
 			masterPage.ListView.ItemTapped += onItemTapped;
 			Master = masterPage;
@@ -15,6 +17,9 @@ namespace Trace {
 			detailPage.BarBackgroundColor = (Color) Application.Current.Resources["PrimaryColor"];
 			detailPage.BarTextColor = (Color) Application.Current.Resources["PrimaryTextColor"];
 			Detail = detailPage;
+
+			// Place geofences on user favorite & closest checkpoints.
+			DependencyService.Get<GeofencingBase>().Init();
 		}
 
 		void onItemTapped(object sender, ItemTappedEventArgs e) {

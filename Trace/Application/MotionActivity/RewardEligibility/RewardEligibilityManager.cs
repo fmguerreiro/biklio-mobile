@@ -13,7 +13,7 @@ namespace Trace {
 	/// if the state machine should transition or not. 
 	/// </summary>
 	public class RewardEligibilityManager {
-		RewardEligibilityStateMachine stateMachine;
+		static RewardEligibilityStateMachine stateMachine;
 		Dictionary<State, Action<int>> transitionGuards;
 
 		Task checkNearbyCheckpointsTask;
@@ -270,8 +270,8 @@ namespace Trace {
 		void unknownEligibleStateGuards(int elapsedTime) {
 			// When user leaves bike, check for nearby checkpoints/shops for reward notification every CHECK_NEARBY_TIMEOUT period.
 			if(checkNearbyCheckpointsTask == null) {
-				checkNearbyCheckpointsTask = new Task(() => checkNearbyCheckpoints());
-				checkNearbyCheckpointsTask.Start();
+				//checkNearbyCheckpointsTask = checkNearbyCheckpoints();
+				//checkNearbyCheckpointsTask.Start();
 			}
 
 			// If users start using a vehicle, go to 'inAVehicle' and start a shorter timer that makes her ineligible after it fires.
@@ -308,6 +308,7 @@ namespace Trace {
 		/// When a user goes from 'cyclingEligible' to 'unknownEligible', i.e., stops cycling, 
 		/// check for shops nearby with 'distance' condition to see if she is eligible for rewards.
 		/// </summary>
+		// TODO remove this, this is now done by the geofencing function
 		async Task checkNearbyCheckpoints() {
 			var now = TimeUtil.CurrentEpochTimeSeconds();
 			var nChallengesCompleted = 0;
@@ -358,6 +359,12 @@ namespace Trace {
 					res += t.CalculateCyclingDistance();
 			}
 			return res;
+		}
+
+
+		public static bool IsUserEligible() {
+			if(stateMachine == null) return false;
+			return stateMachine.CurrentState == State.CyclingEligible || stateMachine.CurrentState == State.UnknownEligible;
 		}
 
 

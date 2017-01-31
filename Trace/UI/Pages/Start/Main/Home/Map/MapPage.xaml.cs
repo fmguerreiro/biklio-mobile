@@ -199,8 +199,7 @@ namespace Trace {
 				}
 
 				// Reset GPS recorded speeds.
-				Geolocator.AvgSpeed = 0;
-				Geolocator.MaxSpeed = 0;
+				Geolocator.Reset();
 
 				var mainActivity = DependencyService.Get<IMotionActivityManager>().GetMostCommonActivity().ToLocalizedString();
 				var calories = await Task.Run(() => trajectory.CalculateCalories());
@@ -293,7 +292,7 @@ namespace Trace {
 				UserId = User.Instance.Id,
 				StartTime = StartTrackingTime.DatetimeToEpochSeconds(),
 				EndTime = StopTrackingTime.DatetimeToEpochSeconds(),
-				AvgSpeed = (float) (Geolocator.AvgSpeed / map.RouteCoordinates.Count),
+				AvgSpeed = (float) (Geolocator.CumulativeAvgSpeed / map.RouteCoordinates.Count),
 				MaxSpeed = (float) Geolocator.MaxSpeed,
 				TotalDistanceMeters = (long) distanceInMeters,
 				MostCommonActivity = DependencyService.Get<IMotionActivityManager>().GetMostCommonActivity().ToString(),

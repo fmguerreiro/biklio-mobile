@@ -20,7 +20,18 @@ namespace Trace {
 		public static TraceMap Map { get; set; }
 
 		public static double MaxSpeed { get; set; }
-		public static double AvgSpeed { get; set; }
+
+		private static int nSamples;
+		private static double cumulativeAvg = 1.5;
+		public static double CumulativeAvgSpeed {
+			get {
+				return cumulativeAvg;
+			}
+			set {
+				if(nSamples++ == 0) { cumulativeAvg = value; return; }
+				cumulativeAvg = (cumulativeAvg + value / nSamples);
+			}
+		}
 
 
 		public static async Task Start() {
@@ -53,7 +64,7 @@ namespace Trace {
 			if(IsTrackingInProgress) {
 				UpdateMap(args.Position);
 				if(args.Position.Speed > MaxSpeed) MaxSpeed = args.Position.Speed;
-				AvgSpeed += args.Position.Speed;
+				CumulativeAvgSpeed = args.Position.Speed;
 				Map.RouteCoordinates.Add(args.Position);
 			}
 		}
@@ -93,6 +104,12 @@ namespace Trace {
 
 		public static bool IsEnabled() {
 			return CrossGeolocator.Current.IsGeolocationEnabled;
+		}
+
+		public static void Reset() {
+			cumulativeAvg = 0;
+			nSamples = 0;
+			MaxSpeed = 0;
 		}
 	}
 }

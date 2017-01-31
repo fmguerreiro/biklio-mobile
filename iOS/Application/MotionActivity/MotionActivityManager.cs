@@ -18,6 +18,7 @@ namespace Trace.iOS {
 		public int DrivingDuration { get; set; }
 		public bool IsInitialized { get; set; }
 
+		private const double AVG_WALKING_SPEED_IN_METERS_S = 1.5;
 		CMMotionActivityManager motionActivityMgr;
 		IList<CMMotionActivity> activityList;
 
@@ -209,8 +210,21 @@ namespace Trace.iOS {
 				return ActivityType.Cycling;
 			if(activity.Running)
 				return ActivityType.Running;
-			if(activity.Walking)
+			// iOS does not detect cycling automatically (tested on 10.0.2). Of course ... that would make too much sense.
+			// All cycling activity came back as walking, so:
+			if(activity.Walking) {
+				// we take the GPS velocity into account before declaring it as either cycling or walking
+				if(Geolocator.IsTrackingInProgress) {
+					if(Geolocator.CumulativeAvgSpeed > AVG_WALKING_SPEED_IN_METERS_S) {
+						return ActivityType.Cycling;
+					}
+				}
+				else {
+
+				}
+
 				return ActivityType.Walking;
+			}
 			if(activity.Automotive)
 				return ActivityType.Automative;
 			if(activity.Stationary)

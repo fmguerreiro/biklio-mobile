@@ -54,7 +54,7 @@ namespace Trace {
 			var position = await GeoUtils.GetCurrentUserLocation(timeout: 5000);
 
 			// If the user got too far from the previous position where he got the last set of challenges, reset Snapshot point.
-			await checkIfUserRequiresNewCheckpoints();
+			resetWSCheckpoint(position);
 
 			// Fetch checkpoints from Webserver.
 			var client = new WebServerClient();
@@ -111,6 +111,7 @@ namespace Trace {
 			var orderedResult = await User.Instance.GetOrderedCheckpointsAsync();
 			Task.Run(() => fetchPinImages(orderedResult)).DoNotAwait();
 
+			DependencyService.Get<GeofencingBase>().RefreshGeofences(position, shouldRecalculatePositions: false);
 			Device.BeginInvokeOnMainThread(() => {
 				BindingContext = new CheckpointListModel { Checkpoints = orderedResult.Select((x) => new CheckpointViewModel(x)).ToList() };
 				mapPage.UpdatePins();
@@ -273,16 +274,17 @@ namespace Trace {
 		/// Checks if user requires new checkpoints.
 		/// A user requires new checkpoints if she moved half a search radius away from the previous fetch point.
 		/// </summary>
-		async Task checkIfUserRequiresNewCheckpoints() {
+		void resetWSCheckpoint(Position currPos) {
 			var initPos = new Position {
 				Longitude = User.Instance.PrevLongitude,
 				Latitude = User.Instance.PrevLatitude
 			};
-			var currPos = await GeoUtils.GetCurrentUserLocation();
+
 			if(GeoUtils.DistanceBetweenPoints(initPos, currPos) > User.Instance.SearchRadius / 2) {
 				User.Instance.WSSnapshotVersion = 0;
 				User.Instance.PrevLongitude = currPos.Longitude;
 				User.Instance.PrevLatitude = currPos.Latitude;
+				SQLiteDB.Instance.SaveUser(User.Instance);
 			}
 		}
 

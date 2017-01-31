@@ -30,7 +30,7 @@ namespace Trace {
 		/// </summary>
 		/// <param name="sender">Sender.</param>
 		/// <param name="e">E.</param>
-		async void AddressOnTap(object sender, EventArgs e) {
+		async void viewMap(object sender, EventArgs e) {
 
 #pragma warning disable RECS0018 // Comparison of floating point numbers with equality operator
 			if(checkpoint.Checkpoint.Latitude == 0.0D || checkpoint.Checkpoint.Longitude == 0.0D) {
@@ -59,6 +59,15 @@ namespace Trace {
 			checkpoint.IsUserFavorite = !checkpoint.IsUserFavorite;
 			favoriteStar.Source = checkpoint.FavoriteImage;
 			SQLiteDB.Instance.SaveItem(checkpoint.Checkpoint);
+
+			// Add geofence to this checkpoint.
+			if(checkpoint.IsUserFavorite) {
+				DependencyService.Get<GeofencingBase>().AddMonitoringRegion(
+															checkpoint.Checkpoint.Longitude,
+															checkpoint.Checkpoint.Latitude,
+															checkpoint.Checkpoint.GId.ToString()
+														);
+			}
 		}
 	}
 }
