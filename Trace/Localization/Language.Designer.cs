@@ -1162,5 +1162,35 @@ namespace Trace.Localization {
                 return ResourceManager.GetString("GPSDisabledErrorMsg", resourceCulture);
             }
         }
+        
+        public static string YouJustEarned {
+            get {
+                return ResourceManager.GetString("YouJustEarned", resourceCulture);
+            }
+        }
+        
+        public static string ChallengesComplete {
+            get {
+                return ResourceManager.GetString("ChallengesComplete", resourceCulture);
+            }
+        }
+        
+        public static string YouHaveCompletedXChallenges {
+            get {
+                return ResourceManager.GetString("YouHaveCompletedXChallenges", resourceCulture);
+            }
+        }
+        
+        public static string DistanceAway {
+            get {
+                return ResourceManager.GetString("DistanceAway", resourceCulture);
+            }
+        }
+        
+        public static string YouAreEligibleMsg {
+            get {
+                return ResourceManager.GetString("YouAreEligibleMsg", resourceCulture);
+            }
+        }
     }
 }

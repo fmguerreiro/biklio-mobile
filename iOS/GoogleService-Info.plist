@@ -3,25 +3,25 @@
 <plist version="1.0">
 <dict>
 	<key>AD_UNIT_ID_FOR_BANNER_TEST</key>
-	<string>***REMOVED***</string>
+	<string>**REMOVED**</string>
 	<key>AD_UNIT_ID_FOR_INTERSTITIAL_TEST</key>
-	<string>***REMOVED***</string>
+	<string>**REMOVED**</string>
 	<key>CLIENT_ID</key>
-	<string>***REMOVED***</string>
+	<string>**REMOVED**</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>***REMOVED***</string>
+	<string>**REMOVED**</string>
 	<key>API_KEY</key>
-	<string>***REMOVED***</string>
+	<string>**REMOVED**</string>
 	<key>GCM_SENDER_ID</key>
-	<string>***REMOVED***</string>
+	<string>**REMOVED**</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>pt.inesc.trace</string>
+	<string>pt.inesc.biklio</string>
 	<key>PROJECT_ID</key>
-	<string>***REMOVED***</string>
+	<string>**REMOVED**</string>
 	<key>STORAGE_BUCKET</key>
-	<string>***REMOVED***.appspot.com</string>
+	<string>**REMOVED**</string>
 	<key>IS_ADS_ENABLED</key>
 	<false/>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -33,8 +33,8 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true/>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:***REMOVED***:ios:a766a47b121ecaf3</string>
+	<string>**REMOVED**</string>
 	<key>DATABASE_URL</key>
-	<string>***REMOVED***</string>
+	<string>**REMOVED**</string>
 </dict>
 </plist>

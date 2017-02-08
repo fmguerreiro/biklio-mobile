@@ -9,6 +9,7 @@ namespace Trace {
 		/// </summary>
 		public FacebookOAuthUIPage() {
 			InitializeComponent();
+			if(Device.OS == TargetPlatform.Android) { loadingWheel.Scale = 0.5; }
 		}
 	}
 }

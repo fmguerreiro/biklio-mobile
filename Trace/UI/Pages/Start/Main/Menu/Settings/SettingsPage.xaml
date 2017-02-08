@@ -64,7 +64,7 @@
 								TextColor="Gray"
 								Completed="onSettingChanged"
 								HorizontalTextAlignment="End"
-								HorizontalOptions="End"
+								HorizontalOptions="Fill"
 								Margin="0,0,16,0">
 							</local:BorderlessEntry>
 						</Grid>
@@ -83,7 +83,7 @@
 								Keyboard="Telephone"
 								TextChanged="onSettingChanged"
 								HorizontalTextAlignment="End"
-								HorizontalOptions="End"
+								HorizontalOptions="Fill"
 								Margin="0,0,16,0">
 							</local:BorderlessEntry>
 						</Grid>
@@ -101,7 +101,7 @@
 								TextColor="Gray"
 								Completed="onSettingChanged"
 								HorizontalTextAlignment="End"
-								HorizontalOptions="End"
+								HorizontalOptions="Fill"
 								Margin="0,0,16,0" />
 						</Grid>
 					</ViewCell>
@@ -122,7 +122,7 @@
 								Keyboard="Numeric"
 								TextChanged="onSettingChanged"
 								HorizontalTextAlignment="End"
-								HorizontalOptions="End"
+								HorizontalOptions="Fill"
 								Margin="0,0,16,0" />
 						</Grid>
 					</ViewCell>
@@ -156,7 +156,7 @@
 								Keyboard="Numeric"
 								TextChanged="onSettingChanged"
 								HorizontalTextAlignment="End"
-								HorizontalOptions="End"
+								HorizontalOptions="Fill"
 								Margin="0,0,16,0" />
 						</Grid>
 					</ViewCell>
@@ -174,152 +174,14 @@
 								Keyboard="Numeric"
 								TextChanged="onSettingChanged"
 								HorizontalTextAlignment="End"
-								HorizontalOptions="End"
+								HorizontalOptions="Fill"
 								Margin="0,0,16,0" />
 						</Grid>
 					</ViewCell>
 				</TableSection>
 				<TableSection
+					x:Name="soundSettingTable"
 					Title="{language:Translate Sound}">
-					<ViewCell>
-						<Grid>
-							<Grid.ColumnDefinitions>
-								<ColumnDefinition
-									Width="10" />
-								<ColumnDefinition
-									Width="150" />
-								<ColumnDefinition
-									Width="*" />
-							</Grid.ColumnDefinitions>
-							<Label
-								Grid.Column="1"
-								Text="{language:Translate DisableBackgroundAudio}"
-								LineBreakMode="TailTruncation" />
-							<Switch
-								Grid.Column="2"
-								VerticalOptions="Center"
-								HorizontalOptions="End"
-								Margin="0,0,10,0"
-								x:Name="soundSettingSwitch"
-								Toggled="onSoundSettingChanged">
-							</Switch>
-						</Grid>
-					</ViewCell>
-					<ViewCell>
-						<Grid>
-							<Grid.ColumnDefinitions>
-								<ColumnDefinition
-									Width="10" />
-								<ColumnDefinition
-									Width="150" />
-								<ColumnDefinition
-									Width="*" />
-							</Grid.ColumnDefinitions>
-							<Label
-								Grid.Column="1"
-								Text="{language:Translate StationarySoundSetting}"
-								LineBreakMode="TailTruncation" />
-							<local:BindablePicker
-								Grid.Column="2"
-								StyleId="stationary"
-								SelectedIndexChanged="onSoundChanged"
-								Title="{Binding User.StationarySoundSetting}"
-								SelectedValue="{Binding User.StationarySoundSetting, Mode=TwoWay}"
-								ItemsSource="{Binding Sounds}" />
-						</Grid>
-					</ViewCell>
-					<ViewCell>
-						<Grid>
-							<Grid.ColumnDefinitions>
-								<ColumnDefinition
-									Width="10" />
-								<ColumnDefinition
-									Width="150" />
-								<ColumnDefinition
-									Width="*" />
-							</Grid.ColumnDefinitions>
-							<Label
-								Grid.Column="1"
-								Text="{language:Translate WalkingSoundSetting}"
-								LineBreakMode="TailTruncation" />
-							<local:BindablePicker
-								Grid.Column="2"
-								StyleId="walking"
-								SelectedIndexChanged="onSoundChanged"
-								Title="{Binding User.WalkingSoundSetting}"
-								SelectedValue="{Binding User.WalkingSoundSetting, Mode=TwoWay}"
-								ItemsSource="{Binding Sounds}" />
-						</Grid>
-					</ViewCell>
-					<ViewCell>
-						<Grid>
-							<Grid.ColumnDefinitions>
-								<ColumnDefinition
-									Width="10" />
-								<ColumnDefinition
-									Width="150" />
-								<ColumnDefinition
-									Width="*" />
-							</Grid.ColumnDefinitions>
-							<Label
-								Grid.Column="1"
-								Text="{language:Translate RunningSoundSetting}"
-								LineBreakMode="TailTruncation" />
-							<local:BindablePicker
-								Grid.Column="2"
-								StyleId="running"
-								SelectedIndexChanged="onSoundChanged"
-								Title="{Binding User.RunningSoundSetting}"
-								SelectedValue="{Binding User.RunningSoundSetting, Mode=TwoWay}"
-								ItemsSource="{Binding Sounds}" />
-						</Grid>
-					</ViewCell>
-					<ViewCell>
-						<Grid>
-							<Grid.ColumnDefinitions>
-								<ColumnDefinition
-									Width="10" />
-								<ColumnDefinition
-									Width="150" />
-								<ColumnDefinition
-									Width="*" />
-							</Grid.ColumnDefinitions>
-							<Label
-								Grid.Column="1"
-								Text="{language:Translate CyclingSoundSetting}"
-								LineBreakMode="TailTruncation" />
-							<local:BindablePicker
-								Grid.Column="2"
-								StyleId="cycling"
-								SelectedIndexChanged="onSoundChanged"
-								Title="{Binding User.CyclingSoundSetting}"
-								SelectedValue="{Binding User.CyclingSoundSetting, Mode=TwoWay}"
-								ItemsSource="{Binding Sounds}" />
-						</Grid>
-					</ViewCell>
-					<ViewCell>
-						<Grid>
-							<Grid.ColumnDefinitions>
-								<ColumnDefinition
-									Width="10" />
-								<ColumnDefinition
-									Width="150" />
-								<ColumnDefinition
-									Width="*" />
-							</Grid.ColumnDefinitions>
-							<Label
-								Grid.Column="1"
-								Text="{language:Translate VehicularSoundSetting}"
-								LineBreakMode="TailTruncation" />
-							<local:BindablePicker
-								Grid.Column="2"
-								StyleId="vehicle"
-								SelectedIndexChanged="onSoundChanged"
-								Title="{Binding User.VehicularSoundSetting}"
-								SelectedValue="{Binding User.VehicularSoundSetting, Mode=TwoWay}"
-								ItemsSource="{Binding Sounds}" />
-						</Grid>
-					</ViewCell>
 					<ViewCell>
 						<Grid>
 							<Grid.ColumnDefinitions>
@@ -388,12 +250,13 @@
 								Margin="16,0,0,0" />
 							<local:BorderlessEntry
 								Grid.Column="1"
+								ClassId="spotsSetting"
 								Text="{Binding User.SearchRadius, Mode=TwoWay}"
 								TextColor="Gray"
 								Keyboard="Numeric"
 								TextChanged="onSettingChanged"
 								HorizontalTextAlignment="End"
-								HorizontalOptions="End"
+								HorizontalOptions="Fill"
 								Margin="0,0,16,0" />
 						</Grid>
 					</ViewCell>
@@ -406,12 +269,13 @@
 								Margin="16,0,0,0" />
 							<local:BorderlessEntry
 								Grid.Column="1"
+								ClassId="spotsSetting"
 								Text="{Binding User.MaxChallenges, Mode=TwoWay}"
 								TextColor="Gray"
 								Keyboard="Numeric"
 								TextChanged="onSettingChanged"
 								HorizontalTextAlignment="End"
-								HorizontalOptions="End"
+								HorizontalOptions="Fill"
 								Margin="0,0,16,0" />
 						</Grid>
 					</ViewCell>

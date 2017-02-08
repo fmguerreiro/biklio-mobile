@@ -5,7 +5,7 @@ using UserNotifications;
 namespace Trace.iOS {
 
 	/// <summary>
-	/// Class responsible for implementing the device-specific send local notification.
+	/// Class responsible for implementing the device-specific local notification service.
 	/// </summary>
 	public class NotificationMessage : INotificationMessage {
 

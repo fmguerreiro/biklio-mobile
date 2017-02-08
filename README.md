@@ -1,8 +1,11 @@
-# Trace Cross Platform App
-========
+# Biklio
 
-The Trace App is a user tracking smartphone application for the TRACE project. 
-The TRACE project (http://h2020-trace.eu) is an European initiative that aims to leverage movement tracking to promote better physical activity behaviours and improve urban city planning. 
+[Get it for Android](https://play.google.com/store/apps/details?id=pt.inesc_id.cycletoshop&hl=en)
+
+[Get it for iOS](https://apps.apple.com/pt/app/biklio/id1203753482)
+
+The Biklio App is a user tracking smartphone application for the TRACE project. 
+The TRACE project (http://h2020-trace.eu) is an European initiative (https://cordis.europa.eu/project/id/635266) that aims to leverage movement tracking to promote better physical activity behaviours and improve urban city planning. 
 
 This app is primarily targeted towards Android (4.4 KitKat+) and iOS (8.0+) and developed using Xamarin.
 Xamarin (https://www.xamarin.com) is a framework that provides a unified, cross-platform API for programs written in C#.
@@ -165,4 +168,5 @@ License
 -------
 
 The program is developed by INESC-ID and is part of the TRACE project, which is released under the Creative Commons license.
+This project is exclusively for non-commercial use and released as open-source software. See license for more details. Also see (https://github.com/trace-inesc/trace) for a list of other released software.
 See file LICENSE.md for full license details.

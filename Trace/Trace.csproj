@@ -75,16 +75,16 @@
     <EmbeddedResource Include="UI\Pages\Start\Main\Menu\Rewards\ClaimRewardPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\Pages\SignInPage.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </EmbeddedResource>
     <EmbeddedResource Include="UI\Pages\Start\Main\Home\Map\MapPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\Pages\Start\Main\Home\Tutorial\TutorialPage.xaml">
+    <EmbeddedResource Include="UI\Pages\SignInPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\Pages\Start\Main\Home\Tutorial\PrivacyPolicy\PrivacyPolicyPage.xaml">
+    <EmbeddedResource Include="UI\Pages\Start\Main\Menu\Tutorial\PrivacyPolicy\PrivacyPolicyPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\Pages\Start\Main\Menu\Tutorial\TutorialPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
   </ItemGroup>
@@ -209,27 +209,13 @@
       <DependentUpon>ClaimRewardPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="ServiceAccess\WebServerObjects\Challenges\WSType.cs" />
-    <Compile Include="UI\Pages\SignInPage.xaml.cs">
-      <DependentUpon>SignInPage.xaml</DependentUpon>
-    </Compile>
     <Compile Include="UI\Pages\Start\Main\Home\Map\MapPage.xaml.cs">
       <DependentUpon>MapPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="UI\Pages\Start\Main\Home\Tutorial\TutorialPage.xaml.cs">
-      <DependentUpon>TutorialPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="UI\Pages\Start\Main\Home\Tutorial\TutorialModel.cs" />
-    <Compile Include="UI\Pages\Start\Main\Home\Tutorial\PrivacyPolicy\PrivacyPolicyModel.cs" />
-    <Compile Include="UI\Pages\Start\Main\Home\Tutorial\PrivacyPolicy\PrivacyPolicyPage.xaml.cs">
-      <DependentUpon>PrivacyPolicyPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="UI\Pages\Start\Main\Menu\Rewards\ClaimRewardModel.cs" />
     <Compile Include="Application\MotionActivity\ActivityEvent.cs" />
     <Compile Include="Application\MotionActivity\ActivityType.cs" />
     <Compile Include="Application\MotionActivity\IMotionActivityManager.cs" />
-    <Compile Include="Application\MotionActivity\RewardEligibility\RewardEligibilityManager.cs" />
-    <Compile Include="Application\MotionActivity\RewardEligibility\RewardEligibilityStateMachine.cs" />
-    <Compile Include="Application\MotionActivity\RewardEligibility\Timer.cs" />
     <Compile Include="Application\ISoundPlayer.cs" />
     <Compile Include="Application\Geolocator.cs" />
     <Compile Include="Utils\GeoUtils.cs" />
@@ -243,6 +229,20 @@
     <Compile Include="UI\Pages\Start\Main\Menu\MyTrajectories\MyTrajectoriesViewModel.cs" />
     <Compile Include="UI\CustomControls\BorderlessEntry.cs" />
     <Compile Include="Application\GeofencingBase.cs" />
+    <Compile Include="Application\RewardEligibility\RewardEligibilityManager.cs" />
+    <Compile Include="Application\RewardEligibility\RewardEligibilityStateMachine.cs" />
+    <Compile Include="Application\RewardEligibility\Timer.cs" />
+    <Compile Include="UI\Pages\SignInPage.xaml.cs">
+      <DependentUpon>SignInPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Pages\Start\Main\Menu\Tutorial\PrivacyPolicy\PrivacyPolicyModel.cs" />
+    <Compile Include="UI\Pages\Start\Main\Menu\Tutorial\PrivacyPolicy\PrivacyPolicyPage.xaml.cs">
+      <DependentUpon>..\..\..\Home\Tutorial\PrivacyPolicy\PrivacyPolicyPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Pages\Start\Main\Menu\Tutorial\TutorialModel.cs" />
+    <Compile Include="UI\Pages\Start\Main\Menu\Tutorial\TutorialPage.xaml.cs">
+      <DependentUpon>..\..\Home\Tutorial\TutorialPage.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Business\" />
@@ -280,11 +280,11 @@
     <Folder Include="UI\Pages\Start\Main\Menu\Campaigns\" />
     <Folder Include="UI\Pages\Start\Main\Menu\Rewards\" />
     <Folder Include="UI\Pages\Start\Main\Home\Map\" />
-    <Folder Include="UI\Pages\Start\Main\Home\Tutorial\" />
-    <Folder Include="UI\Pages\Start\Main\Home\Tutorial\PrivacyPolicy\" />
     <Folder Include="Application\" />
     <Folder Include="Application\MotionActivity\" />
     <Folder Include="Application\Map\" />
+    <Folder Include="Application\RewardEligibility\" />
+    <Folder Include="UI\Pages\Start\Main\Menu\Tutorial\" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System.ComponentModel.DataAnnotations" />

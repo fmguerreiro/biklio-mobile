@@ -83,14 +83,21 @@ namespace Trace {
 				if(Checkpoint.Challenges.Count > 0)
 					result += $"{Language.CycleToShop}: {Checkpoint.Challenges[0].Reward}";
 				if(Checkpoint.Challenges.Count > 1)
-					result += $"\n{string.Format(Language.BikeCondition, Checkpoint.Challenges[1].NeededCyclingDistance)}: {Checkpoint.Challenges[1].Reward}";
+					result += $"\n{string.Format(Language.BikeCondition, Checkpoint.Challenges[1].NeededMetersCycling)}: {Checkpoint.Challenges[1].Reward}";
 				if(Checkpoint.Challenges.Count > 2)
 					result += "\n+";
 				return result;
 			}
 		}
 
-		public string Distance { get { return $"{(Checkpoint.DistanceToUser / 1000).ToString("F3")} km"; } }
+		public string Distance {
+			get {
+				if(Checkpoint.DistanceToUser > 1000)
+					return $"{(Checkpoint.DistanceToUser / 1000).ToString("F2")} km " + Language.DistanceAway;
+				else
+					return $"{Math.Truncate(Checkpoint.DistanceToUser).ToString()} m " + Language.DistanceAway;
+			}
+		}
 
 		//public Color BackgroundColor {
 		//	get {

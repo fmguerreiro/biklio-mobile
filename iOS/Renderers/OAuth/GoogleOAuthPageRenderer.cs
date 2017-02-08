@@ -54,7 +54,7 @@ namespace Trace.iOS {
 						img = pictureURL,
 						public_email = email,
 						app_id = gUser.Authentication.ClientId,
-						// ***REMOVED***
+						// 111912839668-ur9ffohu7qbfj07hammvgfld53nt91vd.apps.googleusercontent.com
 					})
 				});
 				Debug.WriteLine("Google OAuth token: " + jToken);

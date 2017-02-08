@@ -1,9 +1,10 @@
-﻿using System;
+using System;
 using System.Diagnostics;
 using Firebase.CloudMessaging;
 using Foundation;
 using UIKit;
 using UserNotifications;
+using Xamarin.Forms;
 
 namespace Trace.iOS {
 	public class NotificationManager : NSObject,
@@ -112,8 +113,22 @@ namespace Trace.iOS {
 			// If you are receiving a notification message while your app is in the background,
 			// this callback will not be fired 'till the user taps on the notification launching the application.
 
-			// TODO handle the notification data
 			Debug.WriteLine("DidReceiveRemoteNotification(): " + userInfo);
+
+			var aps = userInfo.ObjectForKey(new NSString("aps")) as NSDictionary;
+
+			var title = string.Empty;
+			if(aps.ContainsKey(new NSString("title")))
+				title = (aps[new NSString("title")] as NSString).ToString();
+
+			var body = string.Empty;
+			if(aps.ContainsKey(new NSString("message")))
+				body = (aps[new NSString("message")] as NSString).ToString();
+
+			// Show alert
+			DependencyService.Get<INotificationMessage>().Send("didReceiveRemoteNotification", title, body, 1);
+
+			completionHandler.Invoke(new UIBackgroundFetchResult());
 		}
 
 
@@ -146,8 +161,16 @@ namespace Trace.iOS {
 		public void ApplicationReceivedRemoteMessage(RemoteMessage remoteMessage) {
 			// TODO handle the data message -- ask Rodrigo what are the keys to AppData
 			Debug.WriteLine("ApplicationReceivedRemoteMessage(): " + remoteMessage);
-			var _ = remoteMessage.AppData[""];
-			new NotificationMessage().Send("remoteId", "title", "body", 1);
+
+			var title = string.Empty;
+			if(remoteMessage.AppData.ContainsKey(new NSString("title")))
+				title = remoteMessage.AppData[new NSString("title")].ToString();
+
+			var body = string.Empty;
+			if(remoteMessage.AppData.ContainsKey(new NSString("message")))
+				body = remoteMessage.AppData[new NSString("message")].ToString();
+
+			DependencyService.Get<INotificationMessage>().Send("remoteNotificationReceived", title, body, 1);
 		}
 
 

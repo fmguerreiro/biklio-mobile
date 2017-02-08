@@ -18,6 +18,8 @@ namespace Trace.Droid {
 		public int CyclingDuration { get; set; }
 		public int DrivingDuration { get; set; }
 		public bool IsInitialized { get; set; }
+		public double CurrentAvgSpeed { get; set; }
+
 
 		// Handles connections, disconnections from google api (for accessing motion data).
 		static internal GoogleApiHandler gApiHandler = new GoogleApiHandler();

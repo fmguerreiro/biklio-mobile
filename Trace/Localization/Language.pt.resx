@@ -81,7 +81,7 @@
         <value>Facebook login</value>
   	</data>
 	<data name="LocalIncorrectCredentialsWarning" xml:space="preserve">
-        <value>Não foi possível fazer a validação offline das suas credenciais. Quer tentar fazer a verificação online?</value>
+        <value>Precisa de verificar as credencias online. Quer tentar agora?</value>
   	</data>
 	<data name="LoginError" xml:space="preserve">
         <value>Um dos campos está incorrecto. Certifique-se que já fez o registro.</value>
@@ -93,7 +93,7 @@
         <value>Sair</value>
   	</data>
 	<data name="AreYouSure" xml:space="preserve">
-        <value>Tem a certeza? Vai ter que reintroduzir as suas credenciais quando iniciar novamente a sessão.</value>
+        <value>Tem a certeza? Vai ter que reintroduzir as credenciais quando iniciar novamente a sessão.</value>
   	</data>
 	<data name="Yes" xml:space="preserve">
         <value>Sim</value>
@@ -108,7 +108,7 @@
         <value>Início</value>
   	</data>
 	<data name="Rewards" xml:space="preserve">
-        <value>Recompensas</value>
+        <value>Benefícios</value>
   	</data>
 	<data name="Dashboard" xml:space="preserve">
         <value>Estatísticas</value>
@@ -162,7 +162,7 @@
     	<value>Não foi possível obter a tua localização. Estás dentro ou próximo de um edifício?</value>
   	</data>
 	<data name="Challenges" xml:space="preserve">
-        <value>Desafios</value>
+        <value>Benefícios</value>
   	</data>
 	<data name="PullUpToUpdate" xml:space="preserve">
         <value>Puxe para atualizar.</value>
@@ -174,7 +174,7 @@
         <value>Pedale até à loja</value>
   	</data>
 	<data name="ErrorFetchingChallenges" xml:space="preserve">
-        <value>Erro ao tentar obter desafios do servidor.</value>
+        <value>Erro ao tentar obter actualização do servidor.</value>
   	</data>
 	<data name="ChallengeWithoutCheckpointError" xml:space="preserve">
         <value>Este desafio não tem um Biklio spot associado. Provalmente um erro da nossa parte. Por favor, reporte o caso.</value>
@@ -219,7 +219,7 @@
         <value>Trajetos feitos</value>
   	</data>
 	<data name="RewardsEarned" xml:space="preserve">
-        <value>Recompensas adquiridas</value>
+        <value>Benefícios adquiridas</value>
   	</data>
 	<data name="DistanceTravelledMeters" xml:space="preserve">
         <value>Distância viajada (em metros)</value>
@@ -318,7 +318,7 @@
         <value>Aviso</value>
   	</data>
 	<data name="DeleteEverythingWarning" xml:space="preserve">
-        <value>Esta ação irá apagar todas os trajetos, lojas e desafios do dispositivo. Tudo o que fez desde o último início de sessão será perdido.</value>
+        <value>Esta ação irá apagar todas os trajetos e lojas do dispositivo. Tem a certeza?</value>
   	</data>
 	<data name="Back" xml:space="preserve">
         <value>Voltar</value>
@@ -357,10 +357,10 @@
     	<value>As credenciais introduzidas em modo offline são diferentes das do servidor. Por favor tente iniciar sessão novamente.</value>
   	</data>
 	<data name="RewardsUnlocked" xml:space="preserve">
-    	<value>Recompensas disponíveis</value>
+    	<value>Benefícios disponíveis</value>
   	</data>
 	<data name="RewardsUnlockedMessage" xml:space="preserve">
-    	<value>"Tem {0} recompensas."</value>
+    	<value>"Tem {0} benefícios."</value>
   	</data>
 	<data name="Campaigns" xml:space="preserve">
     	<value>Campanhas</value>
@@ -402,13 +402,13 @@
     	<value>Já aderiu à campanha local.</value>
   	</data>
 	<data name="NoRewardsYet" xml:space="preserve">
-    	<value>Ainda não tens Recompensas disponíveis. Vai de bicicleta até um Biklio spot para ganhares alguma!</value>
+    	<value>Ainda não tens benefícios disponíveis. Vai de bicicleta até um Biklio spot para ganhares alguma!</value>
   	</data>
 	<data name="OneRewardEarned" xml:space="preserve">
-    	<value>Podes obter uma Recompensa.</value>
+    	<value>Podes obter um Benefício.</value>
   	</data>
 	<data name="ClaimReward" xml:space="preserve">
-    	<value>Recompensa</value>
+    	<value>Benefício</value>
   	</data>
 	<data name="Address" xml:space="preserve">
     	<value>Endereço</value>
@@ -420,22 +420,22 @@
     	<value>O Biklio foi feito com o objectivo de motivar as pessoas a adotar meios de transporte mais sustentáveis.</value>
   	</data>
 	<data name="TutorialTitle2" xml:space="preserve">
-    	<value>Pedala para ganhar recompensas nas lojas</value>
+    	<value>Pedala para ganhar benefícios nas lojas</value>
   	</data>
 	<data name="TutorialDescription2" xml:space="preserve">
     	<value>Começas logo a ganhar! O Biklio consegue ver automaticamente se estás a pedalar. Para algumas lojas, isso é mais do que suficiente!</value>
   	</data>
 	<data name="TutorialTitle3" xml:space="preserve">
-    	<value>Registe os seus trajetos para mais recompensas</value>
+    	<value>Regista os teus trajetos para mais benefícios</value>
   	</data>
 	<data name="TutorialDescription3" xml:space="preserve">
-    	<value>Algumas lojas requerem que pedales por alguns kilometros antes de ganhares a recompensa. Carrega no botão para registares a tua trajetória.</value>
+    	<value>Algumas lojas requerem que pedales por alguns kilometros antes de ganhares o benefício. Carrega no botão para registares a tua trajetória.</value>
   	</data>
 	<data name="TutorialTitle4" xml:space="preserve">
-    	<value>Obtém a tua recompensa</value>
+    	<value>Obtém o teu benefício</value>
   	</data>
 	<data name="TutorialDescription4" xml:space="preserve">
-    	<value>Viaja até à loja para receberes a tua merecida recompensa. A única coisa que tens que fazer é mostrar esta aplicação.</value>
+    	<value>Viaja até à loja para receberes benefícios. A única coisa que tens que fazer é mostrar esta aplicação.</value>
   	</data>
 	<data name="GotIt" xml:space="preserve">
     	<value>Entendi</value>
@@ -490,10 +490,10 @@ Once revoked, identifiable data such as email and name is removed within a few h
     	<value>Ganhou</value>
   	</data>
 	<data name="nRewardsClickToSeeWhat" xml:space="preserve">
-    	<value>recompensas. Carregue no ícone de Recompensas para ver o que ganhou.</value>
+    	<value>benefícios. Carregue no ícone de Benefícios para ver o que ganhou.</value>
   	</data>
 	<data name="IAgreeToToS" xml:space="preserve">
-    	<value>Li e aceito os termos de serviço do Biklio &gt;&gt;</value>
+    	<value>Li e aceito os termos de serviço &gt;&gt;</value>
   	</data>
 	<data name="ToSUncheckedError" xml:space="preserve">
     	<value>Para continuar a usar o Biklio, verifique se concorda com os nossos termos e condições de serviço.</value>
@@ -505,13 +505,13 @@ Once revoked, identifiable data such as email and name is removed within a few h
     	<value>Tens direito a:</value>
   	</data>
 	<data name="RewardClaimedAt" xml:space="preserve">
-    	<value>Recompensa reinvidicada em: {0}</value>
+    	<value>Benefício reinvidicado em: {0}</value>
   	</data>
 	<data name="RewardEarnedAt" xml:space="preserve">
     	<value>Desafio cumprido em: {0}</value>
   	</data>
 	<data name="RewardAlreadyClaimedError" xml:space="preserve">
-    	<value>A tua recompensa já foi reivindicada.</value>
+    	<value>O teu benefício já foi reivindicado.</value>
   	</data>
 	<data name="TrajectoryNotUploadedError" xml:space="preserve">
     	<value>Não foi possível enviar o trajeto para o servidor. Tente mais tarde.</value>
@@ -520,9 +520,9 @@ Once revoked, identifiable data such as email and name is removed within a few h
     	<value>Metros</value>
   	</data>
 	<data name="BiklioWelcomeMessage" xml:space="preserve">
-    	<value>Welcome to Biklio!
-Swipe down the page to see Biklio spots near you.
-Next, start cycling for a few minutes to become eligible to earn their rewards.</value>
+    	<value>Bem-vindo ao Biklio!
+Na página seguinte consegues ver os Biklio spots mais próximos.
+Pedala até um deles para ganhar benefícios.</value>
   	</data>
 	<data name="BiklioAudioWarningMessage" xml:space="preserve">
     	<value>Biklio uses music in the background to let you know when you are eligible to earn rewards.
@@ -537,7 +537,7 @@ If you disable this feature, Biklio will only warn you of your status when you o
     	<value>Aviso</value>
   	</data>
 	<data name="StartTracking" xml:space="preserve">
-    	<value>O Biklio está a gravar o seu trajeto</value>
+    	<value>Estás a gravar o trajeto</value>
   	</data>
 	<data name="DisableBackgroundAudio" xml:space="preserve">
     	<value>Permitir Audio</value>
@@ -561,10 +561,10 @@ If you disable this feature, Biklio will only warn you of your status when you o
     	<value>A operação foi realizada com sucesso.</value>
   	</data>
 	<data name="DeleteSpotsWarning" xml:space="preserve">
-    	<value>Esta operação irá eliminar todos os Biklio spots do teu dispositivo. As recompensas ganhas com esses spots também irão ser perdidas. Tem a certeza?</value>
+    	<value>Esta operação irá eliminar todos os Biklio spots do teu dispositivo. Os benefícios ganhos com esses spots também irão ser perdidas. Tem a certeza?</value>
   	</data>
 	<data name="DeleteTrajectoriesWarning" xml:space="preserve">
-    	<value>Esta operação irá eliminar todos os trajetos do seu dispositivo. Trajetos que não foram ainda enviados para o servidor serão perdidos. Tem a certeza?</value>
+    	<value>Esta operação irá eliminar todos os trajetos do dispositivo. Trajetos que não foram ainda enviados para o servidor serão perdidos. Tem a certeza?</value>
   	</data>
 	<data name="CourtesyOfFreesound" xml:space="preserve">
     	<value>Cortesia de freesound.org</value>
@@ -582,12 +582,27 @@ If you disable this feature, Biklio will only warn you of your status when you o
     	<value>Morada</value>
   	</data>
 	<data name="ProcessingTrajectory" xml:space="preserve">
-    	<value>A processar o seu trajeto ...</value>
+    	<value>A processar o trajeto ...</value>
   	</data>
 	<data name="MaxChallenges" xml:space="preserve">
     	<value>Máximo</value>
   	</data>
 	<data name="GPSDisabledErrorMsg" xml:space="preserve">
     	<value>O GPS não está ativado. Pretende ativar agora?</value>
+  	</data>
+	<data name="YouJustEarned" xml:space="preserve">
+    	<value>Acabou de ganhar</value>
+  	</data>
+	<data name="ChallengesComplete" xml:space="preserve">
+    	<value>Tem direito a benefícios especiais</value>
+  	</data>
+	<data name="YouHaveCompletedXChallenges" xml:space="preserve">
+    	<value>Ganhou {0} benefícios.</value>
+  	</data>
+	<data name="DistanceAway" xml:space="preserve">
+    	<value></value>
+  	</data>
+	<data name="YouAreEligibleMsg" xml:space="preserve">
+    	<value>Tens andado de bicicleta? Estás agora eligível para benefícios quando chegares a um Biklio spot!</value>
   	</data>
 </root>

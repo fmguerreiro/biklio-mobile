@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Diagnostics;
 using CoreLocation;
 using FFImageLoading.Forms.Touch;
@@ -12,6 +12,7 @@ using UserNotifications;
 using System.Linq;
 using System.Threading.Tasks;
 using Xamarin.Forms;
+using FFImageLoading;
 
 namespace Trace.iOS {
 	[Register("AppDelegate")]
@@ -20,7 +21,6 @@ namespace Trace.iOS {
 
 		public CLLocationManager locationManager;
 		public NotificationManager notificationManager;
-		private CMMotionActivityManager activityManager;
 
 		private long prevTime; // seconds
 
@@ -38,7 +38,7 @@ namespace Trace.iOS {
 			locationManager.AllowsBackgroundLocationUpdates = true;
 			locationManager.StartMonitoringSignificantLocationChanges();
 			//locationManager.LocationsUpdated -= onLocationUpdate;
-			locationManager.LocationsUpdated += onLocationUpdate;
+			locationManager.LocationsUpdated += onSignificantLocationChange;
 			//slocationManager.AuthorizationChanged -= onAuthorizationChanged;
 			locationManager.AuthorizationChanged += onAuthorizationChanged;
 			Geofencing.LocMgr = locationManager;
@@ -85,7 +85,6 @@ namespace Trace.iOS {
 			// Initialize Firebase configuration for push notifications.
 			Firebase.Analytics.App.Configure();
 
-			activityManager = new CMMotionActivityManager();
 			prevTime = (long) NSDate.Now.SecondsSinceReferenceDate;
 
 			return base.FinishedLaunching(uiApplication, launchOptions);
@@ -100,27 +99,31 @@ namespace Trace.iOS {
 		/// <param name="uiApplication">User interface application.</param>
 		public override void DidEnterBackground(UIApplication uiApplication) {
 			base.DidEnterBackground(uiApplication);
-			var isUserLoggedIn = WebServerLoginManager.IsOfflineLoggedIn;
+			if(!WebServerLoginManager.IsOfflineLoggedIn) return;
+
+			// Start geofence that triggers event when user distances herself more than X meters from current position.
+			nint taskID = UIApplication.SharedApplication.BeginBackgroundTask(() => { });
+			new Task(async () => {
+				Debug.WriteLine($"DidEnterBackground -> setting geofence around user");
+				//await Geolocator.StartInBackground();
+
+				Geofencing.ReferencePosition = await GeoUtils.GetCurrentUserLocation();
+				DependencyService.Get<GeofencingBase>().AddMonitoringRegion(
+					Geofencing.ReferencePosition.Longitude,
+					Geofencing.ReferencePosition.Latitude,
+					Geofencing.REFERENCE_ID
+				);
+
+				Debug.WriteLine($"DidEnterBackground -> done, bg task terminated");
+
+				UIApplication.SharedApplication.EndBackgroundTask(taskID);
+			}).Start();
+
+			//GC.Collect();
+			//await ImageService.Instance.InvalidateDiskCacheAsync();
 			//if(CLLocationManager.LocationServicesEnabled && isUserLoggedIn && !User.Instance.IsBackgroundAudioEnabled && !Geolocator.IsTrackingInProgress) {
 
-			//	 TODO this would be a good time for releasing system resources to help prevent app from being terminated by the OS... call preparetologout() ?
-			//	nint taskID = UIApplication.SharedApplication.BeginBackgroundTask(() => { });
-			//	new Task(() => {
-			//		Debug.WriteLine($"DidEnterBackground() 2 -> monitoring for significant motion changes");
-			//		//locationManager.StartMonitoringSignificantLocationChanges();
-
-			//		// On location change, start background task to get enough time to process motion history.
-			//		// This is to make sure there is not a new event handler added every time!
-			//		locationManager.LocationsUpdated -= onLocationUpdate;
-			//		locationManager.LocationsUpdated += onLocationUpdate;
-
-			//		locationManager.AuthorizationChanged -= onAuthorizationChanged;
-			//		locationManager.AuthorizationChanged += onAuthorizationChanged;
-
-			//		Debug.WriteLine($"DidEnterBackground() -> ending task");
-			//		UIApplication.SharedApplication.EndBackgroundTask(taskID);
-			//	}).Start();
-			//}
+			// TODO this would be a good time for releasing system resources to help prevent app from being terminated by the OS... call preparetologout() ?
 		}
 
 		private void onAuthorizationChanged(object sender, CLAuthorizationChangedEventArgs e) {
@@ -140,19 +143,24 @@ namespace Trace.iOS {
 		/// </summary>
 		/// <param name="sender">Sender.</param>
 		/// <param name="args">Arguments.</param>
-		private void onLocationUpdate(object sender, CLLocationsUpdatedEventArgs args) {
+		private void onSignificantLocationChange(object sender, CLLocationsUpdatedEventArgs args) {
 			Debug.WriteLine($"onLocationUpdate");
+
+			if(!WebServerLoginManager.IsOfflineLoggedIn)
+				return;
 
 			// Check locations obtained to determine user speed (helps with cycling activity detection).
 			foreach(var loc in args.Locations) {
 				Debug.WriteLine($"gsm location: {loc.Coordinate}, speed {loc.Speed} m/s");
+				// TODO remove debug notification
+				//DependencyService.Get<INotificationMessage>().Send("gsmLocation", "gsmLocation", $"location: {loc.Coordinate}, speed {loc.Speed} m/s, avg {Geolocator.CumulativeAvgSpeed}", 1);
 				if(loc.Speed > 0)
 					Geolocator.CumulativeAvgSpeed = loc.Speed;
 			}
 
 			// Update geofences.
 			var firstLoc = args.Locations.FirstOrDefault();
-			if(firstLoc != null && WebServerLoginManager.IsOfflineLoggedIn) {
+			if(firstLoc != null) {
 				DependencyService.Get<GeofencingBase>().RefreshGeofences(
 					new Plugin.Geolocator.Abstractions.Position {
 						Longitude = firstLoc.Coordinate.Longitude,
@@ -161,62 +169,50 @@ namespace Trace.iOS {
 				);
 			}
 
-			// If the user does not have background audio enabled, query activity history to insert into the state machine.
-			if(!User.Instance.IsBackgroundAudioEnabled) {
+			// If the user is not tracking, query activity history to insert into the state machine.
+			if(!Geolocator.IsTrackingInProgress) {
 				nint taskID = UIApplication.SharedApplication.BeginBackgroundTask(() => { });
-				new Task(() => {
+				new Task(async () => {
 					var now = (long) NSDate.Now.SecondsSinceReferenceDate;
 					Debug.WriteLine($"onLocationUpdate -> Processing in background at time {NSDate.Now}");
-					queryMotionData(now, taskID);
+					await queryMotionData(now, taskID);
 				}).Start();
 			}
 		}
 
 
-		public override void WillEnterForeground(UIApplication uiApplication) {
+		public override async void WillEnterForeground(UIApplication uiApplication) {
 			var isUserLoggedIn = WebServerLoginManager.IsOfflineLoggedIn;
-			if(CLLocationManager.LocationServicesEnabled && isUserLoggedIn && !User.Instance.IsBackgroundAudioEnabled && !Geolocator.IsTrackingInProgress) {
+			if(!Geolocator.IsTrackingInProgress)
+				await Geolocator.Stop();
+
+			if(CLLocationManager.LocationServicesEnabled && isUserLoggedIn && !Geolocator.IsTrackingInProgress) {
 				//locationManager.StopMonitoringSignificantLocationChanges();
 
 				var now = (long) NSDate.Now.SecondsSinceReferenceDate;
 				Debug.WriteLine($"Processing in Foreground at time {NSDate.Now}");
-				queryMotionData(now, new nint(-1));
+				await queryMotionData(now, new nint(-1));
 				prevTime = now;
 
 			}
-			// TODO delete debug message
-			new NotificationMessage().Send("activityQueryDebug", "willEnterForeground", App.DEBUG_ActivityLog, 1);
+#if DEBUG
+			DependencyService.Get<INotificationMessage>().Send("activityQueryDebug", "willEnterForeground", App.DEBUG_ActivityLog, 1);
+#endif
 		}
 
 
-		void queryMotionData(long now, nint taskID) {
-			var opQueue = new NSOperationQueue();
+		async Task queryMotionData(long now, nint taskID) {
 			var previousDate = NSDate.FromTimeIntervalSinceReferenceDate(prevTime);
 			var nowDate = NSDate.FromTimeIntervalSinceReferenceDate(now);
 
-			activityManager.QueryActivity(start: previousDate, end: nowDate, queue: opQueue, handler: (activities, error) => {
+			var activityManager = (MotionActivityManager) DependencyService.Get<IMotionActivityManager>();
+			await activityManager.QueryHistoricalData(previousDate, nowDate);
 
-				Debug.WriteLine($"{error?.LocalizedFailureReason}");
-				Debug.WriteLine($"prevDate: {previousDate}, now: {nowDate}, nr. activities: {activities?.Length}");
-				if(activities != null && activities.Length > 0) {
-					var start = activities[0].Timestamp;
-
-					foreach(var a in activities) {
-						Debug.WriteLine($"{MotionActivityManager.ActivityToType(a)} {a.StartDate}");
-						App.DEBUG_ActivityLog += $"{MotionActivityManager.ActivityToType(a)} {a.StartDate}" + "\n";
-						if(a.Confidence != CMMotionActivityConfidence.Low) {
-							var elapsed = (int) (a.Timestamp - start); // TODO check if timestamp is from reference time and in secs
-							RewardEligibilityManager.Instance.Input(MotionActivityManager.ActivityToType(a), elapsed * 1000);
-						}
-					}
-					//new NotificationMessage().Send("debug", "DEBUG", DEBUG_activityString, activities.Length);
-				}
-				prevTime = now;
-				if(taskID.Equals(new nint(-1))) {
-					Debug.WriteLine($"onLocationUpdate -> Ending background task");
-					UIApplication.SharedApplication.EndBackgroundTask(taskID);
-				}
-			});
+			prevTime = now;
+			if(!taskID.Equals(new nint(-1))) {
+				Debug.WriteLine($"onLocationUpdate -> Ending background task");
+				UIApplication.SharedApplication.EndBackgroundTask(taskID);
+			}
 		}
 
 

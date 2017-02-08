@@ -84,6 +84,7 @@
       "idiom": "ipad"
     },
     {
+      "filename": "ic_launcher_motion-2-2 copy.png",
       "size": "83.5x83.5",
       "scale": "2x",
       "idiom": "ipad"
@@ -99,11 +100,13 @@
       "idiom": "ipad"
     },
     {
+      "filename": "ic_launcher_motion_76px.png",
       "size": "76x76",
       "scale": "1x",
       "idiom": "ipad"
     },
     {
+      "filename": "ic_launcher_motion_152px.png",
       "size": "76x76",
       "scale": "2x",
       "idiom": "ipad"

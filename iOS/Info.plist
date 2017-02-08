@@ -3,15 +3,15 @@
 <plist version="1.0">
 <dict>
 	<key>CFBundleIdentifier</key>
-	<string>pt.inesc.trace</string>
+	<string>pt.inesc.biklio</string>
 	<key>CFBundleShortVersionString</key>
 	<string>1.0</string>
 	<key>CFBundleVersion</key>
-	<string>1.0</string>
+	<string>1.1</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>MinimumOSVersion</key>
-	<string>8.0</string>
+	<string>9.0</string>
 	<key>UIDeviceFamily</key>
 	<array>
 		<integer>1</integer>
@@ -60,7 +60,7 @@
 		<dict>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>***REMOVED***</string>
+				<string>com.googleusercontent.apps.111912839668-ur9ffohu7qbfj07hammvgfld53nt91vd</string>
 			</array>
 			<key>CFBundleURLTypes</key>
 			<string>Editor</string>
@@ -97,5 +97,7 @@
 	<array>
 		<string>fonts/Nunito-Regular.ttf</string>
 	</array>
+	<key>NSCalendarsUsageDescription</key>
+	<string>Some ad content may access calendar</string>
 </dict>
 </plist>

@@ -1,4 +1,5 @@
-﻿
+
+using System;
 using System.Diagnostics;
 
 [assembly: Xamarin.Forms.Dependency(typeof(Trace.Droid.Geofencing))]
@@ -9,7 +10,7 @@ namespace Trace.Droid {
 
 		//public static CLLocationManager LocMgr;
 
-		protected override int MaxGeofences { get; set; } = 100;
+		protected override int GeofencesLeft { get; set; } = 100;
 
 
 		public override void AddMonitoringRegion(double lon, double lat, string id) {
@@ -31,6 +32,14 @@ namespace Trace.Droid {
 			//}
 		}
 
+		public override void Init() {
+
+		}
+
+		public override void RemoveAllGeofences() {
+
+		}
+
 
 		//void onRegionEnter(object sender, CLRegionEventArgs region) {
 
@@ -42,7 +51,7 @@ namespace Trace.Droid {
 		//	User.Instance.Checkpoints.TryGetValue(id, out checkpoint);
 		//	if(checkpoint != null) {
 		//		// TODO remove debug notification
-		//		new NotificationMessage().Send("regionEnter", "RegionEnter", checkpoint.Name, 1);
+		//		DependencyService.Get<INotificationMessage>().Send("regionEnter", "RegionEnter", checkpoint.Name, 1);
 		//		// TODO ...
 		//	}
 		//	else { Debug.WriteLine($"Could not find checkpoint with id: {id}"); }

@@ -5,6 +5,7 @@
 	x:Class="Trace.FacebookOAuthUIPage">
 	<ContentPage.Content>
 		<ActivityIndicator
+			x:Name="loadingWheel"
 			Scale="2"
 			Color="{StaticResource PrimaryColor}"
 			IsRunning="true" />

@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -7,7 +6,6 @@ using System.Threading.Tasks;
 using Acr.UserDialogs;
 using Newtonsoft.Json;
 using Plugin.Permissions;
-using Plugin.Permissions.Abstractions;
 using Trace.Localization;
 using Xamarin.Forms;
 using Xamarin.Forms.Maps;
@@ -35,7 +33,7 @@ namespace Trace {
 		public MapPage() {
 			InitializeComponent();
 			Debug.WriteLine("MapPage.Initialize()");
-			if(Device.OS == TargetPlatform.iOS) { Icon = "map__maps_icon.png"; }
+			if(Device.OS == TargetPlatform.Android) { Title = null; }
 
 			initializeCheckpointPins();
 
@@ -60,7 +58,9 @@ namespace Trace {
 					if(activity != ActivityType.Unknown) {
 						//currentActivity.ActivityType = activity;
 						Debug.WriteLine(activity + ": " + DateTime.Now);
+#if DEBUG
 						App.DEBUG_ActivityLog += DateTime.Now + ": " + activity + "\n";
+#endif
 						RewardEligibilityManager.Instance.Input(activity);
 					}
 				});
@@ -92,8 +92,7 @@ namespace Trace {
 
 		protected override void OnDisappearing() {
 			base.OnDisappearing();
-
-			((TapGestureRecognizer) resultsGrid.GestureRecognizers.FirstOrDefault()).Tapped -= onClearResults;
+			//resultsGrid.GestureRecognizers.RemoveAt(0);
 		}
 
 
@@ -201,11 +200,14 @@ namespace Trace {
 				// Reset GPS recorded speeds.
 				Geolocator.Reset();
 
-				var mainActivity = DependencyService.Get<IMotionActivityManager>().GetMostCommonActivity().ToLocalizedString();
+				var mainActivity = DependencyService.Get<IMotionActivityManager>().GetMostCommonActivity();
 				var calories = await Task.Run(() => trajectory.CalculateCalories());
 
+				if(mainActivity == ActivityType.Cycling)
+					Task.Run(() => addCyclingProgress((int) distanceInMeters)).DoNotAwait();
+
 				var displayResultsModel = new MapPageModel {
-					MainActivity = mainActivity,
+					MainActivity = mainActivity.ToLocalizedString(),
 					Distance = (int) distanceInMeters,
 					Duration = calculateRouteTime(),
 					Calories = calories,
@@ -288,11 +290,14 @@ namespace Trace {
 
 
 		private Trajectory createTrajectory(double distanceInMeters) {
+			float avgSpd = 0;
+			if(map.RouteCoordinates.Count != 0)
+				avgSpd = (float) (Geolocator.CumulativeAvgSpeed / map.RouteCoordinates.Count);
 			return new Trajectory {
 				UserId = User.Instance.Id,
 				StartTime = StartTrackingTime.DatetimeToEpochSeconds(),
 				EndTime = StopTrackingTime.DatetimeToEpochSeconds(),
-				AvgSpeed = (float) (Geolocator.CumulativeAvgSpeed / map.RouteCoordinates.Count),
+				AvgSpeed = avgSpd,
 				MaxSpeed = (float) Geolocator.MaxSpeed,
 				TotalDistanceMeters = (long) distanceInMeters,
 				MostCommonActivity = DependencyService.Get<IMotionActivityManager>().GetMostCommonActivity().ToString(),
@@ -368,6 +373,29 @@ namespace Trace {
 			return res;
 		}
 
+		/// <summary>
+		/// Update the condition of challenges that have a cycling distance condition to fulfill before earning a reward.
+		/// </summary>
+		private void addCyclingProgress(int metersTravelled) {
+			var challengesCompleted = 0;
+			foreach(Challenge c in User.Instance.GetSpecialChallenges()) {
+				c.NeededMetersCycling -= metersTravelled;
+				c.IsComplete = true;
+				c.CompletedAt = TimeUtil.CurrentEpochTimeSeconds();
+				SQLiteDB.Instance.SaveItem(c);
+
+				if(c.NeededMetersCycling < 1) {
+					challengesCompleted++;
+				}
+			}
+			if(challengesCompleted > 0) {
+				DependencyService.Get<INotificationMessage>().Send(
+					"specialChlComplete", Language.ChallengesComplete, Language.YouHaveCompletedXChallenges, challengesCompleted
+				);
+				HomePage.UpdateRewardIcon();
+			}
+		}
+
 
 		private void initializeCheckpointPins() {
 			var pins = new List<CustomPin>();
@@ -402,6 +430,25 @@ namespace Trace {
 			// Refresh the map to force renderer to run OnElementChanged() and display the new pins.
 			mapLayout.Children.Remove(map);
 			mapLayout.Children.Insert(0, map);
+		}
+
+
+		public static Action<Checkpoint> MoveToCheckpointDetailsAction {
+			get {
+				return new Action<Checkpoint>(async (Checkpoint c) => {
+					Debug.WriteLine("MoveToCheckpointDetailsAction");
+
+					// Go back to home page first.
+					var navigationPage = (NavigationPage) ((MainPage) Application.Current.MainPage).Detail;
+					await navigationPage.PopToRootAsync();
+					var homePage = navigationPage.CurrentPage as HomePage;
+
+					// Shift to checkpoint list page tab.
+					var checkpointListPage = (CheckpointListPage) homePage.Children.First();
+					homePage.CurrentPage = checkpointListPage;
+					await navigationPage.PushAsync(new CheckpointDetailsPage(new CheckpointViewModel(c)));
+				});
+			}
 		}
 	}
 }

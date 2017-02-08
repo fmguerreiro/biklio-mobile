@@ -162,7 +162,7 @@
     	<value>Unable to get your position. Are you indoors perhaps?</value>
   	</data>
 	<data name="Challenges" xml:space="preserve">
-    	<value>Challenges</value>
+    	<value>Benefits</value>
   	</data>
 	<data name="BiklioSpots" xml:space="preserve">
     	<value>Biklio Spots</value>
@@ -177,7 +177,7 @@
     	<value>Cycle to Shop</value>
   	</data>
 	<data name="ErrorFetchingChallenges" xml:space="preserve">
-    	<value>Error fetching challenges from server</value>
+    	<value>Error fetching update from server</value>
   	</data>
 	<data name="ChallengeWithoutCheckpointError" xml:space="preserve">
     	<value>That challenge does not have an associated Biklio spot. Probably a DB consistency issue, please report.</value>
@@ -321,7 +321,7 @@
     	<value>Warning</value>
   	</data>
 	<data name="DeleteEverythingWarning" xml:space="preserve">
-    	<value>This will delete all stored routes, stores and challenges. Anything you did after connecting to the server will be lost.</value>
+    	<value>This will delete all stored routes and Biklio spots. Are you sure?</value>
   	</data>
 	<data name="Back" xml:space="preserve">
     	<value>Back</value>
@@ -498,7 +498,7 @@ Once revoked, identifiable data such as email and name is removed within a few h
     	<value>rewards. Tap the Reward icon to see what you got.</value>
   	</data>
 	<data name="IAgreeToToS" xml:space="preserve">
-    	<value>I understand and agree to Biklio's terms of service &gt;&gt;</value>
+    	<value>I have read and agree to the ToS &gt;&gt;</value>
   	</data>
 	<data name="ToSUncheckedError" xml:space="preserve">
     	<value>To continue using Biklio, make sure you agree to the terms of service.</value>
@@ -597,5 +597,20 @@ Note that if you disable this feature, Biklio will only warn you of your status 
   	</data>
 	<data name="GPSDisabledErrorMsg" xml:space="preserve">
     	<value>GPS is disabled. Would you like to enable it now?</value>
+  	</data>
+	<data name="YouJustEarned" xml:space="preserve">
+    	<value>You earned</value>
+  	</data>
+	<data name="ChallengesComplete" xml:space="preserve">
+    	<value>You have earned special rewards</value>
+  	</data>
+	<data name="YouHaveCompletedXChallenges" xml:space="preserve">
+    	<value>You have earned {0} rewards.</value>
+  	</data>
+	<data name="DistanceAway" xml:space="preserve">
+    	<value>away</value>
+  	</data>
+	<data name="YouAreEligibleMsg" xml:space="preserve">
+    	<value>We've detected you have been cycling recently. You are now eligible for rewards when you get to a Biklio spot!</value>
   	</data>
 </root>

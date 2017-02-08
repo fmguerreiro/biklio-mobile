@@ -1,11 +1,16 @@
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
 using System.Threading.Tasks;
+using Acr.UserDialogs;
 using Trace.Localization;
 using Xamarin.Forms;
 
 namespace Trace {
 	public class HomePage : TabbedPage {
 
-		static ToolbarItem rewardToolBarItem;
+		private static IList<ToolbarItem> toolbarItems;
 
 		public HomePage() {
 			Title = Language.Home;
@@ -20,12 +25,12 @@ namespace Trace {
 			Children.Add(challengesPage);
 			Children.Add(mapPage);
 
-			if(rewardToolBarItem == null) {
-				rewardToolBarItem = new ToolbarItem(Language.Rewards, "home__number0.png", async () => {
-					await Navigation.PushAsync(new RewardsListPage());
-				});
-			}
-			UpdateRewardIcon(User.Instance.GetRewards().Count);
+			var rewardToolBarItem = new ToolbarItem(Language.Rewards, "home__number0.png", async () => {
+				await Navigation.PushAsync(new RewardsListPage());
+			});
+
+			toolbarItems = ToolbarItems;
+			UpdateRewardIcon();
 			ToolbarItems.Add(rewardToolBarItem);
 
 			//var tutorialToolbarItem = new ToolbarItem(Language.Tutorial, "home__tutorial.png", async () => {
@@ -45,9 +50,10 @@ namespace Trace {
 		/// <summary>
 		/// Modify the icon to reflect the number of rewards the user is eligible for.
 		/// </summary>
-		/// <param name="nRewards">Number of rewards.</param>
-		public static void UpdateRewardIcon(int nRewards) {
+		public static void UpdateRewardIcon() {
+			var rewardToolBarItem = toolbarItems.FirstOrDefault();
 			if(rewardToolBarItem == null) return;
+			var nRewards = User.Instance.GetRewards().Count;
 			switch(nRewards) {
 				case 0: rewardToolBarItem.Icon = "home__number0.png"; return;
 				case 1: rewardToolBarItem.Icon = "home__number1.png"; return;
@@ -61,6 +67,32 @@ namespace Trace {
 				case 9: rewardToolBarItem.Icon = "home__number9.png"; return;
 				default: rewardToolBarItem.Icon = "home__number9plus.png"; return;
 			}
+		}
+
+
+		/// <summary>
+		/// When the user is eligible for rewards, add the cycling indicator to the toolbar.
+		/// </summary>
+		public static void AddCyclingIndicator() {
+			// If it already exists, don't add.
+			if(toolbarItems?.FirstOrDefault((x) => x.Text == "Indicator") != null) return;
+
+			var indicator = new ToolbarItem("Indicator", "home__reward.png", () => {
+				var toastCfg = new ToastConfig(message: Language.YouAreEligibleMsg) {
+					Duration = new TimeSpan(0, 0, 3)
+				};
+				UserDialogs.Instance.Toast(toastCfg);
+			});
+			toolbarItems.Add(indicator);
+		}
+
+		public static void RemoveCyclingIndicator() {
+			//Debug.WriteLine("Removing cycling indicator ...");
+			var indicator = toolbarItems?.FirstOrDefault((x) => x.Text == "Indicator");
+			if(indicator != null) {
+				toolbarItems.Remove(indicator);
+			}
+			//Debug.WriteLine("Could not find cycling indicator!");
 		}
 	}
 }

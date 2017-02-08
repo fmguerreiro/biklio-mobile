@@ -23,7 +23,7 @@ namespace Trace {
 
 		public CheckpointListPage(MapPage mapPage) {
 			InitializeComponent();
-			if(Device.OS == TargetPlatform.iOS) { Icon = "checkpointlist__trophy.png"; }
+			if(Device.OS == TargetPlatform.Android) { Title = null; }
 			this.mapPage = mapPage;
 
 			// Show the checkpoints saved on the device. Initialize the list in the background to lighten load on UI thread.
@@ -31,6 +31,9 @@ namespace Trace {
 				var orderedCheckpointList = await User.Instance.GetOrderedCheckpointsAsync();
 				BindingContext = new CheckpointListModel { Checkpoints = orderedCheckpointList.Select((x) => new CheckpointViewModel(x)).ToList() };
 			}).DoNotAwait();
+
+			if(User.Instance.IsFirstLogin)
+				Task.Run(() => getCheckpoints()).DoNotAwait();
 		}
 
 
@@ -58,7 +61,7 @@ namespace Trace {
 
 			// Fetch checkpoints from Webserver.
 			var client = new WebServerClient();
-			WSResult result = await Task.Run(() => client.FetchCheckpoints(position, User.Instance.SearchRadius, User.Instance.WSSnapshotVersion));
+			WSResult result = await client.FetchCheckpoints(position, User.Instance.SearchRadius, User.Instance.WSSnapshotVersion);
 
 			if(!result.success) {
 				// If the user is offline or WS is down, simply update distance to user for each checkpoint.
@@ -144,14 +147,14 @@ namespace Trace {
 				CheckpointId = checkpoint.GId,
 				CreatedAt = challenge.createdAt,
 				ExpiresAt = challenge.expiresAt,
-				NeededCyclingDistance = (int) challenge.conditions.distance,
+				NeededMetersCycling = (int) challenge.conditions.distance,
 				IsRepeatable = challenge.repeatable
 			};
 		}
 
 
 		void loadCheckpoints(WSResult result, Dictionary<long, Checkpoint> checkpoints) {
-			foreach(WSShop checkpoint in result.payload.shops) {
+			foreach(WSShop checkpoint in result.payload.shops.Take(User.Instance.MaxCheckpoints)) {
 				Checkpoint newCheckpoint = createCheckpoint(checkpoint);
 				// Check if logo is already downloaded into filesystem.
 				//if(DependencyService.Get<IFileSystem>().Exists(newCheckpoint.GId.ToString())) {
@@ -319,7 +322,7 @@ namespace Trace {
 					if(TimeUtil.IsWithinPeriod(now, start, end)) {
 						// Check if distance cycled meets the criteria.
 						var cycledDistance = RewardEligibilityManager.CycledDistanceBetween(start, end);
-						if(cycledDistance >= c.NeededCyclingDistance) {
+						if(cycledDistance >= c.NeededMetersCycling) {
 							c.IsComplete = true;
 							c.CompletedAt = now;
 							rewardCounter++;
@@ -335,7 +338,7 @@ namespace Trace {
 				const string NOTIFICATION_ID = "getChallengesNotification";
 				DependencyService.Get<INotificationMessage>().Send(NOTIFICATION_ID, Language.RewardsUnlocked, string.Format(Language.RewardsUnlockedMessage, rewardCounter), rewardCounter);
 			}
-			HomePage.UpdateRewardIcon(User.Instance.GetRewards().Count);
+			HomePage.UpdateRewardIcon();
 		}
 
 
@@ -355,8 +358,8 @@ namespace Trace {
 			}
 		}
 
-		async void onFilterFavorites(object sender, EventArgs e) {
 
+		async void onFilterFavorites(object sender, EventArgs e) {
 			IList<Checkpoint> checkpoints = null;
 			shouldFilterByFavorites = !shouldFilterByFavorites;
 			if(shouldFilterByFavorites)

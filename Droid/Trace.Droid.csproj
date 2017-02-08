@@ -17,6 +17,8 @@
     <MonoAndroidAssetsPrefix>Assets</MonoAndroidAssetsPrefix>
     <AndroidUseLatestPlatformSdk>false</AndroidUseLatestPlatformSdk>
     <JavaMaximumHeapSize>2G</JavaMaximumHeapSize>
+    <AotAssemblies>true</AotAssemblies>
+    <EnableLLVM>true</EnableLLVM>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -30,6 +32,9 @@
     <JavaMaximumHeapSize>2G</JavaMaximumHeapSize>
     <EmbedAssembliesIntoApk>true</EmbedAssembliesIntoApk>
     <AndroidHttpClientHandlerType>Xamarin.Android.Net.AndroidClientHandler</AndroidHttpClientHandlerType>
+    <BundleAssemblies>true</BundleAssemblies>
+    <AndroidSupportedAbis>arm64-v8a;armeabi;armeabi-v7a;x86</AndroidSupportedAbis>
+    <AotAssemblies>false</AotAssemblies>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugSymbols>false</DebugSymbols>
@@ -241,22 +246,23 @@
     <Compile Include="MainActivity.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="MainApplication.cs" />
-    <Compile Include="App\Security\KeyStore.cs" />
-    <Compile Include="App\Data\SQLite.cs" />
-    <Compile Include="App\Application\MotionActivity\MotionActivityManager.cs" />
-    <Compile Include="App\Security\OAuth.cs" />
-    <Compile Include="App\Data\FileSystem.cs" />
     <Compile Include="Resources\Resource.designer.cs" />
     <Compile Include="Localization\Localize.cs" />
-    <Compile Include="App\Utils\ImageResizer.cs" />
-    <Compile Include="App\Utils\SoundPlayer.cs" />
-    <Compile Include="App\Renderers\Map\TraceMapRenderer.cs" />
-    <Compile Include="App\Renderers\OAuth\FacebookOAuthPageRenderer.cs" />
-    <Compile Include="App\Renderers\OAuth\GoogleOAuthPageRenderer.cs" />
-    <Compile Include="App\Application\MotionActivity\DetectedActivitiesService.cs" />
-    <Compile Include="App\Application\MotionActivity\GoogleApiHandler.cs" />
-    <Compile Include="App\Application\MotionActivity\ActivityDetectionBroadcastReceiver.cs" />
-    <Compile Include="App\Application\Geofencing.cs" />
+    <Compile Include="Renderers\Map\TraceMapRenderer.cs" />
+    <Compile Include="Renderers\OAuth\FacebookOAuthPageRenderer.cs" />
+    <Compile Include="Renderers\OAuth\GoogleOAuthPageRenderer.cs" />
+    <Compile Include="Security\KeyStore.cs" />
+    <Compile Include="Security\OAuth.cs" />
+    <Compile Include="Utils\ImageResizer.cs" />
+    <Compile Include="Utils\SoundPlayer.cs" />
+    <Compile Include="Application\Geofencing.cs" />
+    <Compile Include="Application\MotionActivity\ActivityDetectionBroadcastReceiver.cs" />
+    <Compile Include="Application\MotionActivity\DetectedActivitiesService.cs" />
+    <Compile Include="Application\MotionActivity\GoogleApiHandler.cs" />
+    <Compile Include="Application\MotionActivity\MotionActivityManager.cs" />
+    <Compile Include="SQLite.cs" />
+    <Compile Include="Data\SQLiteConnector.cs" />
+    <Compile Include="Data\FileSystem.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />
@@ -268,65 +274,150 @@
     <AndroidResource Include="Resources\layout\Tabbar.axml" />
     <AndroidResource Include="Resources\layout\Toolbar.axml" />
     <AndroidResource Include="Resources\values\styles.xml" />
-    <AndroidResource Include="Resources\drawable-hdpi\icon.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi\icon.png" />
-    <AndroidResource Include="Resources\drawable-xxhdpi\icon.png" />
     <AndroidResource Include="Resources\layout\TabLayout.axml" />
-    <AndroidResource Include="Resources\drawable\icon.png" />
     <AndroidResource Include="Resources\raw\bike_bell.wav" />
     <AndroidResource Include="Resources\raw\bike_no_pedaling.aiff" />
     <AndroidResource Include="Resources\raw\clapping.wav" />
     <AndroidResource Include="Resources\raw\silence.wav" />
     <AndroidResource Include="Resources\raw\walking_pavement.wav" />
-    <AndroidResource Include="Resources\drawable\activitymodes__cycling.png" />
-    <AndroidResource Include="Resources\drawable\activitymodes__driving.png" />
-    <AndroidResource Include="Resources\drawable\activitymodes__running.png" />
-    <AndroidResource Include="Resources\drawable\activitymodes__walking.png" />
-    <AndroidResource Include="Resources\drawable\challengelist__default_shop.png" />
-    <AndroidResource Include="Resources\drawable\challengelist__default_shop_20px.png" />
-    <AndroidResource Include="Resources\drawable\challengelist__location_unknown.png" />
-    <AndroidResource Include="Resources\drawable\challengelist__trophy.png" />
+    <AndroidResource Include="Resources\drawable\checkpointdetails__star.png" />
+    <AndroidResource Include="Resources\drawable\checkpointdetails__star_outline.png" />
+    <AndroidResource Include="Resources\drawable\checkpointlist__clothing.png" />
+    <AndroidResource Include="Resources\drawable\checkpointlist__culture.png" />
+    <AndroidResource Include="Resources\drawable\checkpointlist__default_shop.png" />
+    <AndroidResource Include="Resources\drawable\checkpointlist__default_shop_20px.png" />
+    <AndroidResource Include="Resources\drawable\checkpointlist__health.png" />
+    <AndroidResource Include="Resources\drawable\checkpointlist__other.png" />
+    <AndroidResource Include="Resources\drawable\checkpointlist__restaurant.png" />
+    <AndroidResource Include="Resources\drawable\checkpointlist__sports.png" />
+    <AndroidResource Include="Resources\drawable\checkpointlist__star_half.png" />
+    <AndroidResource Include="Resources\drawable\checkpointlist__technology.png" />
+    <AndroidResource Include="Resources\drawable\checkpointlist__trophy.png" />
+    <AndroidResource Include="Resources\drawable\dashboard__click_indicator.png" />
     <AndroidResource Include="Resources\drawable\home__dashboard.png" />
     <AndroidResource Include="Resources\drawable\home__home.png" />
     <AndroidResource Include="Resources\drawable\home__logout.png" />
     <AndroidResource Include="Resources\drawable\home__menu.png" />
     <AndroidResource Include="Resources\drawable\home__my_routes.png" />
+    <AndroidResource Include="Resources\drawable\home__number0.png" />
+    <AndroidResource Include="Resources\drawable\home__number1.png" />
+    <AndroidResource Include="Resources\drawable\home__number2.png" />
+    <AndroidResource Include="Resources\drawable\home__number3.png" />
+    <AndroidResource Include="Resources\drawable\home__number4.png" />
+    <AndroidResource Include="Resources\drawable\home__number5.png" />
+    <AndroidResource Include="Resources\drawable\home__number6.png" />
+    <AndroidResource Include="Resources\drawable\home__number7.png" />
+    <AndroidResource Include="Resources\drawable\home__number8.png" />
+    <AndroidResource Include="Resources\drawable\home__number9.png" />
+    <AndroidResource Include="Resources\drawable\home__number9plus.png" />
     <AndroidResource Include="Resources\drawable\home__reward.png" />
-    <AndroidResource Include="Resources\drawable\home__reward_glow.png" />
     <AndroidResource Include="Resources\drawable\home__settings.png" />
     <AndroidResource Include="Resources\drawable\home__subscribed_campaigns.png" />
     <AndroidResource Include="Resources\drawable\home__tutorial.png" />
+    <AndroidResource Include="Resources\drawable\icon.png" />
     <AndroidResource Include="Resources\drawable\logo_icon.png" />
     <AndroidResource Include="Resources\drawable\logo_name.png" />
     <AndroidResource Include="Resources\drawable\logo_slogan_splashscreen.png" />
+    <AndroidResource Include="Resources\drawable\map__clothing.png" />
+    <AndroidResource Include="Resources\drawable\map__culture.png" />
+    <AndroidResource Include="Resources\drawable\map__health.png" />
     <AndroidResource Include="Resources\drawable\map__locate.png" />
     <AndroidResource Include="Resources\drawable\map__maps_icon.png" />
+    <AndroidResource Include="Resources\drawable\map__other.png" />
     <AndroidResource Include="Resources\drawable\map__play_arrow.png" />
+    <AndroidResource Include="Resources\drawable\map__restaurant.png" />
+    <AndroidResource Include="Resources\drawable\map__sports.png" />
     <AndroidResource Include="Resources\drawable\map__stop.png" />
-    <AndroidResource Include="Resources\drawable\mytrajectorieslist__cross_error.png" />
-    <AndroidResource Include="Resources\drawable\mytrajectorieslist__green_check.png" />
+    <AndroidResource Include="Resources\drawable\map__technology.png" />
+    <AndroidResource Include="Resources\drawable\mytrajectories__cycle.png" />
+    <AndroidResource Include="Resources\drawable\mytrajectories__run.png" />
+    <AndroidResource Include="Resources\drawable\mytrajectories__stationary.png" />
+    <AndroidResource Include="Resources\drawable\mytrajectories__vehicle.png" />
+    <AndroidResource Include="Resources\drawable\mytrajectories__walk.png" />
     <AndroidResource Include="Resources\drawable\privacypolicy__logo_name.png" />
+    <AndroidResource Include="Resources\drawable\signin__biklio_benefits.png" />
     <AndroidResource Include="Resources\drawable\splashscreen.png" />
     <AndroidResource Include="Resources\drawable\tutorial__tutorial_part1.png" />
     <AndroidResource Include="Resources\drawable\tutorial__tutorial_part2.png" />
     <AndroidResource Include="Resources\drawable\tutorial__tutorial_part3.png" />
     <AndroidResource Include="Resources\drawable\tutorial__tutorial_part4.png" />
-    <AndroidResource Include="Resources\drawable\checkpointdetails__star.png" />
-    <AndroidResource Include="Resources\drawable\checkpointdetails__star_outline.png" />
-    <AndroidResource Include="Resources\drawable\signin__biklio_benefits.png" />
-    <AndroidResource Include="Resources\drawable\checkpointlist__star_half.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\checkpointdetails__star.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\checkpointdetails__star_outline.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\checkpointlist__health.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\dashboard__click_indicator.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\home__dashboard.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\home__menu.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\home__number1.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\home__number2.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\home__number3.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\home__number4.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\home__number5.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\home__number9plus.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\home__subscribed_campaigns.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\home__tutorial.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\ic_checkpointdetails__star_outline.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\icon.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\map__culture.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\map__restaurant.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\map__technology.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\mytrajectories__cycle.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\mytrajectories__run.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\mytrajectories__vehicle.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\checkpointdetails__star.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\checkpointdetails__star_outline.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\checkpointlist__health.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\dashboard__click_indicator.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\home__dashboard.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\home__menu.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\home__number1.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\home__number2.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\home__number3.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\home__number4.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\home__number5.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\home__number9plus.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\home__subscribed_campaigns.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\home__tutorial.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\ic_checkpointdetails__star_outline.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\icon.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\map__culture.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\map__restaurant.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\map__technology.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\mytrajectories__cycle.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\mytrajectories__run.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\mytrajectories__vehicle.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\checkpointdetails__star.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\checkpointdetails__star_outline.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\checkpointlist__health.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\dashboard__click_indicator.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\home__dashboard.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\home__menu.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\home__number1.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\home__number2.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\home__number3.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\home__number4.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\home__number5.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\home__number9plus.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\home__subscribed_campaigns.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\home__tutorial.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\ic_checkpointdetails__star_outline.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\icon.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\map__culture.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\map__restaurant.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\map__technology.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\mytrajectories__cycle.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\mytrajectories__run.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\mytrajectories__vehicle.png" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="App\" />
-    <Folder Include="App\Security\" />
-    <Folder Include="App\Application\MotionActivity\" />
-    <Folder Include="Resources\drawable\" />
     <Folder Include="Localization\" />
-    <Folder Include="App\Utils\" />
-    <Folder Include="App\Renderers\" />
-    <Folder Include="App\Renderers\Map\" />
-    <Folder Include="App\Renderers\OAuth\" />
     <Folder Include="Resources\raw\" />
+    <Folder Include="Renderers\" />
+    <Folder Include="Security\" />
+    <Folder Include="Utils\" />
+    <Folder Include="Resources\drawable\" />
+    <Folder Include="Resources\drawable-hdpi\" />
+    <Folder Include="Resources\drawable-xhdpi\" />
+    <Folder Include="Resources\drawable-xxhdpi\" />
   </ItemGroup>
   <ItemGroup>
     <AndroidAsset Include="Assets\Nunito-Regular.ttf">

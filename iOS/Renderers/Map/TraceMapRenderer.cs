@@ -36,7 +36,7 @@ namespace Trace.iOS {
 			if(e.OldElement != null) {
 				var nativeMap = Control as MKMapView;
 				//nativeMap.GetViewForAnnotation = null;
-				//nativeMap.CalloutAccessoryControlTapped -= OnCalloutAccessoryControlTapped;
+				nativeMap.CalloutAccessoryControlTapped -= onCalloutAccessoryControlTapped;
 				//nativeMap.DidSelectAnnotationView -= OnDidSelectAnnotationView;
 				//nativeMap.DidDeselectAnnotationView -= OnDidDeselectAnnotationView;
 
@@ -55,7 +55,7 @@ namespace Trace.iOS {
 
 				customPins = formsMap.CustomPins;
 				nativeMap.GetViewForAnnotation = GetViewForAnnotation;
-				//nativeMap.CalloutAccessoryControlTapped += OnCalloutAccessoryControlTapped;
+				nativeMap.CalloutAccessoryControlTapped += onCalloutAccessoryControlTapped;
 				//nativeMap.DidSelectAnnotationView += OnDidSelectAnnotationView;
 				//nativeMap.DidDeselectAnnotationView += OnDidDeselectAnnotationView;
 
@@ -107,6 +107,7 @@ namespace Trace.iOS {
 				return null;
 			}
 
+
 			var anno = annotation as MKPointAnnotation;
 			var customPin = GetCustomPin(anno);
 			if(customPin == null) {
@@ -132,47 +133,56 @@ namespace Trace.iOS {
 			if(annotationView == null) {
 				annotationView = new MKAnnotationView(annotation, customPin.Id);
 				annotationView.Image = image;
+				//annotationView.Callout
 				annotationView.CalloutOffset = new CGPoint(0, 0);
-				//annotationView.LeftCalloutAccessoryView = new UIImageView(UIImage.FromFile("green_check.png"));
-				//annotationView.RightCalloutAccessoryView = UIButton.FromType(UIButtonType.DetailDisclosure);
+				annotationView.RightCalloutAccessoryView = UIButton.FromType(UIButtonType.DetailDisclosure);
+
 				//((CustomMKAnnotationView) annotationView).Id = customPin.Id;
 				//((CustomMKAnnotationView) annotationView).ImageURL = customPin.ImageURL;
 				//((CustomMKAnnotationView) annotationView).Checkpoint = customPin.Checkpoint;
 			}
 			annotationView.CanShowCallout = true;
+			image.Dispose();
 
 			return annotationView;
 		}
 
+		// TODO
+		//void OnDidSelectAnnotationView(object sender, MKAnnotationViewEventArgs e) {
 
-		void OnDidSelectAnnotationView(object sender, MKAnnotationViewEventArgs e) {
-			var customView = e.View as CustomMKAnnotationView;
-			customPinView = new UIView();
+		//	if(!(e.View.Annotation is MKPointAnnotation)) {
+		//		return;
+		//	}
 
-			if(customView.Id == "") {
-				customPinView.Frame = new CGRect(0, 0, 200, 84);
-				var image = new UIImageView(new CGRect(0, 0, 200, 84));
-				image.Image = UIImage.FromFile("checkpointlist__default_shop.png");
-				customPinView.AddSubview(image);
-				customPinView.Center = new CGPoint(0, -(e.View.Frame.Height + 75));
-				e.View.AddSubview(customPinView);
-			}
-		}
+		//	customPinView = new UIView();
+		//	customPinView.Frame = new CGRect(0, 0, 200, 84);
+		//	var image = new UIImageView(new CGRect(0, 0, 200, 84));
+		//	image.Image = UIImage.FromFile("checkpointdetails__star.png");
+		//	customPinView.AddSubview(image);
+		//	//UIButton.FromType(UIButtonType.DetailDisclosure);
+		//	customPinView.Center = new CGPoint(0, -(e.View.Frame.Height + 75));
+
+		//	e.View.CanShowCallout = false;
+		//	e.View.AddSubview(customPinView);
+
+		//}
 
 		// Called when clicking the 'information' button on the annotation/pin window.
-		void OnCalloutAccessoryControlTapped(object sender, MKMapViewAccessoryTappedEventArgs e) {
-			//var customView = e.View as CustomMKAnnotationView;
-			//Navigation. customView.Checkpoint
+		void onCalloutAccessoryControlTapped(object sender, MKMapViewAccessoryTappedEventArgs e) {
+			var customView = e.View.Annotation as MKPointAnnotation;
+			var customPin = GetCustomPin(customView);
+			MapPage.MoveToCheckpointDetailsAction(customPin.Checkpoint);
 		}
 
 
-		void OnDidDeselectAnnotationView(object sender, MKAnnotationViewEventArgs e) {
-			if(!e.View.Selected) {
-				customPinView.RemoveFromSuperview();
-				customPinView.Dispose();
-				customPinView = null;
-			}
-		}
+		//void OnDidDeselectAnnotationView(object sender, MKAnnotationViewEventArgs e) {
+
+		//	if(!e.View.Selected) {
+		//		customPinView.RemoveFromSuperview();
+		//		customPinView.Dispose();
+		//		customPinView = null;
+		//	}
+		//}
 
 
 		CustomPin GetCustomPin(MKPointAnnotation annotation) {

@@ -7,6 +7,7 @@ namespace Trace {
 
 		public GoogleOAuthUIPage() {
 			InitializeComponent();
+			if(Device.OS == TargetPlatform.Android) { loadingWheel.Scale = 0.5; }
 		}
 	}
 }

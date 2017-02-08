@@ -7,15 +7,15 @@ using Plugin.Permissions;
 using Xamarin.Forms;
 
 namespace Trace.Droid {
-	[Activity(Label = "Trace.Droid", Icon = "@drawable/icon", Theme = "@style/MyTheme", MainLauncher = true, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]
+	[Activity(Label = "Biklio", Icon = "@drawable/icon", Theme = "@style/MyTheme", MainLauncher = true, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]
 	public class MainActivity : global::Xamarin.Forms.Platform.Android.FormsAppCompatActivity {
-		protected override void OnCreate(Bundle bundle) {
+		protected override void OnCreate(Bundle savedInstanceState) {
 			TabLayoutResource = Resource.Layout.Tabbar;
 			ToolbarResource = Resource.Layout.Toolbar;
 
-			base.OnCreate(bundle);
+			base.OnCreate(savedInstanceState);
 
-			global::Xamarin.Forms.Forms.Init(this, bundle);
+			global::Xamarin.Forms.Forms.Init(this, savedInstanceState);
 
 			// Library for Toast messages.
 			UserDialogs.Init(() => (Activity) Forms.Context);
@@ -27,7 +27,7 @@ namespace Trace.Droid {
 			OxyPlot.Xamarin.Forms.Platform.Android.PlotViewRenderer.Init();
 
 			// Initialize map
-			Xamarin.FormsMaps.Init(this, bundle);
+			Xamarin.FormsMaps.Init(this, savedInstanceState);
 
 			LoadApplication(new App());
 		}

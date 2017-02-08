@@ -39,17 +39,17 @@
     <OutputPath>bin\iPhone\Release</OutputPath>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <CodesignKey>iPhone Developer: cts.trace.inesc@gmail.com (FL6R9GA4V9)</CodesignKey>
+    <CodesignKey>iPhone Distribution: INESC ID - INSTITUTO DE ENGENHARIA DE SISTEMAS E COMPUTADORES, INVESTIGACAO E DESE (JALRNL4Q4F)</CodesignKey>
     <MtouchUseSGen>true</MtouchUseSGen>
     <MtouchUseRefCounting>true</MtouchUseRefCounting>
     <MtouchFloat32>true</MtouchFloat32>
     <CodesignEntitlements>Entitlements.plist</CodesignEntitlements>
     <MtouchLink>SdkOnly</MtouchLink>
     <MtouchArch>ARMv7, ARM64</MtouchArch>
-    <MtouchHttpClientHandler>HttpClientHandler</MtouchHttpClientHandler>
+    <MtouchHttpClientHandler>NSUrlSessionHandler</MtouchHttpClientHandler>
     <MtouchTlsProvider>Default</MtouchTlsProvider>
     <PlatformTarget>x86</PlatformTarget>
-    <CodesignProvision>b7669ec1-09e3-4559-ae9e-463ef4a24da1</CodesignProvision>
+    <CodesignProvision>e881483d-fa46-4581-a89e-18b9e72112be</CodesignProvision>
     <MtouchUseLlvm>true</MtouchUseLlvm>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhoneSimulator' ">
@@ -77,7 +77,7 @@
     <DefineConstants>DEBUG;ENABLE_TEST_CLOUD;</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <CodesignKey>iPhone Developer: cts.trace.inesc@gmail.com (FL6R9GA4V9)</CodesignKey>
+    <CodesignKey>iPhone Distribution: INESC ID - INSTITUTO DE ENGENHARIA DE SISTEMAS E COMPUTADORES, INVESTIGACAO E DESE (JALRNL4Q4F)</CodesignKey>
     <DeviceSpecificBuild>true</DeviceSpecificBuild>
     <MtouchDebug>true</MtouchDebug>
     <MtouchFastDev>false</MtouchFastDev>
@@ -87,10 +87,11 @@
     <CodesignEntitlements>Entitlements.plist</CodesignEntitlements>
     <MtouchLink>SdkOnly</MtouchLink>
     <MtouchArch>ARMv7, ARM64</MtouchArch>
-    <MtouchHttpClientHandler>HttpClientHandler</MtouchHttpClientHandler>
+    <MtouchHttpClientHandler>NSUrlSessionHandler</MtouchHttpClientHandler>
     <MtouchTlsProvider>Default</MtouchTlsProvider>
     <PlatformTarget>x86</PlatformTarget>
-    <CodesignProvision>b7669ec1-09e3-4559-ae9e-463ef4a24da1</CodesignProvision>
+    <CodesignProvision>95a4cd8b-87e5-44f3-9c40-8398c1ef0694</CodesignProvision>
+    <MtouchProfiling>true</MtouchProfiling>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -272,6 +273,9 @@
     <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\ic_launcher_motion_120x.png" />
     <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\ic_launcher_motion_57x.png" />
     <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\ic_launcher_motion_114x.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\ic_launcher_motion-2-2 copy.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\ic_launcher_motion_152px.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\ic_launcher_motion_76px.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
@@ -313,6 +317,7 @@
     <Compile Include="Security\OAuth.cs" />
     <Compile Include="Utils\ImageResizer.cs" />
     <Compile Include="Utils\SoundPlayer.cs" />
+    <Compile Include="Renderers\Map\CustomCallout.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="GoogleService-Info.plist" />
@@ -491,6 +496,11 @@
     <BundleResource Include="Resources\tutorial__tutorial_part4.png" />
     <BundleResource Include="Resources\home__my_routes%402x.png" />
     <BundleResource Include="Resources\home__my_routes%403x.png" />
+    <BundleResource Include="Resources\ic_launcher_motion_58x.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ITunesArtwork Include="iTunesArtwork%402x" />
+    <ITunesArtwork Include="iTunesArtwork" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
   <Import Project="..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" />

@@ -9,16 +9,18 @@ namespace Trace {
 
 		public SettingsPage() {
 			InitializeComponent();
-			soundSettingSwitch.IsToggled = User.Instance.IsBackgroundAudioEnabled;
+			//soundSettingSwitch.IsToggled = User.Instance.IsBackgroundAudioEnabled;
+
 			//list.Add($"New Spot {DateTime.Now.ToLocalTime()}");
 		}
 
 		async void onLogout(object sender, EventArgs e) {
 			bool isLogout = await DisplayAlert(Language.Logout, Language.AreYouSure, Language.Yes, Language.No);
 
-			// TODO remove DEBUG_ActivityLog on logout and from mapPage.
+#if DEBUG
 			await DisplayAlert("Activity Results", App.DEBUG_ActivityLog, "Ok");
 			App.DEBUG_ActivityLog = "";
+#endif
 
 			if(isLogout) {
 				WebServerLoginManager.PrepareLogout();
@@ -29,6 +31,8 @@ namespace Trace {
 
 		// TODO: need to perform input validation -- need a settings model that gets the values first before storing them in user after validation
 		void onSettingChanged(object sender, EventArgs e) {
+			var cell = sender as Entry;
+			if(cell != null && cell.ClassId == "spotsSetting") User.Instance.WSSnapshotVersion = 0;
 			SQLiteDB.Instance.SaveUser(User.Instance);
 		}
 
@@ -40,7 +44,7 @@ namespace Trace {
 		}
 
 		void onSoundSettingChanged(object sender, ToggledEventArgs e) {
-			User.Instance.IsBackgroundAudioEnabled = soundSettingSwitch.IsToggled;
+			//User.Instance.IsBackgroundAudioEnabled = soundSettingSwitch.IsToggled;
 			SQLiteDB.Instance.SaveUser(User.Instance);
 			// Restart eligibility state machine: null -> upon next call to Instance, a new Manager is instantiated.
 			RewardEligibilityManager.Instance = null;
@@ -52,11 +56,11 @@ namespace Trace {
 			Debug.WriteLine($"item picked: {item}");
 
 			switch(picker.StyleId) {
-				case ("stationary"): User.Instance.StationarySoundSetting = item; break;
-				case ("walking"): User.Instance.WalkingSoundSetting = item; break;
-				case ("running"): User.Instance.RunningSoundSetting = item; break;
-				case ("cycling"): User.Instance.CyclingSoundSetting = item; break;
-				case ("vehicle"): User.Instance.VehicularSoundSetting = item; break;
+				//case ("stationary"): User.Instance.StationarySoundSetting = item; break;
+				//case ("walking"): User.Instance.WalkingSoundSetting = item; break;
+				//case ("running"): User.Instance.RunningSoundSetting = item; break;
+				//case ("cycling"): User.Instance.CyclingSoundSetting = item; break;
+				//case ("vehicle"): User.Instance.VehicularSoundSetting = item; break;
 				case ("eligibleWarning"): User.Instance.CongratulatorySoundSetting = item; break;
 				case ("ineligibleWarning"): User.Instance.NoLongerEligibleSoundSetting = item; break;
 			}

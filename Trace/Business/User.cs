@@ -78,21 +78,21 @@ namespace Trace {
 
 
 		public int SearchRadius { get; set; } = 100; // kilometers
-		public int MaxChallenges { get; set; } = 50; // TODO not yet used
+		public int MaxCheckpoints { get; set; } = 100;
 
 
-		public string WalkingSoundSetting { get; set; } = "walking_pavement.mp3";
-		public string RunningSoundSetting { get; set; } = "running_pavement.mp3";
-		public string CyclingSoundSetting { get; set; } = "bike_no_pedaling.mp3";
-		public string VehicularSoundSetting { get; set; } = "spaceship_idle.mp3";
-		public string StationarySoundSetting { get; set; } = "silence.mp3";
+		//public string WalkingSoundSetting { get; set; } = "walking_pavement.mp3";
+		//public string RunningSoundSetting { get; set; } = "running_pavement.mp3";
+		//public string CyclingSoundSetting { get; set; } = "bike_no_pedaling.mp3";
+		//public string VehicularSoundSetting { get; set; } = "spaceship_idle.mp3";
+		//public string StationarySoundSetting { get; set; } = "silence.mp3";
 
 		public string CongratulatorySoundSetting { get; set; } = "bike_bell.mp3";
 		public string NoLongerEligibleSoundSetting { get; set; } = "clapping.mp3";
 
 
 		public bool IsFirstLogin { get; set; } = true;
-		public bool IsBackgroundAudioEnabled { get; set; } = false;
+		//public bool IsBackgroundAudioEnabled { get; set; } = false;
 
 
 		List<Trajectory> trajectories;
@@ -121,6 +121,14 @@ namespace Trace {
 				}
 				else challenges = new List<Challenge>();
 			}
+		}
+
+		/// <summary>
+		/// Gets the list of challenges that require a condition to complete.
+		/// </summary>
+		/// <returns>The special challenges.</returns>
+		public List<Challenge> GetSpecialChallenges() {
+			return Challenges.FindAll((x) => x.NeededMetersCycling != 0);
 		}
 
 

@@ -22,8 +22,7 @@
 			Spacing="15">
 			<Label
 				Text="{language:Translate UsernameRegisterConditions}"
-				TextColor="{StaticResource PrimaryTextColor}"
-				FontSize="Micro" />
+				FontSize="13" />
 			<Entry
 				x:Name="usernameText"
 				TextColor="{StaticResource PrimaryTextColor}"
@@ -46,8 +45,7 @@
 			</Entry>
 			<Label
 				Text="{language:Translate PasswordRegisterConditions}"
-				TextColor="{StaticResource PrimaryTextColor}"
-				FontSize="Micro" />
+				FontSize="13" />
 			<Entry
 				x:Name="passwordText"
 				Placeholder="{language:Translate Password}"

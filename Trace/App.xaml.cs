@@ -4,6 +4,7 @@ using Trace.Localization;
 using Xamarin.Forms.Xaml;
 using System.Diagnostics;
 using System.Threading.Tasks;
+using FFImageLoading;
 
 [assembly: XamlCompilation(XamlCompilationOptions.Compile)]
 namespace Trace {
@@ -12,9 +13,11 @@ namespace Trace {
 
 		public static string AppName { get { return "Trace"; } }
 
-		public static bool IsInBackground;
+		public static bool IsInForeground;
 
+#if DEBUG
 		public static string DEBUG_ActivityLog = "";
+#endif
 
 		public App() {
 			// Localize the display language.
@@ -41,21 +44,22 @@ namespace Trace {
 		/// Handle when your app enters background. Runs for about 5 seconds.
 		/// </summary>
 		protected override void OnSleep() {
-			IsInBackground = true;
+			IsInForeground = true;
 			CrossConnectivity.Current.ConnectivityChanged -= WebServerLoginManager.OnConnectivityChanged;
+			ImageService.Instance.InvalidateMemoryCache();
 			Geolocator.TryLowerAccuracy();
 
-			var isUserSignedIn = WebServerLoginManager.IsOfflineLoggedIn;
+			var isSessionStarted = WebServerLoginManager.IsOfflineLoggedIn;
 			// Use either audio background if enabled or cell tower changes in iOS to fetch motion data in background (moved to AppDelegate.cs in iOS).
-			if(!Geolocator.IsTrackingInProgress && isUserSignedIn) {
+			if(isSessionStarted) {
 
-				if(User.Instance.IsBackgroundAudioEnabled) {
-					Device.BeginInvokeOnMainThread(() => {
-						DependencyService.Get<ISoundPlayer>().ActivateAudioSession();
-						DependencyService.Get<ISoundPlayer>().PlaySound(null); // null -> play previous track
-						Debug.WriteLine("StartAudioSession(): " + DependencyService.Get<ISoundPlayer>().IsPlaying());
-					});
-				}
+				//if(User.Instance.IsBackgroundAudioEnabled) {
+				//	Device.BeginInvokeOnMainThread(() => {
+				DependencyService.Get<ISoundPlayer>().ActivateAudioSession();
+				//		DependencyService.Get<ISoundPlayer>().PlaySound(null); // null -> play previous track
+				//		Debug.WriteLine("StartAudioSession(): " + DependencyService.Get<ISoundPlayer>().IsPlaying());
+				//	});
+				//}
 				//else {
 				//	await Geolocator.StartListeningSignificantLocationChanges();
 				//}
@@ -70,15 +74,21 @@ namespace Trace {
 		/// Handle when your app resumes.
 		/// </summary>
 		protected override void OnResume() {
-			IsInBackground = false;
+			IsInForeground = false;
 			CrossConnectivity.Current.ConnectivityChanged += WebServerLoginManager.OnConnectivityChanged;
+
+			// In case the user got eligible while in the background (cannot update UI in background on iOS).
+			if(RewardEligibilityManager.Instance.IsEligible)
+				HomePage.AddCyclingIndicator();
+			else
+				HomePage.RemoveCyclingIndicator();
 
 			//Geolocator.ImproveAccuracy();
 			//await Task.Delay(1000);
-			if(WebServerLoginManager.IsOfflineLoggedIn && User.Instance.IsBackgroundAudioEnabled) {
+			if(WebServerLoginManager.IsOfflineLoggedIn) {
 				DependencyService.Get<ISoundPlayer>().StopSound();
 				DependencyService.Get<ISoundPlayer>().DeactivateAudioSession();
-				Debug.WriteLine("EndAudioSession(): " + !DependencyService.Get<ISoundPlayer>().IsPlaying());
+				//Debug.WriteLine("EndAudioSession(): " + !DependencyService.Get<ISoundPlayer>().IsPlaying());
 			}
 		}
 	}

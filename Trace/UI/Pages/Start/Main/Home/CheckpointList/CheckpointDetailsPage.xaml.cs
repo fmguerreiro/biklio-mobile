@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Linq;
 using Xamarin.Forms;
 using Xamarin.Forms.Maps;
@@ -7,7 +6,7 @@ using Xamarin.Forms.Maps;
 namespace Trace {
 
 	public partial class CheckpointDetailsPage : ContentPage {
-		void Handle_Clicked(object sender, System.EventArgs e) {
+		void Handle_Clicked(object sender, EventArgs e) {
 			throw new NotImplementedException();
 		}
 

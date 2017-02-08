@@ -1,4 +1,7 @@
-﻿using MapKit;
+﻿using System.Drawing;
+using Foundation;
+using MapKit;
+using UIKit;
 
 namespace Trace.iOS {
 	/// <summary>

@@ -20,7 +20,7 @@ namespace Trace.iOS {
 
 
 		public void PlaySound(string sound, int loops = -1) {
-			if(!App.IsInBackground) {
+			if(App.IsInForeground) {
 				prevSound = sound ?? prevSound;
 				return;
 			}

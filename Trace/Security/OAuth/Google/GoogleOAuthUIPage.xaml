@@ -5,6 +5,7 @@
 	x:Class="Trace.GoogleOAuthUIPage">
 	<ContentPage.Content>
 		<ActivityIndicator
+			x:Name="loadingWheel"
 			Scale="2"
 			Color="{StaticResource PrimaryColor}"
 			IsRunning="true" />

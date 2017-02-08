@@ -1,8 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Threading.Tasks;
 using Plugin.Geolocator;
 using Plugin.Geolocator.Abstractions;
+using Xamarin.Forms;
 using Xamarin.Forms.Maps;
 
 namespace Trace {
@@ -11,25 +14,26 @@ namespace Trace {
 
 		// Location precision in meters.
 		public const int LOCATOR_GOOD_ACCURACY = 15;
-		private const int MOTION_ONLY_ACCURACY = 30;
+		private const int MOTION_ONLY_ACCURACY = 50;
 		private const int ZOOM_DISTANCE_KM = 1;
 
 		private static IGeolocator locator;
+
+		//private static IList<Plugin.Geolocator.Abstractions.Position> positions;
 
 		public static bool IsTrackingInProgress { get; set; }
 		public static TraceMap Map { get; set; }
 
 		public static double MaxSpeed { get; set; }
 
-		private static int nSamples;
-		private static double cumulativeAvg = 1.5;
+		private static int nSamples = 1;
+		private static double cumulativeAvg = 3;
 		public static double CumulativeAvgSpeed {
 			get {
 				return cumulativeAvg;
 			}
 			set {
-				if(nSamples++ == 0) { cumulativeAvg = value; return; }
-				cumulativeAvg = (cumulativeAvg + value / nSamples);
+				cumulativeAvg = (cumulativeAvg + value / ++nSamples);
 			}
 		}
 
@@ -64,15 +68,75 @@ namespace Trace {
 			if(IsTrackingInProgress) {
 				UpdateMap(args.Position);
 				if(args.Position.Speed > MaxSpeed) MaxSpeed = args.Position.Speed;
+				DependencyService.Get<IMotionActivityManager>().CurrentAvgSpeed = args.Position.Speed;
 				CumulativeAvgSpeed = args.Position.Speed;
 				Map.RouteCoordinates.Add(args.Position);
 			}
 		}
 
 
+		/// <summary>
+		/// Starts the GPS for using iOS's deferred location update feature.
+		/// After 5 minutes or 100m pass, trigger the location background update.
+		/// </summary>
+		/// <returns>The in background.</returns>
+		//public static async Task StartInBackground() {
+		//	locator = CrossGeolocator.Current;
+
+		//	if(locator.IsListening)
+		//		await locator.StopListeningAsync();
+
+		//	locator.DesiredAccuracy = LOCATOR_GOOD_ACCURACY;
+		//	var locationSettings = new ListenerSettings {
+		//		AllowBackgroundUpdates = true,
+		//		DeferLocationUpdates = true,
+		//		DeferralDistanceMeters = 1,
+		//		DeferralTime = new TimeSpan(0, 0, 30)
+		//	};
+
+		//	var firstPosition = await GeoUtils.GetCurrentUserLocation();
+		//	if(positions == null) {
+		//		positions = new List<Plugin.Geolocator.Abstractions.Position>();
+		//	}
+		//	positions.Clear();
+		//	positions.Add(firstPosition);
+
+		//	await locator.StartListeningAsync(5000, 15, false, locationSettings);
+		//	locator.PositionChanged += onDeferredPositionChange;
+		//}
+
+
+		//private static void onDeferredPositionChange(object sender, PositionEventArgs args) {
+		//	Debug.WriteLine("onDeferredPositionChange");
+		//	var firstPos = positions.First();
+		//	var secondPos = args.Position;
+		//	double distance = GeoUtils.DistanceBetweenPoints(firstPos, secondPos);
+		//	double time = Math.Abs((secondPos.Timestamp - firstPos.Timestamp).TotalSeconds);
+
+		//	var speed = distance / time;
+
+		//	DependencyService.Get<IMotionActivityManager>().CurrentAvgSpeed = speed;
+
+		//	positions.Clear();
+		//	positions.Add(secondPos);
+
+		//	DependencyService.Get<IMotionActivityManager>().QueryHistoricalData(
+		//		firstPos.Timestamp.DateTime, secondPos.Timestamp.DateTime
+		//	);
+		//	// TODO DEBUG notification -- remove
+		//	DependencyService.Get<INotificationMessage>().Send(
+		//		"deferredPosition",
+		//		"deferredPosition m/s",
+		//		$"distance {distance}\ntime {time} -> speed {speed}", 0
+		//	);
+		//}
+
+
 		public static async Task Stop() {
 			if(locator != null) {
 				locator.PositionChanged -= onPositionChanged;
+				//locator.PositionChanged -= onDeferredPositionChange;
+				//positions?.Clear();
 				await locator.StopListeningAsync();
 			}
 		}
@@ -107,8 +171,8 @@ namespace Trace {
 		}
 
 		public static void Reset() {
-			cumulativeAvg = 0;
-			nSamples = 0;
+			cumulativeAvg = 3;
+			nSamples = 1;
 			MaxSpeed = 0;
 		}
 	}

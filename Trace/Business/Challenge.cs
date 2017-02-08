@@ -12,7 +12,7 @@ namespace Trace {
 	public class Challenge : UserItemBase {
 
 		public string Reward { get; set; }
-		public int NeededCyclingDistance { get; set; }
+		public int NeededMetersCycling { get; set; }
 
 		public long CreatedAt { get; set; }
 		public long ExpiresAt { get; set; }
@@ -62,15 +62,15 @@ namespace Trace {
 		// These properties are used to display information when listed in the CheckpointsListPage.
 		public string Condition {
 			get {
-				if(NeededCyclingDistance == 0)
+				if(NeededMetersCycling == 0)
 					return Language.CycleToShop;
-				else return string.Format(Language.BikeCondition, NeededCyclingDistance);
+				else return string.Format(Language.BikeCondition, NeededMetersCycling);
 			}
 		}
 
 		public override string ToString() {
 			return string.Format("[Challenge GId->{0} UserId->{1} CheckpointId->{2} Reward->{3} Checkpoint->{4} Distance->{5}]",
-								 GId, UserId, ThisCheckpoint.GId, Reward, ThisCheckpoint.Name, NeededCyclingDistance);
+								 GId, UserId, ThisCheckpoint.GId, Reward, ThisCheckpoint.Name, NeededMetersCycling);
 		}
 	}
 

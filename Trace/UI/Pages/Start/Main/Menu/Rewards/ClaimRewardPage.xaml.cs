@@ -37,6 +37,8 @@ namespace Trace {
 			// Remove button & display grid with timestamps.
 			claimRewardButton.IsVisible = false;
 			claimRewardGrid.IsVisible = true;
+
+			HomePage.UpdateRewardIcon();
 		}
 	}
 }
